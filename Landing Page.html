@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<title>ME.MORI CLASS</title>
+
+<!-- FONT -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Lora:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+
+<!-- ICON -->
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+/>
+
+<style>
+
+/* ================= RESET ================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:'Be Vietnam Pro',sans-serif;
+  background:#f5c45a;
+  color:#111;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+img{
+  width:100%;
+  display:block;
+}
+
+a{
+  text-decoration:none;
+  color:inherit;
+}
+
+button{
+  border:none;
+  outline:none;
+  cursor:pointer;
+  font-family:'Be Vietnam Pro',sans-serif;
+}
+
+.container{
+  width:min(1180px,92%);
+  margin:auto;
+}
+
+/* ================= TYPOGRAPHY ================= */
+
+h1,h2,h3,h4{
+  font-family:'Plus Jakarta Sans',sans-serif;
+}
+
+.script{
+  font-family:'Lora',serif;
+  font-style:italic;
+  font-weight:700;
+}
+
+/* ================= BUTTON ================= */
+
+.btn{
+  background:#111;
+  color:white;
+  padding:18px 34px;
+  border-radius:60px;
+  font-weight:700;
+  font-size:15px;
+  transition:.3s;
+}
+
+.btn:hover{
+  transform:translateY(-4px);
+}
+
+/* ================= HEADER ================= */
+
+header{
+  padding:34px 0;
+}
+
+.navbar{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+}
+
+.nav-left{
+  display:flex;
+  align-items:center;
+  gap:38px;
+}
+
+.nav-right{
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  gap:30px;
+}
+
+.nav-link{
+  font-size:16px;
+  font-weight:500;
+}
+
+.logo{
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:3px;
+}
+
+.signup{
+  background:#111;
+  color:white;
+  padding:14px 28px;
+  border-radius:50px;
+  font-weight:700;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+  padding:60px 0 120px;
+  overflow:hidden;
+  position:relative;
+  z-index:1;
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  gap:90px;
+  min-height:760px;
+}
+
+.hero-left{
+  display:flex;
+  align-items:center;
+}
+
+.hero-text{
+  max-width:620px;
+}
+
+.hero-text h1{
+  font-size:clamp(68px,7vw,112px);
+  line-height:0.95;
+  letter-spacing:-5px;
+  font-weight:800;
+  margin-bottom:32px;
+}
+
+.script-text{
+  display:block;
+  font-family:'Lora',serif;
+  font-style:italic;
+  font-weight:700;
+}
+
+.hero-text p{
+  font-size:20px;
+  line-height:2;
+  color:#4f4f4f;
+  max-width:520px;
+  margin-bottom:38px;
+}
+
+.hero-right{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.hero-image img{
+  width:100%;
+  height:560px;
+  object-fit:cover;
+  border-radius:42px;
+}
+
+/* ================= ABOUT ================= */
+
+.about{
+  background:#f8f2e8;
+  padding:120px 0;
+  position:relative;
+  z-index:2;
+}
+
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+
+.about-image img{
+  width:100%;
+  height:520px;
+  object-fit:cover;
+  border-radius:40px;
+}
+
+.about h2{
+  font-size:clamp(50px,5vw,76px);
+  line-height:1.05;
+  letter-spacing:-3px;
+  margin-bottom:28px;
+}
+
+.about p{
+  font-size:17px;
+  line-height:2;
+  color:#555;
+  max-width:560px;
+}
+
+/* ================= FEATURES ================= */
+
+.features{
+  background:white;
+  padding:120px 0;
+}
+
+.feature-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+
+.feature-card{
+  background:#fafafa;
+  border-radius:32px;
+  padding:44px;
+  min-height:270px;
+}
+
+.feature-dark{
+  background:#141414;
+  color:white;
+}
+
+.feature-dark h3{
+  font-size:46px;
+  line-height:1.15;
+  letter-spacing:-2px;
+  margin-bottom:34px;
+}
+
+.feature-dark span{
+  color:#f5c45a;
+}
+
+.feature-icon{
+  width:74px;
+  height:74px;
+  background:#f5c45a;
+  border-radius:24px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:24px;
+  font-size:30px;
+}
+
+.feature-card h4{
+  font-size:26px;
+  margin-bottom:14px;
+}
+
+.feature-card p{
+  color:#666;
+  line-height:1.9;
+}
+
+/* ================= COURSES ================= */
+
+.courses{
+  background:#141414;
+  color:white;
+  padding:120px 0;
+}
+
+.section-title{
+  text-align:center;
+  font-size:clamp(52px,5vw,76px);
+  letter-spacing:-3px;
+  margin-bottom:70px;
+}
+
+.course-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+}
+
+.course-card{
+  background:white;
+  color:#111;
+  border-radius:30px;
+  overflow:hidden;
+}
+
+.course-card img{
+  height:280px;
+  object-fit:cover;
+}
+
+.course-content{
+  padding:32px;
+}
+
+.course-content h4{
+  font-size:30px;
+  line-height:1.3;
+  margin-bottom:24px;
+}
+
+.course-btn{
+  border:2px solid #111;
+  background:transparent;
+  padding:13px 24px;
+  border-radius:50px;
+  font-weight:700;
+}
+
+/* ================= LEARNING ================= */
+
+.learning{
+  background:white;
+  padding:120px 0;
+}
+
+.learning-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+
+.learning h2{
+  font-size:clamp(52px,5vw,76px);
+  line-height:1.05;
+  letter-spacing:-3px;
+  margin-bottom:24px;
+}
+
+.learning p{
+  color:#555;
+  line-height:2;
+  margin-bottom:34px;
+}
+
+.steps{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.step{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  font-weight:600;
+  font-size:17px;
+}
+
+.step span{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#f5c45a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.learning-image img{
+  height:560px;
+  object-fit:cover;
+  border-radius:40px;
+}
+
+/* ================= CTA ================= */
+
+.cta{
+  background:white;
+  padding-bottom:120px;
+}
+
+.cta-box{
+  background:#f5c45a;
+  border-radius:42px;
+  padding:60px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+}
+
+.cta-image img{
+  height:380px;
+  object-fit:cover;
+  border-radius:30px;
+}
+
+.cta h2{
+  font-size:clamp(52px,5vw,72px);
+  line-height:1.05;
+  letter-spacing:-3px;
+  margin-bottom:24px;
+}
+
+.cta p{
+  color:#4f4f4f;
+  line-height:2;
+  margin-bottom:34px;
+}
+
+/* ================= APP ================= */
+
+.app{
+  background:#f8f2e8;
+  text-align:center;
+  padding:120px 0;
+}
+
+.app h2{
+  font-size:clamp(54px,5vw,76px);
+  line-height:1.15;
+  letter-spacing:-3px;
+  margin-bottom:40px;
+}
+
+.stores{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+}
+
+.store{
+  background:#111;
+  color:white;
+  padding:18px 28px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:600;
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+  background:#141414;
+  color:white;
+  padding:100px 0 40px;
+  border-top-left-radius:44px;
+  border-top-right-radius:44px;
+}
+
+.footer-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:40px;
+}
+
+footer h4{
+  font-size:20px;
+  margin-bottom:24px;
+}
+
+footer ul{
+  list-style:none;
+}
+
+footer li{
+  margin-bottom:14px;
+  color:#bcbcbc;
+}
+
+footer p{
+  color:#bcbcbc;
+  line-height:1.9;
+  max-width:340px;
+}
+
+.copyright{
+  margin-top:70px;
+  color:#777;
+  font-size:14px;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:980px){
+
+  .navbar{
+    grid-template-columns:1fr;
+    gap:24px;
+    text-align:center;
+  }
+
+  .nav-left,
+  .nav-right{
+    justify-content:center;
+  }
+
+  .hero-grid,
+  .about-grid,
+  .learning-grid,
+  .cta-box,
+  .feature-grid,
+  .course-grid,
+  .footer-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero{
+    padding:30px 0 80px;
+  }
+
+  .hero-grid{
+    min-height:auto;
+    gap:50px;
+  }
+
+  .hero-text h1{
+    font-size:58px;
+    line-height:0.98;
+    letter-spacing:-3px;
+  }
+
+  .hero-text p{
+    font-size:17px;
+    max-width:100%;
+  }
+
+  .hero-image img,
+  .about-image img,
+  .learning-image img{
+    height:380px;
+  }
+
+  .cta-image img{
+    height:320px;
+  }
+
+  .stores{
+    flex-direction:column;
+    align-items:center;
+  }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header>
+
+<div class="container navbar">
+
+<div class="nav-left">
+
+<a class="nav-link" href="#">
+Trang Chủ
+</a>
+
+<a class="nav-link" href="#">
+Workshop
+</a>
+
+<a class="nav-link" href="#">
+Khoá Học
+</a>
+
+</div>
+
+<div class="logo">
+ME.MORI
+</div>
+
+<div class="nav-right">
+
+<a class="nav-link" href="#">
+Đăng Nhập
+</a>
+
+<a class="signup" href="#">
+Tham Gia
+</a>
+
+</div>
+
+</div>
+
+</header>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<div class="container hero-grid">
+
+<div class="hero-left">
+
+<div class="hero-text">
+
+<h1>
+
+Học Nghệ Thuật
+
+<span class="script-text">
+Kể Chuyện
+</span>
+
+Bằng Hình Ảnh
+
+</h1>
+
+<p>
+Không chỉ học kỹ thuật quay dựng,
+bạn sẽ học cách cảm nhận, xây dựng cảm xúc
+và tạo nên những câu chuyện chạm đến con người.
+</p>
+
+<button class="btn">
+Khám Phá Lớp Học →
+</button>
+
+</div>
+
+</div>
+
+<div class="hero-right">
+
+<div class="hero-image">
+
+<img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop">
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ABOUT -->
+
+<section class="about">
+
+<div class="container about-grid">
+
+<div class="about-image">
+
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop">
+
+</div>
+
+<div>
+
+<h2>
+
+Một Không Gian
+
+<span class="script">
+Sáng Tạo
+</span>
+
+Đúng Nghĩa
+
+</h2>
+
+<p>
+Me.mori Class là nơi kết nối điện ảnh,
+storytelling và nghệ thuật hình ảnh hiện đại.
+Không chỉ học kỹ thuật, mà học cách tạo cảm xúc
+và xây dựng góc nhìn cá nhân.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FEATURES -->
+
+<section class="features">
+
+<div class="container">
+
+<div class="feature-grid">
+
+<div class="feature-card feature-dark">
+
+<h3>
+
+Điểm Khác Biệt
+
+<span>
+Của Me.mori
+</span>
+
+</h3>
+
+<button class="btn">
+Xem Thêm →
+</button>
+
+</div>
+
+<div class="feature-card">
+
+<div class="feature-icon">
+<i class="fa-solid fa-film"></i>
+</div>
+
+<h4>
+Tư Duy Điện Ảnh
+</h4>
+
+<p>
+Học cách kể chuyện bằng hình ảnh cinematic
+và tạo cảm xúc cho người xem.
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<div class="feature-icon">
+<i class="fa-solid fa-camera"></i>
+</div>
+
+<h4>
+Thực Hành Thật
+</h4>
+
+<p>
+Quay dựng trực tiếp với bài tập và dự án
+thực tế ngay trong workshop.
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<div class="feature-icon">
+<i class="fa-solid fa-users"></i>
+</div>
+
+<h4>
+Cộng Đồng Sáng Tạo
+</h4>
+
+<p>
+Kết nối với những người cùng yêu điện ảnh
+và storytelling hiện đại.
+</p>
+
+</div>
+
+<div class="feature-card">
+
+<div class="feature-icon">
+<i class="fa-solid fa-clapperboard"></i>
+</div>
+
+<h4>
+Mentor Đồng Hành
+</h4>
+
+<p>
+Không chỉ học kỹ thuật mà còn được phản biện
+và định hướng lâu dài.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- COURSES -->
+
+<section class="courses">
+
+<div class="container">
+
+<h2 class="section-title">
+
+Workshop
+
+<span class="script">
+Nổi Bật
+</span>
+
+</h2>
+
+<div class="course-grid">
+
+<div class="course-card">
+
+<img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop">
+
+<div class="course-content">
+
+<h4>
+Storytelling Cho Video Ngắn
+</h4>
+
+<button class="course-btn">
+Xem Chi Tiết
+</button>
+
+</div>
+
+</div>
+
+<div class="course-card">
+
+<img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=1400&auto=format&fit=crop">
+
+<div class="course-content">
+
+<h4>
+Tư Duy Cinematic
+</h4>
+
+<button class="course-btn">
+Xem Chi Tiết
+</button>
+
+</div>
+
+</div>
+
+<div class="course-card">
+
+<img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?q=80&w=1400&auto=format&fit=crop">
+
+<div class="course-content">
+
+<h4>
+Quay Dựng Cho Creator
+</h4>
+
+<button class="course-btn">
+Xem Chi Tiết
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- LEARNING -->
+
+<section class="learning">
+
+<div class="container learning-grid">
+
+<div>
+
+<h2>
+
+Bắt Đầu
+
+<span class="script">
+Đơn Giản
+</span>
+
+</h2>
+
+<p>
+Quy trình tối giản giúp bạn tham gia workshop
+và bắt đầu thực hành ngay từ buổi đầu tiên.
+</p>
+
+<div class="steps">
+
+<div class="step">
+<span>✓</span>
+Đăng Ký Workshop
+</div>
+
+<div class="step">
+<span>✓</span>
+Tham Gia Nhóm Học
+</div>
+
+<div class="step">
+<span>✓</span>
+Thực Hành & Feedback
+</div>
+
+</div>
+
+</div>
+
+<div class="learning-image">
+
+<img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=1400&auto=format&fit=crop">
+
+</div>
+
+</div>
+
+</section>
+
+<!-- CTA -->
+
+<section class="cta">
+
+<div class="container">
+
+<div class="cta-box">
+
+<div class="cta-image">
+
+<img src="https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=1400&auto=format&fit=crop">
+
+</div>
+
+<div>
+
+<h2>
+
+Sẵn Sàng
+
+Cho Hành Trình Mới?
+
+</h2>
+
+<p>
+Tham gia cộng đồng học tập dành cho những người
+muốn kể những câu chuyện có chiều sâu bằng hình ảnh.
+</p>
+
+<button class="btn">
+Đăng Ký Ngay →
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- APP -->
+
+<section class="app">
+
+<div class="container">
+
+<h2>
+
+Học Mọi Lúc
+<br>
+
+Trên
+<br>
+
+<span class="script">
+Mọi Thiết Bị
+</span>
+
+</h2>
+
+<div class="stores">
+
+<div class="store">
+<i class="fa-brands fa-apple"></i>
+App Store
+</div>
+
+<div class="store">
+<i class="fa-brands fa-google-play"></i>
+Google Play
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+<div class="container">
+
+<div class="footer-grid">
+
+<div>
+
+<div class="logo" style="margin-bottom:24px;">
+ME.MORI
+</div>
+
+<p>
+Không gian học tập dành cho những người yêu điện ảnh,
+storytelling và nghệ thuật hình ảnh hiện đại.
+</p>
+
+</div>
+
+<div>
+
+<h4>
+Về Chúng Tôi
+</h4>
+
+<ul>
+<li>Giới Thiệu</li>
+<li>Workshop</li>
+<li>Cộng Đồng</li>
+</ul>
+
+</div>
+
+<div>
+
+<h4>
+Tài Nguyên
+</h4>
+
+<ul>
+<li>Bài Viết</li>
+<li>Hướng Dẫn</li>
+<li>FAQ</li>
+</ul>
+
+</div>
+
+<div>
+
+<h4>
+Liên Hệ
+</h4>
+
+<ul>
+<li>Instagram</li>
+<li>Facebook</li>
+<li>Email</li>
+</ul>
+
+</div>
+
+</div>
+
+<div class="copyright">
+© 2026 ME.MORI CLASS — All Rights Reserved.
+</div>
+
+</div>
+
+</footer>
+
+</body>
+
+</html>
