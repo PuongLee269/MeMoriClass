@@ -28,20 +28,20 @@
   },
   "hero": {
     "eyebrow": "ME.MORI Class",
-    "titleStart": "Học nghệ thuật",
-    "titleScript": "kể chuyện",
-    "titleEnd": "bằng hình ảnh",
-    "text": "Workshop dành cho creator muốn xây dựng tư duy cinematic, quay dựng có cảm xúc và biến ý tưởng thành câu chuyện rõ ràng trên màn hình.",
+    "titleStart": "Lớp học",
+    "titleScript": "nghệ thuật kể chuyện",
+    "titleEnd": "",
+    "text": "Lớp học dành cho creator muốn xây dựng tư duy cinematic, quay dựng có cảm xúc và biến ý tưởng thành câu chuyện rõ ràng trên màn hình.",
     "primary": {
-      "label": "Xem workshop",
+      "label": "Workshop",
       "href": "#courses"
     },
     "secondary": {
-      "label": "Cách học",
+      "label": "Lớp học",
       "href": "#method"
     },
     "mediaType": "image",
-    "mediaUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop",
+    "mediaUrl": "https://cdn.craft.cloud/019d3066-3548-718e-af5b-3333a57196ee/assets/content/uploads/storytelling.jpg",
     "mediaAlt": "Nhóm học viên cùng trao đổi trong lớp học sáng tạo",
     "note": "Thực hành theo dự án thật, nhận phản hồi trực tiếp và hoàn thiện góc nhìn cá nhân."
   },
