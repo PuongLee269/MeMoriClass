@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ME.MORI Admin</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f6f1e8;
+      color: #171513;
+      font-family: Arial, sans-serif;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-bottom: 1px solid #ded4c5;
+      background: rgba(246, 241, 232, 0.96);
+      backdrop-filter: blur(10px);
+    }
+    .bar, main {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+    }
+    .bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-height: 74px;
+    }
+    h1 { margin: 0; font-size: 24px; }
+    h2 { margin: 0 0 16px; font-size: 20px; }
+    h3 { margin: 24px 0 12px; font-size: 16px; }
+    main {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 22px;
+      padding: 24px 0 44px;
+    }
+    aside {
+      position: sticky;
+      top: 98px;
+      align-self: start;
+      padding: 18px;
+      border: 1px solid #ded4c5;
+      border-radius: 8px;
+      background: #fffaf1;
+    }
+    aside a {
+      display: block;
+      padding: 11px 12px;
+      border-radius: 6px;
+      color: #171513;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    aside a:hover { background: #f0d281; }
+    section {
+      margin-bottom: 18px;
+      padding: 22px;
+      border: 1px solid #ded4c5;
+      border-radius: 8px;
+      background: #fff;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .full { grid-column: 1 / -1; }
+    label {
+      display: grid;
+      gap: 7px;
+      color: #494037;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #cfc4b4;
+      border-radius: 6px;
+      padding: 11px 12px;
+      background: #fffdf8;
+      color: #171513;
+      font: inherit;
+    }
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+    .item {
+      margin-top: 14px;
+      padding: 16px;
+      border: 1px solid #e4dacd;
+      border-radius: 8px;
+      background: #fffaf1;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+    button, .button {
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 999px;
+      padding: 0 18px;
+      background: #171513;
+      color: #fff;
+      cursor: pointer;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    button.secondary, .button.secondary { background: #e9d8aa; color: #171513; }
+    .help {
+      margin: 8px 0 0;
+      color: #6a5f53;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .status {
+      min-height: 22px;
+      color: #5e4d2d;
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .danger { color: #a12d24; }
+    @media (max-width: 850px) {
+      main, .grid { grid-template-columns: 1fr; }
+      aside { position: static; }
+      .bar { align-items: flex-start; flex-direction: column; padding: 16px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="bar">
+      <div>
+        <h1>ME.MORI Admin</h1>
+        <p class="help">Sửa text, ảnh, video và đường liên kết. Bấm lưu để commit vào GitHub.</p>
+      </div>
+      <div class="actions">
+        <a class="button secondary" href="index.html" target="_blank" rel="noreferrer">Xem website</a>
+        <button id="saveButton">Lưu lên GitHub</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <aside>
+      <a href="#github">Kết nối GitHub</a>
+      <a href="#site">Thông tin chung</a>
+      <a href="#hero">Hero</a>
+      <a href="#intro">Giới thiệu</a>
+      <a href="#features">Điểm nổi bật</a>
+      <a href="#courses">Workshop</a>
+      <a href="#method">Phương pháp</a>
+      <a href="#cta">Liên hệ</a>
+      <a href="#footer">Footer</a>
+    </aside>
+
+    <div>
+      <section id="github">
+        <h2>Kết nối GitHub</h2>
+        <div class="grid">
+          <label>GitHub token
+            <input id="token" type="password" autocomplete="off" placeholder="github_pat_...">
+          </label>
+          <label>Branch lưu thay đổi
+            <input id="branch" value="main">
+          </label>
+        </div>
+        <p class="help">Token chỉ dùng trong trình duyệt của bạn để gọi GitHub API. Nên tạo fine-grained token chỉ có quyền đọc/ghi Contents cho repo <strong>PuongLee269/MeMoriClass</strong>.</p>
+        <div class="actions" style="margin-top:14px">
+          <button class="secondary" id="loadButton">Tải lại content.json</button>
+          <button class="secondary" id="downloadButton">Tải file content.json</button>
+          <span class="status" id="status"></span>
+        </div>
+      </section>
+
+      <form id="editor"></form>
+    </div>
+  </main>
+
+  <script>
+    const owner = "PuongLee269";
+    const repo = "MeMoriClass";
+    const contentPath = "content.json";
+    let content = null;
+    let contentSha = null;
+
+    const fields = [
+      ["site", "Thông tin chung", [
+        ["site.title", "Tiêu đề tab"],
+        ["site.description", "Mô tả SEO", "textarea"],
+        ["site.brand", "Tên thương hiệu"],
+        ["nav.0.label", "Menu 1"],
+        ["nav.0.href", "Link menu 1"],
+        ["nav.1.label", "Menu 2"],
+        ["nav.1.href", "Link menu 2"],
+        ["nav.2.label", "Menu 3"],
+        ["nav.2.href", "Link menu 3"],
+        ["navCourses.label", "Nút khóa học"],
+        ["navCourses.href", "Link nút khóa học"],
+        ["navCta.label", "Nút đăng ký"],
+        ["navCta.href", "Link nút đăng ký"]
+      ]],
+      ["hero", "Hero", [
+        ["hero.eyebrow", "Dòng nhỏ"],
+        ["hero.titleStart", "Tiêu đề đầu"],
+        ["hero.titleScript", "Tiêu đề nhấn mạnh"],
+        ["hero.titleEnd", "Tiêu đề cuối"],
+        ["hero.text", "Mô tả", "textarea"],
+        ["hero.primary.label", "Nút chính"],
+        ["hero.primary.href", "Link nút chính"],
+        ["hero.secondary.label", "Nút phụ"],
+        ["hero.secondary.href", "Link nút phụ"],
+        ["hero.mediaType", "Loại media", "select", ["image", "video"]],
+        ["hero.mediaUrl", "URL ảnh/video"],
+        ["hero.mediaAlt", "Mô tả ảnh/video"],
+        ["hero.note", "Ghi chú trên ảnh", "textarea"]
+      ]],
+      ["intro", "Giới thiệu", [
+        ["intro.title", "Tiêu đề"],
+        ["intro.text", "Nội dung", "textarea"]
+      ]],
+      ["features", "Điểm nổi bật", []],
+      ["courses", "Workshop", [
+        ["coursesSection.title", "Tiêu đề"],
+        ["coursesSection.titleScript", "Tiêu đề nhấn mạnh"],
+        ["coursesSection.text", "Mô tả", "textarea"]
+      ]],
+      ["method", "Phương pháp", [
+        ["method.eyebrow", "Dòng nhỏ"],
+        ["method.title", "Tiêu đề"],
+        ["method.text", "Mô tả", "textarea"]
+      ]],
+      ["cta", "Liên hệ", [
+        ["cta.title", "Tiêu đề"],
+        ["cta.label", "Chữ trên nút"],
+        ["cta.href", "Đường liên kết"]
+      ]],
+      ["footer", "Footer", [
+        ["footer.intro", "Mô tả footer", "textarea"]
+      ]]
+    ];
+
+    function getByPath(target, path) {
+      return path.split(".").reduce((current, key) => current?.[key], target);
+    }
+
+    function setByPath(target, path, value) {
+      const parts = path.split(".");
+      const last = parts.pop();
+      const parent = parts.reduce((current, key) => current[key], target);
+      parent[last] = value;
+    }
+
+    function inputFor(path, label, type = "text", options = []) {
+      const value = getByPath(content, path) ?? "";
+      if (type === "textarea") {
+        return `<label class="full">${label}<textarea data-path="${path}">${escapeHtml(value)}</textarea></label>`;
+      }
+      if (type === "select") {
+        return `<label>${label}<select data-path="${path}">${options.map((option) => `<option value="${option}" ${value === option ? "selected" : ""}>${option}</option>`).join("")}</select></label>`;
+      }
+      return `<label>${label}<input data-path="${path}" value="${escapeHtml(value)}"></label>`;
+    }
+
+    function mediaUpload(path) {
+      return `
+        <div class="full actions">
+          <input type="file" data-upload="${path}" accept="image/*,video/*">
+          <button class="secondary" type="button" data-upload-button="${path}">Upload media</button>
+        </div>
+      `;
+    }
+
+    function renderEditor() {
+      const editor = document.getElementById("editor");
+      editor.innerHTML = fields.map(([id, title, sectionFields]) => `
+        <section id="${id}">
+          <h2>${title}</h2>
+          <div class="grid">
+            ${sectionFields.map((field) => inputFor(...field)).join("")}
+            ${id === "hero" ? mediaUpload("hero.mediaUrl") : ""}
+          </div>
+          ${renderDynamicSection(id)}
+        </section>
+      `).join("");
+      bindInputs();
+    }
+
+    function renderDynamicSection(id) {
+      if (id === "features") {
+        return content.features.map((item, index) => `
+          <div class="item">
+            <h3>Điểm nổi bật ${index + 1}</h3>
+            <div class="grid">
+              ${inputFor(`features.${index}.icon`, "Icon Font Awesome")}
+              ${inputFor(`features.${index}.title`, "Tiêu đề")}
+              ${inputFor(`features.${index}.text`, "Nội dung", "textarea")}
+            </div>
+          </div>
+        `).join("");
+      }
+      if (id === "courses") {
+        return content.courses.map((item, index) => `
+          <div class="item">
+            <h3>Workshop ${index + 1}</h3>
+            <div class="grid">
+              ${inputFor(`courses.${index}.title`, "Tên workshop")}
+              ${inputFor(`courses.${index}.mediaType`, "Loại media", "select", ["image", "video"])}
+              ${inputFor(`courses.${index}.text`, "Mô tả", "textarea")}
+              ${inputFor(`courses.${index}.mediaUrl`, "URL ảnh/video")}
+              ${inputFor(`courses.${index}.mediaAlt`, "Mô tả ảnh/video")}
+              ${mediaUpload(`courses.${index}.mediaUrl`)}
+            </div>
+          </div>
+        `).join("");
+      }
+      if (id === "method") {
+        return content.steps.map((item, index) => `
+          <div class="item">
+            <h3>Bước ${index + 1}</h3>
+            <div class="grid">
+              ${inputFor(`steps.${index}.title`, "Tiêu đề")}
+              ${inputFor(`steps.${index}.text`, "Nội dung", "textarea")}
+            </div>
+          </div>
+        `).join("");
+      }
+      if (id === "footer") {
+        return content.footer.columns.map((column, columnIndex) => `
+          <div class="item">
+            <h3>Cột footer ${columnIndex + 1}</h3>
+            <div class="grid">
+              ${inputFor(`footer.columns.${columnIndex}.title`, "Tiêu đề cột")}
+              ${column.items.map((item, itemIndex) => inputFor(`footer.columns.${columnIndex}.items.${itemIndex}`, `Dòng ${itemIndex + 1}`)).join("")}
+            </div>
+          </div>
+        `).join("");
+      }
+      return "";
+    }
+
+    function bindInputs() {
+      document.querySelectorAll("[data-path]").forEach((input) => {
+        input.addEventListener("input", () => setByPath(content, input.dataset.path, input.value));
+      });
+      document.querySelectorAll("[data-upload-button]").forEach((button) => {
+        button.addEventListener("click", () => uploadMedia(button.dataset.uploadButton));
+      });
+    }
+
+    async function loadContent() {
+      setStatus("Đang tải content.json...");
+      const response = await fetch("content.json?ts=" + Date.now());
+      content = await response.json();
+      renderEditor();
+      setStatus("Đã tải nội dung.");
+    }
+
+    async function fetchContentSha(token, branch) {
+      const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${contentPath}?ref=${encodeURIComponent(branch)}`, {
+        headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" }
+      });
+      if (!response.ok) throw new Error("Không lấy được SHA của content.json.");
+      const data = await response.json();
+      contentSha = data.sha;
+    }
+
+    async function saveContent() {
+      try {
+        const token = requireToken();
+        const branch = document.getElementById("branch").value || "main";
+        setStatus("Đang lưu content.json lên GitHub...");
+        await fetchContentSha(token, branch);
+        const body = {
+          message: "Update website content from admin",
+          content: toBase64(JSON.stringify(content, null, 2) + "\n"),
+          sha: contentSha,
+          branch
+        };
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${contentPath}`, {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" },
+          body: JSON.stringify(body)
+        });
+        if (!response.ok) throw new Error(await response.text());
+        const data = await response.json();
+        contentSha = data.content.sha;
+        setStatus("Đã lưu. GitHub Pages sẽ cập nhật sau một lúc.");
+      } catch (error) {
+        setStatus(error.message, true);
+      }
+    }
+
+    async function uploadMedia(path) {
+      try {
+        const token = requireToken();
+        const input = document.querySelector(`[data-upload="${path}"]`);
+        const file = input.files[0];
+        if (!file) throw new Error("Chọn ảnh hoặc video trước khi upload.");
+        const branch = document.getElementById("branch").value || "main";
+        const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-");
+        const repoPath = `assets/uploads/${Date.now()}-${safeName}`;
+        const body = {
+          message: `Upload ${file.name}`,
+          content: await fileToBase64(file),
+          branch
+        };
+        setStatus("Đang upload media...");
+        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${repoPath}`, {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" },
+          body: JSON.stringify(body)
+        });
+        if (!response.ok) throw new Error(await response.text());
+        setByPath(content, path, repoPath);
+        renderEditor();
+        setStatus("Đã upload media. Bấm lưu để cập nhật content.json.");
+      } catch (error) {
+        setStatus(error.message, true);
+      }
+    }
+
+    function downloadContent() {
+      const blob = new Blob([JSON.stringify(content, null, 2) + "\n"], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "content.json";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function requireToken() {
+      const token = document.getElementById("token").value.trim();
+      if (!token) throw new Error("Cần nhập GitHub token trước khi lưu.");
+      return token;
+    }
+
+    function toBase64(value) {
+      return btoa(unescape(encodeURIComponent(value)));
+    }
+
+    function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result).split(",")[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function escapeHtml(value = "") {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function setStatus(message, isError = false) {
+      const status = document.getElementById("status");
+      status.textContent = message;
+      status.classList.toggle("danger", isError);
+    }
+
+    document.getElementById("saveButton").addEventListener("click", saveContent);
+    document.getElementById("loadButton").addEventListener("click", loadContent);
+    document.getElementById("downloadButton").addEventListener("click", downloadContent);
+    loadContent().catch((error) => setStatus(error.message, true));
+  </script>
+</body>
+</html>

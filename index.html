@@ -10,16 +10,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Lora:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
     body {
       min-height: 100vh;
       overflow-x: hidden;
@@ -28,22 +20,9 @@
       font-family: "Be Vietnam Pro", Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    img {
-      display: block;
-      width: 100%;
-    }
-
-    .container {
-      width: min(1120px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-
+    a { color: inherit; text-decoration: none; }
+    img, video { display: block; width: 100%; }
+    .container { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
     .topbar {
       position: sticky;
       top: 0;
@@ -52,7 +31,6 @@
       border-bottom: 1px solid rgba(22, 20, 18, 0.08);
       backdrop-filter: blur(14px);
     }
-
     .nav {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
@@ -60,30 +38,10 @@
       min-height: 76px;
       gap: 24px;
     }
-
-    .nav-links,
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-    }
-
-    .nav-actions {
-      justify-content: flex-end;
-    }
-
-    .brand {
-      font-size: 23px;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      white-space: nowrap;
-    }
-
-    .nav a {
-      font-size: 14px;
-      font-weight: 700;
-    }
-
+    .nav-links, .nav-actions { display: flex; align-items: center; gap: 22px; }
+    .nav-actions { justify-content: flex-end; }
+    .brand { font-size: 23px; font-weight: 800; letter-spacing: 0.12em; white-space: nowrap; }
+    .nav a { font-size: 14px; font-weight: 700; }
     .pill {
       display: inline-flex;
       align-items: center;
@@ -96,12 +54,7 @@
       color: #fff;
       font-weight: 800;
     }
-
-    .pill.secondary {
-      background: #f0d281;
-      color: #161412;
-    }
-
+    .pill.secondary { background: #f0d281; color: #161412; }
     .hero {
       display: grid;
       grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
@@ -109,7 +62,6 @@
       gap: 56px;
       padding: 72px 0 84px;
     }
-
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -120,65 +72,22 @@
       font-weight: 800;
       text-transform: uppercase;
     }
-
-    .eyebrow::before {
-      width: 34px;
-      height: 2px;
-      background: #d99b27;
-      content: "";
-    }
-
-    h1,
-    h2,
-    h3 {
-      letter-spacing: 0;
-    }
-
-    h1 {
-      max-width: 700px;
-      font-size: clamp(48px, 7vw, 86px);
-      line-height: 0.98;
-      font-weight: 800;
-    }
-
-    .script {
-      font-family: "Lora", serif;
-      font-style: italic;
-      font-weight: 700;
-    }
-
-    .hero p,
-    .section-copy {
-      max-width: 620px;
-      color: #5f574d;
-      font-size: 18px;
-      line-height: 1.8;
-    }
-
-    .hero p {
-      margin: 26px 0 34px;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-    }
-
+    .eyebrow::before { width: 34px; height: 2px; background: #d99b27; content: ""; }
+    h1, h2, h3 { letter-spacing: 0; }
+    h1 { max-width: 700px; font-size: clamp(48px, 7vw, 86px); line-height: 0.98; font-weight: 800; }
+    .script { font-family: "Lora", serif; font-style: italic; font-weight: 700; }
+    .hero p, .section-copy { max-width: 620px; color: #5f574d; font-size: 18px; line-height: 1.8; }
+    .hero p { margin: 26px 0 34px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
     .hero-media {
       position: relative;
       min-height: 620px;
-      border-radius: 26px;
       overflow: hidden;
+      border-radius: 26px;
       background: #e8cf9a;
       box-shadow: 0 26px 80px rgba(38, 30, 17, 0.2);
     }
-
-    .hero-media img {
-      height: 620px;
-      object-fit: cover;
-    }
-
+    .hero-media img, .hero-media video { height: 620px; object-fit: cover; }
     .hero-note {
       position: absolute;
       right: 24px;
@@ -193,20 +102,10 @@
       font-weight: 700;
       line-height: 1.6;
     }
-
-    section {
-      padding: 88px 0;
-    }
-
-    .light {
-      background: #fff;
-    }
-
-    .dark {
-      background: #171513;
-      color: #fff;
-    }
-
+    section { padding: 88px 0; }
+    .light { background: #fff; }
+    .dark { background: #171513; color: #fff; }
+    .dark .section-copy { color: #d3c9bd; }
     .section-heading {
       display: grid;
       grid-template-columns: minmax(0, 0.8fr) minmax(280px, 0.55fr);
@@ -214,19 +113,8 @@
       gap: 40px;
       margin-bottom: 42px;
     }
-
-    h2 {
-      font-size: clamp(34px, 5vw, 58px);
-      line-height: 1.05;
-      font-weight: 800;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-    }
-
+    h2 { font-size: clamp(34px, 5vw, 58px); line-height: 1.05; font-weight: 800; }
+    .cards, .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
     .card {
       min-height: 260px;
       padding: 28px;
@@ -234,7 +122,6 @@
       border-radius: 8px;
       background: #fffaf1;
     }
-
     .card i {
       display: inline-flex;
       width: 54px;
@@ -246,71 +133,14 @@
       background: #f1c55f;
       font-size: 22px;
     }
-
-    .card h3 {
-      margin-bottom: 14px;
-      font-size: 23px;
-    }
-
-    .card p {
-      color: #645b51;
-      line-height: 1.75;
-    }
-
-    .course-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-
-    .course {
-      overflow: hidden;
-      border-radius: 8px;
-      background: #fff;
-      color: #161412;
-    }
-
-    .course img {
-      height: 245px;
-      object-fit: cover;
-    }
-
-    .course-content {
-      padding: 24px;
-    }
-
-    .course h3 {
-      margin-bottom: 12px;
-      font-size: 22px;
-      line-height: 1.35;
-    }
-
-    .course p {
-      color: #63594d;
-      line-height: 1.65;
-    }
-
-    .steps {
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 42px;
-      align-items: center;
-    }
-
-    .step-list {
-      display: grid;
-      gap: 16px;
-    }
-
-    .step {
-      display: flex;
-      gap: 16px;
-      align-items: flex-start;
-      padding: 20px;
-      border-radius: 8px;
-      background: #fff;
-    }
-
+    .card h3, .course h3 { margin-bottom: 14px; font-size: 23px; }
+    .card p, .course p, .step p { color: #645b51; line-height: 1.7; }
+    .course { overflow: hidden; border-radius: 8px; background: #fff; color: #161412; }
+    .course img, .course video { height: 245px; object-fit: cover; }
+    .course-content { padding: 24px; }
+    .steps { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 42px; align-items: center; }
+    .step-list { display: grid; gap: 16px; }
+    .step { display: flex; gap: 16px; align-items: flex-start; padding: 20px; border-radius: 8px; background: #fff; }
     .step span {
       display: inline-flex;
       width: 34px;
@@ -323,139 +153,41 @@
       color: #fff;
       font-weight: 800;
     }
-
-    .step strong {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .step p {
-      color: #645b51;
-      line-height: 1.6;
-    }
-
-    .cta {
-      padding: 72px 0;
-      background: #efc45b;
-    }
-
-    .cta-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 28px;
-    }
-
-    .cta h2 {
-      max-width: 720px;
-    }
-
-    footer {
-      padding: 58px 0;
-      background: #171513;
-      color: #fff;
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 1.5fr repeat(3, 1fr);
-      gap: 30px;
-    }
-
-    footer p,
-    footer li {
-      color: #c8c0b5;
-      line-height: 1.8;
-    }
-
-    footer ul {
-      list-style: none;
-    }
-
-    footer h3 {
-      margin-bottom: 16px;
-      font-size: 16px;
-    }
-
+    .step strong { display: block; margin-bottom: 5px; }
+    .cta { padding: 72px 0; background: #efc45b; }
+    .cta-row { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+    .cta h2 { max-width: 720px; }
+    footer { padding: 58px 0; background: #171513; color: #fff; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 30px; }
+    footer p, footer li { color: #c8c0b5; line-height: 1.8; }
+    footer ul { list-style: none; }
+    footer h3 { margin-bottom: 16px; font-size: 16px; }
     @media (max-width: 900px) {
-      .nav {
-        grid-template-columns: 1fr;
-        padding: 18px 0;
-        text-align: center;
-      }
-
-      .nav-links,
-      .nav-actions {
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-
-      .hero,
-      .section-heading,
-      .steps,
-      .cta-row,
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding-top: 48px;
-      }
-
-      .hero-media,
-      .hero-media img {
-        min-height: 420px;
-        height: 420px;
-      }
-
-      .cards,
-      .course-grid {
-        grid-template-columns: 1fr;
-      }
+      .nav { grid-template-columns: 1fr; padding: 18px 0; text-align: center; }
+      .nav-links, .nav-actions { justify-content: center; flex-wrap: wrap; }
+      .hero, .section-heading, .steps, .cta-row, .footer-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 48px; }
+      .hero-media, .hero-media img, .hero-media video { min-height: 420px; height: 420px; }
+      .cards, .course-grid { grid-template-columns: 1fr; }
     }
-
     @media (max-width: 560px) {
-      .container {
-        width: min(100% - 24px, 1120px);
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .brand {
-        font-size: 20px;
-      }
-
-      h1 {
-        font-size: 44px;
-      }
-
-      .hero-note {
-        right: 14px;
-        bottom: 14px;
-        left: 14px;
-        max-width: none;
-      }
-
-      section {
-        padding: 64px 0;
-      }
+      .container { width: min(100% - 24px, 1120px); }
+      .nav-links { display: none; }
+      .brand { font-size: 20px; }
+      h1 { font-size: 44px; }
+      .hero-note { right: 14px; bottom: 14px; left: 14px; max-width: none; }
+      section { padding: 64px 0; }
     }
   </style>
 </head>
 <body>
   <header class="topbar">
     <nav class="container nav" aria-label="Điều hướng chính">
-      <div class="nav-links">
-        <a href="#workshops">Workshop</a>
-        <a href="#method">Phương pháp</a>
-        <a href="#contact">Liên hệ</a>
-      </div>
-      <a class="brand" href="#">ME.MORI</a>
+      <div class="nav-links" id="navLinks"></div>
+      <a class="brand" id="brand" href="#">ME.MORI</a>
       <div class="nav-actions">
-        <a href="#courses">Khóa học</a>
-        <a class="pill" href="#contact">Đăng ký</a>
+        <a id="navCourses" href="#courses">Khóa học</a>
+        <a class="pill" id="navCta" href="#contact">Đăng ký</a>
       </div>
     </nav>
   </header>
@@ -463,150 +195,246 @@
   <main>
     <section class="container hero">
       <div>
-        <div class="eyebrow">ME.MORI Class</div>
-        <h1>Học nghệ thuật <span class="script">kể chuyện</span> bằng hình ảnh</h1>
-        <p>Workshop dành cho creator muốn xây dựng tư duy cinematic, quay dựng có cảm xúc và biến ý tưởng thành câu chuyện rõ ràng trên màn hình.</p>
+        <div class="eyebrow" id="heroEyebrow"></div>
+        <h1><span id="heroTitleStart"></span> <span class="script" id="heroTitleScript"></span> <span id="heroTitleEnd"></span></h1>
+        <p id="heroText"></p>
         <div class="hero-actions">
-          <a class="pill" href="#courses">Xem workshop</a>
-          <a class="pill secondary" href="#method">Cách học</a>
+          <a class="pill" id="heroPrimary"></a>
+          <a class="pill secondary" id="heroSecondary"></a>
         </div>
       </div>
       <div class="hero-media">
-        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop" alt="Nhóm học viên cùng trao đổi trong lớp học sáng tạo">
-        <div class="hero-note">Thực hành theo dự án thật, nhận phản hồi trực tiếp và hoàn thiện góc nhìn cá nhân.</div>
+        <div id="heroMedia"></div>
+        <div class="hero-note" id="heroNote"></div>
       </div>
     </section>
 
     <section id="workshops" class="light">
       <div class="container">
         <div class="section-heading">
-          <h2>Không gian học tập cho người làm hình ảnh hiện đại</h2>
-          <p class="section-copy">ME.MORI Class kết hợp điện ảnh, storytelling và kỹ năng sản xuất nội dung để giúp học viên biết mình muốn kể gì, vì sao câu chuyện đáng xem và nên thể hiện nó như thế nào.</p>
+          <h2 id="introTitle"></h2>
+          <p class="section-copy" id="introText"></p>
         </div>
-        <div class="cards">
-          <article class="card">
-            <i class="fa-solid fa-film" aria-hidden="true"></i>
-            <h3>Tư duy cinematic</h3>
-            <p>Hiểu nhịp dựng, khung hình, chuyển cảnh và cách tạo cảm xúc bằng lựa chọn thị giác.</p>
-          </article>
-          <article class="card">
-            <i class="fa-solid fa-camera" aria-hidden="true"></i>
-            <h3>Thực hành thật</h3>
-            <p>Làm bài tập tại lớp, quay dựng theo brief và nhận phản hồi để cải thiện từng phiên bản.</p>
-          </article>
-          <article class="card">
-            <i class="fa-solid fa-users" aria-hidden="true"></i>
-            <h3>Cộng đồng creator</h3>
-            <p>Kết nối với những người cùng quan tâm đến video, điện ảnh và kể chuyện bằng hình ảnh.</p>
-          </article>
-        </div>
+        <div class="cards" id="features"></div>
       </div>
     </section>
 
     <section id="courses" class="dark">
       <div class="container">
         <div class="section-heading">
-          <h2>Workshop <span class="script">nổi bật</span></h2>
-          <p class="section-copy">Các lớp được thiết kế ngắn gọn, tập trung vào kỹ năng có thể áp dụng ngay cho video cá nhân, thương hiệu hoặc dự án sáng tạo.</p>
+          <h2><span id="coursesTitle"></span> <span class="script" id="coursesTitleScript"></span></h2>
+          <p class="section-copy" id="coursesText"></p>
         </div>
-        <div class="course-grid">
-          <article class="course">
-            <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop" alt="Không gian workshop với sổ ghi chép và laptop">
-            <div class="course-content">
-              <h3>Storytelling cho video ngắn</h3>
-              <p>Xây cấu trúc câu chuyện, mở đầu cuốn hút và thông điệp dễ nhớ.</p>
-            </div>
-          </article>
-          <article class="course">
-            <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop" alt="Máy quay trong buổi thực hành video">
-            <div class="course-content">
-              <h3>Tư duy hình ảnh cinematic</h3>
-              <p>Rèn bố cục, ánh sáng, chuyển động máy và nhịp cảm xúc.</p>
-            </div>
-          </article>
-          <article class="course">
-            <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop" alt="Học viên đang học cùng laptop">
-            <div class="course-content">
-              <h3>Quay dựng cho creator</h3>
-              <p>Biến footage thô thành sản phẩm hoàn chỉnh, rõ nhịp và rõ ý.</p>
-            </div>
-          </article>
-        </div>
+        <div class="course-grid" id="courseGrid"></div>
       </div>
     </section>
 
     <section id="method">
       <div class="container steps">
         <div>
-          <div class="eyebrow">Phương pháp</div>
-          <h2>Bắt đầu đơn giản, học bằng dự án thật</h2>
-          <p class="section-copy">Mỗi buổi học tập trung vào một kỹ năng rõ ràng, có ví dụ, có thực hành và có feedback để học viên thấy tiến bộ ngay trong sản phẩm của mình.</p>
+          <div class="eyebrow" id="methodEyebrow"></div>
+          <h2 id="methodTitle"></h2>
+          <p class="section-copy" id="methodText"></p>
         </div>
-        <div class="step-list">
-          <div class="step">
-            <span>1</span>
-            <div>
-              <strong>Đăng ký workshop</strong>
-              <p>Chọn chủ đề phù hợp với mục tiêu và kinh nghiệm hiện tại.</p>
-            </div>
-          </div>
-          <div class="step">
-            <span>2</span>
-            <div>
-              <strong>Thực hành tại lớp</strong>
-              <p>Làm bài tập theo brief, nhận hướng dẫn và chỉnh sửa trực tiếp.</p>
-            </div>
-          </div>
-          <div class="step">
-            <span>3</span>
-            <div>
-              <strong>Hoàn thiện sản phẩm</strong>
-              <p>Nhận feedback để cải thiện câu chuyện, nhịp dựng và hình ảnh.</p>
-            </div>
-          </div>
-        </div>
+        <div class="step-list" id="steps"></div>
       </div>
     </section>
 
     <section id="contact" class="cta">
       <div class="container cta-row">
-        <h2>Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?</h2>
-        <a class="pill" href="mailto:hello@memori.class"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Liên hệ đăng ký</a>
+        <h2 id="ctaTitle"></h2>
+        <a class="pill" id="ctaLink"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span></span></a>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container footer-grid">
-      <div>
-        <div class="brand">ME.MORI</div>
-        <p>Không gian học tập dành cho người yêu điện ảnh, storytelling và nghệ thuật hình ảnh hiện đại.</p>
-      </div>
-      <div>
-        <h3>Khóa học</h3>
-        <ul>
-          <li>Video ngắn</li>
-          <li>Tư duy cinematic</li>
-          <li>Quay dựng creator</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Cộng đồng</h3>
-        <ul>
-          <li>Workshop</li>
-          <li>Feedback nhóm</li>
-          <li>Dự án học viên</li>
-        </ul>
-      </div>
-      <div>
-        <h3>Liên hệ</h3>
-        <ul>
-          <li>Instagram</li>
-          <li>Facebook</li>
-          <li>hello@memori.class</li>
-        </ul>
-      </div>
-    </div>
+    <div class="container footer-grid" id="footerGrid"></div>
   </footer>
+
+  <script>
+    const fallbackContent = {
+      site: {
+        title: "ME.MORI Class",
+        description: "ME.MORI Class - workshop kể chuyện bằng hình ảnh, quay dựng và tư duy cinematic cho creator.",
+        brand: "ME.MORI"
+      },
+      nav: [
+        { label: "Workshop", href: "#workshops" },
+        { label: "Phương pháp", href: "#method" },
+        { label: "Liên hệ", href: "#contact" }
+      ],
+      navCourses: { label: "Khóa học", href: "#courses" },
+      navCta: { label: "Đăng ký", href: "#contact" },
+      hero: {
+        eyebrow: "ME.MORI Class",
+        titleStart: "Học nghệ thuật",
+        titleScript: "kể chuyện",
+        titleEnd: "bằng hình ảnh",
+        text: "Workshop dành cho creator muốn xây dựng tư duy cinematic, quay dựng có cảm xúc và biến ý tưởng thành câu chuyện rõ ràng trên màn hình.",
+        primary: { label: "Xem workshop", href: "#courses" },
+        secondary: { label: "Cách học", href: "#method" },
+        mediaType: "image",
+        mediaUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop",
+        mediaAlt: "Nhóm học viên cùng trao đổi trong lớp học sáng tạo",
+        note: "Thực hành theo dự án thật, nhận phản hồi trực tiếp và hoàn thiện góc nhìn cá nhân."
+      },
+      intro: {
+        title: "Không gian học tập cho người làm hình ảnh hiện đại",
+        text: "ME.MORI Class kết hợp điện ảnh, storytelling và kỹ năng sản xuất nội dung để giúp học viên biết mình muốn kể gì, vì sao câu chuyện đáng xem và nên thể hiện nó như thế nào."
+      },
+      features: [
+        { icon: "fa-film", title: "Tư duy cinematic", text: "Hiểu nhịp dựng, khung hình, chuyển cảnh và cách tạo cảm xúc bằng lựa chọn thị giác." },
+        { icon: "fa-camera", title: "Thực hành thật", text: "Làm bài tập tại lớp, quay dựng theo brief và nhận phản hồi để cải thiện từng phiên bản." },
+        { icon: "fa-users", title: "Cộng đồng creator", text: "Kết nối với những người cùng quan tâm đến video, điện ảnh và kể chuyện bằng hình ảnh." }
+      ],
+      coursesSection: {
+        title: "Workshop",
+        titleScript: "nổi bật",
+        text: "Các lớp được thiết kế ngắn gọn, tập trung vào kỹ năng có thể áp dụng ngay cho video cá nhân, thương hiệu hoặc dự án sáng tạo."
+      },
+      courses: [
+        {
+          title: "Storytelling cho video ngắn",
+          text: "Xây cấu trúc câu chuyện, mở đầu cuốn hút và thông điệp dễ nhớ.",
+          mediaType: "image",
+          mediaUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop",
+          mediaAlt: "Không gian workshop với sổ ghi chép và laptop"
+        },
+        {
+          title: "Tư duy hình ảnh cinematic",
+          text: "Rèn bố cục, ánh sáng, chuyển động máy và nhịp cảm xúc.",
+          mediaType: "image",
+          mediaUrl: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop",
+          mediaAlt: "Máy quay trong buổi thực hành video"
+        },
+        {
+          title: "Quay dựng cho creator",
+          text: "Biến footage thô thành sản phẩm hoàn chỉnh, rõ nhịp và rõ ý.",
+          mediaType: "image",
+          mediaUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop",
+          mediaAlt: "Học viên đang học cùng laptop"
+        }
+      ],
+      method: {
+        eyebrow: "Phương pháp",
+        title: "Bắt đầu đơn giản, học bằng dự án thật",
+        text: "Mỗi buổi học tập trung vào một kỹ năng rõ ràng, có ví dụ, có thực hành và có feedback để học viên thấy tiến bộ ngay trong sản phẩm của mình."
+      },
+      steps: [
+        { title: "Đăng ký workshop", text: "Chọn chủ đề phù hợp với mục tiêu và kinh nghiệm hiện tại." },
+        { title: "Thực hành tại lớp", text: "Làm bài tập theo brief, nhận hướng dẫn và chỉnh sửa trực tiếp." },
+        { title: "Hoàn thiện sản phẩm", text: "Nhận feedback để cải thiện câu chuyện, nhịp dựng và hình ảnh." }
+      ],
+      cta: {
+        title: "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?",
+        label: "Liên hệ đăng ký",
+        href: "mailto:hello@memori.class"
+      },
+      footer: {
+        intro: "Không gian học tập dành cho người yêu điện ảnh, storytelling và nghệ thuật hình ảnh hiện đại.",
+        columns: [
+          { title: "Khóa học", items: ["Video ngắn", "Tư duy cinematic", "Quay dựng creator"] },
+          { title: "Cộng đồng", items: ["Workshop", "Feedback nhóm", "Dự án học viên"] },
+          { title: "Liên hệ", items: ["Instagram", "Facebook", "hello@memori.class"] }
+        ]
+      }
+    };
+
+    const setText = (id, value) => { document.getElementById(id).textContent = value || ""; };
+    const setLink = (id, item) => {
+      const el = document.getElementById(id);
+      el.href = item?.href || "#";
+      if (item?.label) el.textContent = item.label;
+    };
+    const mediaMarkup = (item, className = "") => {
+      const type = item?.mediaType === "video" ? "video" : "image";
+      const url = item?.mediaUrl || "";
+      const alt = item?.mediaAlt || "";
+      if (type === "video") {
+        return `<video class="${className}" src="${url}" aria-label="${escapeHtml(alt)}" autoplay muted loop playsinline controls></video>`;
+      }
+      return `<img class="${className}" src="${url}" alt="${escapeHtml(alt)}">`;
+    };
+    const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[char]));
+
+    function render(content) {
+      document.title = content.site.title;
+      document.querySelector('meta[name="description"]').content = content.site.description;
+      setText("brand", content.site.brand);
+      document.getElementById("navLinks").innerHTML = content.nav.map((item) => `<a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>`).join("");
+      setLink("navCourses", content.navCourses);
+      setLink("navCta", content.navCta);
+      setText("heroEyebrow", content.hero.eyebrow);
+      setText("heroTitleStart", content.hero.titleStart);
+      setText("heroTitleScript", content.hero.titleScript);
+      setText("heroTitleEnd", content.hero.titleEnd);
+      setText("heroText", content.hero.text);
+      setLink("heroPrimary", content.hero.primary);
+      setLink("heroSecondary", content.hero.secondary);
+      document.getElementById("heroMedia").innerHTML = mediaMarkup(content.hero);
+      setText("heroNote", content.hero.note);
+      setText("introTitle", content.intro.title);
+      setText("introText", content.intro.text);
+      document.getElementById("features").innerHTML = content.features.map((item) => `
+        <article class="card">
+          <i class="fa-solid ${escapeHtml(item.icon)}" aria-hidden="true"></i>
+          <h3>${escapeHtml(item.title)}</h3>
+          <p>${escapeHtml(item.text)}</p>
+        </article>
+      `).join("");
+      setText("coursesTitle", content.coursesSection.title);
+      setText("coursesTitleScript", content.coursesSection.titleScript);
+      setText("coursesText", content.coursesSection.text);
+      document.getElementById("courseGrid").innerHTML = content.courses.map((item) => `
+        <article class="course">
+          ${mediaMarkup(item)}
+          <div class="course-content">
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.text)}</p>
+          </div>
+        </article>
+      `).join("");
+      setText("methodEyebrow", content.method.eyebrow);
+      setText("methodTitle", content.method.title);
+      setText("methodText", content.method.text);
+      document.getElementById("steps").innerHTML = content.steps.map((item, index) => `
+        <div class="step">
+          <span>${index + 1}</span>
+          <div>
+            <strong>${escapeHtml(item.title)}</strong>
+            <p>${escapeHtml(item.text)}</p>
+          </div>
+        </div>
+      `).join("");
+      setText("ctaTitle", content.cta.title);
+      const ctaLink = document.getElementById("ctaLink");
+      ctaLink.href = content.cta.href;
+      ctaLink.querySelector("span").textContent = content.cta.label;
+      document.getElementById("footerGrid").innerHTML = `
+        <div>
+          <div class="brand">${escapeHtml(content.site.brand)}</div>
+          <p>${escapeHtml(content.footer.intro)}</p>
+        </div>
+        ${content.footer.columns.map((column) => `
+          <div>
+            <h3>${escapeHtml(column.title)}</h3>
+            <ul>${column.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+          </div>
+        `).join("")}
+      `;
+    }
+
+    fetch("content.json", { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : fallbackContent)
+      .then(render)
+      .catch(() => render(fallbackContent));
+  </script>
 </body>
 </html>
