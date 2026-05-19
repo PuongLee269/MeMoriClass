@@ -1,0 +1,150 @@
+{
+  "site": {
+    "title": "ME.MORI Class",
+    "description": "ME.MORI Class - workshop kể chuyện bằng hình ảnh, quay dựng và tư duy cinematic cho creator.",
+    "brand": "ME.MORI"
+  },
+  "nav": [
+    {
+      "label": "Workshop",
+      "href": "#workshops"
+    },
+    {
+      "label": "Phương pháp",
+      "href": "#method"
+    },
+    {
+      "label": "Liên hệ",
+      "href": "#contact"
+    }
+  ],
+  "navCourses": {
+    "label": "Khóa học",
+    "href": "#courses"
+  },
+  "navCta": {
+    "label": "Đăng ký",
+    "href": "#contact"
+  },
+  "hero": {
+    "eyebrow": "ME.MORI Class",
+    "titleStart": "Học nghệ thuật",
+    "titleScript": "kể chuyện",
+    "titleEnd": "bằng hình ảnh",
+    "text": "Workshop dành cho creator muốn xây dựng tư duy cinematic, quay dựng có cảm xúc và biến ý tưởng thành câu chuyện rõ ràng trên màn hình.",
+    "primary": {
+      "label": "Xem workshop",
+      "href": "#courses"
+    },
+    "secondary": {
+      "label": "Cách học",
+      "href": "#method"
+    },
+    "mediaType": "image",
+    "mediaUrl": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop",
+    "mediaAlt": "Nhóm học viên cùng trao đổi trong lớp học sáng tạo",
+    "note": "Thực hành theo dự án thật, nhận phản hồi trực tiếp và hoàn thiện góc nhìn cá nhân."
+  },
+  "intro": {
+    "title": "Không gian học tập cho người làm hình ảnh hiện đại",
+    "text": "ME.MORI Class kết hợp điện ảnh, storytelling và kỹ năng sản xuất nội dung để giúp học viên biết mình muốn kể gì, vì sao câu chuyện đáng xem và nên thể hiện nó như thế nào."
+  },
+  "features": [
+    {
+      "icon": "fa-film",
+      "title": "Tư duy cinematic",
+      "text": "Hiểu nhịp dựng, khung hình, chuyển cảnh và cách tạo cảm xúc bằng lựa chọn thị giác."
+    },
+    {
+      "icon": "fa-camera",
+      "title": "Thực hành thật",
+      "text": "Làm bài tập tại lớp, quay dựng theo brief và nhận phản hồi để cải thiện từng phiên bản."
+    },
+    {
+      "icon": "fa-users",
+      "title": "Cộng đồng creator",
+      "text": "Kết nối với những người cùng quan tâm đến video, điện ảnh và kể chuyện bằng hình ảnh."
+    }
+  ],
+  "coursesSection": {
+    "title": "Workshop",
+    "titleScript": "nổi bật",
+    "text": "Các lớp được thiết kế ngắn gọn, tập trung vào kỹ năng có thể áp dụng ngay cho video cá nhân, thương hiệu hoặc dự án sáng tạo."
+  },
+  "courses": [
+    {
+      "title": "Storytelling cho video ngắn",
+      "text": "Xây cấu trúc câu chuyện, mở đầu cuốn hút và thông điệp dễ nhớ.",
+      "mediaType": "image",
+      "mediaUrl": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop",
+      "mediaAlt": "Không gian workshop với sổ ghi chép và laptop"
+    },
+    {
+      "title": "Tư duy hình ảnh cinematic",
+      "text": "Rèn bố cục, ánh sáng, chuyển động máy và nhịp cảm xúc.",
+      "mediaType": "image",
+      "mediaUrl": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop",
+      "mediaAlt": "Máy quay trong buổi thực hành video"
+    },
+    {
+      "title": "Quay dựng cho creator",
+      "text": "Biến footage thô thành sản phẩm hoàn chỉnh, rõ nhịp và rõ ý.",
+      "mediaType": "image",
+      "mediaUrl": "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop",
+      "mediaAlt": "Học viên đang học cùng laptop"
+    }
+  ],
+  "method": {
+    "eyebrow": "Phương pháp",
+    "title": "Bắt đầu đơn giản, học bằng dự án thật",
+    "text": "Mỗi buổi học tập trung vào một kỹ năng rõ ràng, có ví dụ, có thực hành và có feedback để học viên thấy tiến bộ ngay trong sản phẩm của mình."
+  },
+  "steps": [
+    {
+      "title": "Đăng ký workshop",
+      "text": "Chọn chủ đề phù hợp với mục tiêu và kinh nghiệm hiện tại."
+    },
+    {
+      "title": "Thực hành tại lớp",
+      "text": "Làm bài tập theo brief, nhận hướng dẫn và chỉnh sửa trực tiếp."
+    },
+    {
+      "title": "Hoàn thiện sản phẩm",
+      "text": "Nhận feedback để cải thiện câu chuyện, nhịp dựng và hình ảnh."
+    }
+  ],
+  "cta": {
+    "title": "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?",
+    "label": "Liên hệ đăng ký",
+    "href": "mailto:hello@memori.class"
+  },
+  "footer": {
+    "intro": "Không gian học tập dành cho người yêu điện ảnh, storytelling và nghệ thuật hình ảnh hiện đại.",
+    "columns": [
+      {
+        "title": "Khóa học",
+        "items": [
+          "Video ngắn",
+          "Tư duy cinematic",
+          "Quay dựng creator"
+        ]
+      },
+      {
+        "title": "Cộng đồng",
+        "items": [
+          "Workshop",
+          "Feedback nhóm",
+          "Dự án học viên"
+        ]
+      },
+      {
+        "title": "Liên hệ",
+        "items": [
+          "Instagram",
+          "Facebook",
+          "hello@memori.class"
+        ]
+      }
+    ]
+  }
+}
