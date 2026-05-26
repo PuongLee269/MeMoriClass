@@ -1,571 +1,521 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ME.MORI Studio Admin</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | ME.MORI Class</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #f6f1e8;
-      color: #171513;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #20242d;
+      --text: #f6f1e8;
+      --muted: #aeb4c0;
+      --line: rgba(255, 255, 255, 0.12);
+      --accent: #efc45b;
+      --danger: #d85d5d;
+      font-family: "Segoe UI", Arial, sans-serif;
     }
-    header {
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); line-height: 1.5; }
+    
+    .topbar {
       position: sticky;
       top: 0;
-      z-index: 100;
-      border-bottom: 1px solid #ded4c5;
-      background: rgba(246, 241, 232, 0.96);
-      backdrop-filter: blur(10px);
-      padding: 16px 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(15, 17, 21, 0.95);
+      backdrop-filter: blur(16px);
+      padding: 15px 20px;
     }
-    .container { width: min(1200px, calc(100% - 32px)); margin: 0 auto; }
-    .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-    h1 { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; }
-    .help { color: #6a5f53; font-size: 13px; margin-top: 2px; }
-    
-    main { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 30px; padding: 24px 0 60px; }
-    aside { position: sticky; top: 90px; display: flex; flex-direction: column; gap: 6px; }
-    aside a {
-      display: block; padding: 12px 16px; border-radius: 8px; color: #5f5449;
-      font-weight: 700; font-size: 14px; text-decoration: none; transition: all 0.2s;
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 20px;
     }
-    aside a:hover, aside a.active { background: #171513; color: #fff; }
-    
-    section { display: none; padding: 28px; border: 1px solid #ded4c5; border-radius: 12px; background: #fff; }
-    section.active { display: block; }
-    section h2 { margin-bottom: 20px; font-size: 20px; border-bottom: 2px solid #f6f1e8; padding-bottom: 10px; }
-    
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    .full { grid-column: 1 / -1; }
-    label { display: grid; gap: 6px; color: #494037; font-size: 13px; font-weight: 700; }
-    input, textarea, select {
-      width: 100%; border: 1px solid #cfc4b4; border-radius: 8px; padding: 10px 14px;
-      background: #fffdf8; color: #171513; font-family: inherit; font-size: 14px; outline: none;
+
+    h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.05em; }
+    .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .actions { display: flex; gap: 10px; }
+
+    button, .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
     }
-    input:focus, textarea:focus, select:focus { border-color: #171513; box-shadow: 0 0 0 3px rgba(23, 21, 19, 0.08); }
-    textarea { min-height: 90px; resize: vertical; line-height: 1.5; }
-    
-    .item { margin-top: 16px; padding: 20px; border: 1px solid #e4dacd; border-radius: 8px; background: #fffaf1; }
-    .item h3 { margin-bottom: 12px; font-size: 14px; color: #7a6e61; text-transform: uppercase; }
-    
-    .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-    button, .button {
-      display: inline-flex; min-height: 42px; align-items: center; justify-content: center;
-      border: 0; border-radius: 999px; padding: 0 22px; background: #171513; color: #fff;
-      cursor: pointer; font-weight: 700; font-size: 14px; text-decoration: none;
+    button.primary { background: var(--accent); color: #161412; border-color: var(--accent); }
+    button.danger { color: #ffd6d6; }
+
+    main { max-width: 1200px; margin: 30px auto 60px; padding: 0 20px; }
+    .layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px; }
+
+    .tabs {
+      position: sticky;
+      top: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
     }
-    button.secondary, .button.secondary { background: #e9d8aa; color: #171513; }
-    .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; }
-    .file-input-wrapper input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; font-size: 100px; cursor: pointer; }
+    .tab { justify-content: flex-start; width: 100%; background: transparent; color: var(--muted); border: 0; }
+    .tab.active { background: var(--panel-2); color: var(--text); }
+
+    .section { display: none; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); overflow: hidden; }
+    .section.active { display: block; }
+    .section-head { padding: 20px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.02); }
+    .section-head h2 { font-size: 18px; }
+    .section-head p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding: 20px; }
+    .field { display: grid; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+    .field-group { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 14px; border: 1px dashed var(--line); border-radius: 8px; margin-bottom: 5px; }
+    .field-group h4 { grid-column: 1 / -1; font-size: 14px; color: var(--accent); }
     
-    .status-bar { background: #e6dfd3; padding: 10px 0; font-size: 13px; font-weight: 600; text-align: center; color: #494037; }
-    @media (max-width: 850px) {
-      main { grid-template-columns: 1fr; }
-      aside { position: static; flex-direction: row; flex-wrap: wrap; }
-      .grid { grid-template-columns: 1fr; }
+    label { color: var(--muted); font-size: 13px; font-weight: 600; }
+    input, select, textarea {
+      width: 100%; min-height: 42px; padding: 10px 14px;
+      border: 1px solid var(--line); border-radius: 8px;
+      background: #0f1115; color: var(--text); font: inherit; outline: none;
     }
+    textarea { min-height: 100px; resize: vertical; }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+
+    .toast {
+      position: fixed; right: 20px; bottom: 20px; z-index: 100; max-width: 360px; padding: 14px 18px;
+      border: 1px solid var(--accent); border-radius: 8px; background: #1f1a10; color: #fff;
+      opacity: 0; transform: translateY(10px); transition: all 0.2s ease; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* LOGIN GATE */
+    #loginGate { position: fixed; inset: 0; background: #0f1115; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="container bar">
+  <div id="loginGate">
+    <h2 style="font-size: 24px; letter-spacing: 0.05em;">ME.MORI Class Admin</h2>
+    <p style="color: var(--muted); font-size: 14px;">Vui lòng nhập mật khẩu quản trị viên để tiếp tục</p>
+    <input type="password" id="gatePass" placeholder="Nhập mật khẩu" style="max-width: 280px; text-align: center;">
+    <button onclick="validateGate()" class="primary" style="padding: 0 40px;">Đăng nhập</button>
+    <p id="gateError" style="color: var(--danger); font-size: 13px; display: none;">Mật khẩu không chính xác!</p>
+  </div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
       <div>
-        <h1>ME.MORI Studio Admin</h1>
-        <p class="help">Không dùng cơ sở dữ liệu cồng kềnh. Xuất thẳng ra file Website chạy ngay.</p>
+        <h1>ME.MORI Admin Panel</h1>
+        <p class="sub">Đồng bộ nội dung trực tiếp lên hệ thống tệp đám mây GitHub.</p>
       </div>
       <div class="actions">
-        <div class="file-input-wrapper">
-          <button class="secondary">Nhập file index.html cũ để sửa</button>
-          <input type="file" id="importFile" accept=".html">
-        </div>
-        <button id="downloadButton" style="background: #d99b27;">Xuất file index.html MỚI</button>
+        <button class="primary" id="saveBtn" type="button">Lưu lên GitHub</button>
+        <a class="btn" href="index.html" target="_blank">Mở trang chính</a>
+        <button class="danger" id="resetBtn" type="button">Mặc định gốc</button>
       </div>
     </div>
-  </header>
-
-  <div class="status-bar" id="statusBar">Sẵn sàng khởi tạo nội dung mới.</div>
-
-  <main class="container">
-    <aside id="sidebar">
-      <a href="#site" class="active">Cài đặt & Font chữ</a>
-      <a href="#hero">Khung đầu (Hero)</a>
-      <a href="#intro">Giới thiệu</a>
-      <a href="#features">Điểm nổi bật</a>
-      <a href="#courses">Lớp học / Workshop</a>
-      <a href="#method">Phương pháp</a>
-      <a href="#cta">Liên hệ</a>
-      <a href="#footer">Chân trang (Footer)</a>
-    </aside>
-
-    <div>
-      <form id="editor"></form>
-    </div>
-  </main>
-
-  <script>
-    const STORAGE_KEY = "memori_standalone_draft";
-    
-    // Khởi tạo bộ dữ liệu mặc định ban đầu của ME.MORI Class
-    let content = {
-      site: { title: "ME.MORI Class", description: "ME.MORI Class - workshop kể chuyện bằng hình ảnh, quay dựng và tư duy cinematic cho creator.", brand: "ME.MORI", fontHeading: "Be Vietnam Pro", fontBody: "Be Vietnam Pro" },
-      nav: [{ label: "Workshop", href: "#workshops" }, { label: "Phương pháp", href: "#method" }, { label: "Liên hệ", href: "#contact" }],
-      navCourses: { label: "Khóa học", href: "#courses" }, navCta: { label: "Đăng ký", href: "#contact" },
-      hero: { eyebrow: "ME.MORI Class", titleStart: "Học nghệ thuật", titleScript: "kể chuyện", titleEnd: "bằng hình ảnh", text: "Workshop dành cho creator muốn xây dựng tư duy cinematic, quay dựng có cảm xúc và biến ý tưởng thành câu chuyện rõ ràng trên màn hình.", primary: { label: "Xem workshop", href: "#courses" }, secondary: { label: "Cách học", href: "#method" }, mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop", mediaAlt: "Nhóm học viên cùng trao đổi trong lớp học sáng tạo", note: "Thực hành theo dự án thật, nhận phản hồi trực tiếp và hoàn thiện góc nhìn cá nhân." },
-      intro: { title: "Không gian học tập cho người làm hình ảnh hiện đại", text: "ME.MORI Class kết hợp điện ảnh, storytelling và kỹ năng sản xuất nội dung để giúp học viên biết mình muốn kể gì, vì sao câu chuyện đáng xem và nên thể hiện nó như thế nào." },
-      features: [
-        { icon: "fa-film", title: "Tư duy cinematic", text: "Hiểu nhịp dựng, khung hình, chuyển cảnh và cách tạo cảm xúc bằng lựa chọn thị giác." },
-        { icon: "fa-camera", title: "Thực hành thật", text: "Làm bài tập tại lớp, quay dựng theo brief và nhận phản hồi để cải thiện từng phiên bản." },
-        { icon: "fa-users", title: "Cộng đồng creator", text: "Kết nối với những người cùng quan tâm đến video, điện ảnh và kể chuyện bằng hình ảnh." }
-      ],
-      coursesSection: { title: "Workshop", titleScript: "nổi bật", text: "Các lớp được thiết kế ngắn gọn, tập trung vào kỹ năng có thể áp dụng ngay cho video cá nhân, thương hiệu hoặc dự án sáng tạo." },
-      courses: [
-        { title: "Storytelling cho video ngắn", text: "Xây cấu trúc câu chuyện, mở đầu cuốn hút và thông điệp dễ nhớ.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop", mediaAlt: "Không gian workshop với sổ ghi chép và laptop" },
-        { title: "Tư duy hình ảnh cinematic", text: "Rèn bố cục, ánh sáng, chuyển động máy và nhịp cảm xúc.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop", mediaAlt: "Máy quay trong buổi thực hành video" },
-        { title: "Quay dựng cho creator", text: "Biến footage thô thành sản phẩm hoàn chỉnh, rõ nhịp và rõ ý.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop", mediaAlt: "Học viên đang học cùng laptop" }
-      ],
-      method: { eyebrow: "Phương pháp", title: "Bắt đầu đơn giản, học bằng dự án thật", text: "Mỗi buổi học tập trung vào một kỹ năng rõ ràng, có ví dụ, có thực hành và có feedback để học viên thấy tiến bộ ngay trong sản phẩm của mình." },
-      steps: [
-        { title: "Đăng ký workshop", text: "Chọn chủ đề phù hợp với mục tiêu và kinh nghiệm hiện tại." },
-        { title: "Thực hành tại lớp", text: "Làm bài tập theo brief, nhận hướng dẫn và chỉnh sửa trực tiếp." },
-        { title: "Hoàn thiện sản phẩm", text: "Nhận feedback để cải thiện câu chuyện, nhịp dựng và hình ảnh." }
-      ],
-      cta: { title: "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?", label: "Liên hệ đăng ký", href: "mailto:hello@memori.class" },
-      footer: {
-        intro: "Không gian học tập dành cho người yêu điện ảnh, storytelling và nghệ thuật hình ảnh hiện đại.",
-        columns: [
-          { title: "Khóa học", items: ["Video ngắn", "Tư duy cinematic", "Quay dựng creator"] },
-          { title: "Cộng đồng", items: ["Workshop", "Feedback nhóm", "Dự án học viên"] },
-          { title: "Liên hệ", items: ["Instagram", "Facebook", "hello@memori.class"] }
-        ]
-      }
-    };
-
-    const fields = [
-      ["site", "Cài đặt chung & Đổi Font chữ", [
-        ["site.title", "Tiêu đề Tab trình duyệt"],
-        ["site.brand", "Tên thương hiệu"],
-        ["site.fontHeading", "Font chữ cho Tiêu đề (Heading)", "select", ["Be Vietnam Pro", "Lora", "Playfair Display", "Montserrat", "Inter", "Arial", "Courier New"]],
-        ["site.fontBody", "Font chữ cho Văn bản (Body)", "select", ["Be Vietnam Pro", "Lora", "Inter", "Arial", "Georgia"]],
-        ["site.description", "Mô tả SEO", "textarea"],
-        ["nav.0.label", "Menu 1"], ["nav.0.href", "Link menu 1"],
-        ["nav.1.label", "Menu 2"], ["nav.1.href", "Link menu 2"],
-        ["nav.2.label", "Menu 3"], ["nav.2.href", "Link menu 3"],
-        ["navCourses.label", "Nút khóa học"], ["navCourses.href", "Link nút khóa học"],
-        ["navCta.label", "Nút đăng ký"], ["navCta.href", "Link nút đăng ký"]
-      ]],
-      ["hero", "Khung giới thiệu đầu trang (Hero)", [
-        ["hero.eyebrow", "Dòng chữ nhỏ"],
-        ["hero.titleStart", "Tiêu đề đầu"],
-        ["hero.titleScript", "Tiêu đề nét viết tay (Nhấn mạnh)"],
-        ["hero.titleEnd", "Tiêu đề cuối"],
-        ["hero.text", "Mô tả", "textarea"],
-        ["hero.primary.label", "Nút chính"], ["hero.primary.href", "Link nút chính"],
-        ["hero.secondary.label", "Nút phụ"], ["hero.secondary.href", "Link nút phụ"],
-        ["hero.mediaType", "Loại media", "select", ["image", "video"]],
-        ["hero.mediaUrl", "Đường dẫn URL ảnh/video"],
-        ["hero.mediaAlt", "Mô tả ảnh/video"],
-        ["hero.note", "Ghi chú nổi trên ảnh", "textarea"]
-      ]],
-      ["intro", "Phân đoạn Giới thiệu", [
-        ["intro.title", "Tiêu đề chính"],
-        ["intro.text", "Nội dung giới thiệu", "textarea"]
-      ]],
-      ["features", "Điểm nổi bật", []],
-      ["courses", "Lớp học / Workshop", [
-        ["coursesSection.title", "Tiêu đề"],
-        ["coursesSection.titleScript", "Tiêu đề viết tay"],
-        ["coursesSection.text", "Mô tả ngắn", "textarea"]
-      ]],
-      ["method", "Phương pháp học", [
-        ["method.eyebrow", "Dòng dẫn nhỏ"],
-        ["method.title", "Tiêu đề"],
-        ["method.text", "Mô tả chi tiết", "textarea"]
-      ]],
-      ["cta", "Nút kêu gọi liên hệ", [
-        ["cta.title", "Tiêu đề khối liên hệ"],
-        ["cta.label", "Chữ trên nút"],
-        ["cta.href", "Đường dẫn liên kết"]
-      ]],
-      ["footer", "Chân trang (Footer)", [
-        ["footer.intro", "Lời giới thiệu chân trang", "textarea"]
-      ]]
-    ];
-
-    function getByPath(target, path) { return path.split(".").reduce((curr, key) => curr?.[key], target); }
-    function setByPath(target, path, value) {
-      const parts = path.split("."); const last = parts.pop();
-      const parent = parts.reduce((curr, key) => curr[key], target);
-      if (parent) parent[last] = value;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
-    }
-
-    function inputFor(path, label, type = "text", options = []) {
-      const value = getByPath(content, path) ?? "";
-      if (type === "textarea") return `<label class="full">${label}<textarea data-path="${path}">${escapeHtml(value)}</textarea></label>`;
-      if (type === "select") return `<label>${label}<select data-path="${path}">${options.map(opt => `<option value="${opt}" ${value === opt ? "selected" : ""}>${opt}</option>`).join("")}</select></label>`;
-      return `<label>${label}<input data-path="${path}" value="${escapeHtml(value)}"></label>`;
-    }
-
-    function renderEditor() {
-      document.getElementById("editor").innerHTML = fields.map(([id, title, secFields]) => `
-        <section id="${id}">
-          <h2>${title}</h2>
-          <div class="grid">${secFields.map(field => inputFor(...field)).join("")}</div>
-          ${renderDynamicSection(id)}
-        </section>
-      `).join("");
-      bindInputs();
-      initTabs();
-    }
-
-    function renderDynamicSection(id) {
-      if (id === "features") {
-        return content.features.map((item, i) => `
-          <div class="item"><h3>Điểm nổi bật ${i + 1}</h3>
-            <div class="grid">
-              ${inputFor(`features.${i}.icon`, "Icon FontAwesome")}
-              ${inputFor(`features.${i}.title`, "Tiêu đề")}
-              ${inputFor(`features.${i}.text`, "Nội dung mô tả", "textarea")}
-            </div>
-          </div>`).join("");
-      }
-      if (id === "courses") {
-        return content.courses.map((item, i) => `
-          <div class="item"><h3>Workshop ${i + 1}</h3>
-            <div class="grid">
-              ${inputFor(`courses.${i}.title`, "Tên lớp")}
-              ${inputFor(`courses.${i}.mediaType`, "Định dạng", "select", ["image", "video"])}
-              ${inputFor(`courses.${i}.text`, "Tóm tắt ngắn", "textarea")}
-              <div class="full">${inputFor(`courses.${i}.mediaUrl`, "URL hình ảnh/video")}</div>
-              <div class="full">${inputFor(`courses.${i}.mediaAlt`, "Mô tả nội dung hình ảnh")}</div>
-            </div>
-          </div>`).join("");
-      }
-      if (id === "method") {
-        return content.steps.map((item, i) => `
-          <div class="item"><h3>Bước giảng dạy ${i + 1}</h3>
-            <div class="grid">
-              ${inputFor(`steps.${i}.title`, "Tiêu đề bước")}
-              ${inputFor(`steps.${i}.text`, "Nội dung chi tiết", "textarea")}
-            </div>
-          </div>`).join("");
-      }
-      if (id === "footer") {
-        return content.footer.columns.map((col, cIdx) => `
-          <div class="item"><h3>Cột Footer ${cIdx + 1}</h3>
-            <div class="grid">
-              ${inputFor(`footer.columns.${cIdx}.title`, "Tiêu đề cột")}
-              ${col.items.map((item, itemIdx) => inputFor(`footer.columns.${cIdx}.items.${itemIdx}`, `Dòng chữ ${itemIdx + 1}`)).join("")}
-            </div>
-          </div>`).join("");
-      }
-      return "";
-    }
-
-    function bindInputs() {
-      document.querySelectorAll("[data-path]").forEach(input => {
-        input.addEventListener("input", () => setByPath(content, input.dataset.path, input.value));
-      });
-    }
-
-    function initTabs() {
-      const links = document.querySelectorAll("#sidebar a");
-      const sections = document.querySelectorAll("#editor section");
-      function switchTab(targetId) {
-        links.forEach(l => l.classList.toggle("active", l.getAttribute("href") === targetId));
-        sections.forEach(s => s.classList.toggle("active", "#" + s.getAttribute("id") === targetId));
-      }
-      links.forEach(link => {
-        link.addEventListener("click", (e) => { e.preventDefault(); const id = link.getAttribute("href"); switchTab(id); window.location.hash = id; });
-      });
-      switchTab(window.location.hash || "#site");
-    }
-
-    // Đọc ngược dữ liệu từ file index.html cũ tải lên để tiếp tục chỉnh sửa
-    document.getElementById("importFile").addEventListener("change", (e) => {
-      const file = e.target.files[0]; if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        try {
-          const text = evt.target.result;
-          const match = text.match(/const\s+DATABASE_INTERNAL\s*=\s*({[\s\S]*?});/);
-          if (match) {
-            content = JSON.parse(match[1]);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
-            renderEditor();
-            setStatusBar("Đã nạp file index.html cũ thành công! Bạn có thể sửa tiếp ngay.");
-          } else {
-            setStatusBar("Lỗi: Không tìm thấy nhân dữ liệu hợp lệ trong file HTML này.", true);
-          }
-        } catch { setStatusBar("Lỗi xử lý tệp tin HTML.", true); }
-      };
-      reader.readAsText(file);
-    });
-
-    // Hàm xuất nội dung đóng gói toàn vẹn trang index.html mới hoàn toàn độc lập
-    document.getElementById("downloadButton").addEventListener("click", () => {
-      const fontHeading = content.site.fontHeading || "Be Vietnam Pro";
-      const fontBody = content.site.fontBody || "Be Vietnam Pro";
-      
-      const fontHeadingUrl = fontHeading.replace(/\s+/g, "+");
-      const fontBodyUrl = fontBody.replace(/\s+/g, "+");
-
-      // Khung mẫu xương sống Website gốc của bạn được giữ nguyên cấu trúc CSS và layout
-      const outputHtml = `<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="${escapeHtml(content.site.description)}">
-  <title>${escapeHtml(content.site.title)}</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=${fontHeadingUrl}:wght@400;500;600;700;800&family=${fontBodyUrl}:wght@400;500;600;700&family=Lora:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh; overflow-x: hidden; background: #fff8ec; color: #161412;
-      font-family: "${fontBody}", Arial, sans-serif; -webkit-font-smoothing: antialiased;
-    }
-    h1, h2, h3, .brand { font-family: "${fontHeading}", Arial, sans-serif; }
-    a { color: inherit; text-decoration: none; }
-    img, video { display: block; width: 100%; }
-    .container { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
-    .topbar {
-      position: sticky; top: 0; z-index: 10; background: rgba(255, 248, 236, 0.92);
-      border-bottom: 1px solid rgba(22, 20, 18, 0.08); backdrop-filter: blur(14px);
-    }
-    .nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 76px; gap: 24px; }
-    .nav-links, .nav-actions { display: flex; align-items: center; gap: 22px; }
-    .nav-actions { justify-content: flex-end; }
-    .brand { font-size: 23px; font-weight: 800; letter-spacing: 0.12em; white-space: nowrap; }
-    .nav a { font-size: 14px; font-weight: 700; }
-    .pill {
-      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-      min-height: 46px; padding: 0 22px; border-radius: 999px; background: #161412; color: #fff; font-weight: 800;
-    }
-    .pill.secondary { background: #f0d281; color: #161412; }
-    .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); align-items: center; gap: 56px; padding: 72px 0 84px; }
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px;
-      color: #7a5222; font-size: 13px; font-weight: 800; text-transform: uppercase;
-    }
-    .eyebrow::before { width: 34px; height: 2px; background: #d99b27; content: ""; }
-    h1, h2, h3 { letter-spacing: 0; }
-    h1 { max-width: 700px; font-size: clamp(48px, 7vw, 86px); line-height: 0.98; font-weight: 800; }
-    .script { font-family: "Lora", serif !important; font-style: italic; font-weight: 700; }
-    .hero p, .section-copy { max-width: 620px; color: #5f574d; font-size: 18px; line-height: 1.8; }
-    .hero p { margin: 26px 0 34px; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
-    .hero-media {
-      position: relative; min-height: 620px; overflow: hidden; border-radius: 26px;
-      background: #e8cf9a; box-shadow: 0 26px 80px rgba(38, 30, 17, 0.2);
-    }
-    .hero-media img, .hero-media video { height: 620px; object-fit: cover; }
-    .hero-note {
-      position: absolute; right: 24px; bottom: 24px; max-width: 280px; padding: 20px; border-radius: 18px;
-      background: rgba(255, 255, 255, 0.9); box-shadow: 0 18px 50px rgba(22, 20, 18, 0.18);
-      color: #2a241d; font-size: 14px; font-weight: 700; line-height: 1.6;
-    }
-    section { padding: 88px 0; }
-    .light { background: #fff; }
-    .dark { background: #171513; color: #fff; }
-    .dark .section-copy { color: #d3c9bd; }
-    .section-heading { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(280px, 0.55fr); align-items: end; gap: 40px; margin-bottom: 42px; }
-    h2 { font-size: clamp(34px, 5vw, 58px); line-height: 1.05; font-weight: 800; }
-    .cards, .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-    .card { min-height: 260px; padding: 28px; border: 1px solid rgba(22, 20, 18, 0.08); border-radius: 8px; background: #fffaf1; }
-    .card i {
-      display: inline-flex; width: 54px; height: 54px; align-items: center; justify-content: center;
-      margin-bottom: 22px; border-radius: 50%; background: #f1c55f; font-size: 22px;
-    }
-    .card h3, .course h3 { margin-bottom: 14px; font-size: 23px; }
-    .card p, .course p, .step p { color: #645b51; line-height: 1.7; }
-    .course { overflow: hidden; border-radius: 8px; background: #fff; color: #161412; }
-    .course img, .course video { height: 245px; object-fit: cover; }
-    .course-content { padding: 24px; }
-    .steps { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 42px; align-items: center; }
-    .step-list { display: grid; gap: 16px; }
-    .step { display: flex; gap: 16px; align-items: flex-start; padding: 20px; border-radius: 8px; background: #fff; }
-    .step span {
-      display: inline-flex; width: 34px; height: 34px; flex: 0 0 34px; align-items: center; justify-content: center;
-      border-radius: 50%; background: #171513; color: #fff; font-weight: 800;
-    }
-    .step strong { display: block; margin-bottom: 5px; }
-    .cta { padding: 72px 0; background: #efc45b; }
-    .cta-row { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
-    .cta h2 { max-width: 720px; }
-    footer { padding: 58px 0; background: #171513; color: #fff; }
-    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 30px; }
-    footer p, footer li { color: #c8c0b5; line-height: 1.8; }
-    footer ul { list-style: none; }
-    footer h3 { margin-bottom: 16px; font-size: 16px; }
-    @media (max-width: 900px) {
-      .nav { grid-template-columns: 1fr; padding: 18px 0; text-align: center; }
-      .nav-links, .nav-actions { justify-content: center; flex-wrap: wrap; }
-      .hero, .section-heading, .steps, .cta-row, .footer-grid { grid-template-columns: 1fr; }
-      .hero { padding-top: 48px; }
-      .hero-media, .hero-media img, .hero-media video { min-height: 420px; height: 420px; }
-      .cards, .course-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 560px) {
-      .container { width: min(100% - 24px, 1120px); }
-      .nav-links { display: none; }
-      .brand { font-size: 20px; }
-      h1 { font-size: 44px; }
-      .hero-note { right: 14px; bottom: 14px; left: 14px; max-width: none; }
-      section { padding: 64px 0; }
-    }
-  </style>
-</head>
-<body>
-  <header class="topbar">
-    <nav class="container nav" aria-label="Điều hướng chính">
-      <div class="nav-links" id="navLinks"></div>
-      <a class="brand" id="brand" href="#"></a>
-      <div class="nav-actions">
-        <a id="navCourses" href="#courses"></a>
-        <a class="pill" id="navCta" href="#contact"></a>
-      </div>
-    </nav>
   </header>
 
   <main>
-    <section class="container hero">
-      <div>
-        <div class="eyebrow" id="heroEyebrow"></div>
-        <h1><span id="heroTitleStart"></span> <span class="script" id="heroTitleScript"></span> <span id="heroTitleEnd"></span></h1>
-        <p id="heroText"></p>
-        <div class="hero-actions">
-          <a class="pill" id="heroPrimary"></a>
-          <a class="pill secondary" id="heroSecondary"></a>
-        </div>
-      </div>
-      <div class="hero-media">
-        <div id="heroMedia"></div>
-        <div class="hero-note" id="heroNote"></div>
-      </div>
-    </section>
+    <div class="layout">
+      <nav class="tabs" aria-label="Menu quản lý">
+        <button class="tab active" type="button" data-tab="config">Cấu hình chung</button>
+        <button class="tab" type="button" data-tab="hero">Khu vực Hero</button>
+        <button class="tab" type="button" data-tab="intro">Giới thiệu & Đặc điểm</button>
+        <button class="tab" type="button" data-tab="courses">Danh sách Lớp học</button>
+        <button class="tab" type="button" data-tab="method">Phương pháp & CTA</button>
+        <button class="tab" type="button" data-tab="footer">Chân trang (Footer)</button>
+      </nav>
 
-    <section id="workshops" class="light">
-      <div class="container">
-        <div class="section-heading">
-          <h2 id="introTitle"></h2>
-          <p class="section-copy" id="introText"></p>
-        </div>
-        <div class="cards" id="features"></div>
-      </div>
-    </section>
+      <form id="settingsForm">
+        <section class="section active" data-section="config">
+          <div class="section-head"><h2>Cấu hình chung</h2><p>Tên định danh website và mô tả SEO cơ bản.</p></div>
+          <div class="grid">
+            <div class="field"><label>Tiêu đề Website (Thẻ Title)</label><input name="site_title" /></div>
+            <div class="field"><label>Tên thương hiệu (Brand)</label><input name="site_brand" /></div>
+            <div class="field full"><label>Mô tả Website (SEO Description)</label><textarea name="site_description"></textarea></div>
+          </div>
+        </section>
 
-    <section id="courses" class="dark">
-      <div class="container">
-        <div class="section-heading">
-          <h2><span id="coursesTitle"></span> <span class="script" id="coursesTitleScript"></span></h2>
-          <p class="section-copy" id="coursesText"></p>
-        </div>
-        <div class="course-grid" id="courseGrid"></div>
-      </div>
-    </section>
+        <section class="section" data-section="hero">
+          <div class="section-head"><h2>Khu vực mở đầu (Hero Section)</h2><p>Điều chỉnh tiêu đề lớn, văn bản nút bấm và hình ảnh chính đầu trang.</p></div>
+          <div class="grid">
+            <div class="field"><label>Eyebrow (Dòng chữ nhỏ trên tiêu đề)</label><input name="hero_eyebrow" /></div>
+            <div class="field"><label>Tiêu đề chính - Đoạn đầu</label><input name="hero_titleStart" /></div>
+            <div class="field"><label>Tiêu đề chính - Chữ nghệ thuật (In nghiêng)</label><input name="hero_titleScript" /></div>
+            <div class="field"><label>Tiêu đề chính - Đoạn cuối</label><input name="hero_titleEnd" /></div>
+            <div class="field full"><label>Mô tả chi tiết Hero</label><textarea name="hero_text"></textarea></div>
+            
+            <div class="field-group">
+              <h4>Nút hành động chính (Primary Button)</h4>
+              <div class="field"><label>Tên nút bấm</label><input name="hero_primary_label" /></div>
+              <div class="field"><label>Đường dẫn link (Href)</label><input name="hero_primary_href" /></div>
+            </div>
+            
+            <div class="field-group">
+              <h4>Nút hành động phụ (Secondary Button)</h4>
+              <div class="field"><label>Tên nút bấm</label><input name="hero_secondary_label" /></div>
+              <div class="field"><label>Đường dẫn link (Href)</label><input name="hero_secondary_href" /></div>
+            </div>
 
-    <section id="method">
-      <div class="container steps">
-        <div>
-          <div class="eyebrow" id="methodEyebrow"></div>
-          <h2 id="methodTitle"></h2>
-          <p class="section-copy" id="methodText"></p>
-        </div>
-        <div class="step-list" id="steps"></div>
-      </div>
-    </section>
+            <div class="field-group">
+              <h4>Hệ thống Media của Hero</h4>
+              <div class="field"><label>Loại Media</label><select name="hero_mediaType"><option value="image">Hình ảnh (Image)</option><option value="video">Video tệp (.mp4)</option></select></div>
+              <div class="field"><label>Đường dẫn link ảnh/video</label><input name="hero_mediaUrl" /></div>
+              <div class="field full"><label>Mô tả thay thế cho ảnh (Alt text)</label><input name="hero_mediaAlt" /></div>
+            </div>
+            <div class="field full"><label>Nội dung khung ghi chú (Hero Note Card)</label><textarea name="hero_note"></textarea></div>
+          </div>
+        </section>
 
-    <section id="contact" class="cta">
-      <div class="container cta-row">
-        <h2 id="ctaTitle"></h2>
-        <a class="pill" id="ctaLink"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span></span></a>
-      </div>
-    </section>
+        <section class="section" data-section="intro">
+          <div class="section-head"><h2>Giới thiệu & Đặc điểm</h2><p>Chỉnh sửa khối văn bản tổng quan và 3 thẻ tính năng cốt lõi.</p></div>
+          <div class="grid">
+            <div class="field full"><label>Tiêu đề phần Giới thiệu</label><input name="intro_title" /></div>
+            <div class="field full"><label>Nội dung mô tả Giới thiệu</label><textarea name="intro_text"></textarea></div>
+            
+            <div class="field-group">
+              <h4>Thẻ tính năng 01</h4>
+              <div class="field"><label>Mã icon FontAwesome</label><input name="feature0_icon" placeholder="fa-film" /></div>
+              <div class="field"><label>Tiêu đề tính năng</label><input name="feature0_title" /></div>
+              <div class="field full"><label>Mô tả tính năng</label><textarea name="feature0_text"></textarea></div>
+            </div>
+            <div class="field-group">
+              <h4>Thẻ tính năng 02</h4>
+              <div class="field"><label>Mã icon FontAwesome</label><input name="feature1_icon" placeholder="fa-camera" /></div>
+              <div class="field"><label>Tiêu đề tính năng</label><input name="feature1_title" /></div>
+              <div class="field full"><label>Mô tả tính năng</label><textarea name="feature1_text"></textarea></div>
+            </div>
+            <div class="field-group">
+              <h4>Thẻ tính năng 03</h4>
+              <div class="field"><label>Mã icon FontAwesome</label><input name="feature2_icon" placeholder="fa-users" /></div>
+              <div class="field"><label>Tiêu đề tính năng</label><input name="feature2_title" /></div>
+              <div class="field full"><label>Mô tả tính năng</label><textarea name="feature2_text"></textarea></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" data-section="courses">
+          <div class="section-head"><h2>Danh sách các lớp học (3 lớp)</h2><p>Tùy biến tiêu đề danh mục và thông tin ảnh/chữ của từng lớp.</p></div>
+          <div class="grid">
+            <div class="field"><label>Tiêu đề Section - Chữ thường</label><input name="cs_title" /></div>
+            <div class="field"><label>Tiêu đề Section - Nghệ thuật (Nghiêng)</label><input name="cs_titleScript" /></div>
+            <div class="field full"><label>Mô tả danh mục lớp học</label><textarea name="cs_text"></textarea></div>
+            
+            <div class="field-group">
+              <h4>Thông tin lớp học 01</h4>
+              <div class="field"><label>Tên khóa học</label><input name="course0_title" /></div>
+              <div class="field"><label>Đường dẫn hình ảnh minh họa</label><input name="course0_mediaUrl" /></div>
+              <div class="field full"><label>Mô tả ngắn gọn nội dung lớp học</label><textarea name="course0_text"></textarea></div>
+            </div>
+            <div class="field-group">
+              <h4>Thông tin lớp học 02</h4>
+              <div class="field"><label>Tên khóa học</label><input name="course1_title" /></div>
+              <div class="field"><label>Đường dẫn hình ảnh minh họa</label><input name="course1_mediaUrl" /></div>
+              <div class="field full"><label>Mô tả ngắn gọn nội dung lớp học</label><textarea name="course1_text"></textarea></div>
+            </div>
+            <div class="field-group">
+              <h4>Thông tin lớp học 03</h4>
+              <div class="field"><label>Tên khóa học</label><input name="course2_title" /></div>
+              <div class="field"><label>Đường dẫn hình ảnh minh họa</label><input name="course2_mediaUrl" /></div>
+              <div class="field full"><label>Mô tả ngắn gọn nội dung lớp học</label><textarea name="course2_text"></textarea></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" data-section="method">
+          <div class="section-head"><h2>Lộ trình các bước học tập & CTA</h2><p>Quản lý nội dung 3 bước thực hành và bảng đăng ký nhanh cuối trang.</p></div>
+          <div class="grid">
+            <div class="field"><label>Dòng chữ nhỏ Eyebrow</label><input name="method_eyebrow" /></div>
+            <div class="field"><label>Tiêu đề lớn Phương pháp</label><input name="method_title" /></div>
+            <div class="field full"><label>Mô tả chi tiết phương pháp</label><textarea name="method_text"></textarea></div>
+            
+            <div class="field-group">
+              <h4>Bước 1</h4>
+              <div class="field"><label>Tiêu đề bước</label><input name="step0_title" /></div>
+              <div class="field"><label>Nội dung chi tiết</label><input name="step0_text" /></div>
+            </div>
+            <div class="field-group">
+              <h4>Bước 2</h4>
+              <div class="field"><label>Tiêu đề bước</label><input name="step1_title" /></div>
+              <div class="field"><label>Nội dung chi tiết</label><input name="step1_text" /></div>
+            </div>
+            <div class="field-group">
+              <h4>Bước 3</h4>
+              <div class="field"><label>Tiêu đề bước</label><input name="step2_title" /></div>
+              <div class="field"><label>Nội dung chi tiết</label><input name="step2_text" /></div>
+            </div>
+
+            <div class="field-group">
+              <h4>Khối kêu gọi đăng ký (CTA Block)</h4>
+              <div class="field full"><label>Tiêu đề lời kêu gọi lớn</label><input name="cta_title" /></div>
+              <div class="field"><label>Tên hiển thị nút bấm</label><input name="cta_label" /></div>
+              <div class="field"><label>Link hành động nút bấm (Ví dụ link Google Form hoặc mailto:)</label><input name="cta_href" /></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" data-section="footer">
+          <div class="section-head"><h2>Chân trang (Footer)</h2><p>Sửa đổi mô tả chân trang và hệ thống nội dung 3 cột thông tin danh mục.</p></div>
+          <div class="grid">
+            <div class="field full"><label>Mô tả giới thiệu chân trang</label><textarea name="footer_intro"></textarea></div>
+            
+            <div class="field-group">
+              <h4>Cột nội dung 01</h4>
+              <div class="field"><label>Tiêu đề cột</label><input name="fcol0_title" /></div>
+              <div class="field"><label>Danh sách mục (Mỗi mục nằm trên 1 dòng)</label><textarea name="fcol0_items" placeholder="Mục 1&#13;Mục 2&#13;Mục 3"></textarea></div>
+            </div>
+
+            <div class="field-group">
+              <h4>Cột nội dung 02</h4>
+              <div class="field"><label>Tiêu đề cột</label><input name="fcol1_title" /></div>
+              <div class="field"><label>Danh sách mục (Mỗi mục nằm trên 1 dòng)</label><textarea name="fcol1_items" placeholder="Mục 1&#13;Mục 2&#13;Mục 3"></textarea></div>
+            </div>
+
+            <div class="field-group">
+              <h4>Cột nội dung 03</h4>
+              <div class="field"><label>Tiêu đề cột</label><input name="fcol2_title" /></div>
+              <div class="field"><label>Danh sách mục (Mỗi mục nằm trên 1 dòng)</label><textarea name="fcol2_items" placeholder="Mục 1&#13;Mục 2&#13;Mục 3"></textarea></div>
+            </div>
+          </div>
+        </section>
+      </form>
+    </div>
   </main>
 
-  <footer>
-    <div class="container footer-grid" id="footerGrid"></div>
-  </footer>
+  <div class="toast" id="toast"></div>
 
   <script>
-    // NHÂN DỮ LIỆU ĐƯỢC CHÈN TRỰC TIẾP TỪ ADMIN
-    const DATABASE_INTERNAL = ${JSON.stringify(content, null, 2)};
+    // ==========================================
+    // ĐIỀN CẤU HÌNH KHO GITHUB CỦA BẠN VÀO ĐÂY
+    // ==========================================
+    const GH_OWNER = "TÊN_TÀI_KHOẢN_GITHUB_CỦA_BẠN"; 
+    const GH_REPO = "TÊN_REPO_CHỨA_TRANG_WEB";     
+    const GH_PATH = "content.json";               
+    
+    const TOKEN_KEY = "memori_github_token";
+    const BACKUP_KEY = "memori_local_backup_v2";
 
-    const setText = (id, value) => { document.getElementById(id).textContent = value || ""; };
-    const setLink = (id, item) => {
-      const el = document.getElementById(id); el.href = item?.href || "#";
-      if (item?.label) el.textContent = item.label;
-    };
-    const mediaMarkup = (item, className = "") => {
-      const type = item?.mediaType === "video" ? "video" : "image"; const url = item?.mediaUrl || ""; const alt = item?.mediaAlt || "";
-      if (type === "video") return \`<video class="\${className}" src="\${url}" aria-label="\${escapeHtml(alt)}" autoplay muted loop playsinline controls></video>\`;
-      return \`<img class="\${className}" src="\${url}" alt="\${escapeHtml(alt)}">\`;
-    };
-    const escapeHtml = (val = "") => String(val).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+    // Chuỗi băm SHA-256 bảo mật của mật khẩu "mori2026"
+    const PASSWORD_HASH = "49e524ec5e8b490549c26ab2a09460129e17f366314641333e837136d97c6681";
 
-    function render(data) {
-      document.title = data.site.title;
-      setText("brand", data.site.brand);
-      document.getElementById("navLinks").innerHTML = data.nav.map((item) => \`<a href="\${escapeHtml(item.href)}">\${escapeHtml(item.label)}</a>\`).join("");
-      setLink("navCourses", data.navCourses); setLink("navCta", data.navCta);
-      setText("heroEyebrow", data.hero.eyebrow); setText("heroTitleStart", data.hero.titleStart); setText("heroTitleScript", data.hero.titleScript); setText("heroTitleEnd", data.hero.titleEnd); setText("heroText", data.hero.text);
-      setLink("heroPrimary", data.hero.primary); setLink("heroSecondary", data.hero.secondary);
-      document.getElementById("heroMedia").innerHTML = mediaMarkup(data.hero);
-      setText("heroNote", data.hero.note); setText("introTitle", data.intro.title); setText("introText", data.intro.text);
-      document.getElementById("features").innerHTML = data.features.map((item) => \`
-        <article class="card">
-          <i class="fa-solid \${escapeHtml(item.icon)}" aria-hidden="true"></i>
-          <h3>\${escapeHtml(item.title)}</h3><p>\${escapeHtml(item.text)}</p>
-        </article>\`).join("");
-      setText("coursesTitle", data.coursesSection.title); setText("coursesTitleScript", data.coursesSection.titleScript); setText("coursesText", data.coursesSection.text);
-      document.getElementById("courseGrid").innerHTML = data.courses.map((item) => \`
-        <article class="course">
-          \${mediaMarkup(item)}
-          <div class="course-content"><h3>\${escapeHtml(item.title)}</h3><p>\${escapeHtml(item.text)}</p></div>
-        </article>\`).join("");
-      setText("methodEyebrow", data.method.eyebrow); setText("methodTitle", data.method.title); setText("methodText", data.method.text);
-      document.getElementById("steps").innerHTML = data.steps.map((item, index) => \`
-        <div class="step"><span>\${index + 1}</span><div><strong>\${escapeHtml(item.title)}</strong><p>\${escapeHtml(item.text)}</p></div></div>\`).join("");
-      setText("ctaTitle", data.cta.title);
-      const ctaLink = document.getElementById("ctaLink"); ctaLink.href = data.cta.href; ctaLink.querySelector("span").textContent = data.cta.label;
-      document.getElementById("footerGrid").innerHTML = \`
-        <div><div class="brand">\${escapeHtml(data.site.brand)}</div><p>\${escapeHtml(data.footer.intro)}</p></div>
-        \${data.footer.columns.map((column) => \`
-          <div><h3>\${escapeHtml(column.title)}</h3><ul>\${column.items.map((item) => \`<li>\${escapeHtml(item)}</li>\`).join("")}</ul></div>\`).join("")}\`;
+    const form = document.getElementById("settingsForm");
+    const toast = document.getElementById("toast");
+
+    // Khởi tạo đối tượng dữ liệu mặc định gốc y hệt fallbackContent trong index.html
+    const defaults = {
+      site: { title: "ME.MORI Class", description: "ME.MORI Class...", brand: "ME.MORI" },
+      nav: [{ label: "Workshop", href: "#workshops" }, { label: "Phương pháp", href: "#method" }, { label: "Liên hệ", href: "#contact" }],
+      navCourses: { label: "Khóa học", href: "#courses" }, navCta: { label: "Đăng ký", href: "#contact" },
+      hero: { eyebrow: "ME.MORI Class", titleStart: "Học nghệ thuật", titleScript: "kể chuyện", titleEnd: "bằng hình ảnh", text: "Workshop dành cho creator...", primary: { label: "Xem workshop", href: "#courses" }, secondary: { label: "Cách học", href: "#method" }, mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop", mediaAlt: "Nhóm học viên...", note: "Thực hành theo dự án thật..." },
+      intro: { title: "Không gian học tập cho người làm hình ảnh hiện đại", text: "ME.MORI Class kết hợp..." },
+      features: [{ icon: "fa-film", title: "Tư duy cinematic", text: "Hiểu nhịp dựng..." }, { icon: "fa-camera", title: "Thực hành thật", text: "Làm bài tập..." }, { icon: "fa-users", title: "Cộng đồng creator", text: "Kết nối..." }],
+      coursesSection: { title: "Workshop", titleScript: "nổi bật", text: "Các lớp được thiết kế..." },
+      courses: [{ title: "Storytelling cho video ngắn", text: "Xây cấu trúc...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }, { title: "Tư duy hình ảnh cinematic", text: "Rèn bố cục...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }, { title: "Quay dựng cho creator", text: "Biến footage...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }],
+      method: { eyebrow: "Phương pháp", title: "Bắt đầu đơn giản, học bằng dự án thật", text: "Mỗi buổi học tập trung..." },
+      steps: [{ title: "Đăng ký workshop", text: "Chọn chủ đề..." }, { title: "Thực hành tại lớp", text: "Làm bài tập..." }, { title: "Hoàn thiện sản phẩm", text: "Nhận feedback..." }],
+      cta: { title: "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?", label: "Liên hệ đăng ký", href: "mailto:hello@memori.class" },
+      footer: { intro: "Không gian học tập dành cho người yêu điện ảnh...", columns: [{ title: "Khóa học", items: ["Video ngắn", "Tư duy cinematic", "Quay dựng creator"] }, { title: "Cộng đồng", items: ["Workshop", "Feedback nhóm", "Dự án học viên"] }, { title: "Liên hệ", items: ["Instagram", "Facebook", "hello@memori.class"] }] }
+    };
+
+    // KIỂM TRA MẬT KHẨU CỬA VÀO
+    async function hashString(str) {
+      const utf8 = new TextEncoder().encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
-    render(DATABASE_INTERNAL);
-  </script>
-</body>
-</html>`;
 
-      const blob = new Blob([outputHtml], { type: "text/html" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "index.html";
-      a.click();
-      URL.revokeObjectURL(url);
-      setStatusBar("Tải xuống index.html thành công! Hãy kéo thả file này lên GitHub.");
+    async function validateGate() {
+      const input = document.getElementById("gatePass").value;
+      if (await hashString(input) === PASSWORD_HASH) {
+        document.getElementById("loginGate").style.display = "none";
+        sessionStorage.setItem("memori_auth", "true");
+      } else {
+        const err = document.getElementById("gateError");
+        err.style.display = "block";
+      }
+    }
+    if (sessionStorage.getItem("memori_auth") === "true") document.getElementById("loginGate").style.display = "none";
+    document.getElementById("gatePass").addEventListener("keypress", (e) => { if (e.key === "Enter") validateGate(); });
+
+    function showToast(msg) {
+      toast.textContent = msg; toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    // ĐỌC DỮ LIỆU TỪ FORM VÀ ĐÓNG GÓI THÀNH ĐỐI TƯỢNG JSON CHUẨN
+    function makeJsonFromForm() {
+      const f = (name) => form.elements[name].value.trim();
+      return {
+        site: { title: f("site_title"), description: f("site_description"), brand: f("site_brand") },
+        nav: defaults.nav, // Giữ nguyên mảng cấu trúc cây nav
+        navCourses: { label: defaults.navCourses.label, href: defaults.navCourses.href },
+        navCta: { label: defaults.navCta.label, href: defaults.navCta.href },
+        hero: {
+          eyebrow: f("hero_eyebrow"), titleStart: f("hero_titleStart"), titleScript: f("hero_titleScript"), titleEnd: f("hero_titleEnd"), text: f("hero_text"),
+          primary: { label: f("hero_primary_label"), href: f("hero_primary_href") },
+          secondary: { label: f("hero_secondary_label"), href: f("hero_secondary_href") },
+          mediaType: f("hero_mediaType"), mediaUrl: f("hero_mediaUrl"), mediaAlt: f("hero_mediaAlt"), note: f("hero_note")
+        },
+        intro: { title: f("intro_title"), text: f("intro_text") },
+        features: [
+          { icon: f("feature0_icon"), title: f("feature0_title"), text: f("feature0_text") },
+          { icon: f("feature1_icon"), title: f("feature1_title"), text: f("feature1_text") },
+          { icon: f("feature2_icon"), title: f("feature2_title"), text: f("feature2_text") }
+        ],
+        coursesSection: { title: f("cs_title"), titleScript: f("cs_titleScript"), text: f("cs_text") },
+        courses: [
+          { title: f("course0_title"), text: f("course0_text"), mediaType: "image", mediaUrl: f("course0_mediaUrl"), mediaAlt: "" },
+          { title: f("course1_title"), text: f("course1_text"), mediaType: "image", mediaUrl: f("course1_mediaUrl"), mediaAlt: "" },
+          { title: f("course2_title"), text: f("course2_text"), mediaType: "image", mediaUrl: f("course2_mediaUrl"), mediaAlt: "" }
+        ],
+        method: { eyebrow: f("method_eyebrow"), title: f("method_title"), text: f("method_text") },
+        steps: [
+          { title: f("step0_title"), text: f("step0_text") },
+          { title: f("step1_title"), text: f("step1_text") },
+          { title: f("step2_title"), text: f("step2_text") }
+        ],
+        cta: { title: f("cta_title"), label: f("cta_label"), href: f("cta_href") },
+        footer: {
+          intro: f("footer_intro"),
+          columns: [
+            { title: f("fcol0_title"), items: f("fcol0_items").split("\n").filter(Boolean) },
+            { title: f("fcol1_title"), items: f("fcol1_items").split("\n").filter(Boolean) },
+            { title: f("fcol2_title"), items: f("fcol2_items").split("\n").filter(Boolean) }
+          ]
+        }
+      };
+    }
+
+    // ĐỔ DỮ LIỆU TỪ ĐỐI TƯỢNG JSON VÀO CÁC Ô INPUT CỦA FORM
+    function fillFormFields(data) {
+      const s = (name, val) => { if(form.elements[name]) form.elements[name].value = val || ""; };
+      s("site_title", data.site?.title); s("site_brand", data.site?.brand); s("site_description", data.site?.description);
+      s("hero_eyebrow", data.hero?.eyebrow); s("hero_titleStart", data.hero?.titleStart); s("hero_titleScript", data.hero?.titleScript); s("hero_titleEnd", data.hero?.titleEnd); s("hero_text", data.hero?.text);
+      s("hero_primary_label", data.hero?.primary?.label); s("hero_primary_href", data.hero?.primary?.href);
+      s("hero_secondary_label", data.hero?.secondary?.label); s("hero_secondary_href", data.hero?.secondary?.href);
+      s("hero_mediaType", data.hero?.mediaType); s("hero_mediaUrl", data.hero?.mediaUrl); s("hero_mediaAlt", data.hero?.mediaAlt); s("hero_note", data.hero?.note);
+      s("intro_title", data.intro?.title); s("intro_text", data.intro?.text);
+      
+      if(data.features?.[0]) { s("feature0_icon", data.features[0].icon); s("feature0_title", data.features[0].title); s("feature0_text", data.features[0].text); }
+      if(data.features?.[1]) { s("feature1_icon", data.features[1].icon); s("feature1_title", data.features[1].title); s("feature1_text", data.features[1].text); }
+      if(data.features?.[2]) { s("feature2_icon", data.features[2].icon); s("feature2_title", data.features[2].title); s("feature2_text", data.features[2].text); }
+      
+      s("cs_title", data.coursesSection?.title); s("cs_titleScript", data.coursesSection?.titleScript); s("cs_text", data.coursesSection?.text);
+      if(data.courses?.[0]) { s("course0_title", data.courses[0].title); s("course0_mediaUrl", data.courses[0].mediaUrl); s("course0_text", data.courses[0].text); }
+      if(data.courses?.[1]) { s("course1_title", data.courses[1].title); s("course1_mediaUrl", data.courses[1].mediaUrl); s("course1_text", data.courses[1].text); }
+      if(data.courses?.[2]) { s("course2_title", data.courses[2].title); s("course2_mediaUrl", data.courses[2].mediaUrl); s("course2_text", data.courses[2].text); }
+      
+      s("method_eyebrow", data.method?.eyebrow); s("method_title", data.method?.title); s("method_text", data.method?.text);
+      if(data.steps?.[0]) { s("step0_title", data.steps[0].title); s("step0_text", data.steps[0].text); }
+      if(data.steps?.[1]) { s("step1_title", data.steps[1].title); s("step1_text", data.steps[1].text); }
+      if(data.steps?.[2]) { s("step2_title", data.steps[2].title); s("step2_text", data.steps[2].text); }
+      
+      s("cta_title", data.cta?.title); s("cta_label", data.cta?.label); s("cta_href", data.cta?.href);
+      s("footer_intro", data.footer?.intro);
+      if(data.footer?.columns?.[0]) { s("fcol0_title", data.footer.columns[0].title); s("fcol0_items", data.footer.columns[0].items.join("\n")); }
+      if(data.footer?.columns?.[1]) { s("fcol1_title", data.footer.columns[1].title); s("fcol1_items", data.footer.columns[1].items.join("\n")); }
+      if(data.footer?.columns?.[2]) { s("fcol2_title", data.footer.columns[2].title); s("fcol2_items", data.footer.columns[2].items.join("\n")); }
+    }
+
+    // TẢI DỮ LIỆU ĐÁM MÂY (HOẶC KÉO CỨU HỘ TỪ BỘ NHỚ LỚP LOCAL CŨ)
+    async function loadData() {
+      try {
+        const response = await fetch(`./${GH_PATH}?t=${Date.now()}`);
+        if (response.ok) {
+          const cloudData = await response.json();
+          fillFormFields({ ...defaults, ...cloudData });
+          return;
+        }
+      } catch (e) { console.log("Chưa thấy tệp cloud, tìm dữ liệu dự phòng cục bộ..."); }
+
+      const localBackup = localStorage.getItem(BACKUP_KEY);
+      if (localBackup) {
+        showToast("⚡ Đã cứu lại dữ liệu chỉnh sửa cũ từ máy cá nhân!");
+        fillFormFields({ ...defaults, ...JSON.parse(localBackup) });
+      } else {
+        fillFormFields(defaults);
+      }
+    }
+
+    // ĐẨY FILE JSON CHỨA TOÀN BỘ NỘI DUNG LÊN GITHUB REPO
+    async function sendToGitHub(jsonData) {
+      let token = localStorage.getItem(TOKEN_KEY);
+      if (!token) {
+        token = prompt("Nhập GitHub Personal Access Token của chủ web để ghi tệp:");
+        if (!token) return showToast("Hủy lưu. Cần có Token để cập nhật dữ liệu!");
+        localStorage.setItem(TOKEN_KEY, token.trim());
+      }
+
+      showToast("Đang kết nối API đám mây GitHub...");
+      localStorage.setItem(BACKUP_KEY, JSON.stringify(jsonData)); // Tạo một bản local phòng hờ
+
+      const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
+      const base64Content = btoa(unescape(encodeURIComponent(JSON.stringify(jsonData, null, 2))));
+
+      try {
+        let sha = null;
+        const resGet = await fetch(url, { headers: { "Authorization": `token ${token}` } });
+        if (resGet.ok) {
+          const info = await resGet.json();
+          sha = info.sha;
+        }
+
+        const resPut = await fetch(url, {
+          method: "PUT",
+          headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "⚡ Update content.json từ Admin Panel", content: base64Content, sha: sha })
+        });
+
+        if (resPut.ok) {
+          showToast("🚀 Đồng bộ thành công! Chờ GitHub Pages cập nhật giao diện (khoảng 30 giây).");
+        } else {
+          if (resPut.status === 401 || resPut.status === 403) {
+            localStorage.removeItem(TOKEN_KEY);
+            showToast("Token hết hạn hoặc sai quyền. Vui lòng bấm lưu để thử lại.");
+          } else {
+            showToast("Lỗi đồng bộ hệ thống.");
+          }
+        }
+      } catch (err) { showToast("Mất kết nối mạng tới API GitHub."); }
+    }
+
+    // HỆ THỐNG ĐIỀU HƯỚNG TABS
+    document.querySelectorAll(".tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+        tab.classList.add("active");
+        document.querySelector(`[data-section="${tab.dataset.tab}"]`).classList.add("active");
+      });
     });
 
-    function escapeHtml(str = "") { return String(str).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m])); }
-    function setStatusBar(msg, isError = false) {
-      const b = document.getElementById("statusBar"); b.textContent = msg;
-      b.style.background = isError ? "#f4dcdb" : "#e6dfd3"; b.style.color = isError ? "#a12d24" : "#494037";
-    }
+    document.getElementById("saveBtn").addEventListener("click", () => sendToGitHub(makeJsonFromForm()));
+    document.getElementById("resetBtn").addEventListener("click", async () => {
+      if(!confirm("Xóa toàn bộ nội dung đã sửa để đồng bộ tệp mặc định gốc lên GitHub?")) return;
+      await sendToGitHub(defaults);
+      fillFormFields(defaults);
+    });
 
-    // Tự động khôi phục bản nháp thô từ bộ nhớ trình duyệt nếu có
-    const cached = localStorage.getItem(STORAGE_KEY);
-    if (cached) { content = JSON.parse(cached); setStatusBar("Đã nạp bản nháp lưu tạm trên trình duyệt."); }
-    renderEditor();
+    loadData();
   </script>
 </body>
 </html>
