@@ -92,7 +92,6 @@
     }
     .hero-media img, .hero-media video, .hero-media iframe { height: 620px; object-fit: cover; border: 0; }
     
-    /* CSS CHO NÚT ĐIỀU KHIỂN ÂM THANH HERO */
     .mute-btn {
       position: absolute;
       left: 24px;
@@ -170,26 +169,29 @@
     .course img, .course video { height: 245px; object-fit: cover; }
     .course-content { padding: 24px; }
     
-    .steps { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 42px; align-items: center; }
-    .step-list { display: grid; gap: 16px; }
+    /* 🛠 THAY ĐỔI BỐ CỤC LỘ TRÌNH: TIÊU ĐỀ TRÊN - LƯỚI KHUNG VUÔNG 2 HÀNG DƯỚI */
+    .steps { display: flex; flex-direction: column; gap: 48px; align-items: flex-start; }
+    .step-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; }
     
-    /* THẺ LỘ TRÌNH ĐA BƯỚC HỖ TRỢ HIỆU ỨNG CLICK VIDEO */
+    /* BIẾN THÀNH CÁC KHUNG VUÔNG ĐỒNG ĐỀU */
     .step { 
-      display: flex; gap: 16px; align-items: flex-start; padding: 20px; 
-      border-radius: 8px; background: #fff; cursor: pointer;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+      display: flex; flex-direction: column; gap: 16px; align-items: flex-start; padding: 30px 24px; 
+      border-radius: 12px; background: #fff; cursor: pointer; min-height: 240px;
+      box-shadow: 0 4px 20px rgba(42, 35, 25, 0.03);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
     }
     .step:hover {
-      transform: translateX(6px);
-      background-color: #fffdf4;
-      box-shadow: 0 12px 35px rgba(217, 155, 39, 0.1);
+      transform: translateY(-6px);
+      background-color: #fffdf2;
+      box-shadow: 0 16px 40px rgba(217, 155, 39, 0.12);
     }
     .step span {
       display: inline-flex; width: 34px; height: 34px; flex: 0 0 34px;
       align-items: center; justify-content: center; border-radius: 50%;
-      background: #171513; color: #fff; font-weight: 800;
+      background: #171513; color: #fff; font-weight: 800; font-size: 14px;
     }
-    .step strong { display: block; margin-bottom: 5px; font-size: 16px; }
+    .step strong { display: block; font-size: 18px; color: #161412; }
+    .step p { font-size: 14px; line-height: 1.6; }
 
     .cta { padding: 72px 0; background: #efc45b; }
     .cta-row { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
@@ -230,6 +232,13 @@
       .hero { padding-top: 48px; }
       .hero-media, .hero-media img, .hero-media video, .hero-media iframe { min-height: 420px; height: 420px; }
       .cards, .course-grid { grid-template-columns: 1fr; }
+      
+      /* ĐIỀU CHỈNH LƯỚI TRÊN TABLET THÀNH 2 CỘT */
+      .step-list { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    }
+    @media (max-width: 600px) {
+      /* ĐIỀU CHỈNH LƯỚI TRÊN MOBILE THÀNH 1 CỘT DỌC */
+      .step-list { grid-template-columns: 1fr; }
     }
     @media (max-width: 560px) {
       .container { width: min(100% - 24px, 1120px); }
@@ -325,7 +334,7 @@
   </div>
 
   <script>
-    // BỘ NỘI DUNG DỰ PHÒNG MẶC ĐỊNH
+    // BỘ DỮ LIỆU DỰ PHÒNG MẶC ĐỊNH GỒM 6 MÔN HỌC CHIA ĐỀU THÀNH KHỐI VUÔNG
     const fallbackContent = {
       site: {
         title: "ME.MORI Class",
@@ -373,13 +382,18 @@
       ],
       method: {
         eyebrow: "Lộ trình",
-        title: "Trải nghiệm phẩm chất",
-        text: "Mỗi buổi học tập trung vào một kỹ năng rõ ràng, có ví dụ, có thực hành và có feedback để học viên thấy tiến bộ ngay trong sản phẩm của mình."
+        title: "Chương trình 6 môn học chuyên sâu",
+        text: "Lộ trình học tập tích hợp đa chiều được dàn trang khoa học giúp bạn định hình tư duy cinematic bài bản."
       },
+      
+      // ĐÃ CẬP NHẬT: 6 MÔN HỌC ĐƯỢC THIẾT KẾ PHÂN BỔ ĐỀU VÀO LƯỚI KHUNG VUÔNG
       steps: [
-        { title: "Đăng ký workshop", text: "Chọn chủ đề phù hợp với mục tiêu và kinh nghiệm hiện tại.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
-        { title: "Thực hành tại lớp", text: "Làm bài tập theo brief, nhận hướng dẫn và chỉnh sửa trực tiếp.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
-        { title: "Hoàn thiện sản phẩm", text: "Nhận feedback để cải thiện câu chuyện, nhịp dựng và hình ảnh.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" }
+        { title: "Tư duy thị giác", text: "Khai phá nhãn quan cinematic, học cách cảm nhận ánh sáng và xây dựng góc nhìn cá nhân độc đáo.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
+        { title: "Kể chuyện bằng hình", text: "Ứng dụng nghệ thuật Storytelling cấu trúc Hollywood để biến ý tưởng thô thành kịch bản cuốn hút.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
+        { title: "Ngôn ngữ khung hình", text: "Làm chủ các quy tắc bố cục điện ảnh, hướng chuyển động máy và tạo nhịp điệu cảm xúc thị giác.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
+        { title: "Công cụ thiết bị", text: "Tối ưu hóa máy ảnh, điện thoại sẵn có và thiết lập ánh sáng cơ bản đạt hiệu quả hình ảnh tốt nhất.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
+        { title: "Hậu kỳ & Dựng phim", text: "Làm chủ phần mềm biên tập, cắt dựng footage thô nhịp nhàng, lồng ghép âm thanh đúng điểm rơi.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
+        { title: "Trải nghiệm thực tế", text: "Thực hành sản xuất dự án hoàn chỉnh ngay tại lớp và nhận đánh giá phản hồi chuyên sâu từng cá nhân.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" }
       ],
       cta: { title: "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?", label: "Liên hệ đăng ký", href: "mailto:hello@memori.class" },
       footer: {
@@ -399,7 +413,6 @@
       if (item?.label) el.textContent = item.label;
     };
 
-    // TRÌNH TÁCH ID YOUTUBE
     const getYouTubeId = (url) => {
       try {
         const parsed = new URL(url);
@@ -410,7 +423,6 @@
       } catch { return ""; }
     };
 
-    // BIÊN DỊCH THẺ HÌNH ẢNH / VIDEO (CÓ THÊM MÃ ĐIỀU KHIỂN JS CHO YOUTUBE NỀN)
     const mediaMarkup = (item, className = "") => {
       const url = item?.mediaUrl || "";
       const alt = item?.mediaAlt || "";
@@ -431,7 +443,6 @@
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
     }[char]));
 
-    // LOGIC POPUP MODAL VIDEO
     const modal = document.getElementById("videoModal");
     const modalBody = document.getElementById("vModalBody");
 
@@ -452,7 +463,6 @@
     document.getElementById("modalCloseBtn").addEventListener("click", closeModalVideo);
     document.querySelector(".v-modal-bg").addEventListener("click", closeModalVideo);
 
-    // HÀM RENDER ĐỔ DỮ LIỆU CHÍNH
     function render(content) {
       document.title = content.site.title;
       document.querySelector('meta[name="description"]').content = content.site.description;
@@ -499,15 +509,17 @@
       setText("methodTitle", content.method.title);
       setText("methodText", content.method.text);
 
-      // XỬ LÝ LỘ TRÌNH VÔ HẠN BƯỚC + SỰ KIỆN KHỞI CHẠY VIDEO
+      // CẤU TRÚC ĐỔ LƯỚI KHUNG VUÔNG CHO LỘ TRÌNH 6 MÔN
       document.getElementById("steps").innerHTML = content.steps.map((item, index) => `
         <div class="step" data-video="${escapeHtml(item.videoUrl || '')}">
-          <span>${index + 1}</span>
-          <div style="flex: 1;">
-            <strong>${escapeHtml(item.title)}</strong>
+          <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 4px;">
+            <span>${index + 1}</span>
+            <i class="fa-solid fa-circle-play" style="color: #d99b27; font-size: 22px; opacity: 0.8;"></i>
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 10px;">
+            <strong style="margin-bottom: 8px;">${escapeHtml(item.title)}</strong>
             <p>${escapeHtml(item.text)}</p>
           </div>
-          <i class="fa-solid fa-circle-play" style="color: #d99b27; font-size: 20px; align-self: center; margin-left: 10px; opacity: 0.8;"></i>
         </div>
       `).join("");
 
@@ -536,7 +548,6 @@
         `).join("")}
       `;
 
-      // LOGIC NÚT ĐIỀU KHIỂN LOA BẬT/TẮT ÂM THANH VIDEO HERO
       const unmuteBtn = document.getElementById("unmuteHeroBtn");
       const hasVideo = heroContainer.querySelector("iframe, video");
       unmuteBtn.style.display = hasVideo ? "flex" : "none";
@@ -560,7 +571,6 @@
       });
     }
 
-    // KHỞI CHẠY ĐỒNG BỘ ĐÁM MÂY VÀ DỰ PHÒNG CỨU HỘ CỤC BỘ
     (async function() {
       let settings;
       try {
