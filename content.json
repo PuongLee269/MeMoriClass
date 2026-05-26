@@ -28,8 +28,8 @@
   },
   "hero": {
     "eyebrow": "ME.MORI Class",
-    "titleStart": "Lớp học",
-    "titleScript": "nghệ thuật kể chuyện",
+    "titleStart": "",
+    "titleScript": "Lớp học nghệ thuật kể chuyện",
     "titleEnd": "",
     "text": "Lớp học dành cho creator muốn xây dựng tư duy cinematic, quay dựng có cảm xúc và biến ý tưởng thành câu chuyện rõ ràng trên màn hình.",
     "primary": {
