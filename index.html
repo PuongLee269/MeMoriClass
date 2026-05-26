@@ -23,6 +23,7 @@
     a { color: inherit; text-decoration: none; }
     img, video, iframe { display: block; width: 100%; }
     .container { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    
     .topbar {
       position: sticky;
       top: 0;
@@ -55,6 +56,7 @@
       font-weight: 800;
     }
     .pill.secondary { background: #f0d281; color: #161412; }
+    
     .hero {
       display: grid;
       grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
@@ -79,6 +81,7 @@
     .hero p, .section-copy { max-width: 620px; color: #5f574d; font-size: 18px; line-height: 1.8; }
     .hero p { margin: 26px 0 34px; }
     .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+    
     .hero-media {
       position: relative;
       min-height: 620px;
@@ -88,6 +91,32 @@
       box-shadow: 0 26px 80px rgba(38, 30, 17, 0.2);
     }
     .hero-media img, .hero-media video, .hero-media iframe { height: 620px; object-fit: cover; border: 0; }
+    
+    /* CSS CHO NÚT ĐIỀU KHIỂN ÂM THANH HERO */
+    .mute-btn {
+      position: absolute;
+      left: 24px;
+      bottom: 24px;
+      z-index: 5;
+      background: rgba(22, 20, 18, 0.65);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .mute-btn:hover {
+      background: rgba(22, 20, 18, 0.85);
+      transform: scale(1.05);
+    }
+
     .hero-note {
       position: absolute;
       right: 24px;
@@ -102,6 +131,7 @@
       font-weight: 700;
       line-height: 1.6;
     }
+    
     section { padding: 88px 0; }
     .light { background: #fff; }
     .dark { background: #171513; color: #fff; }
@@ -115,6 +145,7 @@
     }
     h2 { font-size: clamp(34px, 5vw, 58px); line-height: 1.05; font-weight: 800; }
     .cards, .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    
     .card {
       min-height: 260px;
       padding: 28px;
@@ -142,7 +173,7 @@
     .steps { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 42px; align-items: center; }
     .step-list { display: grid; gap: 16px; }
     
-    /* NÂNG CẤP THẺ BƯỚC LỘ TRÌNH: CÓ HIỆU ỨNG BẤM, TỰ CO GIÃN THEO SỐ LƯỢNG */
+    /* THẺ LỘ TRÌNH ĐA BƯỚC HỖ TRỢ HIỆU ỨNG CLICK VIDEO */
     .step { 
       display: flex; gap: 16px; align-items: flex-start; padding: 20px; 
       border-radius: 8px; background: #fff; cursor: pointer;
@@ -163,13 +194,14 @@
     .cta { padding: 72px 0; background: #efc45b; }
     .cta-row { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
     .cta h2 { max-width: 720px; }
+    
     footer { padding: 58px 0; background: #171513; color: #fff; }
     .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 30px; }
     footer p, footer li { color: #c8c0b5; line-height: 1.8; }
     footer ul { list-style: none; }
     footer h3 { margin-bottom: 16px; font-size: 16px; }
     
-    /* GIAO DIỆN KHUNG POPUP VIDEO (MODAL) */
+    /* KHUNG POPUP VIDEO (MODAL) */
     .v-modal {
       position: fixed; inset: 0; z-index: 9999;
       display: flex; align-items: center; justify-content: center;
@@ -234,6 +266,9 @@
       </div>
       <div class="hero-media">
         <div id="heroMedia"></div>
+        <button id="unmuteHeroBtn" class="mute-btn" style="display: none;">
+          <i class="fa-solid fa-volume-xmark"></i> Bật âm thanh
+        </button>
         <div class="hero-note" id="heroNote"></div>
       </div>
     </section>
@@ -290,7 +325,7 @@
   </div>
 
   <script>
-    // DỮ LIỆU DỰ PHÒNG CHUẨN ĐÃ ĐƯỢC CHUYỂN THÀNH LỘ TRÌNH TỰ ĐỘNG + LINK VIDEO
+    // BỘ NỘI DUNG DỰ PHÒNG MẶC ĐỊNH
     const fallbackContent = {
       site: {
         title: "ME.MORI Class",
@@ -312,8 +347,8 @@
         text: "Workshop dành cho creator muốn xây dựng tư duy cinematic, quay dựng có cảm xúc và biến ý tưởng thành câu chuyện rõ ràng trên màn hình.",
         primary: { label: "Xem workshop", href: "#courses" },
         secondary: { label: "Lộ trình", href: "#method" },
-        mediaType: "image",
-        mediaUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop",
+        mediaType: "video",
+        mediaUrl: "https://www.youtube.com/watch?v=kXKm842UXiY",
         mediaAlt: "Nhóm học viên cùng trao đổi trong lớp học sáng tạo",
         note: "Thực hành theo dự án thật, nhận phản hồi trực tiếp và hoàn thiện góc nhìn cá nhân."
       },
@@ -332,45 +367,21 @@
         text: "Các lớp được thiết kế ngắn gọn, tập trung vào kỹ năng có thể áp dụng ngay cho video cá nhân, thương hiệu hoặc dự án sáng tạo."
       },
       courses: [
-        {
-          title: "Storytelling cho video ngắn",
-          text: "Xây cấu trúc câu chuyện, mở đầu cuốn hút và thông điệp dễ nhớ.",
-          mediaType: "image",
-          mediaUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop",
-          mediaAlt: "Không gian workshop với sổ ghi chép và laptop"
-        },
-        {
-          title: "Tư duy hình ảnh cinematic",
-          text: "Rèn bố cục, ánh sáng, chuyển động máy và nhịp cảm xúc.",
-          mediaType: "image",
-          mediaUrl: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop",
-          mediaAlt: "Máy quay trong buổi thực hành video"
-        },
-        {
-          title: "Quay dựng cho creator",
-          text: "Biến footage thô thành sản phẩm hoàn chỉnh, rõ nhịp và rõ ý.",
-          mediaType: "image",
-          mediaUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop",
-          mediaAlt: "Học viên đang học cùng laptop"
-        }
+        { title: "Storytelling cho video ngắn", text: "Xây cấu trúc câu chuyện, mở đầu cuốn hút và thông điệp dễ nhớ.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" },
+        { title: "Tư duy hình ảnh cinematic", text: "Rèn bố cục, ánh sáng, chuyển động máy và nhịp cảm xúc.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" },
+        { title: "Quay dựng cho creator", text: "Biến footage thô thành sản phẩm hoàn chỉnh, rõ nhịp và rõ ý.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }
       ],
       method: {
         eyebrow: "Lộ trình",
         title: "Trải nghiệm phẩm chất",
         text: "Mỗi buổi học tập trung vào một kỹ năng rõ ràng, có ví dụ, có thực hành và có feedback để học viên thấy tiến bộ ngay trong sản phẩm của mình."
       },
-      
-      // SỐ LƯỢNG BƯỚC TÙY Ý - BẬT KÈM LINK VIDEO TƯƠNG ỨNG
       steps: [
         { title: "Đăng ký workshop", text: "Chọn chủ đề phù hợp với mục tiêu và kinh nghiệm hiện tại.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
         { title: "Thực hành tại lớp", text: "Làm bài tập theo brief, nhận hướng dẫn và chỉnh sửa trực tiếp.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
         { title: "Hoàn thiện sản phẩm", text: "Nhận feedback để cải thiện câu chuyện, nhịp dựng và hình ảnh.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" }
       ],
-      cta: {
-        title: "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?",
-        label: "Liên hệ đăng ký",
-        href: "mailto:hello@memori.class"
-      },
+      cta: { title: "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?", label: "Liên hệ đăng ký", href: "mailto:hello@memori.class" },
       footer: {
         intro: "Không gian học tập dành cho người yêu điện ảnh, storytelling và nghệ thuật hình ảnh hiện đại.",
         columns: [
@@ -388,6 +399,7 @@
       if (item?.label) el.textContent = item.label;
     };
 
+    // TRÌNH TÁCH ID YOUTUBE
     const getYouTubeId = (url) => {
       try {
         const parsed = new URL(url);
@@ -398,18 +410,19 @@
       } catch { return ""; }
     };
 
+    // BIÊN DỊCH THẺ HÌNH ẢNH / VIDEO (CÓ THÊM MÃ ĐIỀU KHIỂN JS CHO YOUTUBE NỀN)
     const mediaMarkup = (item, className = "") => {
       const url = item?.mediaUrl || "";
       const alt = item?.mediaAlt || "";
       const youtubeId = getYouTubeId(url);
 
       if (youtubeId) {
-        return `<iframe class="${className}" src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${youtubeId}&playsinline=1&rel=0&modestbranding=1" title="${escapeHtml(alt)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+        return `<iframe class="${className}" src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${youtubeId}&playsinline=1&rel=0&modestbranding=1&enablejsapi=1" title="${escapeHtml(alt)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
       }
 
       const type = item?.mediaType === "video" ? "video" : "image";
       if (type === "video") {
-        return `<video class="${className}" src="${url}" aria-label="${escapeHtml(alt)}" autoplay muted loop playsinline controls></video>`;
+        return `<video class="${className}" src="${url}" aria-label="${escapeHtml(alt)}" autoplay muted loop playsinline></video>`;
       }
       return `<img class="${className}" src="${url}" alt="${escapeHtml(alt)}">`;
     };
@@ -418,14 +431,14 @@
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
     }[char]));
 
-    // LOGIC ĐIỀU KHIỂN ĐÓNG/MỞ KHUNG VIDEO POPUP
+    // LOGIC POPUP MODAL VIDEO
     const modal = document.getElementById("videoModal");
     const modalBody = document.getElementById("vModalBody");
 
     function openModalVideo(url) {
       const youtubeId = getYouTubeId(url);
       if (youtubeId) {
-        modalBody.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        modalBody.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=0&controls=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
       } else {
         modalBody.innerHTML = `<video src="${url}" autoplay controls playsinline></video>`;
       }
@@ -434,12 +447,12 @@
 
     function closeModalVideo() {
       modal.classList.remove("show");
-      modalBody.innerHTML = ""; // Xóa ruột để tắt tiếng video đang chạy ngầm ngay lập tức
+      modalBody.innerHTML = "";
     }
-
     document.getElementById("modalCloseBtn").addEventListener("click", closeModalVideo);
     document.querySelector(".v-modal-bg").addEventListener("click", closeModalVideo);
 
+    // HÀM RENDER ĐỔ DỮ LIỆU CHÍNH
     function render(content) {
       document.title = content.site.title;
       document.querySelector('meta[name="description"]').content = content.site.description;
@@ -454,10 +467,13 @@
       setText("heroText", content.hero.text);
       setLink("heroPrimary", content.hero.primary);
       setLink("heroSecondary", content.hero.secondary);
-      document.getElementById("heroMedia").innerHTML = mediaMarkup(content.hero);
+      
+      const heroContainer = document.getElementById("heroMedia");
+      heroContainer.innerHTML = mediaMarkup(content.hero);
       setText("heroNote", content.hero.note);
       setText("introTitle", content.intro.title);
       setText("introText", content.intro.text);
+      
       document.getElementById("features").innerHTML = content.features.map((item) => `
         <article class="card">
           <i class="fa-solid ${escapeHtml(item.icon)}" aria-hidden="true"></i>
@@ -465,6 +481,7 @@
           <p>${escapeHtml(item.text)}</p>
         </article>
       `).join("");
+      
       setText("coursesTitle", content.coursesSection.title);
       setText("coursesTitleScript", content.coursesSection.titleScript);
       setText("coursesText", content.coursesSection.text);
@@ -482,7 +499,7 @@
       setText("methodTitle", content.method.title);
       setText("methodText", content.method.text);
 
-      // SỬA ĐỔI: TỰ ĐỘNG BIÊN DỊCH VÀO THÀNH LỘ TRÌNH VÔ HẠN BƯỚC + GẮN SỰ KIỆN CLICK VIDEO
+      // XỬ LÝ LỘ TRÌNH VÔ HẠN BƯỚC + SỰ KIỆN KHỞI CHẠY VIDEO
       document.getElementById("steps").innerHTML = content.steps.map((item, index) => `
         <div class="step" data-video="${escapeHtml(item.videoUrl || '')}">
           <span>${index + 1}</span>
@@ -494,7 +511,6 @@
         </div>
       `).join("");
 
-      // Gắn trình lắng nghe sự kiện click mở video cho từng thẻ bước
       document.querySelectorAll(".step").forEach((stepCard) => {
         stepCard.addEventListener("click", () => {
           const videoUrl = stepCard.dataset.video;
@@ -506,6 +522,7 @@
       const ctaLink = document.getElementById("ctaLink");
       ctaLink.href = content.cta.href;
       ctaLink.querySelector("span").textContent = content.cta.label;
+      
       document.getElementById("footerGrid").innerHTML = `
         <div>
           <div class="brand">${escapeHtml(content.site.brand)}</div>
@@ -518,12 +535,44 @@
           </div>
         `).join("")}
       `;
+
+      // LOGIC NÚT ĐIỀU KHIỂN LOA BẬT/TẮT ÂM THANH VIDEO HERO
+      const unmuteBtn = document.getElementById("unmuteHeroBtn");
+      const hasVideo = heroContainer.querySelector("iframe, video");
+      unmuteBtn.style.display = hasVideo ? "flex" : "none";
+
+      let isHeroMuted = true;
+      unmuteBtn.addEventListener("click", () => {
+        const iframe = heroContainer.querySelector("iframe");
+        const video = heroContainer.querySelector("video");
+        isHeroMuted = !isHeroMuted;
+
+        if (iframe) {
+          const command = isHeroMuted ? "mute" : "unMute";
+          iframe.contentWindow.postMessage(JSON.stringify({ event: "command", func: command, args: "" }), "*");
+        } else if (video) {
+          video.muted = isHeroMuted;
+        }
+
+        unmuteBtn.innerHTML = isHeroMuted 
+          ? `<i class="fa-solid fa-volume-xmark"></i> Bật âm thanh` 
+          : `<i class="fa-solid fa-volume-high"></i> Tắt âm thanh`;
+      });
     }
 
-    fetch("content.json", { cache: "no-store" })
-      .then((response) => response.ok ? response.json() : fallbackContent)
-      .then(render)
-      .catch(() => render(fallbackContent));
+    // KHỞI CHẠY ĐỒNG BỘ ĐÁM MÂY VÀ DỰ PHÒNG CỨU HỘ CỤC BỘ
+    (async function() {
+      let settings;
+      try {
+        const response = await fetch(`./content.json?t=${Date.now()}`);
+        if (response.ok) { settings = await response.json(); }
+        else { throw new Error(); }
+      } catch (e) {
+        const saved = localStorage.getItem("memori_local_backup_v2");
+        if (saved) { try { settings = JSON.parse(saved); } catch(err) {} }
+      }
+      render(settings || fallbackContent);
+    })();
   </script>
 </body>
 </html>
