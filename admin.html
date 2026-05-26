@@ -3,485 +3,569 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ME.MORI Admin</title>
+  <title>ME.MORI Studio Admin</title>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
       background: #f6f1e8;
       color: #171513;
-      font-family: Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     }
     header {
       position: sticky;
       top: 0;
-      z-index: 5;
+      z-index: 100;
       border-bottom: 1px solid #ded4c5;
       background: rgba(246, 241, 232, 0.96);
       backdrop-filter: blur(10px);
+      padding: 16px 0;
     }
-    .bar, main {
-      width: min(1180px, calc(100% - 28px));
-      margin: 0 auto;
-    }
-    .bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      min-height: 74px;
-    }
-    h1 { margin: 0; font-size: 24px; }
-    h2 { margin: 0 0 16px; font-size: 20px; }
-    h3 { margin: 24px 0 12px; font-size: 16px; }
-    main {
-      display: grid;
-      grid-template-columns: 280px minmax(0, 1fr);
-      gap: 22px;
-      padding: 24px 0 44px;
-    }
-    aside {
-      position: sticky;
-      top: 98px;
-      align-self: start;
-      padding: 18px;
-      border: 1px solid #ded4c5;
-      border-radius: 8px;
-      background: #fffaf1;
-    }
+    .container { width: min(1200px, calc(100% - 32px)); margin: 0 auto; }
+    .bar { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    h1 { font-size: 20px; font-weight: 800; letter-spacing: 0.5px; }
+    .help { color: #6a5f53; font-size: 13px; margin-top: 2px; }
+    
+    main { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 30px; padding: 24px 0 60px; }
+    aside { position: sticky; top: 90px; display: flex; flex-direction: column; gap: 6px; }
     aside a {
-      display: block;
-      padding: 11px 12px;
-      border-radius: 6px;
-      color: #171513;
-      font-weight: 700;
-      text-decoration: none;
+      display: block; padding: 12px 16px; border-radius: 8px; color: #5f5449;
+      font-weight: 700; font-size: 14px; text-decoration: none; transition: all 0.2s;
     }
-    aside a:hover { background: #f0d281; }
-    section {
-      margin-bottom: 18px;
-      padding: 22px;
-      border: 1px solid #ded4c5;
-      border-radius: 8px;
-      background: #fff;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-    }
+    aside a:hover, aside a.active { background: #171513; color: #fff; }
+    
+    section { display: none; padding: 28px; border: 1px solid #ded4c5; border-radius: 12px; background: #fff; }
+    section.active { display: block; }
+    section h2 { margin-bottom: 20px; font-size: 20px; border-bottom: 2px solid #f6f1e8; padding-bottom: 10px; }
+    
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
     .full { grid-column: 1 / -1; }
-    label {
-      display: grid;
-      gap: 7px;
-      color: #494037;
-      font-size: 13px;
-      font-weight: 700;
-    }
+    label { display: grid; gap: 6px; color: #494037; font-size: 13px; font-weight: 700; }
     input, textarea, select {
-      width: 100%;
-      border: 1px solid #cfc4b4;
-      border-radius: 6px;
-      padding: 11px 12px;
-      background: #fffdf8;
-      color: #171513;
-      font: inherit;
+      width: 100%; border: 1px solid #cfc4b4; border-radius: 8px; padding: 10px 14px;
+      background: #fffdf8; color: #171513; font-family: inherit; font-size: 14px; outline: none;
     }
-    textarea {
-      min-height: 92px;
-      resize: vertical;
-      line-height: 1.5;
-    }
-    .item {
-      margin-top: 14px;
-      padding: 16px;
-      border: 1px solid #e4dacd;
-      border-radius: 8px;
-      background: #fffaf1;
-    }
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
+    input:focus, textarea:focus, select:focus { border-color: #171513; box-shadow: 0 0 0 3px rgba(23, 21, 19, 0.08); }
+    textarea { min-height: 90px; resize: vertical; line-height: 1.5; }
+    
+    .item { margin-top: 16px; padding: 20px; border: 1px solid #e4dacd; border-radius: 8px; background: #fffaf1; }
+    .item h3 { margin-bottom: 12px; font-size: 14px; color: #7a6e61; text-transform: uppercase; }
+    
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
     button, .button {
-      display: inline-flex;
-      min-height: 42px;
-      align-items: center;
-      justify-content: center;
-      border: 0;
-      border-radius: 999px;
-      padding: 0 18px;
-      background: #171513;
-      color: #fff;
-      cursor: pointer;
-      font-weight: 800;
-      text-decoration: none;
+      display: inline-flex; min-height: 42px; align-items: center; justify-content: center;
+      border: 0; border-radius: 999px; padding: 0 22px; background: #171513; color: #fff;
+      cursor: pointer; font-weight: 700; font-size: 14px; text-decoration: none;
     }
     button.secondary, .button.secondary { background: #e9d8aa; color: #171513; }
-    .help {
-      margin: 8px 0 0;
-      color: #6a5f53;
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    .status {
-      min-height: 22px;
-      color: #5e4d2d;
-      font-size: 14px;
-      font-weight: 700;
-    }
-    .danger { color: #a12d24; }
+    .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; }
+    .file-input-wrapper input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; font-size: 100px; cursor: pointer; }
+    
+    .status-bar { background: #e6dfd3; padding: 10px 0; font-size: 13px; font-weight: 600; text-align: center; color: #494037; }
     @media (max-width: 850px) {
-      main, .grid { grid-template-columns: 1fr; }
-      aside { position: static; }
-      .bar { align-items: flex-start; flex-direction: column; padding: 16px 0; }
+      main { grid-template-columns: 1fr; }
+      aside { position: static; flex-direction: row; flex-wrap: wrap; }
+      .grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
+
   <header>
-    <div class="bar">
+    <div class="container bar">
       <div>
-        <h1>ME.MORI Admin</h1>
-        <p class="help">Sửa text, ảnh, video và đường liên kết. Bấm lưu để commit vào GitHub.</p>
+        <h1>ME.MORI Studio Admin</h1>
+        <p class="help">Không dùng cơ sở dữ liệu cồng kềnh. Xuất thẳng ra file Website chạy ngay.</p>
       </div>
       <div class="actions">
-        <a class="button secondary" href="index.html" target="_blank" rel="noreferrer">Xem website</a>
-        <button id="saveButton">Lưu lên GitHub</button>
+        <div class="file-input-wrapper">
+          <button class="secondary">Nhập file index.html cũ để sửa</button>
+          <input type="file" id="importFile" accept=".html">
+        </div>
+        <button id="downloadButton" style="background: #d99b27;">Xuất file index.html MỚI</button>
       </div>
     </div>
   </header>
 
-  <main>
-    <aside>
-      <a href="#github">Kết nối GitHub</a>
-      <a href="#site">Thông tin chung</a>
-      <a href="#hero">Hero</a>
+  <div class="status-bar" id="statusBar">Sẵn sàng khởi tạo nội dung mới.</div>
+
+  <main class="container">
+    <aside id="sidebar">
+      <a href="#site" class="active">Cài đặt & Font chữ</a>
+      <a href="#hero">Khung đầu (Hero)</a>
       <a href="#intro">Giới thiệu</a>
       <a href="#features">Điểm nổi bật</a>
-      <a href="#courses">Workshop</a>
+      <a href="#courses">Lớp học / Workshop</a>
       <a href="#method">Phương pháp</a>
       <a href="#cta">Liên hệ</a>
-      <a href="#footer">Footer</a>
+      <a href="#footer">Chân trang (Footer)</a>
     </aside>
 
     <div>
-      <section id="github">
-        <h2>Kết nối GitHub</h2>
-        <div class="grid">
-          <label>GitHub token
-            <input id="token" type="password" autocomplete="off" placeholder="github_pat_...">
-          </label>
-          <label>Branch lưu thay đổi
-            <input id="branch" value="main">
-          </label>
-        </div>
-        <p class="help">Token chỉ dùng trong trình duyệt của bạn để gọi GitHub API. Nên tạo fine-grained token chỉ có quyền đọc/ghi Contents cho repo <strong>PuongLee269/MeMoriClass</strong>.</p>
-        <div class="actions" style="margin-top:14px">
-          <button class="secondary" id="loadButton">Tải lại content.json</button>
-          <button class="secondary" id="downloadButton">Tải file content.json</button>
-          <span class="status" id="status"></span>
-        </div>
-      </section>
-
       <form id="editor"></form>
     </div>
   </main>
 
   <script>
-    const owner = "PuongLee269";
-    const repo = "MeMoriClass";
-    const contentPath = "content.json";
-    let content = null;
-    let contentSha = null;
+    const STORAGE_KEY = "memori_standalone_draft";
+    
+    // Khởi tạo bộ dữ liệu mặc định ban đầu của ME.MORI Class
+    let content = {
+      site: { title: "ME.MORI Class", description: "ME.MORI Class - workshop kể chuyện bằng hình ảnh, quay dựng và tư duy cinematic cho creator.", brand: "ME.MORI", fontHeading: "Be Vietnam Pro", fontBody: "Be Vietnam Pro" },
+      nav: [{ label: "Workshop", href: "#workshops" }, { label: "Phương pháp", href: "#method" }, { label: "Liên hệ", href: "#contact" }],
+      navCourses: { label: "Khóa học", href: "#courses" }, navCta: { label: "Đăng ký", href: "#contact" },
+      hero: { eyebrow: "ME.MORI Class", titleStart: "Học nghệ thuật", titleScript: "kể chuyện", titleEnd: "bằng hình ảnh", text: "Workshop dành cho creator muốn xây dựng tư duy cinematic, quay dựng có cảm xúc và biến ý tưởng thành câu chuyện rõ ràng trên màn hình.", primary: { label: "Xem workshop", href: "#courses" }, secondary: { label: "Cách học", href: "#method" }, mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop", mediaAlt: "Nhóm học viên cùng trao đổi trong lớp học sáng tạo", note: "Thực hành theo dự án thật, nhận phản hồi trực tiếp và hoàn thiện góc nhìn cá nhân." },
+      intro: { title: "Không gian học tập cho người làm hình ảnh hiện đại", text: "ME.MORI Class kết hợp điện ảnh, storytelling và kỹ năng sản xuất nội dung để giúp học viên biết mình muốn kể gì, vì sao câu chuyện đáng xem và nên thể hiện nó như thế nào." },
+      features: [
+        { icon: "fa-film", title: "Tư duy cinematic", text: "Hiểu nhịp dựng, khung hình, chuyển cảnh và cách tạo cảm xúc bằng lựa chọn thị giác." },
+        { icon: "fa-camera", title: "Thực hành thật", text: "Làm bài tập tại lớp, quay dựng theo brief và nhận phản hồi để cải thiện từng phiên bản." },
+        { icon: "fa-users", title: "Cộng đồng creator", text: "Kết nối với những người cùng quan tâm đến video, điện ảnh và kể chuyện bằng hình ảnh." }
+      ],
+      coursesSection: { title: "Workshop", titleScript: "nổi bật", text: "Các lớp được thiết kế ngắn gọn, tập trung vào kỹ năng có thể áp dụng ngay cho video cá nhân, thương hiệu hoặc dự án sáng tạo." },
+      courses: [
+        { title: "Storytelling cho video ngắn", text: "Xây cấu trúc câu chuyện, mở đầu cuốn hút và thông điệp dễ nhớ.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop", mediaAlt: "Không gian workshop với sổ ghi chép và laptop" },
+        { title: "Tư duy hình ảnh cinematic", text: "Rèn bố cục, ánh sáng, chuyển động máy và nhịp cảm xúc.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop", mediaAlt: "Máy quay trong buổi thực hành video" },
+        { title: "Quay dựng cho creator", text: "Biến footage thô thành sản phẩm hoàn chỉnh, rõ nhịp và rõ ý.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop", mediaAlt: "Học viên đang học cùng laptop" }
+      ],
+      method: { eyebrow: "Phương pháp", title: "Bắt đầu đơn giản, học bằng dự án thật", text: "Mỗi buổi học tập trung vào một kỹ năng rõ ràng, có ví dụ, có thực hành và có feedback để học viên thấy tiến bộ ngay trong sản phẩm của mình." },
+      steps: [
+        { title: "Đăng ký workshop", text: "Chọn chủ đề phù hợp với mục tiêu và kinh nghiệm hiện tại." },
+        { title: "Thực hành tại lớp", text: "Làm bài tập theo brief, nhận hướng dẫn và chỉnh sửa trực tiếp." },
+        { title: "Hoàn thiện sản phẩm", text: "Nhận feedback để cải thiện câu chuyện, nhịp dựng và hình ảnh." }
+      ],
+      cta: { title: "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?", label: "Liên hệ đăng ký", href: "mailto:hello@memori.class" },
+      footer: {
+        intro: "Không gian học tập dành cho người yêu điện ảnh, storytelling và nghệ thuật hình ảnh hiện đại.",
+        columns: [
+          { title: "Khóa học", items: ["Video ngắn", "Tư duy cinematic", "Quay dựng creator"] },
+          { title: "Cộng đồng", items: ["Workshop", "Feedback nhóm", "Dự án học viên"] },
+          { title: "Liên hệ", items: ["Instagram", "Facebook", "hello@memori.class"] }
+        ]
+      }
+    };
 
     const fields = [
-      ["site", "Thông tin chung", [
-        ["site.title", "Tiêu đề tab"],
-        ["site.description", "Mô tả SEO", "textarea"],
+      ["site", "Cài đặt chung & Đổi Font chữ", [
+        ["site.title", "Tiêu đề Tab trình duyệt"],
         ["site.brand", "Tên thương hiệu"],
-        ["nav.0.label", "Menu 1"],
-        ["nav.0.href", "Link menu 1"],
-        ["nav.1.label", "Menu 2"],
-        ["nav.1.href", "Link menu 2"],
-        ["nav.2.label", "Menu 3"],
-        ["nav.2.href", "Link menu 3"],
-        ["navCourses.label", "Nút khóa học"],
-        ["navCourses.href", "Link nút khóa học"],
-        ["navCta.label", "Nút đăng ký"],
-        ["navCta.href", "Link nút đăng ký"]
+        ["site.fontHeading", "Font chữ cho Tiêu đề (Heading)", "select", ["Be Vietnam Pro", "Lora", "Playfair Display", "Montserrat", "Inter", "Arial", "Courier New"]],
+        ["site.fontBody", "Font chữ cho Văn bản (Body)", "select", ["Be Vietnam Pro", "Lora", "Inter", "Arial", "Georgia"]],
+        ["site.description", "Mô tả SEO", "textarea"],
+        ["nav.0.label", "Menu 1"], ["nav.0.href", "Link menu 1"],
+        ["nav.1.label", "Menu 2"], ["nav.1.href", "Link menu 2"],
+        ["nav.2.label", "Menu 3"], ["nav.2.href", "Link menu 3"],
+        ["navCourses.label", "Nút khóa học"], ["navCourses.href", "Link nút khóa học"],
+        ["navCta.label", "Nút đăng ký"], ["navCta.href", "Link nút đăng ký"]
       ]],
-      ["hero", "Hero", [
-        ["hero.eyebrow", "Dòng nhỏ"],
+      ["hero", "Khung giới thiệu đầu trang (Hero)", [
+        ["hero.eyebrow", "Dòng chữ nhỏ"],
         ["hero.titleStart", "Tiêu đề đầu"],
-        ["hero.titleScript", "Tiêu đề nhấn mạnh"],
+        ["hero.titleScript", "Tiêu đề nét viết tay (Nhấn mạnh)"],
         ["hero.titleEnd", "Tiêu đề cuối"],
         ["hero.text", "Mô tả", "textarea"],
-        ["hero.primary.label", "Nút chính"],
-        ["hero.primary.href", "Link nút chính"],
-        ["hero.secondary.label", "Nút phụ"],
-        ["hero.secondary.href", "Link nút phụ"],
+        ["hero.primary.label", "Nút chính"], ["hero.primary.href", "Link nút chính"],
+        ["hero.secondary.label", "Nút phụ"], ["hero.secondary.href", "Link nút phụ"],
         ["hero.mediaType", "Loại media", "select", ["image", "video"]],
-        ["hero.mediaUrl", "URL ảnh/video"],
+        ["hero.mediaUrl", "Đường dẫn URL ảnh/video"],
         ["hero.mediaAlt", "Mô tả ảnh/video"],
-        ["hero.note", "Ghi chú trên ảnh", "textarea"]
+        ["hero.note", "Ghi chú nổi trên ảnh", "textarea"]
       ]],
-      ["intro", "Giới thiệu", [
-        ["intro.title", "Tiêu đề"],
-        ["intro.text", "Nội dung", "textarea"]
+      ["intro", "Phân đoạn Giới thiệu", [
+        ["intro.title", "Tiêu đề chính"],
+        ["intro.text", "Nội dung giới thiệu", "textarea"]
       ]],
       ["features", "Điểm nổi bật", []],
-      ["courses", "Workshop", [
+      ["courses", "Lớp học / Workshop", [
         ["coursesSection.title", "Tiêu đề"],
-        ["coursesSection.titleScript", "Tiêu đề nhấn mạnh"],
-        ["coursesSection.text", "Mô tả", "textarea"]
+        ["coursesSection.titleScript", "Tiêu đề viết tay"],
+        ["coursesSection.text", "Mô tả ngắn", "textarea"]
       ]],
-      ["method", "Phương pháp", [
-        ["method.eyebrow", "Dòng nhỏ"],
+      ["method", "Phương pháp học", [
+        ["method.eyebrow", "Dòng dẫn nhỏ"],
         ["method.title", "Tiêu đề"],
-        ["method.text", "Mô tả", "textarea"]
+        ["method.text", "Mô tả chi tiết", "textarea"]
       ]],
-      ["cta", "Liên hệ", [
-        ["cta.title", "Tiêu đề"],
+      ["cta", "Nút kêu gọi liên hệ", [
+        ["cta.title", "Tiêu đề khối liên hệ"],
         ["cta.label", "Chữ trên nút"],
-        ["cta.href", "Đường liên kết"]
+        ["cta.href", "Đường dẫn liên kết"]
       ]],
-      ["footer", "Footer", [
-        ["footer.intro", "Mô tả footer", "textarea"]
+      ["footer", "Chân trang (Footer)", [
+        ["footer.intro", "Lời giới thiệu chân trang", "textarea"]
       ]]
     ];
 
-    function getByPath(target, path) {
-      return path.split(".").reduce((current, key) => current?.[key], target);
-    }
-
+    function getByPath(target, path) { return path.split(".").reduce((curr, key) => curr?.[key], target); }
     function setByPath(target, path, value) {
-      const parts = path.split(".");
-      const last = parts.pop();
-      const parent = parts.reduce((current, key) => current[key], target);
-      parent[last] = value;
+      const parts = path.split("."); const last = parts.pop();
+      const parent = parts.reduce((curr, key) => curr[key], target);
+      if (parent) parent[last] = value;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
     }
 
     function inputFor(path, label, type = "text", options = []) {
       const value = getByPath(content, path) ?? "";
-      if (type === "textarea") {
-        return `<label class="full">${label}<textarea data-path="${path}">${escapeHtml(value)}</textarea></label>`;
-      }
-      if (type === "select") {
-        return `<label>${label}<select data-path="${path}">${options.map((option) => `<option value="${option}" ${value === option ? "selected" : ""}>${option}</option>`).join("")}</select></label>`;
-      }
+      if (type === "textarea") return `<label class="full">${label}<textarea data-path="${path}">${escapeHtml(value)}</textarea></label>`;
+      if (type === "select") return `<label>${label}<select data-path="${path}">${options.map(opt => `<option value="${opt}" ${value === opt ? "selected" : ""}>${opt}</option>`).join("")}</select></label>`;
       return `<label>${label}<input data-path="${path}" value="${escapeHtml(value)}"></label>`;
     }
 
-    function mediaUpload(path) {
-      return `
-        <div class="full actions">
-          <input type="file" data-upload="${path}" accept="image/*,video/*">
-          <button class="secondary" type="button" data-upload-button="${path}">Upload media</button>
-        </div>
-      `;
-    }
-
     function renderEditor() {
-      const editor = document.getElementById("editor");
-      editor.innerHTML = fields.map(([id, title, sectionFields]) => `
+      document.getElementById("editor").innerHTML = fields.map(([id, title, secFields]) => `
         <section id="${id}">
           <h2>${title}</h2>
-          <div class="grid">
-            ${sectionFields.map((field) => inputFor(...field)).join("")}
-            ${id === "hero" ? mediaUpload("hero.mediaUrl") : ""}
-          </div>
+          <div class="grid">${secFields.map(field => inputFor(...field)).join("")}</div>
           ${renderDynamicSection(id)}
         </section>
       `).join("");
       bindInputs();
+      initTabs();
     }
 
     function renderDynamicSection(id) {
       if (id === "features") {
-        return content.features.map((item, index) => `
-          <div class="item">
-            <h3>Điểm nổi bật ${index + 1}</h3>
+        return content.features.map((item, i) => `
+          <div class="item"><h3>Điểm nổi bật ${i + 1}</h3>
             <div class="grid">
-              ${inputFor(`features.${index}.icon`, "Icon Font Awesome")}
-              ${inputFor(`features.${index}.title`, "Tiêu đề")}
-              ${inputFor(`features.${index}.text`, "Nội dung", "textarea")}
+              ${inputFor(`features.${i}.icon`, "Icon FontAwesome")}
+              ${inputFor(`features.${i}.title`, "Tiêu đề")}
+              ${inputFor(`features.${i}.text`, "Nội dung mô tả", "textarea")}
             </div>
-          </div>
-        `).join("");
+          </div>`).join("");
       }
       if (id === "courses") {
-        return content.courses.map((item, index) => `
-          <div class="item">
-            <h3>Workshop ${index + 1}</h3>
+        return content.courses.map((item, i) => `
+          <div class="item"><h3>Workshop ${i + 1}</h3>
             <div class="grid">
-              ${inputFor(`courses.${index}.title`, "Tên workshop")}
-              ${inputFor(`courses.${index}.mediaType`, "Loại media", "select", ["image", "video"])}
-              ${inputFor(`courses.${index}.text`, "Mô tả", "textarea")}
-              ${inputFor(`courses.${index}.mediaUrl`, "URL ảnh/video")}
-              ${inputFor(`courses.${index}.mediaAlt`, "Mô tả ảnh/video")}
-              ${mediaUpload(`courses.${index}.mediaUrl`)}
+              ${inputFor(`courses.${i}.title`, "Tên lớp")}
+              ${inputFor(`courses.${i}.mediaType`, "Định dạng", "select", ["image", "video"])}
+              ${inputFor(`courses.${i}.text`, "Tóm tắt ngắn", "textarea")}
+              <div class="full">${inputFor(`courses.${i}.mediaUrl`, "URL hình ảnh/video")}</div>
+              <div class="full">${inputFor(`courses.${i}.mediaAlt`, "Mô tả nội dung hình ảnh")}</div>
             </div>
-          </div>
-        `).join("");
+          </div>`).join("");
       }
       if (id === "method") {
-        return content.steps.map((item, index) => `
-          <div class="item">
-            <h3>Bước ${index + 1}</h3>
+        return content.steps.map((item, i) => `
+          <div class="item"><h3>Bước giảng dạy ${i + 1}</h3>
             <div class="grid">
-              ${inputFor(`steps.${index}.title`, "Tiêu đề")}
-              ${inputFor(`steps.${index}.text`, "Nội dung", "textarea")}
+              ${inputFor(`steps.${i}.title`, "Tiêu đề bước")}
+              ${inputFor(`steps.${i}.text`, "Nội dung chi tiết", "textarea")}
             </div>
-          </div>
-        `).join("");
+          </div>`).join("");
       }
       if (id === "footer") {
-        return content.footer.columns.map((column, columnIndex) => `
-          <div class="item">
-            <h3>Cột footer ${columnIndex + 1}</h3>
+        return content.footer.columns.map((col, cIdx) => `
+          <div class="item"><h3>Cột Footer ${cIdx + 1}</h3>
             <div class="grid">
-              ${inputFor(`footer.columns.${columnIndex}.title`, "Tiêu đề cột")}
-              ${column.items.map((item, itemIndex) => inputFor(`footer.columns.${columnIndex}.items.${itemIndex}`, `Dòng ${itemIndex + 1}`)).join("")}
+              ${inputFor(`footer.columns.${cIdx}.title`, "Tiêu đề cột")}
+              ${col.items.map((item, itemIdx) => inputFor(`footer.columns.${cIdx}.items.${itemIdx}`, `Dòng chữ ${itemIdx + 1}`)).join("")}
             </div>
-          </div>
-        `).join("");
+          </div>`).join("");
       }
       return "";
     }
 
     function bindInputs() {
-      document.querySelectorAll("[data-path]").forEach((input) => {
+      document.querySelectorAll("[data-path]").forEach(input => {
         input.addEventListener("input", () => setByPath(content, input.dataset.path, input.value));
       });
-      document.querySelectorAll("[data-upload-button]").forEach((button) => {
-        button.addEventListener("click", () => uploadMedia(button.dataset.uploadButton));
-      });
     }
 
-    async function loadContent() {
-      setStatus("Đang tải content.json...");
-      const response = await fetch("content.json?ts=" + Date.now());
-      content = await response.json();
-      renderEditor();
-      setStatus("Đã tải nội dung.");
-    }
-
-    async function fetchContentSha(token, branch) {
-      const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${contentPath}?ref=${encodeURIComponent(branch)}`, {
-        headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" }
-      });
-      if (!response.ok) throw new Error("Không lấy được SHA của content.json.");
-      const data = await response.json();
-      contentSha = data.sha;
-    }
-
-    async function saveContent() {
-      try {
-        const token = requireToken();
-        const branch = document.getElementById("branch").value || "main";
-        setStatus("Đang lưu content.json lên GitHub...");
-        await fetchContentSha(token, branch);
-        const body = {
-          message: "Update website content from admin",
-          content: toBase64(JSON.stringify(content, null, 2) + "\n"),
-          sha: contentSha,
-          branch
-        };
-        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${contentPath}`, {
-          method: "PUT",
-          headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" },
-          body: JSON.stringify(body)
-        });
-        if (!response.ok) throw new Error(await response.text());
-        const data = await response.json();
-        contentSha = data.content.sha;
-        setStatus("Đã lưu. GitHub Pages sẽ cập nhật sau một lúc.");
-      } catch (error) {
-        setStatus(error.message, true);
+    function initTabs() {
+      const links = document.querySelectorAll("#sidebar a");
+      const sections = document.querySelectorAll("#editor section");
+      function switchTab(targetId) {
+        links.forEach(l => l.classList.toggle("active", l.getAttribute("href") === targetId));
+        sections.forEach(s => s.classList.toggle("active", "#" + s.getAttribute("id") === targetId));
       }
+      links.forEach(link => {
+        link.addEventListener("click", (e) => { e.preventDefault(); const id = link.getAttribute("href"); switchTab(id); window.location.hash = id; });
+      });
+      switchTab(window.location.hash || "#site");
     }
 
-    async function uploadMedia(path) {
-      try {
-        const token = requireToken();
-        const input = document.querySelector(`[data-upload="${path}"]`);
-        const file = input.files[0];
-        if (!file) throw new Error("Chọn ảnh hoặc video trước khi upload.");
-        const branch = document.getElementById("branch").value || "main";
-        const safeName = file.name.toLowerCase().replace(/[^a-z0-9._-]+/g, "-");
-        const repoPath = `assets/uploads/${Date.now()}-${safeName}`;
-        const body = {
-          message: `Upload ${file.name}`,
-          content: await fileToBase64(file),
-          branch
-        };
-        setStatus("Đang upload media...");
-        const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/${repoPath}`, {
-          method: "PUT",
-          headers: { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json" },
-          body: JSON.stringify(body)
-        });
-        if (!response.ok) throw new Error(await response.text());
-        setByPath(content, path, repoPath);
-        renderEditor();
-        setStatus("Đã upload media. Bấm lưu để cập nhật content.json.");
-      } catch (error) {
-        setStatus(error.message, true);
-      }
-    }
+    // Đọc ngược dữ liệu từ file index.html cũ tải lên để tiếp tục chỉnh sửa
+    document.getElementById("importFile").addEventListener("change", (e) => {
+      const file = e.target.files[0]; if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          const text = evt.target.result;
+          const match = text.match(/const\s+DATABASE_INTERNAL\s*=\s*({[\s\S]*?});/);
+          if (match) {
+            content = JSON.parse(match[1]);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
+            renderEditor();
+            setStatusBar("Đã nạp file index.html cũ thành công! Bạn có thể sửa tiếp ngay.");
+          } else {
+            setStatusBar("Lỗi: Không tìm thấy nhân dữ liệu hợp lệ trong file HTML này.", true);
+          }
+        } catch { setStatusBar("Lỗi xử lý tệp tin HTML.", true); }
+      };
+      reader.readAsText(file);
+    });
 
-    function downloadContent() {
-      const blob = new Blob([JSON.stringify(content, null, 2) + "\n"], { type: "application/json" });
+    // Hàm xuất nội dung đóng gói toàn vẹn trang index.html mới hoàn toàn độc lập
+    document.getElementById("downloadButton").addEventListener("click", () => {
+      const fontHeading = content.site.fontHeading || "Be Vietnam Pro";
+      const fontBody = content.site.fontBody || "Be Vietnam Pro";
+      
+      const fontHeadingUrl = fontHeading.replace(/\s+/g, "+");
+      const fontBodyUrl = fontBody.replace(/\s+/g, "+");
+
+      // Khung mẫu xương sống Website gốc của bạn được giữ nguyên cấu trúc CSS và layout
+      const outputHtml = `<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="${escapeHtml(content.site.description)}">
+  <title>${escapeHtml(content.site.title)}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=${fontHeadingUrl}:wght@400;500;600;700;800&family=${fontBodyUrl}:wght@400;500;600;700&family=Lora:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh; overflow-x: hidden; background: #fff8ec; color: #161412;
+      font-family: "${fontBody}", Arial, sans-serif; -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, .brand { font-family: "${fontHeading}", Arial, sans-serif; }
+    a { color: inherit; text-decoration: none; }
+    img, video { display: block; width: 100%; }
+    .container { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 10; background: rgba(255, 248, 236, 0.92);
+      border-bottom: 1px solid rgba(22, 20, 18, 0.08); backdrop-filter: blur(14px);
+    }
+    .nav { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; min-height: 76px; gap: 24px; }
+    .nav-links, .nav-actions { display: flex; align-items: center; gap: 22px; }
+    .nav-actions { justify-content: flex-end; }
+    .brand { font-size: 23px; font-weight: 800; letter-spacing: 0.12em; white-space: nowrap; }
+    .nav a { font-size: 14px; font-weight: 700; }
+    .pill {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 46px; padding: 0 22px; border-radius: 999px; background: #161412; color: #fff; font-weight: 800;
+    }
+    .pill.secondary { background: #f0d281; color: #161412; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr); align-items: center; gap: 56px; padding: 72px 0 84px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px; margin-bottom: 22px;
+      color: #7a5222; font-size: 13px; font-weight: 800; text-transform: uppercase;
+    }
+    .eyebrow::before { width: 34px; height: 2px; background: #d99b27; content: ""; }
+    h1, h2, h3 { letter-spacing: 0; }
+    h1 { max-width: 700px; font-size: clamp(48px, 7vw, 86px); line-height: 0.98; font-weight: 800; }
+    .script { font-family: "Lora", serif !important; font-style: italic; font-weight: 700; }
+    .hero p, .section-copy { max-width: 620px; color: #5f574d; font-size: 18px; line-height: 1.8; }
+    .hero p { margin: 26px 0 34px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+    .hero-media {
+      position: relative; min-height: 620px; overflow: hidden; border-radius: 26px;
+      background: #e8cf9a; box-shadow: 0 26px 80px rgba(38, 30, 17, 0.2);
+    }
+    .hero-media img, .hero-media video { height: 620px; object-fit: cover; }
+    .hero-note {
+      position: absolute; right: 24px; bottom: 24px; max-width: 280px; padding: 20px; border-radius: 18px;
+      background: rgba(255, 255, 255, 0.9); box-shadow: 0 18px 50px rgba(22, 20, 18, 0.18);
+      color: #2a241d; font-size: 14px; font-weight: 700; line-height: 1.6;
+    }
+    section { padding: 88px 0; }
+    .light { background: #fff; }
+    .dark { background: #171513; color: #fff; }
+    .dark .section-copy { color: #d3c9bd; }
+    .section-heading { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(280px, 0.55fr); align-items: end; gap: 40px; margin-bottom: 42px; }
+    h2 { font-size: clamp(34px, 5vw, 58px); line-height: 1.05; font-weight: 800; }
+    .cards, .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { min-height: 260px; padding: 28px; border: 1px solid rgba(22, 20, 18, 0.08); border-radius: 8px; background: #fffaf1; }
+    .card i {
+      display: inline-flex; width: 54px; height: 54px; align-items: center; justify-content: center;
+      margin-bottom: 22px; border-radius: 50%; background: #f1c55f; font-size: 22px;
+    }
+    .card h3, .course h3 { margin-bottom: 14px; font-size: 23px; }
+    .card p, .course p, .step p { color: #645b51; line-height: 1.7; }
+    .course { overflow: hidden; border-radius: 8px; background: #fff; color: #161412; }
+    .course img, .course video { height: 245px; object-fit: cover; }
+    .course-content { padding: 24px; }
+    .steps { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 42px; align-items: center; }
+    .step-list { display: grid; gap: 16px; }
+    .step { display: flex; gap: 16px; align-items: flex-start; padding: 20px; border-radius: 8px; background: #fff; }
+    .step span {
+      display: inline-flex; width: 34px; height: 34px; flex: 0 0 34px; align-items: center; justify-content: center;
+      border-radius: 50%; background: #171513; color: #fff; font-weight: 800;
+    }
+    .step strong { display: block; margin-bottom: 5px; }
+    .cta { padding: 72px 0; background: #efc45b; }
+    .cta-row { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+    .cta h2 { max-width: 720px; }
+    footer { padding: 58px 0; background: #171513; color: #fff; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 30px; }
+    footer p, footer li { color: #c8c0b5; line-height: 1.8; }
+    footer ul { list-style: none; }
+    footer h3 { margin-bottom: 16px; font-size: 16px; }
+    @media (max-width: 900px) {
+      .nav { grid-template-columns: 1fr; padding: 18px 0; text-align: center; }
+      .nav-links, .nav-actions { justify-content: center; flex-wrap: wrap; }
+      .hero, .section-heading, .steps, .cta-row, .footer-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 48px; }
+      .hero-media, .hero-media img, .hero-media video { min-height: 420px; height: 420px; }
+      .cards, .course-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .container { width: min(100% - 24px, 1120px); }
+      .nav-links { display: none; }
+      .brand { font-size: 20px; }
+      h1 { font-size: 44px; }
+      .hero-note { right: 14px; bottom: 14px; left: 14px; max-width: none; }
+      section { padding: 64px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="container nav" aria-label="Điều hướng chính">
+      <div class="nav-links" id="navLinks"></div>
+      <a class="brand" id="brand" href="#"></a>
+      <div class="nav-actions">
+        <a id="navCourses" href="#courses"></a>
+        <a class="pill" id="navCta" href="#contact"></a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="container hero">
+      <div>
+        <div class="eyebrow" id="heroEyebrow"></div>
+        <h1><span id="heroTitleStart"></span> <span class="script" id="heroTitleScript"></span> <span id="heroTitleEnd"></span></h1>
+        <p id="heroText"></p>
+        <div class="hero-actions">
+          <a class="pill" id="heroPrimary"></a>
+          <a class="pill secondary" id="heroSecondary"></a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div id="heroMedia"></div>
+        <div class="hero-note" id="heroNote"></div>
+      </div>
+    </section>
+
+    <section id="workshops" class="light">
+      <div class="container">
+        <div class="section-heading">
+          <h2 id="introTitle"></h2>
+          <p class="section-copy" id="introText"></p>
+        </div>
+        <div class="cards" id="features"></div>
+      </div>
+    </section>
+
+    <section id="courses" class="dark">
+      <div class="container">
+        <div class="section-heading">
+          <h2><span id="coursesTitle"></span> <span class="script" id="coursesTitleScript"></span></h2>
+          <p class="section-copy" id="coursesText"></p>
+        </div>
+        <div class="course-grid" id="courseGrid"></div>
+      </div>
+    </section>
+
+    <section id="method">
+      <div class="container steps">
+        <div>
+          <div class="eyebrow" id="methodEyebrow"></div>
+          <h2 id="methodTitle"></h2>
+          <p class="section-copy" id="methodText"></p>
+        </div>
+        <div class="step-list" id="steps"></div>
+      </div>
+    </section>
+
+    <section id="contact" class="cta">
+      <div class="container cta-row">
+        <h2 id="ctaTitle"></h2>
+        <a class="pill" id="ctaLink"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span></span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid" id="footerGrid"></div>
+  </footer>
+
+  <script>
+    // NHÂN DỮ LIỆU ĐƯỢC CHÈN TRỰC TIẾP TỪ ADMIN
+    const DATABASE_INTERNAL = ${JSON.stringify(content, null, 2)};
+
+    const setText = (id, value) => { document.getElementById(id).textContent = value || ""; };
+    const setLink = (id, item) => {
+      const el = document.getElementById(id); el.href = item?.href || "#";
+      if (item?.label) el.textContent = item.label;
+    };
+    const mediaMarkup = (item, className = "") => {
+      const type = item?.mediaType === "video" ? "video" : "image"; const url = item?.mediaUrl || ""; const alt = item?.mediaAlt || "";
+      if (type === "video") return \`<video class="\${className}" src="\${url}" aria-label="\${escapeHtml(alt)}" autoplay muted loop playsinline controls></video>\`;
+      return \`<img class="\${className}" src="\${url}" alt="\${escapeHtml(alt)}">\`;
+    };
+    const escapeHtml = (val = "") => String(val).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+
+    function render(data) {
+      document.title = data.site.title;
+      setText("brand", data.site.brand);
+      document.getElementById("navLinks").innerHTML = data.nav.map((item) => \`<a href="\${escapeHtml(item.href)}">\${escapeHtml(item.label)}</a>\`).join("");
+      setLink("navCourses", data.navCourses); setLink("navCta", data.navCta);
+      setText("heroEyebrow", data.hero.eyebrow); setText("heroTitleStart", data.hero.titleStart); setText("heroTitleScript", data.hero.titleScript); setText("heroTitleEnd", data.hero.titleEnd); setText("heroText", data.hero.text);
+      setLink("heroPrimary", data.hero.primary); setLink("heroSecondary", data.hero.secondary);
+      document.getElementById("heroMedia").innerHTML = mediaMarkup(data.hero);
+      setText("heroNote", data.hero.note); setText("introTitle", data.intro.title); setText("introText", data.intro.text);
+      document.getElementById("features").innerHTML = data.features.map((item) => \`
+        <article class="card">
+          <i class="fa-solid \${escapeHtml(item.icon)}" aria-hidden="true"></i>
+          <h3>\${escapeHtml(item.title)}</h3><p>\${escapeHtml(item.text)}</p>
+        </article>\`).join("");
+      setText("coursesTitle", data.coursesSection.title); setText("coursesTitleScript", data.coursesSection.titleScript); setText("coursesText", data.coursesSection.text);
+      document.getElementById("courseGrid").innerHTML = data.courses.map((item) => \`
+        <article class="course">
+          \${mediaMarkup(item)}
+          <div class="course-content"><h3>\${escapeHtml(item.title)}</h3><p>\${escapeHtml(item.text)}</p></div>
+        </article>\`).join("");
+      setText("methodEyebrow", data.method.eyebrow); setText("methodTitle", data.method.title); setText("methodText", data.method.text);
+      document.getElementById("steps").innerHTML = data.steps.map((item, index) => \`
+        <div class="step"><span>\${index + 1}</span><div><strong>\${escapeHtml(item.title)}</strong><p>\${escapeHtml(item.text)}</p></div></div>\`).join("");
+      setText("ctaTitle", data.cta.title);
+      const ctaLink = document.getElementById("ctaLink"); ctaLink.href = data.cta.href; ctaLink.querySelector("span").textContent = data.cta.label;
+      document.getElementById("footerGrid").innerHTML = \`
+        <div><div class="brand">\${escapeHtml(data.site.brand)}</div><p>\${escapeHtml(data.footer.intro)}</p></div>
+        \${data.footer.columns.map((column) => \`
+          <div><h3>\${escapeHtml(column.title)}</h3><ul>\${column.items.map((item) => \`<li>\${escapeHtml(item)}</li>\`).join("")}</ul></div>\`).join("")}\`;
+    }
+    render(DATABASE_INTERNAL);
+  </script>
+</body>
+</html>`;
+
+      const blob = new Blob([outputHtml], { type: "text/html" });
       const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "content.json";
-      link.click();
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "index.html";
+      a.click();
       URL.revokeObjectURL(url);
+      setStatusBar("Tải xuống index.html thành công! Hãy kéo thả file này lên GitHub.");
+    });
+
+    function escapeHtml(str = "") { return String(str).replace(/[&<>"']/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m])); }
+    function setStatusBar(msg, isError = false) {
+      const b = document.getElementById("statusBar"); b.textContent = msg;
+      b.style.background = isError ? "#f4dcdb" : "#e6dfd3"; b.style.color = isError ? "#a12d24" : "#494037";
     }
 
-    function requireToken() {
-      const token = document.getElementById("token").value.trim();
-      if (!token) throw new Error("Cần nhập GitHub token trước khi lưu.");
-      return token;
-    }
-
-    function toBase64(value) {
-      return btoa(unescape(encodeURIComponent(value)));
-    }
-
-    function fileToBase64(file) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(String(reader.result).split(",")[1]);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-    }
-
-    function escapeHtml(value = "") {
-      return String(value).replace(/[&<>"']/g, (char) => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-      }[char]));
-    }
-
-    function setStatus(message, isError = false) {
-      const status = document.getElementById("status");
-      status.textContent = message;
-      status.classList.toggle("danger", isError);
-    }
-
-    document.getElementById("saveButton").addEventListener("click", saveContent);
-    document.getElementById("loadButton").addEventListener("click", loadContent);
-    document.getElementById("downloadButton").addEventListener("click", downloadContent);
-    loadContent().catch((error) => setStatus(error.message, true));
+    // Tự động khôi phục bản nháp thô từ bộ nhớ trình duyệt nếu có
+    const cached = localStorage.getItem(STORAGE_KEY);
+    if (cached) { content = JSON.parse(cached); setStatusBar("Đã nạp bản nháp lưu tạm trên trình duyệt."); }
+    renderEditor();
   </script>
 </body>
 </html>
