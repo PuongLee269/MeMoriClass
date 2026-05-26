@@ -379,7 +379,7 @@
 
       // Nếu phát hiện là link YouTube, ưu tiên xuất thẻ nhúng iframe
       if (youtubeId) {
-        return `<iframe class="${className}" src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${youtubeId}&playsinline=1&rel=0&modestbranding=1" title="${escapeHtml(alt)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+        return `<iframe class="${className}" src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=0&controls=0&loop=1&playlist=${youtubeId}&playsinline=1&rel=0&modestbranding=1" title="${escapeHtml(alt)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
       }
 
       const type = item?.mediaType === "video" ? "video" : "image";
