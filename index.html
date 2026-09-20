@@ -3,99 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#191b3d" />
-  <title>Me.mori Class — Ngọn lửa của bạn</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23191b3d'/%3E%3Cpath d='M32 10c-4 13 9 14 3 24-3-4-8-5-8-13-10 8-12 20-3 28 8 7 22 4 26-6 4-10-5-17-10-22 1 8-5 11-8 13 3-9-2-15 0-24Z' fill='%23ffbc65'/%3E%3C/svg%3E" />
+  <meta name="theme-color" content="#101b30" />
+  <title>Me.mori — Ngọn lửa của bạn</title>
   <style>
-    :root { --ink:#f8efd8; --muted:#b5b2c8; --night:#171936; --night-2:#242454; --pink:#f39ab7; --gold:#ffbd68; }
-    * { box-sizing:border-box; }
-    html,body { margin:0; min-height:100%; background:var(--night); color:var(--ink); font-family: Georgia, 'Times New Roman', serif; }
-    body { overflow:hidden; }
-    button { font:inherit; color:inherit; cursor:pointer; }
-    .app { position:relative; width:100vw; height:100vh; min-height:620px; overflow:hidden; background:radial-gradient(circle at 50% 35%, #33336b 0%, #1c1d42 45%, #111329 100%); }
-    .app:before { content:""; position:absolute; inset:0; opacity:.13; pointer-events:none; background-image:radial-gradient(#fff 0.7px, transparent .7px); background-size:7px 7px; mix-blend-mode:screen; }
-    .moon { position:absolute; width:180px; height:180px; right:11%; top:10%; border-radius:50%; background:#fff0c8; box-shadow:0 0 0 18px rgba(255,240,200,.05), 0 0 65px rgba(255,240,200,.18); opacity:.92; }
-    .moon:after { content:""; position:absolute; width:24px;height:24px; border-radius:50%; background:#ded1b2; top:38px; left:46px; opacity:.35; box-shadow:48px 40px 0 7px #ded1b2, 20px 89px 0 3px #ded1b2; }
-    .stars { position:absolute; inset:0; pointer-events:none; opacity:.78; background-image:radial-gradient(circle, #ffeec8 0 1.3px, transparent 1.8px),radial-gradient(circle, #b4c7ff 0 1px, transparent 1.5px); background-size:121px 97px, 173px 139px; background-position:20px 13px, 80px 51px; }
-    .hud { position:absolute; z-index:8; top:0; left:0; right:0; display:flex; align-items:center; justify-content:space-between; padding:24px clamp(18px,4vw,60px); pointer-events:none; }
-    .brand { display:flex; align-items:center; gap:10px; font-family:Arial,sans-serif; font-size:14px; font-weight:800; letter-spacing:.19em; text-transform:uppercase; }
-    .brand-mark { width:30px; height:30px; border:1px solid var(--gold); border-radius:50% 50% 46% 46%; display:grid; place-items:center; color:var(--gold); font-size:17px; }
-    .chapter { color:var(--muted); font:600 12px Arial,sans-serif; letter-spacing:.12em; text-transform:uppercase; }
-    .scene { position:absolute; inset:0; overflow:hidden; }
-    .ground { position:absolute; left:-5%; right:-5%; bottom:-17%; height:56%; background:#202949; border-radius:50% 50% 0 0 / 14% 14% 0 0; transform:rotate(-2deg); box-shadow:inset 0 18px 0 rgba(81,103,120,.12); }
-    .hill { position:absolute; left:-14%; right:-10%; bottom:17%; height:27%; background:#2b3157; border-radius:50% 50% 0 0 / 24% 24% 0 0; transform:rotate(3deg); }
-    .hill.back { bottom:28%; height:20%; background:#303460; opacity:.76; transform:rotate(-2deg); }
-    .tree-line { position:absolute; left:0; right:0; bottom:30%; height:27%; opacity:.9; background:linear-gradient(150deg, transparent 0 8%, #1b2545 8% 13%, transparent 13% 22%, #1b2545 22% 28%, transparent 28% 39%, #1b2545 39% 47%, transparent 47% 56%, #1b2545 56% 64%, transparent 64% 74%, #1b2545 74% 80%, transparent 80%); clip-path:polygon(0 70%,5% 15%,11% 68%,17% 25%,23% 70%,30% 5%,37% 70%,43% 26%,50% 70%,57% 12%,63% 70%,70% 25%,77% 70%,84% 0,91% 70%,97% 26%,100% 70%,100% 100%,0 100%); }
-    .vignette { position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at center, transparent 45%, rgba(8,10,27,.43) 100%); }
-    .game-object { position:absolute; z-index:4; transform:translate(-50%,-50%); transition:opacity .4s, filter .4s; }
-    .wood { width:86px; height:56px; }
-    .wood svg { width:100%; height:100%; overflow:visible; filter:drop-shadow(0 8px 6px rgba(0,0,0,.25)); transform:rotate(-9deg); }
-    .wood-label,.fire-label { position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%); white-space:nowrap; color:#f8efd8; font:600 12px Arial,sans-serif; letter-spacing:.05em; opacity:.7; }
-    .fire { width:88px; height:106px; filter:drop-shadow(0 0 22px rgba(255,181,88,.48)); }
-    .fire svg { width:100%; height:100%; overflow:visible; animation:fire-breathe 1.15s ease-in-out infinite alternate; }
-    @keyframes fire-breathe { from{transform:scale(.96) rotate(-2deg)} to{transform:scale(1.05) rotate(2deg)} }
-    .fire.off { filter:none; opacity:.82; }
-    .fire.off svg { animation:none; }
-    .player { position:absolute; z-index:6; width:88px; height:120px; transform:translate(-50%,-76%); transition:filter .25s; pointer-events:none; }
-    .player svg { width:100%; height:100%; overflow:visible; filter:drop-shadow(0 10px 5px rgba(0,0,0,.3)); }
-    .player.walking svg { animation:bob .35s ease-in-out infinite alternate; }
-    @keyframes bob { from{transform:translateY(0)} to{transform:translateY(-5px)} }
-    .portal { position:absolute; z-index:5; left:50%; top:52%; transform:translate(-50%,-50%) scale(.7); width:170px;height:220px; opacity:0; pointer-events:none; transition:opacity 1s, transform 1s; }
-    .portal.open { opacity:1; transform:translate(-50%,-50%) scale(1); pointer-events:auto; animation:portal-float 2.5s ease-in-out infinite; cursor:pointer; }
-    @keyframes portal-float { 50% { margin-top:-8px; } }
-    .portal svg { width:100%; height:100%; overflow:visible; filter:drop-shadow(0 0 25px rgba(253,191,125,.8)); }
-    .status { position:absolute; z-index:7; left:50%; bottom:32px; transform:translateX(-50%); min-width:240px; text-align:center; color:#fff6de; font:600 14px Arial,sans-serif; letter-spacing:.02em; opacity:.86; }
-    .inventory { position:absolute; z-index:8; right:clamp(18px,4vw,60px); bottom:28px; display:flex; align-items:center; gap:10px; padding:10px 14px 10px 10px; border:1px solid rgba(255,239,201,.2); border-radius:999px; background:rgba(19,21,50,.46); backdrop-filter:blur(8px); font:600 12px Arial,sans-serif; color:var(--muted); }
-    .inventory-icon { width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:#303765;color:var(--gold); }
-    .inventory.carrying { color:var(--gold); border-color:rgba(255,189,104,.55); }
-    .intro { position:absolute; z-index:20; inset:0; display:grid; place-items:center; background:linear-gradient(160deg, rgba(22,23,53,.96), rgba(18,19,42,.97)); transition:opacity .7s, visibility .7s; }
-    .intro.hidden { opacity:0; visibility:hidden; pointer-events:none; }
-    .intro-card { width:min(540px,calc(100% - 36px)); text-align:center; animation:reveal .9s ease both; }
-    @keyframes reveal { from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:none} }
-    .eyebrow { display:inline-flex; align-items:center; gap:9px; color:var(--gold); font:700 11px Arial,sans-serif; letter-spacing:.2em; text-transform:uppercase; }
-    .eyebrow:before,.eyebrow:after { content:""; width:26px; height:1px; background:var(--gold); opacity:.7; }
-    h1 { margin:22px 0 12px; color:#fff4da; font-size:clamp(36px,7vw,68px); line-height:1.03; font-weight:400; letter-spacing:-.045em; text-wrap:balance; }
-    .intro-copy { margin:0 auto 30px; max-width:400px; color:#c5c2d2; font:16px/1.65 Arial,sans-serif; }
-    .choices { display:flex; gap:15px; justify-content:center; }
-    .choice { min-width:150px; padding:17px 22px; border-radius:16px; border:1px solid rgba(255,240,200,.22); background:rgba(255,255,255,.06); transition:.25s; }
-    .choice:hover,.choice:focus-visible { transform:translateY(-4px); border-color:var(--gold); background:rgba(255,189,104,.12); }
-    .choice strong { display:block; font-size:16px; font-weight:400; }
-    .choice small { display:block; margin-top:5px; color:var(--muted); font:12px Arial,sans-serif; }
-    .dialogue { position:absolute; z-index:18; inset:0; display:grid; place-items:center; text-align:center; pointer-events:none; opacity:0; transition:opacity .6s; background:radial-gradient(ellipse at center, rgba(18,20,53,.3), rgba(14,15,35,.72)); }
-    .dialogue.show { opacity:1; }
-    .dialogue p { max-width:760px; padding:24px; color:#fff3d3; font-size:clamp(32px,6vw,66px); line-height:1.08; font-style:italic; text-shadow:0 3px 28px rgba(255,196,106,.25); }
-    .toast { position:absolute; z-index:16; left:50%; top:82px; transform:translate(-50%,-12px); padding:11px 18px; border:1px solid rgba(255,240,200,.15); border-radius:99px; background:rgba(19,20,46,.8); color:#f7e6be; font:600 13px Arial,sans-serif; opacity:0; transition:.35s; pointer-events:none; white-space:nowrap; }
-    .toast.show { opacity:1; transform:translate(-50%,0); }
-    .portal-copy { position:absolute; z-index:6; top:calc(52% + 120px); left:50%; transform:translateX(-50%); width:230px; text-align:center; color:#ffe6ad; font:700 12px Arial,sans-serif; text-transform:uppercase; letter-spacing:.12em; opacity:0; transition:opacity .8s 1s; }
-    .portal-copy.show { opacity:1; }
-    @media (max-width:650px) { .app{min-height:540px}.moon{width:110px;height:110px;right:8%;top:12%}.hud{padding:18px}.chapter{display:none}.status{bottom:24px;font-size:12px}.inventory{bottom:58px;right:18px}.choices{flex-direction:column;align-items:stretch;width:min(260px,100%);margin:0 auto}.choice{padding:14px}.dialogue p{font-size:34px}.ground{bottom:-9%;height:52%}.portal{width:140px;height:190px} }
+    :root{--ink:#fff1cf;--navy:#101b30;--panel:#172a42;--line:#7ea1a9;--gold:#ffc66c;--coral:#e87a68}
+    *{box-sizing:border-box} html,body{height:100%;margin:0;background:#0a1120;color:var(--ink);font-family:monospace} body{overflow:hidden}
+    #game{display:block;width:100vw;height:100vh;image-rendering:pixelated;image-rendering:crisp-edges;cursor:crosshair;background:#101b30}
+    .hud{position:fixed;inset:0;z-index:3;pointer-events:none;padding:clamp(14px,3vw,34px);display:flex;justify-content:space-between;align-items:flex-start;text-transform:uppercase;font-size:clamp(10px,1.4vw,13px);letter-spacing:.08em;text-shadow:2px 2px #101b30}
+    .brand{font-weight:900;color:#fff0c0}.brand i{color:var(--gold);font-style:normal}.quest{text-align:right;color:#b9ced0;line-height:1.6}.quest b{color:var(--gold)}
+    .caption{position:fixed;z-index:4;left:50%;bottom:clamp(22px,5vh,44px);transform:translateX(-50%);text-align:center;text-shadow:2px 2px #101b30;font-size:clamp(11px,1.5vw,14px);letter-spacing:.06em;pointer-events:none;min-width:270px}
+    .caption small{display:block;color:#a7c0c3;margin-top:7px;font-size:.8em}.toast{position:fixed;z-index:6;top:80px;left:50%;transform:translate(-50%,-12px);opacity:0;transition:.3s;padding:9px 14px;border:2px solid #f8d892;background:#193449;color:#fff3cf;box-shadow:4px 4px #0c1728;font-size:12px;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
+    .veil,.choose{position:fixed;z-index:8;inset:0;display:grid;place-items:center;background:rgba(7,14,28,.88);transition:opacity .45s}.veil.hide,.choose.hide{opacity:0;pointer-events:none}
+    .dialogue{max-width:min(760px,88vw);padding:22px 28px;text-align:center;color:#fff1cf;font-size:clamp(25px,4.8vw,54px);line-height:1.18;text-shadow:4px 4px #101b30;animation:pop .35s steps(3)}@keyframes pop{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}.dialogue span{display:block;margin-top:16px;color:#9dc4c1;font-size:11px;letter-spacing:.15em}
+    .card{width:min(560px,calc(100vw - 32px));padding:30px;text-align:center;background:#152943;border:3px solid #90b9b6;box-shadow:8px 8px #071020,12px 12px #c76d62}.eyebrow{color:#ffc66c;font-size:12px;letter-spacing:.18em}.card h1{margin:15px 0 10px;font-size:clamp(32px,5vw,52px);line-height:1.02}.card p{margin:0 0 23px;color:#bed2cf;line-height:1.6;font-size:13px}.choices{display:flex;gap:12px;justify-content:center}.pick{min-width:185px;padding:15px 10px;background:#243d56;border:2px solid #719aa1;color:#fff0cf;box-shadow:4px 4px #0b1628;font-family:inherit;transition:transform .12s}.pick:hover,.pick:focus-visible{transform:translate(-2px,-2px);border-color:#ffc66c;box-shadow:6px 6px #0b1628}.pick strong{display:block;font-size:15px;color:#ffc66c}.pick small{display:block;margin-top:7px;color:#b8d1cd;font-size:11px}@media(max-width:500px){.choices{flex-direction:column}.pick{min-width:0}.hud .quest{display:none}}
   </style>
 </head>
 <body>
-  <main class="app" id="app" aria-label="Me.mori Class — trò chơi tìm ngọn lửa">
-    <div class="moon" aria-hidden="true"></div><div class="stars" aria-hidden="true"></div>
-    <header class="hud"><div class="brand"><span class="brand-mark">✦</span> me.mori</div><div class="chapter">Chương 01 · Tìm ngọn lửa</div></header>
-    <section class="scene" id="scene" aria-label="Khu rừng đêm. Nhấp vào mặt đất để di chuyển nhân vật.">
-      <div class="hill back"></div><div class="tree-line"></div><div class="hill"></div><div class="ground"></div>
-      <div class="portal" id="portal" title="Cánh cổng"><svg viewBox="0 0 180 230" aria-hidden="true"><defs><linearGradient id="pg" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#ffc06c"/><stop offset=".5" stop-color="#f090b0"/><stop offset="1" stop-color="#907ce0"/></linearGradient></defs><path d="M18 214V88C18 32 48 10 90 10s72 22 72 78v126" fill="none" stroke="#7e759e" stroke-width="14"/><path d="M38 213V91c0-43 20-62 52-62s52 19 52 62v122" fill="#182047" stroke="#ffd083" stroke-width="3"/><path d="M50 211V91c0-33 14-48 40-48s40 15 40 48v120" fill="url(#pg)" opacity=".72"/><path d="M78 210c-8-44 19-60 26-92 18 27 21 57-3 92Z" fill="#fff1bf" opacity=".86"/><circle cx="90" cy="25" r="5" fill="#fff1bf"/></svg></div>
-      <div class="portal-copy" id="portalCopy">Cổng đã mở · chạm để bước tiếp</div>
-      <div class="game-object wood" id="wood"><svg viewBox="0 0 100 70" aria-hidden="true"><g stroke="#321c2b" stroke-width="3"><path d="M19 18 77 29l-4 20-57-11Z" fill="#9d5e43"/><path d="m26 23 56 11-4 20-56-11Z" fill="#c0774a"/><ellipse cx="78" cy="44" rx="10" ry="14" fill="#e2955e" transform="rotate(-11 78 44)"/><path d="M76 37c5 1 7 4 6 9" fill="none"/></g></svg><span class="wood-label">củi khô</span></div>
-      <div class="game-object fire off" id="fire"><svg viewBox="0 0 90 110" aria-hidden="true"><path d="M45 105C17 105 10 87 18 71c5-10 16-14 14-31 14 8 16 17 15 27 7-7 9-16 7-26 18 16 28 32 20 47-7 13-16 17-29 17Z" fill="#f2a65c" stroke="#42233a" stroke-width="3"/><path d="M45 95c-14 0-17-12-11-21 4-6 8-9 8-18 10 7 17 14 14 24-2 8-5 12-11 15Z" fill="#fff0a8" stroke="#9d5661" stroke-width="2"/><circle cx="26" cy="49" r="3" fill="#ffc974"/><circle cx="68" cy="57" r="2.5" fill="#ffc974"/></svg><span class="fire-label">ngọn lửa</span></div>
-      <div class="player" id="player" aria-label="Nhân vật của bạn"></div><div class="vignette"></div>
-    </section>
-    <div class="status" id="status">Nhấp vào mặt đất để bắt đầu hành trình</div><div class="inventory" id="inventory"><span class="inventory-icon">✧</span><span id="inventoryText">Tay đang trống</span></div><div class="toast" id="toast"></div><div class="dialogue" id="dialogue"><p id="dialogueText"></p></div>
-    <section class="intro" id="intro"><div class="intro-card"><div class="eyebrow">Một lớp học trong rừng</div><h1>Ngọn lửa của bạn<br>đang chờ đó.</h1><p class="intro-copy">Chọn người bạn đồng hành, rồi lắng nghe khu rừng chỉ đường.</p><div class="choices"><button class="choice" data-gender="girl"><strong>✿ Bạn nữ</strong><small>Nhẹ nhàng & tinh ý</small></button><button class="choice" data-gender="boy"><strong>✦ Bạn nam</strong><small>Gan dạ & tò mò</small></button></div></div></section>
-  </main>
+  <canvas id="game" width="320" height="180" aria-label="Game pixel Me.mori. Nhấp để di chuyển nhân vật."></canvas>
+  <div class="hud"><div class="brand"><i>✦</i> ME.MORI / FIRE QUEST</div><div class="quest"><b id="state">CHƯA CÓ CỦI</b><br><span id="step">TÌM THANH CỦI</span></div></div>
+  <div class="toast" id="toast"></div><div class="caption" id="caption">Chọn nhân vật để bắt đầu<small>NHẤP VÀO BẢN ĐỒ ĐỂ DI CHUYỂN</small></div>
+  <section class="choose" id="choose"><div class="card"><div class="eyebrow">CHƯƠNG 01 · KHU RỪNG ĐOM ĐÓM</div><h1>Ngọn lửa của bạn<br>đang chờ đó.</h1><p>Chọn người bạn đồng hành cho chuyến đi đêm nay.</p><div class="choices"><button class="pick" data-type="girl"><strong>✿ BẠN NỮ</strong><small>Áo hồng · tóc tím</small></button><button class="pick" data-type="boy"><strong>✦ BẠN NAM</strong><small>Áo xanh · tóc nâu</small></button></div></div></section>
+  <section class="veil hide" id="veil"><div class="dialogue" id="dialogue"></div></section>
   <script>
-    const $ = id => document.getElementById(id); const scene=$('scene'), player=$('player'), wood=$('wood'), fire=$('fire'), portal=$('portal'), portalCopy=$('portalCopy'); const intro=$('intro'), dialogue=$('dialogue'), dialogueText=$('dialogueText'), statusEl=$('status'), toast=$('toast'), inventory=$('inventory'), inventoryText=$('inventoryText');
-    let carrying=false, lit=false, playing=false, target={x:18,y:78}, pos={x:18,y:78}, lastTime=0, toastTimer; const clamp=(n,min,max)=>Math.max(min,Math.min(max,n)); const distance=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
-    const say=(text,duration=2300)=>new Promise(resolve=>{dialogueText.innerHTML=text;dialogue.classList.add('show');setTimeout(()=>{dialogue.classList.remove('show');setTimeout(resolve,550)},duration)}); const notify=text=>{toast.textContent=text;toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove('show'),2200)};
-    function characterSvg(kind){const skin='#f3c6a5',hair=kind==='girl'?'#34254b':'#24334c',outfit=kind==='girl'?'#e48da8':'#6f9fc3';return `<svg viewBox="0 0 90 120" aria-hidden="true"><path d="M21 48c-7-25 5-39 25-40 23-1 34 14 25 41l-8 11H27Z" fill="${hair}" stroke="#17162d" stroke-width="3"/><circle cx="45" cy="40" r="21" fill="${skin}" stroke="#41293d" stroke-width="3"/><path d="M23 38c4-26 38-32 49-6-12-9-31-3-49 6Z" fill="${hair}"/><circle cx="38" cy="42" r="2" fill="#231c32"/><circle cx="52" cy="42" r="2" fill="#231c32"/><path d="M42 50q4 3 8 0" fill="none" stroke="#a65b6f" stroke-width="2" stroke-linecap="round"/><path d="M23 67q22-12 44 0l9 43H14Z" fill="${outfit}" stroke="#17162d" stroke-width="3"/><path d="M23 73 10 91M67 73l13 18" stroke="${skin}" stroke-width="8" stroke-linecap="round"/><path d="M30 110 23 119M59 110l8 9" stroke="#d7a96e" stroke-width="7" stroke-linecap="round"/></svg>`}
-    function setPosition(x,y){pos={x,y};player.style.left=x+'%';player.style.top=y+'%'} function placeObjects(){const seed=Math.random(),woodX=clamp(18+seed*34,14,52),woodY=clamp(53+seed*17,48,76),fireX=clamp(64+seed*21,61,86),fireY=clamp(43+(1-seed)*24,42,72);wood.style.left=woodX+'%';wood.style.top=woodY+'%';fire.style.left=fireX+'%';fire.style.top=fireY+'%';return{wood:{x:woodX,y:woodY},fire:{x:fireX,y:fireY}}} let objects={wood:{x:30,y:60},fire:{x:75,y:56}};
-    async function start(kind){player.innerHTML=characterSvg(kind);intro.classList.add('hidden');objects=placeObjects();setPosition(18,78);playing=false;await say('Chào mừng bạn đến với lớp học Me.mori',2400);await say('Hãy đi tìm ngọn lửa của bạn nào',2100);playing=true;statusEl.textContent='Nhấp vào mặt đất để di chuyển'}
-    function arrive(){player.classList.remove('walking');if(distance(pos,objects.wood)<8&&!carrying){carrying=true;wood.style.opacity='0';inventory.classList.add('carrying');inventoryText.textContent='Đang cầm một thanh củi';notify('Bạn đã nhặt được củi khô');statusEl.textContent='Mang củi đến ngọn lửa'}if(distance(pos,objects.fire)<9&&!lit){if(carrying){lit=true;carrying=false;fire.classList.remove('off');wood.style.opacity='1';wood.style.left=pos.x+'%';wood.style.top=(pos.y-1.5)+'%';wood.style.transform='translate(-50%,-50%) rotate(4deg)';inventory.classList.remove('carrying');inventoryText.textContent='Ngọn lửa đang cháy';portal.classList.add('open');portalCopy.classList.add('show');notify('Bạn đã tìm thấy ngọn lửa của mình ✦');statusEl.textContent='Cánh cổng đã mở ở giữa khu rừng'}else{notify('Lửa cần có củi mới cháy được');statusEl.textContent='Quay lại tìm một thanh củi'}}}
-    function tick(t){if(!lastTime)lastTime=t;const dt=Math.min((t-lastTime)/1000,.05);lastTime=t;if(playing&&distance(pos,target)>.35){const dx=target.x-pos.x,dy=target.y-pos.y,d=Math.hypot(dx,dy),speed=20;setPosition(pos.x+dx/d*speed*dt,pos.y+dy/d*speed*dt);player.classList.add('walking');player.style.transform=`translate(-50%,-76%) scaleX(${dx<0?-1:1})`;if(distance(pos,target)<=.5)arrive()}requestAnimationFrame(tick)}
-    scene.addEventListener('pointerdown',e=>{if(!playing||e.target.closest('.portal'))return;const r=scene.getBoundingClientRect();target={x:clamp((e.clientX-r.left)/r.width*100,6,94),y:clamp((e.clientY-r.top)/r.height*100,38,91)};statusEl.textContent='Đang bước theo ánh sáng...'}); portal.addEventListener('click',()=>{if(lit){notify('Một hành trình mới sắp bắt đầu...');statusEl.textContent='Cảm ơn bạn đã thắp sáng khu rừng ✦';portalCopy.textContent='Bạn đã sẵn sàng'}}); document.querySelectorAll('.choice').forEach(btn=>btn.addEventListener('click',()=>start(btn.dataset.gender))); requestAnimationFrame(tick);
+  const c=document.getElementById('game'),x=c.getContext('2d'); x.imageSmoothingEnabled=false;
+  const UI={choose:document.getElementById('choose'),veil:document.getElementById('veil'),dialogue:document.getElementById('dialogue'),caption:document.getElementById('caption'),toast:document.getElementById('toast'),state:document.getElementById('state'),step:document.getElementById('step')};
+  const W=320,H=180; let started=false,kind='girl',t=0,last=0,toastTimer,gate=false;
+  const p={x:64,y:132,tx:64,ty:132,face:1,walk:0,hasWood:false,hasFire:false}; let wood={x:116,y:112,alive:true},flame={x:236,y:91,alive:true}; let motes=[];
+  const C={sky:'#101b30',sky2:'#213a55',far:'#29475c',ground:'#254b55',grass:'#326169',dark:'#17313f',leaf:'#3f786d',mint:'#a7d7bc',moon:'#fff1bc',gold:'#ffc66c',orange:'#f39a5a',coral:'#e87067',pink:'#d985aa',cream:'#fff1cf',ink:'#101b30',wood:'#925b45',bark:'#613e3d'};
+  const r=(a,b)=>Math.floor(a+Math.random()*(b-a+1)); const d=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
+  function px(a,b,w,h,col){x.fillStyle=col;x.fillRect(a|0,b|0,w,h)}
+  function text(s,a,b,col=C.cream){x.fillStyle=col;x.font='7px monospace';x.fillText(s,a,b)}
+  function cloud(a,b){for(let i=0;i<5;i++)px(a+i*7,b+Math.abs(2-i)*2,9,3,'#182b45')}
+  function tree(a,b,s=1){px(a-2*s,b,5*s,25*s,C.bark); px(a-9*s,b-15*s,19*s,17*s,C.dark);px(a-12*s,b-8*s,25*s,13*s,C.leaf);px(a-7*s,b-21*s,15*s,11*s,C.leaf);px(a-4*s,b-25*s,9*s,7*s,C.mint);px(a-10*s,b-4*s,5*s,4*s,C.mint)}
+  function drawWorld(){
+    x.fillStyle=C.sky;x.fillRect(0,0,W,H); for(let i=0;i<60;i++){let sx=(i*53+13)%W,sy=(i*31+9)%76;if(i%5===0)px(sx,sy,2,2,C.moon);else px(sx,sy,1,1,'#81a8b2')}
+    px(247,19,20,20,C.moon);px(251,22,5,4,'#f1d99e');px(259,31,3,3,'#f1d99e'); cloud(50,25);cloud(146,42);
+    for(let i=0;i<8;i++){let h=17+(i%3)*8,yy=90-h; px(i*48-8,yy,54,h,C.far);px(i*48+5,yy-8,27,11,C.far)}
+    px(0,88,W,92,C.ground); for(let i=0;i<125;i++){let gx=(i*29+7)%W,gy=94+(i*17)%86;px(gx,gy,1+(i%4===0),1,i%3?C.leaf:C.mint)}
+    for(let i=0;i<10;i++){let q=(i*37+18)%W;tree(q,78+(i%3)*7,i%3===0?2:1)}
+    for(let i=0;i<17;i++){let q=(i*41+3)%W,yy=123+(i*13)%42;px(q,yy,5,2,C.dark);px(q+2,yy-3,2,3,C.leaf)}
+    px(0,160,W,20,'#1b3c4b');for(let i=0;i<35;i++)px((i*23)%W,164+(i*7)%16,5,1,C.leaf);
+  }
+  function drawLog(a,b,held=false){x.save();x.translate(a|0,b|0);if(held)x.rotate(p.face*.18);px(-10,-3,20,7,C.bark);px(-8,-5,17,7,C.wood);px(-10,-3,3,7,'#bb7955');px(7,-3,3,7,'#51333b');px(3,-4,2,1,'#d4905d');x.restore()}
+  function drawFire(a,b,big=false){let f=Math.floor(t/110)%2; let s=big?1.25:1; px(a-4*s,b,8*s,3,C.bark);px(a-7*s,b+3*s,14*s,3,C.wood);px(a-3*s,b-9*s-f,6*s,10*s,C.coral);px(a-2*s,b-13*s+f,4*s,7*s,C.gold);px(a-1*s,b-8*s,2*s,4*s,C.cream); if(big){px(a-9*s,b-2*s,2,2,C.gold);px(a+8*s,b-7*s,2,2,C.gold)}}
+  function drawPlayer(){let bob=started&&d(p,{x:p.tx,y:p.ty})>1?Math.sin(p.walk)*1.2:0,a=p.x|0,b=(p.y+bob)|0;let hair=kind==='girl'?'#4b3a68':'#5a3b35',shirt=kind==='girl'?'#d886a6':'#5a92b7';
+    px(a-7,b-2,14,3,'#15313d'); // shadow
+    px(a-4,b-18,8,9,'#f2c49e');px(a-5,b-22,10,7,hair);px(a-6,b-20,2,7,hair); if(kind==='girl'){px(a+4,b-19,3,8,hair);px(a-7,b-17,2,5,hair)}
+    px(a-2,b-16,1,1,C.ink);px(a+2,b-16,1,1,C.ink);px(a-4,b-8,8,9,shirt);px(a-5,b-7,1,5,'#f2c49e');px(a+5,b-7,1,5,'#f2c49e');
+    let leg=Math.sin(p.walk)>0?1:-1;px(a-3,b+1,2,6,'#273a55');px(a+2,b+1,2,6,'#273a55');px(a-4,b+7+leg,3,2,'#f1c284');px(a+1,b+7-leg,3,2,'#f1c284');
+    if(p.hasWood||p.hasFire){let hx=a+p.face*8,hy=b-8;drawLog(hx,hy,true);if(p.hasFire)drawFire(hx+p.face*1,hy-5,true)}
+  }
+  function drawPortal(){if(!gate)return;let a=160,b=78,tw=Math.floor(t/180)%2;px(a-13,b-20,26,3,'#bc8cba');px(a-16,b-17,5,36,'#806b9d');px(a+11,b-17,5,36,'#806b9d');px(a-11,b-18,22,38,'#4d4274');px(a-8,b-15,16,32,tw?'#d675a0':'#b380bb');px(a-5,b-12,10,26,tw?'#ffd182':'#ffc2a1');px(a-2,b-8,4,17,'#fff0bb');px(a-18,b+19,36,3,'#583c63');text('CỔNG ÁNH SÁNG',128,110,C.gold)}
+  function particles(){if(p.hasFire&&Math.random()<.28)motes.push({x:p.x+p.face*8,y:p.y-20,vx:(Math.random()-.5)*.32,vy:-Math.random()*.45-.2,life:24});if(!p.hasFire&&flame.alive&&Math.random()<.18)motes.push({x:flame.x,y:flame.y-13,vx:(Math.random()-.5)*.23,vy:-.35,life:20});motes=motes.filter(m=>m.life-->0);motes.forEach(m=>{m.x+=m.vx;m.y+=m.vy;px(m.x,m.y,1,1,m.life%2?C.gold:C.cream)})}
+  function render(){drawWorld();if(wood.alive)drawLog(wood.x,wood.y);if(flame.alive)drawFire(flame.x,flame.y);drawPortal();drawPlayer();particles();if(started){text('✦',p.tx-2,p.ty-13,C.gold)}}
+  function toast(s){UI.toast.textContent=s;UI.toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>UI.toast.classList.remove('show'),1700)}
+  function updateQuest(){if(p.hasFire){UI.state.textContent='LỬA ĐANG CHÁY';UI.step.textContent='MANG ÁNH SÁNG TỚI CÁNH CỔNG';UI.caption.innerHTML='Bạn đang mang ngọn lửa của mình <small>ÁNH LỬA BÁM THEO TỪNG BƯỚC CHÂN</small>'}else if(p.hasWood){UI.state.textContent='ĐÃ CÓ CỦI';UI.step.textContent='TÌM NGỌN LỬA';UI.caption.innerHTML='Mang củi đến gần ngọn lửa <small>CỦI ĐANG Ở TRONG TAY BẠN</small>'}else{UI.state.textContent='CHƯA CÓ CỦI';UI.step.textContent='TÌM THANH CỦI';UI.caption.innerHTML='Nhấp lên bản đồ để di chuyển <small>TÌM THANH CỦI NẰM TRONG CỎ</small>'}}
+  function arrive(){if(wood.alive&&d(p,wood)<12){wood.alive=false;p.hasWood=true;toast('ĐÃ NHẶT CỦI — CỦI BÁM VÀO TAY!');updateQuest()}if(flame.alive&&d(p,flame)<13){if(p.hasWood){flame.alive=false;p.hasWood=false;p.hasFire=true;gate=true;toast('NGỌN LỬA ĐÃ CHÁY TRÊN CỦI!');updateQuest()}else{toast('CẦN MỘT THANH CỦI ĐỂ MANG LỬA ĐI')}}}
+  function loop(now){let dt=Math.min((now-last)/16.7,2);last=now;t+=dt*16;let dx=p.tx-p.x,dy=p.ty-p.y,dist=Math.hypot(dx,dy);if(started&&dist>.5){let v=.7*dt;p.x+=dx/dist*Math.min(v,dist);p.y+=dy/dist*Math.min(v,dist);p.face=dx<0?-1:1;p.walk+=.55*dt;if(dist<1.2)arrive()}render();requestAnimationFrame(loop)}
+  async function line(s,ms){UI.dialogue.innerHTML=s+'<span>ME.MORI CLASS</span>';UI.veil.classList.remove('hide');await new Promise(r=>setTimeout(r,ms));UI.veil.classList.add('hide');await new Promise(r=>setTimeout(r,400))}
+  document.querySelectorAll('.pick').forEach(b=>b.onclick=async()=>{kind=b.dataset.type;UI.choose.classList.add('hide');await line('Chào mừng bạn đến với<br>lớp học Me.mori',2100);await line('Hãy đi tìm ngọn lửa<br>của bạn nào',1900);started=true;updateQuest()});
+  c.addEventListener('pointerdown',e=>{if(!started)return;let r=c.getBoundingClientRect();p.tx=Math.max(10,Math.min(310,(e.clientX-r.left)/r.width*W));p.ty=Math.max(88,Math.min(163,(e.clientY-r.top)/r.height*H));UI.caption.innerHTML='Đang bước qua rừng đom đóm...<small>MỖI BƯỚC ĐỀU ĐANG ĐƯA BẠN GẦN HƠN</small>'});
+  requestAnimationFrame(loop);
   </script>
 </body>
 </html>
