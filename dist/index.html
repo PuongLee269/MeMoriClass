@@ -8,7 +8,9 @@
   <style>
     :root{--ink:#fff1cf;--navy:#101b30;--panel:#172a42;--line:#7ea1a9;--gold:#ffc66c;--coral:#e87a68}
     *{box-sizing:border-box} html,body{height:100%;margin:0;background:#0a1120;color:var(--ink);font-family:monospace} body{overflow:hidden}
-    #game{display:block;width:100vw;height:100vh;image-rendering:pixelated;image-rendering:crisp-edges;cursor:crosshair;background:#101b30}
+    .scene-bg{position:fixed;inset:0;background:#081221 url('assets/memori-forest-pixel-v2.png') center/cover no-repeat;filter:saturate(.96) contrast(1.04);transform:scale(1.015)}
+    .scene-bg:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,transparent 35%,rgba(2,8,19,.5) 100%)}
+    #game{position:fixed;inset:0;display:block;width:100vw;height:100vh;cursor:crosshair;background:transparent}
     .hud{position:fixed;inset:0;z-index:3;pointer-events:none;padding:clamp(14px,3vw,34px);display:flex;justify-content:space-between;align-items:flex-start;text-transform:uppercase;font-size:clamp(10px,1.4vw,13px);letter-spacing:.08em;text-shadow:2px 2px #101b30}
     .brand{font-weight:900;color:#fff0c0}.brand i{color:var(--gold);font-style:normal}.quest{text-align:right;color:#b9ced0;line-height:1.6}.quest b{color:var(--gold)}
     .caption{position:fixed;z-index:4;left:50%;bottom:clamp(22px,5vh,44px);transform:translateX(-50%);text-align:center;text-shadow:2px 2px #101b30;font-size:clamp(11px,1.5vw,14px);letter-spacing:.06em;pointer-events:none;min-width:270px}
@@ -19,7 +21,8 @@
   </style>
 </head>
 <body>
-  <canvas id="game" width="320" height="180" aria-label="Game pixel Me.mori. Nhấp để di chuyển nhân vật."></canvas>
+  <div class="scene-bg" aria-hidden="true"></div>
+  <canvas id="game" width="640" height="360" aria-label="Game pixel Me.mori. Nhấp để di chuyển nhân vật."></canvas>
   <div class="hud"><div class="brand"><i>✦</i> ME.MORI / FIRE QUEST</div><div class="quest"><b id="state">CHƯA CÓ CỦI</b><br><span id="step">TÌM THANH CỦI</span></div></div>
   <div class="toast" id="toast"></div><div class="caption" id="caption">Chọn nhân vật để bắt đầu<small>NHẤP VÀO BẢN ĐỒ ĐỂ DI CHUYỂN</small></div>
   <section class="choose" id="choose"><div class="card"><div class="eyebrow">CHƯƠNG 01 · KHU RỪNG ĐOM ĐÓM</div><h1>Ngọn lửa của bạn<br>đang chờ đó.</h1><p>Chọn người bạn đồng hành cho chuyến đi đêm nay.</p><div class="choices"><button class="pick" data-type="girl"><strong>✿ BẠN NỮ</strong><small>Áo hồng · tóc tím</small></button><button class="pick" data-type="boy"><strong>✦ BẠN NAM</strong><small>Áo xanh · tóc nâu</small></button></div></div></section>
@@ -36,13 +39,8 @@
   function cloud(a,b){for(let i=0;i<5;i++)px(a+i*7,b+Math.abs(2-i)*2,9,3,'#182b45')}
   function tree(a,b,s=1){px(a-2*s,b,5*s,25*s,C.bark); px(a-9*s,b-15*s,19*s,17*s,C.dark);px(a-12*s,b-8*s,25*s,13*s,C.leaf);px(a-7*s,b-21*s,15*s,11*s,C.leaf);px(a-4*s,b-25*s,9*s,7*s,C.mint);px(a-10*s,b-4*s,5*s,4*s,C.mint)}
   function drawWorld(){
-    x.fillStyle=C.sky;x.fillRect(0,0,W,H); for(let i=0;i<60;i++){let sx=(i*53+13)%W,sy=(i*31+9)%76;if(i%5===0)px(sx,sy,2,2,C.moon);else px(sx,sy,1,1,'#81a8b2')}
-    px(247,19,20,20,C.moon);px(251,22,5,4,'#f1d99e');px(259,31,3,3,'#f1d99e'); cloud(50,25);cloud(146,42);
-    for(let i=0;i<8;i++){let h=17+(i%3)*8,yy=90-h; px(i*48-8,yy,54,h,C.far);px(i*48+5,yy-8,27,11,C.far)}
-    px(0,88,W,92,C.ground); for(let i=0;i<125;i++){let gx=(i*29+7)%W,gy=94+(i*17)%86;px(gx,gy,1+(i%4===0),1,i%3?C.leaf:C.mint)}
-    for(let i=0;i<10;i++){let q=(i*37+18)%W;tree(q,78+(i%3)*7,i%3===0?2:1)}
-    for(let i=0;i<17;i++){let q=(i*41+3)%W,yy=123+(i*13)%42;px(q,yy,5,2,C.dark);px(q+2,yy-3,2,3,C.leaf)}
-    px(0,160,W,20,'#1b3c4b');for(let i=0;i<35;i++)px((i*23)%W,164+(i*7)%16,5,1,C.leaf);
+    // The high-detail pixel forest is a separate native-resolution backdrop.
+    // Canvas only carries the interactive sprites, particles, and quest objects.
   }
   function drawLog(a,b,held=false){x.save();x.translate(a|0,b|0);if(held)x.rotate(p.face*.18);px(-10,-3,20,7,C.bark);px(-8,-5,17,7,C.wood);px(-10,-3,3,7,'#bb7955');px(7,-3,3,7,'#51333b');px(3,-4,2,1,'#d4905d');x.restore()}
   function drawFire(a,b,big=false){let f=Math.floor(t/110)%2; let s=big?1.25:1; px(a-4*s,b,8*s,3,C.bark);px(a-7*s,b+3*s,14*s,3,C.wood);px(a-3*s,b-9*s-f,6*s,10*s,C.coral);px(a-2*s,b-13*s+f,4*s,7*s,C.gold);px(a-1*s,b-8*s,2*s,4*s,C.cream); if(big){px(a-9*s,b-2*s,2,2,C.gold);px(a+8*s,b-7*s,2,2,C.gold)}}
@@ -55,7 +53,7 @@
   }
   function drawPortal(){if(!gate)return;let a=160,b=78,tw=Math.floor(t/180)%2;px(a-13,b-20,26,3,'#bc8cba');px(a-16,b-17,5,36,'#806b9d');px(a+11,b-17,5,36,'#806b9d');px(a-11,b-18,22,38,'#4d4274');px(a-8,b-15,16,32,tw?'#d675a0':'#b380bb');px(a-5,b-12,10,26,tw?'#ffd182':'#ffc2a1');px(a-2,b-8,4,17,'#fff0bb');px(a-18,b+19,36,3,'#583c63');text('CỔNG ÁNH SÁNG',128,110,C.gold)}
   function particles(){if(p.hasFire&&Math.random()<.28)motes.push({x:p.x+p.face*8,y:p.y-20,vx:(Math.random()-.5)*.32,vy:-Math.random()*.45-.2,life:24});if(!p.hasFire&&flame.alive&&Math.random()<.18)motes.push({x:flame.x,y:flame.y-13,vx:(Math.random()-.5)*.23,vy:-.35,life:20});motes=motes.filter(m=>m.life-->0);motes.forEach(m=>{m.x+=m.vx;m.y+=m.vy;px(m.x,m.y,1,1,m.life%2?C.gold:C.cream)})}
-  function render(){drawWorld();if(wood.alive)drawLog(wood.x,wood.y);if(flame.alive)drawFire(flame.x,flame.y);drawPortal();drawPlayer();particles();if(started){text('✦',p.tx-2,p.ty-13,C.gold)}}
+  function render(){x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,c.width,c.height);x.setTransform(2,0,0,2,0,0);drawWorld();if(wood.alive)drawLog(wood.x,wood.y);if(flame.alive)drawFire(flame.x,flame.y);drawPortal();drawPlayer();particles();if(started){text('✦',p.tx-2,p.ty-13,C.gold)}x.setTransform(1,0,0,1,0,0)}
   function toast(s){UI.toast.textContent=s;UI.toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>UI.toast.classList.remove('show'),1700)}
   function updateQuest(){if(p.hasFire){UI.state.textContent='LỬA ĐANG CHÁY';UI.step.textContent='MANG ÁNH SÁNG TỚI CÁNH CỔNG';UI.caption.innerHTML='Bạn đang mang ngọn lửa của mình <small>ÁNH LỬA BÁM THEO TỪNG BƯỚC CHÂN</small>'}else if(p.hasWood){UI.state.textContent='ĐÃ CÓ CỦI';UI.step.textContent='TÌM NGỌN LỬA';UI.caption.innerHTML='Mang củi đến gần ngọn lửa <small>CỦI ĐANG Ở TRONG TAY BẠN</small>'}else{UI.state.textContent='CHƯA CÓ CỦI';UI.step.textContent='TÌM THANH CỦI';UI.caption.innerHTML='Nhấp lên bản đồ để di chuyển <small>TÌM THANH CỦI NẰM TRONG CỎ</small>'}}
   function arrive(){if(wood.alive&&d(p,wood)<12){wood.alive=false;p.hasWood=true;toast('ĐÃ NHẶT CỦI — CỦI BÁM VÀO TAY!');updateQuest()}if(flame.alive&&d(p,flame)<13){if(p.hasWood){flame.alive=false;p.hasWood=false;p.hasFire=true;gate=true;toast('NGỌN LỬA ĐÃ CHÁY TRÊN CỦI!');updateQuest()}else{toast('CẦN MỘT THANH CỦI ĐỂ MANG LỬA ĐI')}}}
