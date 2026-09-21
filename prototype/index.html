@@ -29,10 +29,10 @@
       nodeCount: 6, linksToComplete: 6, nodeSize: 18, cornerRadius: 4,
       floatAmplitude: 22, floatSpeed: 0.00034, floatSpeedSpread: 0.00011,
       maxDrift: 26, spring: 0.018, damping: 0.88, centerPull: 0.0009,
-      hoverRadius: 42, baseGlow: 15, activeGlow: 34, linkGlow: 18, linkWidth: 1.4,
+      hoverRadius: 54, baseGlow: 15, activeGlow: 34, linkGlow: 18, linkWidth: 1.4,
       hexagonConvergeMs: 2200, hexagonHoldMs: 900, collapseMs: 900,
-      condenseMs: 420, burstMs: 1050, sunHoldMs: 1700,
-      morphMs: 1900, ringRadius: 106, linkAppearStaggerMs: 35,
+      condenseMs: 520, burstMs: 1800, sunHoldMs: 8500,
+      morphMs: 2400, ringRadius: 106, linkAppearStaggerMs: 35,
       particleCount: 38, particleLifeMs: 1500, shakePx: 2.2
     };
 
@@ -182,23 +182,34 @@
       ctx.save(); ctx.globalAlpha = alpha; ctx.translate(x, y); ctx.rotate(rotation);
       ctx.drawImage(image, -width / 2, anchor === 'bottom' ? -height : -height / 2, width, height); ctx.restore();
     }
-    function drawEmberField(c, intensity, flameScale = 1) {
-      if (intensity <= 0) return; const frameFloat = time * .006, frame = Math.floor(frameFloat) % 6, next = (frame + 1) % 6, blend = frameFloat - Math.floor(frameFloat), size = 315 * flameScale;
-      ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.shadowColor = '#ff7131'; ctx.shadowBlur = 16;
-      drawSprite(`ember-cluster-${frame + 1}`, c.x, c.y - 5 * flameScale, size, intensity * (1 - blend), time * .00028);
-      drawSprite(`ember-cluster-${next + 1}`, c.x, c.y - 5 * flameScale, size, intensity * blend, time * .00028); ctx.restore();
+    function drawOrbitGuide(c, rx, ry, rotation, start, end, color, widthPx, alpha) {
+      // Three imperfect strokes prevent the guide ellipse from reading like a sterile vector ring.
+      ctx.save(); ctx.translate(c.x, c.y); ctx.rotate(rotation); ctx.lineCap = 'round'; ctx.shadowColor = color; ctx.shadowBlur = widthPx * 2.2;
+      for (let i = 0; i < 3; i++) { ctx.globalAlpha = alpha * (.34 - i * .06); ctx.strokeStyle = color; ctx.lineWidth = widthPx * (1 - i * .18); ctx.beginPath(); ctx.ellipse(i * .9, -i * .65, rx + i * 1.8, ry - i * 1.3, 0, start + i * .012, end - i * .014); ctx.stroke(); }
+      ctx.restore();
+    }
+    function drawEmberField(c, intensity, scale = 1, yOffset = 0) {
+      if (intensity <= 0) return; const frameFloat = time * .0052, frame = Math.floor(frameFloat) % 6, next = (frame + 1) % 6, blend = frameFloat - Math.floor(frameFloat), size = 250 * scale;
+      ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.shadowColor = '#ff7131'; ctx.shadowBlur = 15;
+      drawSprite(`ember-cluster-${frame + 1}`, c.x, c.y + yOffset, size, intensity * (1 - blend), time * .00018);
+      drawSprite(`ember-cluster-${next + 1}`, c.x, c.y + yOffset, size, intensity * blend, time * .00018); ctx.restore();
     }
     function drawPaintedOrbits(c, intensity) {
-      if (intensity <= 0) return; const spin = time * .00013, s = Math.min(width, height) / 650, place = (name, x, y, size, alpha, angle) => drawSprite(name, c.x + x * s, c.y + y * s, size * s, alpha * intensity, angle + spin);
-      ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.shadowColor = '#8b78ff'; ctx.shadowBlur = 24;
-      // Outer cobalt lanes: wider, offset and intentionally incomplete like the reference orbit field.
-      place('cur1-1', -78, -44, 485, .30, .23); place('cur1-3', 76, 8, 465, .27, 3.41); place('cur1-1', -8, 78, 405, .20, 2.35);
-      ctx.shadowColor = '#ffb45c'; ctx.shadowBlur = 22;
-      // Warm inner lanes sit ahead of the blue arcs, creating depth around the core.
-      place('cur2-1', -26, -12, 362, .64, .70); place('cur2-3', 36, 30, 328, .44, 3.74); place('cur2-1', -40, 46, 278, .35, 5.15);
-      ctx.shadowColor = '#fff0b4'; ctx.shadowBlur = 20;
-      place('cur3-1', 12, -22, 292, .78, 1.75); place('cur3-3', -20, 13, 248, .54, 4.50); place('cur3-1', 56, -4, 210, .36, 3.00);
-      ctx.restore(); drawEmberField(c, intensity * .46);
+      if (intensity <= 0) return; const spin = time * .000075, s = Math.min(width, height) / 620, place = (name, x, y, size, alpha, angle) => drawSprite(name, c.x + x * s, c.y + y * s, size * s, alpha * intensity, angle + spin);
+      // The guides establish the large, tilted horizontal galaxy silhouette before textured strokes are laid in.
+      drawOrbitGuide(c, 238 * s, 105 * s, -.18 + spin, .12, 2.68, '#4057dc', 10 * s, intensity); drawOrbitGuide(c, 226 * s, 96 * s, -.18 + spin, 3.20, 5.72, '#4057dc', 8 * s, intensity * .82);
+      drawOrbitGuide(c, 174 * s, 72 * s, .28 + spin, 2.72, 5.50, '#ffb75d', 9 * s, intensity); drawOrbitGuide(c, 144 * s, 56 * s, .28 + spin, -.18, 2.30, '#ffd483', 7 * s, intensity * .82);
+      drawOrbitGuide(c, 112 * s, 40 * s, -.45 + spin, .22, 2.96, '#fff0bf', 6 * s, intensity * .9);
+      ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.shadowColor = '#566dff'; ctx.shadowBlur = 20;
+      // Hand-painted accents stay on the orbital edge. This avoids the unwanted atomic spokes through the core.
+      place('cur1-1', -225, -38, 150, .36, -.18); place('cur1-3', 223, 34, 142, .32, 2.93);
+      ctx.shadowColor = '#ffb45c'; ctx.shadowBlur = 18;
+      place('cur2-1', -142, -97, 125, .46, .84); place('cur2-3', 156, 83, 118, .40, 4.06);
+      ctx.shadowColor = '#fff0b4'; ctx.shadowBlur = 16;
+      place('cur3-1', -114, 66, 98, .48, 5.24); place('cur3-3', 122, -74, 92, .42, 2.18);
+      // Sparse stars are an outer layer, giving scale without crowding the orbit field.
+      drawSprite('ele-star-four', c.x - 188 * s, c.y - 104 * s, 34 * s, intensity * .72, 0); drawSprite('ele-starburst', c.x + 196 * s, c.y - 82 * s, 28 * s, intensity * .54, .18); drawSprite('ele-star-four', c.x + 172 * s, c.y + 132 * s, 22 * s, intensity * .45, 0);
+      ctx.restore(); drawEmberField(c, intensity * .22, 1.16, -2);
     }
     function drawPaintedFlame(c, alpha, morphT) {
       if (alpha <= 0) return; const frameFloat = time * .0042, frame = Math.floor(frameFloat) % 6, next = (frame + 1) % 6, blend = frameFloat - Math.floor(frameFloat), pulse = 1 + Math.sin(time * .006) * .025;
@@ -234,13 +245,14 @@
       ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.shadowColor = '#ffbb71'; ctx.shadowBlur = 28;
       drawSprite('core-1', c.x, c.y, 150, coreAlpha, time * .00055); drawSprite('core-3', c.x, c.y, 196, coreAlpha * .62, -time * .00032); ctx.restore();
       const flameAlpha = phase === 'morph' ? easeOut(morphT) : phase === 'flame' ? 1 : 0;
-      drawEmberField(c, flameAlpha * .42, .62); drawPaintedFlame(c, flameAlpha, morphT);
+      drawEmberField(c, flameAlpha * .52, 1.10, -46); drawPaintedFlame(c, flameAlpha, morphT);
       if (phase === 'burst' && shockwave > 0) { ctx.save(); ctx.globalAlpha = (1 - shockwave) * .4; ctx.strokeStyle = '#ffb46a'; ctx.shadowColor = '#ff7a37'; ctx.shadowBlur = 18; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(c.x, c.y, 14 + shockwave * 130, 0, TAU); ctx.stroke(); ctx.restore(); }
     }
 
     function draw(now) { drawBackground(); links.forEach(key => { const [a, b] = key.split('-').map(Number); const alpha = phase === 'converging' ? .55 + progress(now, CONFIG.hexagonConvergeMs) * .45 : 1; drawLink(a, b, alpha, phase === 'burst' ? 1 : 0); }); drawNodes(now); drawEnergy(now); drawParticles(now); }
     function frame(now) { const dt = Math.min(40, now - last); last = now; time += dt; update(dt, now); draw(now); requestAnimationFrame(frame); }
-    canvas.addEventListener('pointermove', e => { const rect = canvas.getBoundingClientRect(), next = { x: e.clientX - rect.left, y: e.clientY - rect.top }; if (pointer.valid) capturePointerSweep(pointer, next); else { pointer.x = next.x; pointer.y = next.y; updateHover(); } pointer.x = next.x; pointer.y = next.y; pointer.valid = true; });
+    function handlePointerMove(e) { const rect = canvas.getBoundingClientRect(), samples = e.getCoalescedEvents ? e.getCoalescedEvents() : [e]; for (const sample of samples) { const next = { x: sample.clientX - rect.left, y: sample.clientY - rect.top }; if (pointer.valid) capturePointerSweep(pointer, next); else { pointer.x = next.x; pointer.y = next.y; updateHover(); } pointer.x = next.x; pointer.y = next.y; pointer.valid = true; } }
+    canvas.addEventListener('pointermove', handlePointerMove, { passive: true }); canvas.addEventListener('pointerrawupdate', handlePointerMove, { passive: true });
     canvas.addEventListener('pointerleave', () => { pointer.x = pointer.y = -1000; pointer.valid = false; hovered = -1; });
     resetButton.addEventListener('click', reset); window.addEventListener('resize', resize); resize(); reset(); requestAnimationFrame(frame);
   </script>
