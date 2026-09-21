@@ -3,65 +3,180 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#101b30" />
-  <title>Me.mori — Ngọn lửa của bạn</title>
+  <meta name="theme-color" content="#080706" />
+  <title>Ember Network — interaction prototype</title>
   <style>
-    :root{--ink:#fff1cf;--navy:#101b30;--panel:#172a42;--line:#7ea1a9;--gold:#ffc66c;--coral:#e87a68}
-    *{box-sizing:border-box} html,body{height:100%;margin:0;background:#0a1120;color:var(--ink);font-family:monospace} body{overflow:hidden}
-    .scene-bg{position:fixed;inset:0;background:#081221 url('assets/memori-forest-pixel-v2.png') center/cover no-repeat;filter:saturate(.96) contrast(1.04);transform:scale(1.015)}
-    .scene-bg:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 48%,transparent 35%,rgba(2,8,19,.5) 100%)}
-    #game{position:fixed;inset:0;display:block;width:100vw;height:100vh;cursor:crosshair;background:transparent}
-    .hud{position:fixed;inset:0;z-index:3;pointer-events:none;padding:clamp(14px,3vw,34px);display:flex;justify-content:space-between;align-items:flex-start;text-transform:uppercase;font-size:clamp(10px,1.4vw,13px);letter-spacing:.08em;text-shadow:2px 2px #101b30}
-    .brand{font-weight:900;color:#fff0c0}.brand i{color:var(--gold);font-style:normal}.quest{text-align:right;color:#b9ced0;line-height:1.6}.quest b{color:var(--gold)}
-    .caption{position:fixed;z-index:4;left:50%;bottom:clamp(22px,5vh,44px);transform:translateX(-50%);text-align:center;text-shadow:2px 2px #101b30;font-size:clamp(11px,1.5vw,14px);letter-spacing:.06em;pointer-events:none;min-width:270px}
-    .caption small{display:block;color:#a7c0c3;margin-top:7px;font-size:.8em}.toast{position:fixed;z-index:6;top:80px;left:50%;transform:translate(-50%,-12px);opacity:0;transition:.3s;padding:9px 14px;border:2px solid #f8d892;background:#193449;color:#fff3cf;box-shadow:4px 4px #0c1728;font-size:12px;pointer-events:none}.toast.show{opacity:1;transform:translate(-50%,0)}
-    .veil,.choose{position:fixed;z-index:8;inset:0;display:grid;place-items:center;background:rgba(7,14,28,.88);transition:opacity .45s}.veil.hide,.choose.hide{opacity:0;pointer-events:none}
-    .dialogue{max-width:min(760px,88vw);padding:22px 28px;text-align:center;color:#fff1cf;font-size:clamp(25px,4.8vw,54px);line-height:1.18;text-shadow:4px 4px #101b30;animation:pop .35s steps(3)}@keyframes pop{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}.dialogue span{display:block;margin-top:16px;color:#9dc4c1;font-size:11px;letter-spacing:.15em}
-    .card{width:min(560px,calc(100vw - 32px));padding:30px;text-align:center;background:#152943;border:3px solid #90b9b6;box-shadow:8px 8px #071020,12px 12px #c76d62}.eyebrow{color:#ffc66c;font-size:12px;letter-spacing:.18em}.card h1{margin:15px 0 10px;font-size:clamp(32px,5vw,52px);line-height:1.02}.card p{margin:0 0 23px;color:#bed2cf;line-height:1.6;font-size:13px}.choices{display:flex;gap:12px;justify-content:center}.pick{min-width:185px;padding:15px 10px;background:#243d56;border:2px solid #719aa1;color:#fff0cf;box-shadow:4px 4px #0b1628;font-family:inherit;transition:transform .12s}.pick:hover,.pick:focus-visible{transform:translate(-2px,-2px);border-color:#ffc66c;box-shadow:6px 6px #0b1628}.pick strong{display:block;font-size:15px;color:#ffc66c}.pick small{display:block;margin-top:7px;color:#b8d1cd;font-size:11px}@media(max-width:500px){.choices{flex-direction:column}.pick{min-width:0}.hud .quest{display:none}}
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #080706; }
+    body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #ffe9cf; }
+    #scene { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; cursor: crosshair; }
+    .hint { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); color: rgba(255, 224, 194, .45); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; pointer-events: none; transition: opacity .6s ease; }
+    .hint.is-done { opacity: 0; }
+    .reset { position: fixed; right: 18px; bottom: 16px; border: 1px solid rgba(255, 159, 91, .32); border-radius: 999px; background: rgba(28, 12, 6, .56); color: rgba(255, 216, 182, .72); padding: 7px 11px; font: 10px/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; opacity: .6; transition: opacity .2s ease, border-color .2s ease; }
+    .reset:hover, .reset:focus-visible { opacity: 1; border-color: rgba(255, 176, 104, .8); outline: none; }
+    .status { position: fixed; top: 16px; left: 18px; color: rgba(255, 202, 157, .28); font: 10px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; pointer-events: none; }
   </style>
 </head>
 <body>
-  <div class="scene-bg" aria-hidden="true"></div>
-  <canvas id="game" width="640" height="360" aria-label="Game pixel Me.mori. Nhấp để di chuyển nhân vật."></canvas>
-  <div class="hud"><div class="brand"><i>✦</i> ME.MORI / FIRE QUEST</div><div class="quest"><b id="state">CHƯA CÓ CỦI</b><br><span id="step">TÌM THANH CỦI</span></div></div>
-  <div class="toast" id="toast"></div><div class="caption" id="caption">Chọn nhân vật để bắt đầu<small>NHẤP VÀO BẢN ĐỒ ĐỂ DI CHUYỂN</small></div>
-  <section class="choose" id="choose"><div class="card"><div class="eyebrow">CHƯƠNG 01 · KHU RỪNG ĐOM ĐÓM</div><h1>Ngọn lửa của bạn<br>đang chờ đó.</h1><p>Chọn người bạn đồng hành cho chuyến đi đêm nay.</p><div class="choices"><button class="pick" data-type="girl"><strong>✿ BẠN NỮ</strong><small>Áo hồng · tóc tím</small></button><button class="pick" data-type="boy"><strong>✦ BẠN NAM</strong><small>Áo xanh · tóc nâu</small></button></div></div></section>
-  <section class="veil hide" id="veil"><div class="dialogue" id="dialogue"></div></section>
+  <canvas id="scene" aria-label="Một mạng lưới sáu khối sáng. Di chuyển con trỏ qua các khối để nối chúng."></canvas>
+  <div class="status" id="status">0 / 6 liên kết</div>
+  <div class="hint" id="hint">đưa con trỏ qua một khối</div>
+  <button class="reset" id="reset" type="button">Reset</button>
   <script>
-  const c=document.getElementById('game'),x=c.getContext('2d'); x.imageSmoothingEnabled=false;
-  const UI={choose:document.getElementById('choose'),veil:document.getElementById('veil'),dialogue:document.getElementById('dialogue'),caption:document.getElementById('caption'),toast:document.getElementById('toast'),state:document.getElementById('state'),step:document.getElementById('step')};
-  const W=320,H=180; let started=false,kind='girl',t=0,last=0,toastTimer,gate=false;
-  const p={x:64,y:132,tx:64,ty:132,face:1,walk:0,hasWood:false,hasFire:false}; let wood={x:116,y:112,alive:true},flame={x:236,y:91,alive:true}; let motes=[];
-  const C={sky:'#101b30',sky2:'#213a55',far:'#29475c',ground:'#254b55',grass:'#326169',dark:'#17313f',leaf:'#3f786d',mint:'#a7d7bc',moon:'#fff1bc',gold:'#ffc66c',orange:'#f39a5a',coral:'#e87067',pink:'#d985aa',cream:'#fff1cf',ink:'#101b30',wood:'#925b45',bark:'#613e3d'};
-  const r=(a,b)=>Math.floor(a+Math.random()*(b-a+1)); const d=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);
-  function px(a,b,w,h,col){x.fillStyle=col;x.fillRect(a|0,b|0,w,h)}
-  function text(s,a,b,col=C.cream){x.fillStyle=col;x.font='7px monospace';x.fillText(s,a,b)}
-  function cloud(a,b){for(let i=0;i<5;i++)px(a+i*7,b+Math.abs(2-i)*2,9,3,'#182b45')}
-  function tree(a,b,s=1){px(a-2*s,b,5*s,25*s,C.bark); px(a-9*s,b-15*s,19*s,17*s,C.dark);px(a-12*s,b-8*s,25*s,13*s,C.leaf);px(a-7*s,b-21*s,15*s,11*s,C.leaf);px(a-4*s,b-25*s,9*s,7*s,C.mint);px(a-10*s,b-4*s,5*s,4*s,C.mint)}
-  function drawWorld(){
-    // The high-detail pixel forest is a separate native-resolution backdrop.
-    // Canvas only carries the interactive sprites, particles, and quest objects.
-  }
-  function drawLog(a,b,held=false){x.save();x.translate(a|0,b|0);if(held)x.rotate(p.face*.18);px(-10,-3,20,7,C.bark);px(-8,-5,17,7,C.wood);px(-10,-3,3,7,'#bb7955');px(7,-3,3,7,'#51333b');px(3,-4,2,1,'#d4905d');x.restore()}
-  function drawFire(a,b,big=false){let f=Math.floor(t/110)%2; let s=big?1.25:1; px(a-4*s,b,8*s,3,C.bark);px(a-7*s,b+3*s,14*s,3,C.wood);px(a-3*s,b-9*s-f,6*s,10*s,C.coral);px(a-2*s,b-13*s+f,4*s,7*s,C.gold);px(a-1*s,b-8*s,2*s,4*s,C.cream); if(big){px(a-9*s,b-2*s,2,2,C.gold);px(a+8*s,b-7*s,2,2,C.gold)}}
-  function drawPlayer(){let bob=started&&d(p,{x:p.tx,y:p.ty})>1?Math.sin(p.walk)*1.2:0,a=p.x|0,b=(p.y+bob)|0;let hair=kind==='girl'?'#4b3a68':'#5a3b35',shirt=kind==='girl'?'#d886a6':'#5a92b7';
-    px(a-7,b-2,14,3,'#15313d'); // shadow
-    px(a-4,b-18,8,9,'#f2c49e');px(a-5,b-22,10,7,hair);px(a-6,b-20,2,7,hair); if(kind==='girl'){px(a+4,b-19,3,8,hair);px(a-7,b-17,2,5,hair)}
-    px(a-2,b-16,1,1,C.ink);px(a+2,b-16,1,1,C.ink);px(a-4,b-8,8,9,shirt);px(a-5,b-7,1,5,'#f2c49e');px(a+5,b-7,1,5,'#f2c49e');
-    let leg=Math.sin(p.walk)>0?1:-1;px(a-3,b+1,2,6,'#273a55');px(a+2,b+1,2,6,'#273a55');px(a-4,b+7+leg,3,2,'#f1c284');px(a+1,b+7-leg,3,2,'#f1c284');
-    if(p.hasWood||p.hasFire){let hx=a+p.face*8,hy=b-8;drawLog(hx,hy,true);if(p.hasFire)drawFire(hx+p.face*1,hy-5,true)}
-  }
-  function drawPortal(){if(!gate)return;let a=160,b=78,tw=Math.floor(t/180)%2;px(a-13,b-20,26,3,'#bc8cba');px(a-16,b-17,5,36,'#806b9d');px(a+11,b-17,5,36,'#806b9d');px(a-11,b-18,22,38,'#4d4274');px(a-8,b-15,16,32,tw?'#d675a0':'#b380bb');px(a-5,b-12,10,26,tw?'#ffd182':'#ffc2a1');px(a-2,b-8,4,17,'#fff0bb');px(a-18,b+19,36,3,'#583c63');text('CỔNG ÁNH SÁNG',128,110,C.gold)}
-  function particles(){if(p.hasFire&&Math.random()<.28)motes.push({x:p.x+p.face*8,y:p.y-20,vx:(Math.random()-.5)*.32,vy:-Math.random()*.45-.2,life:24});if(!p.hasFire&&flame.alive&&Math.random()<.18)motes.push({x:flame.x,y:flame.y-13,vx:(Math.random()-.5)*.23,vy:-.35,life:20});motes=motes.filter(m=>m.life-->0);motes.forEach(m=>{m.x+=m.vx;m.y+=m.vy;px(m.x,m.y,1,1,m.life%2?C.gold:C.cream)})}
-  function render(){x.setTransform(1,0,0,1,0,0);x.clearRect(0,0,c.width,c.height);x.setTransform(2,0,0,2,0,0);drawWorld();if(wood.alive)drawLog(wood.x,wood.y);if(flame.alive)drawFire(flame.x,flame.y);drawPortal();drawPlayer();particles();if(started){text('✦',p.tx-2,p.ty-13,C.gold)}x.setTransform(1,0,0,1,0,0)}
-  function toast(s){UI.toast.textContent=s;UI.toast.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>UI.toast.classList.remove('show'),1700)}
-  function updateQuest(){if(p.hasFire){UI.state.textContent='LỬA ĐANG CHÁY';UI.step.textContent='MANG ÁNH SÁNG TỚI CÁNH CỔNG';UI.caption.innerHTML='Bạn đang mang ngọn lửa của mình <small>ÁNH LỬA BÁM THEO TỪNG BƯỚC CHÂN</small>'}else if(p.hasWood){UI.state.textContent='ĐÃ CÓ CỦI';UI.step.textContent='TÌM NGỌN LỬA';UI.caption.innerHTML='Mang củi đến gần ngọn lửa <small>CỦI ĐANG Ở TRONG TAY BẠN</small>'}else{UI.state.textContent='CHƯA CÓ CỦI';UI.step.textContent='TÌM THANH CỦI';UI.caption.innerHTML='Nhấp lên bản đồ để di chuyển <small>TÌM THANH CỦI NẰM TRONG CỎ</small>'}}
-  function arrive(){if(wood.alive&&d(p,wood)<12){wood.alive=false;p.hasWood=true;toast('ĐÃ NHẶT CỦI — CỦI BÁM VÀO TAY!');updateQuest()}if(flame.alive&&d(p,flame)<13){if(p.hasWood){flame.alive=false;p.hasWood=false;p.hasFire=true;gate=true;toast('NGỌN LỬA ĐÃ CHÁY TRÊN CỦI!');updateQuest()}else{toast('CẦN MỘT THANH CỦI ĐỂ MANG LỬA ĐI')}}}
-  function loop(now){let dt=Math.min((now-last)/16.7,2);last=now;t+=dt*16;let dx=p.tx-p.x,dy=p.ty-p.y,dist=Math.hypot(dx,dy);if(started&&dist>.5){let v=.7*dt;p.x+=dx/dist*Math.min(v,dist);p.y+=dy/dist*Math.min(v,dist);p.face=dx<0?-1:1;p.walk+=.55*dt;if(dist<1.2)arrive()}render();requestAnimationFrame(loop)}
-  async function line(s,ms){UI.dialogue.innerHTML=s+'<span>ME.MORI CLASS</span>';UI.veil.classList.remove('hide');await new Promise(r=>setTimeout(r,ms));UI.veil.classList.add('hide');await new Promise(r=>setTimeout(r,400))}
-  document.querySelectorAll('.pick').forEach(b=>b.onclick=async()=>{kind=b.dataset.type;UI.choose.classList.add('hide');await line('Chào mừng bạn đến với<br>lớp học Me.mori',2100);await line('Hãy đi tìm ngọn lửa<br>của bạn nào',1900);started=true;updateQuest()});
-  c.addEventListener('pointerdown',e=>{if(!started)return;let r=c.getBoundingClientRect();p.tx=Math.max(10,Math.min(310,(e.clientX-r.left)/r.width*W));p.ty=Math.max(88,Math.min(163,(e.clientY-r.top)/r.height*H));UI.caption.innerHTML='Đang bước qua rừng đom đóm...<small>MỖI BƯỚC ĐỀU ĐANG ĐƯA BẠN GẦN HƠN</small>'});
-  requestAnimationFrame(loop);
+    // One place to tune the movement, timing and material feeling.
+    const CONFIG = {
+      nodeCount: 6, linksToComplete: 6, nodeSize: 18, cornerRadius: 4,
+      floatAmplitude: 22, floatSpeed: 0.00034, floatSpeedSpread: 0.00011,
+      maxDrift: 26, spring: 0.018, damping: 0.88, centerPull: 0.0009,
+      hoverRadius: 32, baseGlow: 15, activeGlow: 34, linkGlow: 18, linkWidth: 1.4,
+      hexagonConvergeMs: 2200, hexagonHoldMs: 900, collapseMs: 900,
+      condenseMs: 420, burstMs: 1050, sunHoldMs: 1700,
+      morphMs: 1900, ringRadius: 106, linkAppearStaggerMs: 35,
+      particleCount: 38, particleLifeMs: 1500, shakePx: 2.2
+    };
+
+    const canvas = document.getElementById('scene'), ctx = canvas.getContext('2d');
+    const status = document.getElementById('status'), hint = document.getElementById('hint'), resetButton = document.getElementById('reset');
+    const TAU = Math.PI * 2;
+    let width = 0, height = 0, dpr = 1, last = performance.now(), time = 0;
+    let pointer = { x: -1000, y: -1000 }, hovered = -1, previous = -1;
+    let links = new Set(), phase = 'floating', phaseStarted = 0, particles = [], shockwave = 0, linkRevealTimers = [];
+    const seed = [
+      { x: .19, y: .27, phase: .4 }, { x: .46, y: .18, phase: 2.1 }, { x: .75, y: .28, phase: 4.5 },
+      { x: .83, y: .67, phase: 1.3 }, { x: .48, y: .78, phase: 3.2 }, { x: .16, y: .67, phase: 5.4 }
+    ];
+    let nodes = [];
+
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+    const keyFor = (a, b) => a < b ? `${a}-${b}` : `${b}-${a}`;
+    const allPairs = () => { const out = []; for (let a = 0; a < nodes.length; a++) for (let b = a + 1; b < nodes.length; b++) out.push(keyFor(a, b)); return out; };
+    const center = () => ({ x: width / 2, y: height / 2 });
+    const ringTarget = id => { const angle = -Math.PI / 2 + (id / CONFIG.nodeCount) * TAU; return { x: width / 2 + Math.cos(angle) * CONFIG.ringRadius, y: height / 2 + Math.sin(angle) * CONFIG.ringRadius }; };
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2); width = window.innerWidth; height = window.innerHeight;
+      canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
+      canvas.style.width = width + 'px'; canvas.style.height = height + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      nodes.forEach(n => { n.homeX = seed[n.id].x * width; n.homeY = seed[n.id].y * height; });
+    }
+
+    function reset() {
+      linkRevealTimers.forEach(clearTimeout); linkRevealTimers = [];
+      links = new Set(); hovered = -1; previous = -1; phase = 'floating'; phaseStarted = performance.now(); particles = []; shockwave = 0;
+      hint.classList.remove('is-done'); status.textContent = `0 / ${CONFIG.linksToComplete} liên kết`;
+      nodes = seed.map((s, id) => ({ id, x: s.x * width, y: s.y * height, vx: 0, vy: 0, homeX: s.x * width, homeY: s.y * height, seed: s.phase }));
+    }
+
+    function beginCompletion() {
+      phase = 'converging'; phaseStarted = performance.now(); hint.classList.add('is-done');
+      allPairs().forEach((key, i) => { const timer = setTimeout(() => links.add(key), i * CONFIG.linkAppearStaggerMs); linkRevealTimers.push(timer); });
+      status.textContent = 'mạng lưới hoàn chỉnh';
+    }
+
+    function addLink(a, b) {
+      if (a < 0 || b < 0 || a === b || phase !== 'floating') return;
+      const key = keyFor(a, b); if (links.has(key)) return; links.add(key);
+      status.textContent = `${Math.min(links.size, CONFIG.linksToComplete)} / ${CONFIG.linksToComplete} liên kết`;
+      if (links.size >= CONFIG.linksToComplete) beginCompletion();
+    }
+
+    function updateHover() {
+      if (phase !== 'floating') return;
+      let next = -1, best = CONFIG.hoverRadius * CONFIG.hoverRadius;
+      nodes.forEach(n => { const dx = pointer.x - n.x, dy = pointer.y - n.y, d2 = dx * dx + dy * dy; if (d2 < best) { best = d2; next = n.id; } });
+      if (next !== hovered) { hovered = next; if (hovered !== -1) { addLink(previous, hovered); previous = hovered; } }
+    }
+
+    function createBurstParticles() {
+      particles = Array.from({ length: CONFIG.particleCount }, (_, i) => { const a = (i / CONFIG.particleCount) * TAU + Math.sin(i * 7.3) * .12; const speed = 42 + (i % 5) * 14; return { angle: a, speed, size: 1 + (i % 3) * .55, life: CONFIG.particleLifeMs * (.72 + (i % 7) / 20), age: 0, drift: (i % 2 ? 1 : -1) * (.12 + (i % 4) * .04) }; });
+    }
+
+    function updateParticles(dt) { particles.forEach(p => { p.age += dt; p.angle += p.drift * dt * .001; }); particles = particles.filter(p => p.age < p.life); }
+    function progress(now, ms) { return clamp((now - phaseStarted) / ms, 0, 1); }
+
+    function update(dt, now) {
+      updateHover();
+      const convergeT = phase === 'converging' ? progress(now, CONFIG.hexagonConvergeMs) : phase === 'hexagon' ? 1 : phase === 'collapsing' ? progress(now, CONFIG.collapseMs) : phase === 'condense' || phase === 'burst' || phase === 'sun' || phase === 'morph' || phase === 'flame' ? 1 : 0;
+      nodes.forEach(n => {
+        const breathe = Math.sin(time * (CONFIG.floatSpeed + (n.id % 3) * CONFIG.floatSpeedSpread) + n.seed) * CONFIG.floatAmplitude;
+        const sway = Math.cos(time * (CONFIG.floatSpeed * .71) + n.seed * 1.7) * CONFIG.floatAmplitude * .56;
+        let tx = n.homeX + sway, ty = n.homeY + breathe;
+        if (phase !== 'floating') { const ring = ringTarget(n.id), c = center(); if (phase === 'converging') { tx = lerp(n.homeX + sway, ring.x, ease(convergeT)); ty = lerp(n.homeY + breathe, ring.y, ease(convergeT)); } else if (phase === 'hexagon') { tx = ring.x; ty = ring.y; } else { const collapseT = phase === 'collapsing' ? ease(progress(now, CONFIG.collapseMs)) : 1; tx = lerp(ring.x, c.x, collapseT); ty = lerp(ring.y, c.y, collapseT); } }
+        const dx = tx - n.x, dy = ty - n.y, boost = phase === 'converging' || phase === 'collapsing' ? 1 + convergeT * .8 : 1;
+        n.vx = (n.vx + dx * CONFIG.spring * dt * .06 * boost) * Math.pow(CONFIG.damping, dt / 16);
+        n.vy = (n.vy + dy * CONFIG.spring * dt * .06 * boost) * Math.pow(CONFIG.damping, dt / 16);
+        if (phase === 'floating') { n.vx += (width / 2 - n.x) * CONFIG.centerPull * dt * .02; n.vy += (height / 2 - n.y) * CONFIG.centerPull * dt * .02; }
+        if (phase === 'condense') { const c = center(), jitter = Math.sin(time * .014 + n.seed) * 2.8; n.vx += (c.x - n.x + jitter) * .003 * dt; n.vy += (c.y - n.y - jitter) * .003 * dt; }
+        n.x += clamp(n.vx, -CONFIG.maxDrift, CONFIG.maxDrift) * dt * .06; n.y += clamp(n.vy, -CONFIG.maxDrift, CONFIG.maxDrift) * dt * .06;
+      });
+      if (phase === 'flame' && particles.length < 8 && Math.random() < dt * .004) particles.push({ angle: -Math.PI / 2 + (Math.random() - .5) * .72, speed: 12 + Math.random() * 18, size: .7 + Math.random() * .8, life: 700 + Math.random() * 520, age: 0, drift: (Math.random() - .5) * .22 });
+      updateParticles(dt);
+      if (phase === 'converging' && convergeT >= 1) { phase = 'hexagon'; phaseStarted = now; }
+      else if (phase === 'hexagon' && now - phaseStarted >= CONFIG.hexagonHoldMs) { phase = 'collapsing'; phaseStarted = now; }
+      else if (phase === 'collapsing' && progress(now, CONFIG.collapseMs) >= 1) { phase = 'condense'; phaseStarted = now; }
+      else if (phase === 'condense' && progress(now, CONFIG.condenseMs) >= 1) { phase = 'burst'; phaseStarted = now; shockwave = 0; createBurstParticles(); }
+      else if (phase === 'burst' && progress(now, CONFIG.burstMs) >= 1) { phase = 'sun'; phaseStarted = now; }
+      else if (phase === 'sun' && now - phaseStarted >= CONFIG.sunHoldMs) { phase = 'morph'; phaseStarted = now; }
+      else if (phase === 'morph' && progress(now, CONFIG.morphMs) >= 1) { phase = 'flame'; phaseStarted = now; }
+      if (phase === 'burst') shockwave = easeOut(progress(now, CONFIG.burstMs));
+    }
+
+    function drawBackground() {
+      const c = center(), g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, Math.max(width, height) * .72);
+      g.addColorStop(0, '#1b0c06'); g.addColorStop(.4, '#0d0907'); g.addColorStop(1, '#050505'); ctx.fillStyle = g; ctx.fillRect(0, 0, width, height);
+      const glow = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, Math.min(width, height) * .35); glow.addColorStop(0, 'rgba(139, 42, 9, .09)'); glow.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = glow; ctx.fillRect(0, 0, width, height);
+    }
+
+    function drawLink(a, b, alpha = 1, widthBoost = 0) {
+      const na = nodes[a], nb = nodes[b], pulse = phase === 'burst' ? 1.1 : 1;
+      const grad = ctx.createLinearGradient(na.x, na.y, nb.x, nb.y); grad.addColorStop(0, `rgba(255, 102, 35, ${.2 * alpha})`); grad.addColorStop(.5, `rgba(255, 188, 90, ${.85 * alpha})`); grad.addColorStop(1, `rgba(255, 102, 35, ${.2 * alpha})`);
+      ctx.save(); ctx.lineCap = 'round'; ctx.shadowColor = `rgba(255, 109, 42, ${.55 * alpha})`; ctx.shadowBlur = CONFIG.linkGlow * pulse; ctx.strokeStyle = grad; ctx.lineWidth = (CONFIG.linkWidth + widthBoost) * pulse; ctx.beginPath(); ctx.moveTo(na.x, na.y); ctx.lineTo(nb.x, nb.y); ctx.stroke(); ctx.restore();
+    }
+
+    function roundedRect(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x - w / 2, y - h / 2, w, h, r); }
+    function drawNodes(now) {
+      const c = center(), convergeT = phase === 'converging' ? progress(now, CONFIG.hexagonConvergeMs) : phase === 'hexagon' ? 1 : phase === 'collapsing' ? progress(now, CONFIG.collapseMs) : phase === 'floating' ? 0 : 1;
+      const nodeAlpha = phase === 'burst' ? 1 - easeOut(progress(now, CONFIG.burstMs)) : phase === 'condense' ? 1 : phase === 'sun' || phase === 'morph' || phase === 'flame' ? 0 : 1;
+      nodes.forEach(n => { const linked = [...links].some(k => k.split('-').map(Number).includes(n.id)), hover = n.id === hovered && phase === 'floating'; const squeeze = phase === 'hexagon' ? .84 : lerp(1, .18, ease(convergeT)); const shake = phase === 'condense' ? Math.sin(time * .025 + n.seed) * 3 : 0; const x = lerp(n.x, c.x, phase === 'condense' ? .98 : 0) + shake, y = lerp(n.y, c.y, phase === 'condense' ? .98 : 0) - shake; ctx.save(); ctx.globalAlpha = nodeAlpha; ctx.translate(x, y); ctx.shadowColor = hover ? '#ffcc83' : '#ff6d2c'; ctx.shadowBlur = (hover ? CONFIG.activeGlow : linked ? CONFIG.activeGlow * .75 : CONFIG.baseGlow) * (1 + convergeT * 1.8); const size = CONFIG.nodeSize * (hover ? 1.08 : 1) * squeeze; ctx.fillStyle = hover ? '#ffc17a' : linked ? '#ff8d4b' : '#e75625'; roundedRect(0, 0, size, size, CONFIG.cornerRadius); ctx.fill(); ctx.restore(); });
+    }
+
+    // The sun and flame share 16 points, so the transformation stays one continuous body.
+    const SUN = Array.from({ length: 16 }, (_, i) => { const a = -Math.PI / 2 + i * TAU / 16, r = 56 + (i % 2 ? 1.5 : 0); return [Math.cos(a) * r, Math.sin(a) * r]; });
+    const FLAME = [[0,-78],[19,-57],[31,-35],[37,-9],[33,12],[24,29],[17,44],[8,57],[0,72],[-10,57],[-18,43],[-29,29],[-35,10],[-31,-10],[-24,-31],[-12,-58]];
+    const FLAME_CORE = [[0,-54],[13,-40],[16,-24],[10,-14],[18,-4],[14,8],[9,19],[3,30],[-3,26],[-9,18],[-14,8],[-11,-2],[-17,-12],[-9,-23],[-7,-38],[-3,-48]];
+    function blendShape(a, b, t) { return a.map((p, i) => [lerp(p[0], b[i][0], t), lerp(p[1], b[i][1], t)]); }
+    function pathShape(points, wobble = 0) { ctx.beginPath(); points.forEach((p, i) => { const x = p[0] + Math.sin(time * .009 + i * 1.8) * wobble, y = p[1] + Math.cos(time * .007 + i * 1.3) * wobble * .6; if (i === 0) ctx.moveTo(x, y); else { const prev = points[i - 1], mx = (prev[0] + x) / 2, my = (prev[1] + y) / 2; ctx.quadraticCurveTo(prev[0], prev[1], mx, my); } }); const first = points[0], lastPoint = points[points.length - 1]; ctx.quadraticCurveTo(lastPoint[0], lastPoint[1], (lastPoint[0] + first[0]) / 2, (lastPoint[1] + first[1]) / 2); ctx.closePath(); }
+
+    function drawParticles(now) {
+      const c = center(); particles.forEach(p => { const ageT = p.age / p.life, distance = p.speed * ageT * (phase === 'flame' ? .28 : 1), lift = phase === 'flame' ? ageT * 38 : ageT * 10, x = c.x + Math.cos(p.angle) * distance, y = c.y + Math.sin(p.angle) * distance - lift; ctx.save(); ctx.globalAlpha = (1 - ageT) * .75; ctx.fillStyle = ageT < .35 ? '#ffd994' : '#f26b2d'; ctx.shadowColor = '#ff8a3d'; ctx.shadowBlur = 12; ctx.beginPath(); ctx.arc(x, y, p.size * (1 - ageT * .35), 0, TAU); ctx.fill(); ctx.restore(); });
+    }
+
+    function drawEnergy(now) {
+      if (phase === 'floating' || phase === 'converging' || phase === 'hexagon' || phase === 'collapsing') return;
+      const c = center(), burstT = phase === 'burst' ? easeOut(progress(now, CONFIG.burstMs)) : 1, morphT = phase === 'morph' ? ease(progress(now, CONFIG.morphMs)) : phase === 'flame' ? 1 : 0;
+      const settle = phase === 'burst' ? 1 + Math.sin(burstT * Math.PI) * .12 : phase === 'sun' ? 1 + Math.sin((now - phaseStarted) * .006) * .025 : 1 + Math.sin(time * .006) * .028;
+      const flash = phase === 'condense' ? 1 - progress(now, CONFIG.condenseMs) : phase === 'burst' ? 1 - burstT : 0;
+      if (flash > 0) { ctx.save(); ctx.globalAlpha = flash * .3; const r = 20 + flash * 120; const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r); g.addColorStop(0, '#fff3c4'); g.addColorStop(.35, '#ff9c54'); g.addColorStop(1, 'rgba(255,92,28,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, TAU); ctx.fill(); ctx.restore(); }
+      ctx.save(); ctx.translate(c.x, c.y); ctx.scale(settle, settle);
+      if (phase === 'sun' || phase === 'burst') {
+        const rayPulse = 1 + Math.sin(time * .008) * .06; ctx.save(); ctx.globalAlpha = (phase === 'burst' ? burstT : 1) * .66; ctx.strokeStyle = '#ffab57'; ctx.shadowColor = '#ff7131'; ctx.shadowBlur = 22; ctx.lineWidth = 3; ctx.lineCap = 'round'; for (let i = 0; i < 12; i++) { const a = i * TAU / 12 + Math.sin(time * .002 + i) * .025, inner = 64 * rayPulse, outer = 76 + Math.sin(time * .006 + i * 2) * 5; ctx.beginPath(); ctx.moveTo(Math.cos(a) * inner, Math.sin(a) * inner); ctx.lineTo(Math.cos(a) * outer, Math.sin(a) * outer); ctx.stroke(); } ctx.restore();
+      }
+      const shape = phase === 'condense' ? SUN.map(p => [p[0] * .08, p[1] * .08]) : blendShape(SUN, FLAME, morphT); const outer = ctx.createRadialGradient(-10, -25, 4, 0, 0, 92); outer.addColorStop(0, '#fff5c7'); outer.addColorStop(.16, '#ffd978'); outer.addColorStop(.45, '#ff9a43'); outer.addColorStop(.76, '#f45b26'); outer.addColorStop(1, 'rgba(120,25,5,0)'); pathShape(shape, phase === 'flame' ? 4.2 : .7); ctx.fillStyle = outer; ctx.globalAlpha = phase === 'burst' ? burstT : 1; ctx.shadowColor = '#ff7131'; ctx.shadowBlur = 32 + flash * 45; ctx.fill();
+      if (phase === 'flame') { ctx.save(); ctx.globalAlpha = .52; ctx.strokeStyle = '#ffbd65'; ctx.lineWidth = 1.4; ctx.shadowColor = '#ff9b3d'; ctx.shadowBlur = 10; pathShape(shape, 3.5); ctx.stroke(); ctx.restore(); }
+      const inner = blendShape(SUN.map(p => [p[0] * .42, p[1] * .42]), FLAME_CORE, morphT); pathShape(inner, phase === 'flame' ? 2.8 : .25); ctx.fillStyle = phase === 'flame' ? '#ffe48a' : 'rgba(255,235,171,.72)'; ctx.shadowBlur = 18; ctx.fill();
+      ctx.restore();
+      if (phase === 'burst' && shockwave > 0) { ctx.save(); ctx.globalAlpha = (1 - shockwave) * .4; ctx.strokeStyle = '#ffb46a'; ctx.shadowColor = '#ff7a37'; ctx.shadowBlur = 18; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(c.x, c.y, 14 + shockwave * 130, 0, TAU); ctx.stroke(); ctx.restore(); }
+    }
+
+    function draw(now) { drawBackground(); links.forEach(key => { const [a, b] = key.split('-').map(Number); const alpha = phase === 'converging' ? .55 + progress(now, CONFIG.hexagonConvergeMs) * .45 : 1; drawLink(a, b, alpha, phase === 'burst' ? 1 : 0); }); drawNodes(now); drawEnergy(now); drawParticles(now); }
+    function frame(now) { const dt = Math.min(40, now - last); last = now; time += dt; update(dt, now); draw(now); requestAnimationFrame(frame); }
+    canvas.addEventListener('pointermove', e => { const rect = canvas.getBoundingClientRect(); pointer.x = e.clientX - rect.left; pointer.y = e.clientY - rect.top; updateHover(); });
+    canvas.addEventListener('pointerleave', () => { pointer.x = pointer.y = -1000; hovered = -1; });
+    resetButton.addEventListener('click', reset); window.addEventListener('resize', resize); resize(); reset(); requestAnimationFrame(frame);
   </script>
 </body>
 </html>
