@@ -53,7 +53,8 @@
     const ASSET_ROOT = 'assets/sprites/';
     const assetNames = [
       ...Array.from({ length: 6 }, (_, i) => `fire1-${i + 1}`), ...Array.from({ length: 6 }, (_, i) => `fire2-${i + 1}`), ...Array.from({ length: 6 }, (_, i) => `fire3-${i + 1}`),
-      'core-1', 'core-3', 'cur1-1', 'cur1-3', 'cur2-1', 'cur2-3', 'cur3-1', 'cur3-3'
+      'core-1', 'core-3', 'cur1-1', 'cur1-3', 'cur2-1', 'cur2-3', 'cur3-1', 'cur3-3',
+      'ember-cluster-1', 'ember-cluster-3', 'ember-cluster-5', 'ele-star-four', 'ele-starburst'
     ];
     const art = Object.fromEntries(assetNames.map(name => {
       const image = new Image(); image.src = `${ASSET_ROOT}${name}.png`; return [name, image];
@@ -173,7 +174,8 @@
       ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.shadowColor = '#ff9e51'; ctx.shadowBlur = 18;
       drawSprite('cur1-1', c.x, c.y, 310, intensity * .34, spin + .18); drawSprite('cur1-3', c.x, c.y, 298, intensity * .26, -spin * .8 + 2.4);
       drawSprite('cur2-1', c.x, c.y, 255, intensity * .58, -spin * 1.4 + .8); drawSprite('cur2-3', c.x, c.y, 245, intensity * .35, spin * 1.2 + 3.5);
-      drawSprite('cur3-1', c.x, c.y, 205, intensity * .52, spin * 1.7 + 1.3); drawSprite('cur3-3', c.x, c.y, 190, intensity * .25, -spin + 4.1); ctx.restore();
+      drawSprite('cur3-1', c.x, c.y, 205, intensity * .52, spin * 1.7 + 1.3); drawSprite('cur3-3', c.x, c.y, 190, intensity * .25, -spin + 4.1);
+      drawSprite('ember-cluster-1', c.x, c.y, 280, intensity * .20, spin * .45); drawSprite('ember-cluster-5', c.x, c.y, 250, intensity * .14, -spin * .35 + 1.2); ctx.restore();
     }
     function drawPaintedFlame(c, alpha, morphT) {
       if (alpha <= 0) return; const frameFloat = time * .0042, frame = Math.floor(frameFloat) % 6, next = (frame + 1) % 6, blend = frameFloat - Math.floor(frameFloat), pulse = 1 + Math.sin(time * .006) * .025;
@@ -185,7 +187,7 @@
     }
 
     function drawParticles(now) {
-      const c = center(); particles.forEach(p => { const ageT = p.age / p.life, distance = p.speed * ageT * (phase === 'flame' ? .28 : 1), lift = phase === 'flame' ? ageT * 38 : ageT * 10, x = c.x + Math.cos(p.angle) * distance, y = c.y + Math.sin(p.angle) * distance - lift; ctx.save(); ctx.globalAlpha = (1 - ageT) * .75; ctx.fillStyle = ageT < .35 ? '#ffd994' : '#f26b2d'; ctx.shadowColor = '#ff8a3d'; ctx.shadowBlur = 12; ctx.beginPath(); ctx.arc(x, y, p.size * (1 - ageT * .35), 0, TAU); ctx.fill(); ctx.restore(); });
+      const c = center(); particles.forEach(p => { const ageT = p.age / p.life, distance = p.speed * ageT * (phase === 'flame' ? .28 : 1), lift = phase === 'flame' ? ageT * 38 : ageT * 10, x = c.x + Math.cos(p.angle) * distance, y = c.y + Math.sin(p.angle) * distance - lift; ctx.save(); ctx.globalAlpha = (1 - ageT) * .75; ctx.fillStyle = ageT < .35 ? '#ffd994' : '#f26b2d'; ctx.shadowColor = '#ff8a3d'; ctx.shadowBlur = 12; ctx.beginPath(); ctx.arc(x, y, p.size * (1 - ageT * .35), 0, TAU); ctx.fill(); ctx.restore(); if ((p.size > 1.2 && ageT < .55) || phase === 'flame') drawSprite('ele-star-four', x, y, 8 + p.size * 5, (1 - ageT) * .28, p.angle); });
     }
 
     function drawEnergy(now) {
