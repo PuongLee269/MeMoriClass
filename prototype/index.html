@@ -48,6 +48,17 @@
     ];
     let nodes = [];
 
+    // Hand-painted source sheets are split into sprites by tools/extract_handdrawn_assets.py.
+    // Keeping them as separate layers lets the prototype vary opacity, rotation and timing at runtime.
+    const ASSET_ROOT = 'assets/sprites/';
+    const assetNames = [
+      ...Array.from({ length: 6 }, (_, i) => `fire1-${i + 1}`), ...Array.from({ length: 6 }, (_, i) => `fire2-${i + 1}`), ...Array.from({ length: 6 }, (_, i) => `fire3-${i + 1}`),
+      'core-1', 'core-3', 'cur1-1', 'cur1-3', 'cur2-1', 'cur2-3', 'cur3-1', 'cur3-3'
+    ];
+    const art = Object.fromEntries(assetNames.map(name => {
+      const image = new Image(); image.src = `${ASSET_ROOT}${name}.png`; return [name, image];
+    }));
+
     const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
     const lerp = (a, b, t) => a + (b - a) * t;
     const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -151,6 +162,28 @@
     function blendShape(a, b, t) { return a.map((p, i) => [lerp(p[0], b[i][0], t), lerp(p[1], b[i][1], t)]); }
     function pathShape(points, wobble = 0) { ctx.beginPath(); points.forEach((p, i) => { const x = p[0] + Math.sin(time * .009 + i * 1.8) * wobble, y = p[1] + Math.cos(time * .007 + i * 1.3) * wobble * .6; if (i === 0) ctx.moveTo(x, y); else { const prev = points[i - 1], mx = (prev[0] + x) / 2, my = (prev[1] + y) / 2; ctx.quadraticCurveTo(prev[0], prev[1], mx, my); } }); const first = points[0], lastPoint = points[points.length - 1]; ctx.quadraticCurveTo(lastPoint[0], lastPoint[1], (lastPoint[0] + first[0]) / 2, (lastPoint[1] + first[1]) / 2); ctx.closePath(); }
 
+    function drawSprite(name, x, y, width, alpha = 1, rotation = 0, anchor = 'center') {
+      const image = art[name]; if (!image || !image.complete || !image.naturalWidth || alpha <= 0) return;
+      const height = width * image.naturalHeight / image.naturalWidth;
+      ctx.save(); ctx.globalAlpha = alpha; ctx.translate(x, y); ctx.rotate(rotation);
+      ctx.drawImage(image, -width / 2, anchor === 'bottom' ? -height : -height / 2, width, height); ctx.restore();
+    }
+    function drawPaintedOrbits(c, intensity) {
+      if (intensity <= 0) return; const spin = time * .00016;
+      ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.shadowColor = '#ff9e51'; ctx.shadowBlur = 18;
+      drawSprite('cur1-1', c.x, c.y, 310, intensity * .34, spin + .18); drawSprite('cur1-3', c.x, c.y, 298, intensity * .26, -spin * .8 + 2.4);
+      drawSprite('cur2-1', c.x, c.y, 255, intensity * .58, -spin * 1.4 + .8); drawSprite('cur2-3', c.x, c.y, 245, intensity * .35, spin * 1.2 + 3.5);
+      drawSprite('cur3-1', c.x, c.y, 205, intensity * .52, spin * 1.7 + 1.3); drawSprite('cur3-3', c.x, c.y, 190, intensity * .25, -spin + 4.1); ctx.restore();
+    }
+    function drawPaintedFlame(c, alpha, morphT) {
+      if (alpha <= 0) return; const frameFloat = time * .0042, frame = Math.floor(frameFloat) % 6, next = (frame + 1) % 6, blend = frameFloat - Math.floor(frameFloat), pulse = 1 + Math.sin(time * .006) * .025;
+      const drawPose = (index, poseAlpha) => { const width = (192 + morphT * 12) * pulse; ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.shadowColor = '#ff6f2c'; ctx.shadowBlur = 30;
+        drawSprite(`fire1-${index + 1}`, c.x, c.y + 74, width, poseAlpha * .66, Math.sin(time * .0018) * .025, 'bottom'); ctx.shadowColor = '#ff9d43'; ctx.shadowBlur = 21;
+        drawSprite(`fire2-${index + 1}`, c.x, c.y + 71, width * .91, poseAlpha * .78, Math.sin(time * .0015 + 1) * .018, 'bottom'); ctx.shadowColor = '#ffe09b'; ctx.shadowBlur = 15;
+        drawSprite(`fire3-${index + 1}`, c.x, c.y + 66, width * .67, poseAlpha * .86, Math.sin(time * .0012 + 2) * .012, 'bottom'); ctx.restore(); };
+      drawPose(frame, alpha * (1 - blend)); drawPose(next, alpha * blend);
+    }
+
     function drawParticles(now) {
       const c = center(); particles.forEach(p => { const ageT = p.age / p.life, distance = p.speed * ageT * (phase === 'flame' ? .28 : 1), lift = phase === 'flame' ? ageT * 38 : ageT * 10, x = c.x + Math.cos(p.angle) * distance, y = c.y + Math.sin(p.angle) * distance - lift; ctx.save(); ctx.globalAlpha = (1 - ageT) * .75; ctx.fillStyle = ageT < .35 ? '#ffd994' : '#f26b2d'; ctx.shadowColor = '#ff8a3d'; ctx.shadowBlur = 12; ctx.beginPath(); ctx.arc(x, y, p.size * (1 - ageT * .35), 0, TAU); ctx.fill(); ctx.restore(); });
     }
@@ -161,6 +194,8 @@
       const settle = phase === 'burst' ? 1 + Math.sin(burstT * Math.PI) * .12 : phase === 'sun' ? 1 + Math.sin((now - phaseStarted) * .006) * .025 : 1 + Math.sin(time * .006) * .028;
       const flash = phase === 'condense' ? 1 - progress(now, CONFIG.condenseMs) : phase === 'burst' ? 1 - burstT : 0;
       if (flash > 0) { ctx.save(); ctx.globalAlpha = flash * .3; const r = 20 + flash * 120; const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r); g.addColorStop(0, '#fff3c4'); g.addColorStop(.35, '#ff9c54'); g.addColorStop(1, 'rgba(255,92,28,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, TAU); ctx.fill(); ctx.restore(); }
+      const orbitIntensity = phase === 'burst' ? burstT : phase === 'sun' ? .9 : phase === 'morph' ? 1 - morphT : 0;
+      drawPaintedOrbits(c, orbitIntensity);
       ctx.save(); ctx.translate(c.x, c.y); ctx.scale(settle, settle);
       if (phase === 'sun' || phase === 'burst') {
         const rayPulse = 1 + Math.sin(time * .008) * .06; ctx.save(); ctx.globalAlpha = (phase === 'burst' ? burstT : 1) * .66; ctx.strokeStyle = '#ffab57'; ctx.shadowColor = '#ff7131'; ctx.shadowBlur = 22; ctx.lineWidth = 3; ctx.lineCap = 'round'; for (let i = 0; i < 12; i++) { const a = i * TAU / 12 + Math.sin(time * .002 + i) * .025, inner = 64 * rayPulse, outer = 76 + Math.sin(time * .006 + i * 2) * 5; ctx.beginPath(); ctx.moveTo(Math.cos(a) * inner, Math.sin(a) * inner); ctx.lineTo(Math.cos(a) * outer, Math.sin(a) * outer); ctx.stroke(); } ctx.restore();
@@ -169,6 +204,10 @@
       if (phase === 'flame') { ctx.save(); ctx.globalAlpha = .52; ctx.strokeStyle = '#ffbd65'; ctx.lineWidth = 1.4; ctx.shadowColor = '#ff9b3d'; ctx.shadowBlur = 10; pathShape(shape, 3.5); ctx.stroke(); ctx.restore(); }
       const inner = blendShape(SUN.map(p => [p[0] * .42, p[1] * .42]), FLAME_CORE, morphT); pathShape(inner, phase === 'flame' ? 2.8 : .25); ctx.fillStyle = phase === 'flame' ? '#ffe48a' : 'rgba(255,235,171,.72)'; ctx.shadowBlur = 18; ctx.fill();
       ctx.restore();
+      const coreAlpha = phase === 'burst' ? burstT * .74 : phase === 'sun' ? .48 : phase === 'morph' ? (1 - morphT) * .45 : 0;
+      ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.shadowColor = '#ffbb71'; ctx.shadowBlur = 28;
+      drawSprite('core-1', c.x, c.y, 150, coreAlpha, time * .00055); drawSprite('core-3', c.x, c.y, 196, coreAlpha * .62, -time * .00032); ctx.restore();
+      drawPaintedFlame(c, phase === 'morph' ? easeOut(morphT) : phase === 'flame' ? 1 : 0, morphT);
       if (phase === 'burst' && shockwave > 0) { ctx.save(); ctx.globalAlpha = (1 - shockwave) * .4; ctx.strokeStyle = '#ffb46a'; ctx.shadowColor = '#ff7a37'; ctx.shadowBlur = 18; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(c.x, c.y, 14 + shockwave * 130, 0, TAU); ctx.stroke(); ctx.restore(); }
     }
 
