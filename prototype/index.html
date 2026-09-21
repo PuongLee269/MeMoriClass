@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080706" />
+  <title>Ember Network — interaction prototype</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #080706; }
+    body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #ffe9cf; }
+    #scene { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; cursor: crosshair; }
+    .hint { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); color: rgba(255, 224, 194, .45); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; pointer-events: none; transition: opacity .6s ease; }
+    .hint.is-done { opacity: 0; }
+    .reset { position: fixed; right: 18px; bottom: 16px; border: 1px solid rgba(255, 159, 91, .32); border-radius: 999px; background: rgba(28, 12, 6, .56); color: rgba(255, 216, 182, .72); padding: 7px 11px; font: 10px/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; opacity: .6; transition: opacity .2s ease, border-color .2s ease; }
+    .reset:hover, .reset:focus-visible { opacity: 1; border-color: rgba(255, 176, 104, .8); outline: none; }
+    .status { position: fixed; top: 16px; left: 18px; color: rgba(255, 202, 157, .28); font: 10px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <canvas id="scene" aria-label="Một mạng lưới sáu khối sáng. Di chuyển con trỏ qua các khối để nối chúng."></canvas>
+  <div class="status" id="status">0 / 6 liên kết</div>
+  <div class="hint" id="hint">đưa con trỏ qua một khối</div>
+  <button class="reset" id="reset" type="button">Reset</button>
+  <script>
+    // One place to tune the movement, timing and material feeling.
+    const CONFIG = {
+      nodeCount: 6, linksToComplete: 6, nodeSize: 18, cornerRadius: 4,
+      floatAmplitude: 22, floatSpeed: 0.00034, floatSpeedSpread: 0.00011,
+      maxDrift: 26, spring: 0.018, damping: 0.88, centerPull: 0.0009,
+      hoverRadius: 32, baseGlow: 15, activeGlow: 34, linkGlow: 18, linkWidth: 1.4,
+      hexagonConvergeMs: 2200, hexagonHoldMs: 900, collapseMs: 900,
+      condenseMs: 420, burstMs: 1050, sunHoldMs: 1700,
+      morphMs: 1900, ringRadius: 106, linkAppearStaggerMs: 35,
+      particleCount: 38, particleLifeMs: 1500, shakePx: 2.2
+    };
+
+    const canvas = document.getElementById('scene'), ctx = canvas.getContext('2d');
+    const status = document.getElementById('status'), hint = document.getElementById('hint'), resetButton = document.getElementById('reset');
+    const TAU = Math.PI * 2;
+    let width = 0, height = 0, dpr = 1, last = performance.now(), time = 0;
+    let pointer = { x: -1000, y: -1000 }, hovered = -1, previous = -1;
+    let links = new Set(), phase = 'floating', phaseStarted = 0, particles = [], shockwave = 0, linkRevealTimers = [];
+    const seed = [
+      { x: .19, y: .27, phase: .4 }, { x: .46, y: .18, phase: 2.1 }, { x: .75, y: .28, phase: 4.5 },
+      { x: .83, y: .67, phase: 1.3 }, { x: .48, y: .78, phase: 3.2 }, { x: .16, y: .67, phase: 5.4 }
+    ];
+    let nodes = [];
+
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+    const keyFor = (a, b) => a < b ? `${a}-${b}` : `${b}-${a}`;
+    const allPairs = () => { const out = []; for (let a = 0; a < nodes.length; a++) for (let b = a + 1; b < nodes.length; b++) out.push(keyFor(a, b)); return out; };
+    const center = () => ({ x: width / 2, y: height / 2 });
+    const ringTarget = id => { const angle = -Math.PI / 2 + (id / CONFIG.nodeCount) * TAU; return { x: width / 2 + Math.cos(angle) * CONFIG.ringRadius, y: height / 2 + Math.sin(angle) * CONFIG.ringRadius }; };
+
+    function resize() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2); width = window.innerWidth; height = window.innerHeight;
+      canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
+      canvas.style.width = width + 'px'; canvas.style.height = height + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      nodes.forEach(n => { n.homeX = seed[n.id].x * width; n.homeY = seed[n.id].y * height; });
+    }
+
+    function reset() {
+      linkRevealTimers.forEach(clearTimeout); linkRevealTimers = [];
+      links = new Set(); hovered = -1; previous = -1; phase = 'floating'; phaseStarted = performance.now(); particles = []; shockwave = 0;
+      hint.classList.remove('is-done'); status.textContent = `0 / ${CONFIG.linksToComplete} liên kết`;
+      nodes = seed.map((s, id) => ({ id, x: s.x * width, y: s.y * height, vx: 0, vy: 0, homeX: s.x * width, homeY: s.y * height, seed: s.phase }));
+    }
+
+    function beginCompletion() {
+      phase = 'converging'; phaseStarted = performance.now(); hint.classList.add('is-done');
+      allPairs().forEach((key, i) => { const timer = setTimeout(() => links.add(key), i * CONFIG.linkAppearStaggerMs); linkRevealTimers.push(timer); });
+      status.textContent = 'mạng lưới hoàn chỉnh';
+    }
+
+    function addLink(a, b) {
+      if (a < 0 || b < 0 || a === b || phase !== 'floating') return;
+      const key = keyFor(a, b); if (links.has(key)) return; links.add(key);
+      status.textContent = `${Math.min(links.size, CONFIG.linksToComplete)} / ${CONFIG.linksToComplete} liên kết`;
+      if (links.size >= CONFIG.linksToComplete) beginCompletion();
+    }
+
+    function updateHover() {
+      if (phase !== 'floating') return;
+      let next = -1, best = CONFIG.hoverRadius * CONFIG.hoverRadius;
+      nodes.forEach(n => { const dx = pointer.x - n.x, dy = pointer.y - n.y, d2 = dx * dx + dy * dy; if (d2 < best) { best = d2; next = n.id; } });
+      if (next !== hovered) { hovered = next; if (hovered !== -1) { addLink(previous, hovered); previous = hovered; } }
+    }
+
+    function createBurstParticles() {
+      particles = Array.from({ length: CONFIG.particleCount }, (_, i) => { const a = (i / CONFIG.particleCount) * TAU + Math.sin(i * 7.3) * .12; const speed = 42 + (i % 5) * 14; return { angle: a, speed, size: 1 + (i % 3) * .55, life: CONFIG.particleLifeMs * (.72 + (i % 7) / 20), age: 0, drift: (i % 2 ? 1 : -1) * (.12 + (i % 4) * .04) }; });
+    }
+
+    function updateParticles(dt) { particles.forEach(p => { p.age += dt; p.angle += p.drift * dt * .001; }); particles = particles.filter(p => p.age < p.life); }
+    function progress(now, ms) { return clamp((now - phaseStarted) / ms, 0, 1); }
+
+    function update(dt, now) {
+      updateHover();
+      const convergeT = phase === 'converging' ? progress(now, CONFIG.hexagonConvergeMs) : phase === 'hexagon' ? 1 : phase === 'collapsing' ? progress(now, CONFIG.collapseMs) : phase === 'condense' || phase === 'burst' || phase === 'sun' || phase === 'morph' || phase === 'flame' ? 1 : 0;
+      nodes.forEach(n => {
+        const breathe = Math.sin(time * (CONFIG.floatSpeed + (n.id % 3) * CONFIG.floatSpeedSpread) + n.seed) * CONFIG.floatAmplitude;
+        const sway = Math.cos(time * (CONFIG.floatSpeed * .71) + n.seed * 1.7) * CONFIG.floatAmplitude * .56;
+        let tx = n.homeX + sway, ty = n.homeY + breathe;
+        if (phase !== 'floating') { const ring = ringTarget(n.id), c = center(); if (phase === 'converging') { tx = lerp(n.homeX + sway, ring.x, ease(convergeT)); ty = lerp(n.homeY + breathe, ring.y, ease(convergeT)); } else if (phase === 'hexagon') { tx = ring.x; ty = ring.y; } else { const collapseT = phase === 'collapsing' ? ease(progress(now, CONFIG.collapseMs)) : 1; tx = lerp(ring.x, c.x, collapseT); ty = lerp(ring.y, c.y, collapseT); } }
+        const dx = tx - n.x, dy = ty - n.y, boost = phase === 'converging' || phase === 'collapsing' ? 1 + convergeT * .8 : 1;
+        n.vx = (n.vx + dx * CONFIG.spring * dt * .06 * boost) * Math.pow(CONFIG.damping, dt / 16);
+        n.vy = (n.vy + dy * CONFIG.spring * dt * .06 * boost) * Math.pow(CONFIG.damping, dt / 16);
+        if (phase === 'floating') { n.vx += (width / 2 - n.x) * CONFIG.centerPull * dt * .02; n.vy += (height / 2 - n.y) * CONFIG.centerPull * dt * .02; }
+        if (phase === 'condense') { const c = center(), jitter = Math.sin(time * .014 + n.seed) * 2.8; n.vx += (c.x - n.x + jitter) * .003 * dt; n.vy += (c.y - n.y - jitter) * .003 * dt; }
+        n.x += clamp(n.vx, -CONFIG.maxDrift, CONFIG.maxDrift) * dt * .06; n.y += clamp(n.vy, -CONFIG.maxDrift, CONFIG.maxDrift) * dt * .06;
+      });
+      if (phase === 'flame' && particles.length < 8 && Math.random() < dt * .004) particles.push({ angle: -Math.PI / 2 + (Math.random() - .5) * .72, speed: 12 + Math.random() * 18, size: .7 + Math.random() * .8, life: 700 + Math.random() * 520, age: 0, drift: (Math.random() - .5) * .22 });
+      updateParticles(dt);
+      if (phase === 'converging' && convergeT >= 1) { phase = 'hexagon'; phaseStarted = now; }
+      else if (phase === 'hexagon' && now - phaseStarted >= CONFIG.hexagonHoldMs) { phase = 'collapsing'; phaseStarted = now; }
+      else if (phase === 'collapsing' && progress(now, CONFIG.collapseMs) >= 1) { phase = 'condense'; phaseStarted = now; }
+      else if (phase === 'condense' && progress(now, CONFIG.condenseMs) >= 1) { phase = 'burst'; phaseStarted = now; shockwave = 0; createBurstParticles(); }
+      else if (phase === 'burst' && progress(now, CONFIG.burstMs) >= 1) { phase = 'sun'; phaseStarted = now; }
+      else if (phase === 'sun' && now - phaseStarted >= CONFIG.sunHoldMs) { phase = 'morph'; phaseStarted = now; }
+      else if (phase === 'morph' && progress(now, CONFIG.morphMs) >= 1) { phase = 'flame'; phaseStarted = now; }
+      if (phase === 'burst') shockwave = easeOut(progress(now, CONFIG.burstMs));
+    }
+
+    function drawBackground() {
+      const c = center(), g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, Math.max(width, height) * .72);
+      g.addColorStop(0, '#1b0c06'); g.addColorStop(.4, '#0d0907'); g.addColorStop(1, '#050505'); ctx.fillStyle = g; ctx.fillRect(0, 0, width, height);
+      const glow = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, Math.min(width, height) * .35); glow.addColorStop(0, 'rgba(139, 42, 9, .09)'); glow.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = glow; ctx.fillRect(0, 0, width, height);
+    }
+
+    function drawLink(a, b, alpha = 1, widthBoost = 0) {
+      const na = nodes[a], nb = nodes[b], pulse = phase === 'burst' ? 1.1 : 1;
+      const grad = ctx.createLinearGradient(na.x, na.y, nb.x, nb.y); grad.addColorStop(0, `rgba(255, 102, 35, ${.2 * alpha})`); grad.addColorStop(.5, `rgba(255, 188, 90, ${.85 * alpha})`); grad.addColorStop(1, `rgba(255, 102, 35, ${.2 * alpha})`);
+      ctx.save(); ctx.lineCap = 'round'; ctx.shadowColor = `rgba(255, 109, 42, ${.55 * alpha})`; ctx.shadowBlur = CONFIG.linkGlow * pulse; ctx.strokeStyle = grad; ctx.lineWidth = (CONFIG.linkWidth + widthBoost) * pulse; ctx.beginPath(); ctx.moveTo(na.x, na.y); ctx.lineTo(nb.x, nb.y); ctx.stroke(); ctx.restore();
+    }
+
+    function roundedRect(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x - w / 2, y - h / 2, w, h, r); }
+    function drawNodes(now) {
+      const c = center(), convergeT = phase === 'converging' ? progress(now, CONFIG.hexagonConvergeMs) : phase === 'hexagon' ? 1 : phase === 'collapsing' ? progress(now, CONFIG.collapseMs) : phase === 'floating' ? 0 : 1;
+      const nodeAlpha = phase === 'burst' ? 1 - easeOut(progress(now, CONFIG.burstMs)) : phase === 'condense' ? 1 : phase === 'sun' || phase === 'morph' || phase === 'flame' ? 0 : 1;
+      nodes.forEach(n => { const linked = [...links].some(k => k.split('-').map(Number).includes(n.id)), hover = n.id === hovered && phase === 'floating'; const squeeze = phase === 'hexagon' ? .84 : lerp(1, .18, ease(convergeT)); const shake = phase === 'condense' ? Math.sin(time * .025 + n.seed) * 3 : 0; const x = lerp(n.x, c.x, phase === 'condense' ? .98 : 0) + shake, y = lerp(n.y, c.y, phase === 'condense' ? .98 : 0) - shake; ctx.save(); ctx.globalAlpha = nodeAlpha; ctx.translate(x, y); ctx.shadowColor = hover ? '#ffcc83' : '#ff6d2c'; ctx.shadowBlur = (hover ? CONFIG.activeGlow : linked ? CONFIG.activeGlow * .75 : CONFIG.baseGlow) * (1 + convergeT * 1.8); const size = CONFIG.nodeSize * (hover ? 1.08 : 1) * squeeze; ctx.fillStyle = hover ? '#ffc17a' : linked ? '#ff8d4b' : '#e75625'; roundedRect(0, 0, size, size, CONFIG.cornerRadius); ctx.fill(); ctx.restore(); });
+    }
+
+    // The sun and flame share 16 points, so the transformation stays one continuous body.
+    const SUN = Array.from({ length: 16 }, (_, i) => { const a = -Math.PI / 2 + i * TAU / 16, r = 56 + (i % 2 ? 1.5 : 0); return [Math.cos(a) * r, Math.sin(a) * r]; });
+    const FLAME = [[0,-78],[19,-57],[31,-35],[37,-9],[33,12],[24,29],[17,44],[8,57],[0,72],[-10,57],[-18,43],[-29,29],[-35,10],[-31,-10],[-24,-31],[-12,-58]];
+    const FLAME_CORE = [[0,-54],[13,-40],[16,-24],[10,-14],[18,-4],[14,8],[9,19],[3,30],[-3,26],[-9,18],[-14,8],[-11,-2],[-17,-12],[-9,-23],[-7,-38],[-3,-48]];
+    function blendShape(a, b, t) { return a.map((p, i) => [lerp(p[0], b[i][0], t), lerp(p[1], b[i][1], t)]); }
+    function pathShape(points, wobble = 0) { ctx.beginPath(); points.forEach((p, i) => { const x = p[0] + Math.sin(time * .009 + i * 1.8) * wobble, y = p[1] + Math.cos(time * .007 + i * 1.3) * wobble * .6; if (i === 0) ctx.moveTo(x, y); else { const prev = points[i - 1], mx = (prev[0] + x) / 2, my = (prev[1] + y) / 2; ctx.quadraticCurveTo(prev[0], prev[1], mx, my); } }); const first = points[0], lastPoint = points[points.length - 1]; ctx.quadraticCurveTo(lastPoint[0], lastPoint[1], (lastPoint[0] + first[0]) / 2, (lastPoint[1] + first[1]) / 2); ctx.closePath(); }
+
+    function drawParticles(now) {
+      const c = center(); particles.forEach(p => { const ageT = p.age / p.life, distance = p.speed * ageT * (phase === 'flame' ? .28 : 1), lift = phase === 'flame' ? ageT * 38 : ageT * 10, x = c.x + Math.cos(p.angle) * distance, y = c.y + Math.sin(p.angle) * distance - lift; ctx.save(); ctx.globalAlpha = (1 - ageT) * .75; ctx.fillStyle = ageT < .35 ? '#ffd994' : '#f26b2d'; ctx.shadowColor = '#ff8a3d'; ctx.shadowBlur = 12; ctx.beginPath(); ctx.arc(x, y, p.size * (1 - ageT * .35), 0, TAU); ctx.fill(); ctx.restore(); });
+    }
+
+    function drawEnergy(now) {
+      if (phase === 'floating' || phase === 'converging' || phase === 'hexagon' || phase === 'collapsing') return;
+      const c = center(), burstT = phase === 'burst' ? easeOut(progress(now, CONFIG.burstMs)) : 1, morphT = phase === 'morph' ? ease(progress(now, CONFIG.morphMs)) : phase === 'flame' ? 1 : 0;
+      const settle = phase === 'burst' ? 1 + Math.sin(burstT * Math.PI) * .12 : phase === 'sun' ? 1 + Math.sin((now - phaseStarted) * .006) * .025 : 1 + Math.sin(time * .006) * .028;
+      const flash = phase === 'condense' ? 1 - progress(now, CONFIG.condenseMs) : phase === 'burst' ? 1 - burstT : 0;
+      if (flash > 0) { ctx.save(); ctx.globalAlpha = flash * .3; const r = 20 + flash * 120; const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r); g.addColorStop(0, '#fff3c4'); g.addColorStop(.35, '#ff9c54'); g.addColorStop(1, 'rgba(255,92,28,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, TAU); ctx.fill(); ctx.restore(); }
+      ctx.save(); ctx.translate(c.x, c.y); ctx.scale(settle, settle);
+      if (phase === 'sun' || phase === 'burst') {
+        const rayPulse = 1 + Math.sin(time * .008) * .06; ctx.save(); ctx.globalAlpha = (phase === 'burst' ? burstT : 1) * .66; ctx.strokeStyle = '#ffab57'; ctx.shadowColor = '#ff7131'; ctx.shadowBlur = 22; ctx.lineWidth = 3; ctx.lineCap = 'round'; for (let i = 0; i < 12; i++) { const a = i * TAU / 12 + Math.sin(time * .002 + i) * .025, inner = 64 * rayPulse, outer = 76 + Math.sin(time * .006 + i * 2) * 5; ctx.beginPath(); ctx.moveTo(Math.cos(a) * inner, Math.sin(a) * inner); ctx.lineTo(Math.cos(a) * outer, Math.sin(a) * outer); ctx.stroke(); } ctx.restore();
+      }
+      const shape = phase === 'condense' ? SUN.map(p => [p[0] * .08, p[1] * .08]) : blendShape(SUN, FLAME, morphT); const outer = ctx.createRadialGradient(-10, -25, 4, 0, 0, 92); outer.addColorStop(0, '#fff5c7'); outer.addColorStop(.16, '#ffd978'); outer.addColorStop(.45, '#ff9a43'); outer.addColorStop(.76, '#f45b26'); outer.addColorStop(1, 'rgba(120,25,5,0)'); pathShape(shape, phase === 'flame' ? 4.2 : .7); ctx.fillStyle = outer; ctx.globalAlpha = phase === 'burst' ? burstT : 1; ctx.shadowColor = '#ff7131'; ctx.shadowBlur = 32 + flash * 45; ctx.fill();
+      if (phase === 'flame') { ctx.save(); ctx.globalAlpha = .52; ctx.strokeStyle = '#ffbd65'; ctx.lineWidth = 1.4; ctx.shadowColor = '#ff9b3d'; ctx.shadowBlur = 10; pathShape(shape, 3.5); ctx.stroke(); ctx.restore(); }
+      const inner = blendShape(SUN.map(p => [p[0] * .42, p[1] * .42]), FLAME_CORE, morphT); pathShape(inner, phase === 'flame' ? 2.8 : .25); ctx.fillStyle = phase === 'flame' ? '#ffe48a' : 'rgba(255,235,171,.72)'; ctx.shadowBlur = 18; ctx.fill();
+      ctx.restore();
+      if (phase === 'burst' && shockwave > 0) { ctx.save(); ctx.globalAlpha = (1 - shockwave) * .4; ctx.strokeStyle = '#ffb46a'; ctx.shadowColor = '#ff7a37'; ctx.shadowBlur = 18; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(c.x, c.y, 14 + shockwave * 130, 0, TAU); ctx.stroke(); ctx.restore(); }
+    }
+
+    function draw(now) { drawBackground(); links.forEach(key => { const [a, b] = key.split('-').map(Number); const alpha = phase === 'converging' ? .55 + progress(now, CONFIG.hexagonConvergeMs) * .45 : 1; drawLink(a, b, alpha, phase === 'burst' ? 1 : 0); }); drawNodes(now); drawEnergy(now); drawParticles(now); }
+    function frame(now) { const dt = Math.min(40, now - last); last = now; time += dt; update(dt, now); draw(now); requestAnimationFrame(frame); }
+    canvas.addEventListener('pointermove', e => { const rect = canvas.getBoundingClientRect(); pointer.x = e.clientX - rect.left; pointer.y = e.clientY - rect.top; updateHover(); });
+    canvas.addEventListener('pointerleave', () => { pointer.x = pointer.y = -1000; hovered = -1; });
+    resetButton.addEventListener('click', reset); window.addEventListener('resize', resize); resize(); reset(); requestAnimationFrame(frame);
+  </script>
+</body>
+</html>

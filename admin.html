@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel | ME.MORI Class</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --panel-2: #20242d;
+      --text: #f6f1e8;
+      --muted: #aeb4c0;
+      --line: rgba(255, 255, 255, 0.12);
+      --accent: #efc45b;
+      --danger: #d85d5d;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); line-height: 1.5; }
+    
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: rgba(15, 17, 21, 0.95);
+      backdrop-filter: blur(16px);
+      padding: 15px 20px;
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 20px;
+    }
+
+    h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.05em; }
+    .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .actions { display: flex; gap: 10px; }
+
+    button, .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    button.primary { background: var(--accent); color: #161412; border-color: var(--accent); }
+    button.danger { color: #ffd6d6; }
+
+    main { max-width: 1200px; margin: 30px auto 60px; padding: 0 20px; }
+    .layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px; }
+
+    .tabs {
+      position: sticky;
+      top: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--panel);
+    }
+    .tab { justify-content: flex-start; width: 100%; background: transparent; color: var(--muted); border: 0; }
+    .tab.active { background: var(--panel-2); color: var(--text); }
+
+    .section { display: none; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); overflow: hidden; }
+    .section.active { display: block; }
+    .section-head { padding: 20px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.02); }
+    .section-head h2 { font-size: 18px; }
+    .section-head p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding: 20px; }
+    .field { display: grid; gap: 6px; }
+    .field.full { grid-column: 1 / -1; }
+    .field-group { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 14px; border: 1px dashed var(--line); border-radius: 8px; margin-bottom: 5px; }
+    .field-group h4 { grid-column: 1 / -1; font-size: 14px; color: var(--accent); }
+    
+    label { color: var(--muted); font-size: 13px; font-weight: 600; }
+    input, select, textarea {
+      width: 100%; min-height: 42px; padding: 10px 14px;
+      border: 1px solid var(--line); border-radius: 8px;
+      background: #0f1115; color: var(--text); font: inherit; outline: none;
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+
+    .toast {
+      position: fixed; right: 20px; bottom: 20px; z-index: 100; max-width: 360px; padding: 14px 18px;
+      border: 1px solid var(--accent); border-radius: 8px; background: #1f1a10; color: #fff;
+      opacity: 0; transform: translateY(10px); transition: all 0.2s ease; pointer-events: none;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* LOGIN GATE */
+    #loginGate { position: fixed; inset: 0; background: #0f1115; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
+  </style>
+</head>
+<body>
+
+  <div id="loginGate">
+    <h2 style="font-size: 24px; letter-spacing: 0.05em;">ME.MORI Class Admin</h2>
+    <p style="color: var(--muted); font-size: 14px;">Vui lòng nhập mật khẩu quản trị viên để tiếp tục</p>
+    <input type="password" id="gatePass" placeholder="Nhập mật khẩu" style="max-width: 280px; text-align: center;">
+    <button onclick="validateGate()" class="primary" style="padding: 0 40px;">Đăng nhập</button>
+    <p id="gateError" style="color: var(--danger); font-size: 13px; display: none;">Mật khẩu không chính xác!</p>
+  </div>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <h1>ME.MORI Admin Panel</h1>
+        <p class="sub">Đồng bộ nội dung trực tiếp lên hệ thống tệp đám mây GitHub.</p>
+      </div>
+      <div class="actions">
+        <button class="primary" id="saveBtn" type="button">Lưu lên GitHub</button>
+        <a class="btn" href="index.html" target="_blank">Mở trang chính</a>
+        <button class="danger" id="resetBtn" type="button">Mặc định gốc</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="layout">
+      <nav class="tabs" aria-label="Menu quản lý">
+        <button class="tab active" type="button" data-tab="config">Cấu hình chung</button>
+        <button class="tab" type="button" data-tab="hero">Khu vực Hero</button>
+        <button class="tab" type="button" data-tab="intro">Giới thiệu & Đặc điểm</button>
+        <button class="tab" type="button" data-tab="courses">Danh sách Lớp học</button>
+        <button class="tab" type="button" data-tab="method">Phương pháp & CTA</button>
+        <button class="tab" type="button" data-tab="footer">Chân trang (Footer)</button>
+      </nav>
+
+      <form id="settingsForm">
+        <section class="section active" data-section="config">
+          <div class="section-head"><h2>Cấu hình chung</h2><p>Tên định danh website và mô tả SEO cơ bản.</p></div>
+          <div class="grid">
+            <div class="field"><label>Tiêu đề Website (Thẻ Title)</label><input name="site_title" /></div>
+            <div class="field"><label>Tên thương hiệu (Brand)</label><input name="site_brand" /></div>
+            <div class="field full"><label>Mô tả Website (SEO Description)</label><textarea name="site_description"></textarea></div>
+          </div>
+        </section>
+
+        <section class="section" data-section="hero">
+          <div class="section-head"><h2>Khu vực mở đầu (Hero Section)</h2><p>Điều chỉnh tiêu đề lớn, văn bản nút bấm và hình ảnh chính đầu trang.</p></div>
+          <div class="grid">
+            <div class="field"><label>Eyebrow (Dòng chữ nhỏ trên tiêu đề)</label><input name="hero_eyebrow" /></div>
+            <div class="field"><label>Tiêu đề chính - Đoạn đầu</label><input name="hero_titleStart" /></div>
+            <div class="field"><label>Tiêu đề chính - Chữ nghệ thuật (In nghiêng)</label><input name="hero_titleScript" /></div>
+            <div class="field"><label>Tiêu đề chính - Đoạn cuối</label><input name="hero_titleEnd" /></div>
+            <div class="field full"><label>Mô tả chi tiết Hero</label><textarea name="hero_text"></textarea></div>
+            
+            <div class="field-group">
+              <h4>Nút hành động chính (Primary Button)</h4>
+              <div class="field"><label>Tên nút bấm</label><input name="hero_primary_label" /></div>
+              <div class="field"><label>Đường dẫn link (Href)</label><input name="hero_primary_href" /></div>
+            </div>
+            
+            <div class="field-group">
+              <h4>Nút hành động phụ (Secondary Button)</h4>
+              <div class="field"><label>Tên nút bấm</label><input name="hero_secondary_label" /></div>
+              <div class="field"><label>Đường dẫn link (Href)</label><input name="hero_secondary_href" /></div>
+            </div>
+
+            <div class="field-group">
+              <h4>Hệ thống Media của Hero</h4>
+              <div class="field"><label>Loại Media</label><select name="hero_mediaType"><option value="image">Hình ảnh (Image)</option><option value="video">Video tệp (.mp4)</option></select></div>
+              <div class="field"><label>Đường dẫn link ảnh/video</label><input name="hero_mediaUrl" /></div>
+              <div class="field full"><label>Mô tả thay thế cho ảnh (Alt text)</label><input name="hero_mediaAlt" /></div>
+            </div>
+            <div class="field full"><label>Nội dung khung ghi chú (Hero Note Card)</label><textarea name="hero_note"></textarea></div>
+          </div>
+        </section>
+
+        <section class="section" data-section="intro">
+          <div class="section-head"><h2>Giới thiệu & Đặc điểm</h2><p>Chỉnh sửa khối văn bản tổng quan và 3 thẻ tính năng cốt lõi.</p></div>
+          <div class="grid">
+            <div class="field full"><label>Tiêu đề phần Giới thiệu</label><input name="intro_title" /></div>
+            <div class="field full"><label>Nội dung mô tả Giới thiệu</label><textarea name="intro_text"></textarea></div>
+            
+            <div class="field-group">
+              <h4>Thẻ tính năng 01</h4>
+              <div class="field"><label>Mã icon FontAwesome</label><input name="feature0_icon" placeholder="fa-film" /></div>
+              <div class="field"><label>Tiêu đề tính năng</label><input name="feature0_title" /></div>
+              <div class="field full"><label>Mô tả tính năng</label><textarea name="feature0_text"></textarea></div>
+            </div>
+            <div class="field-group">
+              <h4>Thẻ tính năng 02</h4>
+              <div class="field"><label>Mã icon FontAwesome</label><input name="feature1_icon" placeholder="fa-camera" /></div>
+              <div class="field"><label>Tiêu đề tính năng</label><input name="feature1_title" /></div>
+              <div class="field full"><label>Mô tả tính năng</label><textarea name="feature1_text"></textarea></div>
+            </div>
+            <div class="field-group">
+              <h4>Thẻ tính năng 03</h4>
+              <div class="field"><label>Mã icon FontAwesome</label><input name="feature2_icon" placeholder="fa-users" /></div>
+              <div class="field"><label>Tiêu đề tính năng</label><input name="feature2_title" /></div>
+              <div class="field full"><label>Mô tả tính năng</label><textarea name="feature2_text"></textarea></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" data-section="courses">
+          <div class="section-head"><h2>Danh sách các lớp học (3 lớp)</h2><p>Tùy biến tiêu đề danh mục và thông tin ảnh/chữ của từng lớp.</p></div>
+          <div class="grid">
+            <div class="field"><label>Tiêu đề Section - Chữ thường</label><input name="cs_title" /></div>
+            <div class="field"><label>Tiêu đề Section - Nghệ thuật (Nghiêng)</label><input name="cs_titleScript" /></div>
+            <div class="field full"><label>Mô tả danh mục lớp học</label><textarea name="cs_text"></textarea></div>
+            
+            <div class="field-group">
+              <h4>Thông tin lớp học 01</h4>
+              <div class="field"><label>Tên khóa học</label><input name="course0_title" /></div>
+              <div class="field"><label>Đường dẫn hình ảnh minh họa</label><input name="course0_mediaUrl" /></div>
+              <div class="field full"><label>Mô tả ngắn gọn nội dung lớp học</label><textarea name="course0_text"></textarea></div>
+            </div>
+            <div class="field-group">
+              <h4>Thông tin lớp học 02</h4>
+              <div class="field"><label>Tên khóa học</label><input name="course1_title" /></div>
+              <div class="field"><label>Đường dẫn hình ảnh minh họa</label><input name="course1_mediaUrl" /></div>
+              <div class="field full"><label>Mô tả ngắn gọn nội dung lớp học</label><textarea name="course1_text"></textarea></div>
+            </div>
+            <div class="field-group">
+              <h4>Thông tin lớp học 03</h4>
+              <div class="field"><label>Tên khóa học</label><input name="course2_title" /></div>
+              <div class="field"><label>Đường dẫn hình ảnh minh họa</label><input name="course2_mediaUrl" /></div>
+              <div class="field full"><label>Mô tả ngắn gọn nội dung lớp học</label><textarea name="course2_text"></textarea></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" data-section="method">
+          <div class="section-head"><h2>Lộ trình các bước học tập & CTA</h2><p>Quản lý nội dung 3 bước thực hành và bảng đăng ký nhanh cuối trang.</p></div>
+          <div class="grid">
+            <div class="field"><label>Dòng chữ nhỏ Eyebrow</label><input name="method_eyebrow" /></div>
+            <div class="field"><label>Tiêu đề lớn Phương pháp</label><input name="method_title" /></div>
+            <div class="field full"><label>Mô tả chi tiết phương pháp</label><textarea name="method_text"></textarea></div>
+            
+            <div class="field-group">
+              <h4>Bước 1</h4>
+              <div class="field"><label>Tiêu đề bước</label><input name="step0_title" /></div>
+              <div class="field"><label>Nội dung chi tiết</label><input name="step0_text" /></div>
+            </div>
+            <div class="field-group">
+              <h4>Bước 2</h4>
+              <div class="field"><label>Tiêu đề bước</label><input name="step1_title" /></div>
+              <div class="field"><label>Nội dung chi tiết</label><input name="step1_text" /></div>
+            </div>
+            <div class="field-group">
+              <h4>Bước 3</h4>
+              <div class="field"><label>Tiêu đề bước</label><input name="step2_title" /></div>
+              <div class="field"><label>Nội dung chi tiết</label><input name="step2_text" /></div>
+            </div>
+
+            <div class="field-group">
+              <h4>Khối kêu gọi đăng ký (CTA Block)</h4>
+              <div class="field full"><label>Tiêu đề lời kêu gọi lớn</label><input name="cta_title" /></div>
+              <div class="field"><label>Tên hiển thị nút bấm</label><input name="cta_label" /></div>
+              <div class="field"><label>Link hành động nút bấm (Ví dụ link Google Form hoặc mailto:)</label><input name="cta_href" /></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" data-section="footer">
+          <div class="section-head"><h2>Chân trang (Footer)</h2><p>Sửa đổi mô tả chân trang và hệ thống nội dung 3 cột thông tin danh mục.</p></div>
+          <div class="grid">
+            <div class="field full"><label>Mô tả giới thiệu chân trang</label><textarea name="footer_intro"></textarea></div>
+            
+            <div class="field-group">
+              <h4>Cột nội dung 01</h4>
+              <div class="field"><label>Tiêu đề cột</label><input name="fcol0_title" /></div>
+              <div class="field"><label>Danh sách mục (Mỗi mục nằm trên 1 dòng)</label><textarea name="fcol0_items" placeholder="Mục 1&#13;Mục 2&#13;Mục 3"></textarea></div>
+            </div>
+
+            <div class="field-group">
+              <h4>Cột nội dung 02</h4>
+              <div class="field"><label>Tiêu đề cột</label><input name="fcol1_title" /></div>
+              <div class="field"><label>Danh sách mục (Mỗi mục nằm trên 1 dòng)</label><textarea name="fcol1_items" placeholder="Mục 1&#13;Mục 2&#13;Mục 3"></textarea></div>
+            </div>
+
+            <div class="field-group">
+              <h4>Cột nội dung 03</h4>
+              <div class="field"><label>Tiêu đề cột</label><input name="fcol2_title" /></div>
+              <div class="field"><label>Danh sách mục (Mỗi mục nằm trên 1 dòng)</label><textarea name="fcol2_items" placeholder="Mục 1&#13;Mục 2&#13;Mục 3"></textarea></div>
+            </div>
+          </div>
+        </section>
+      </form>
+    </div>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ==========================================
+    // ĐIỀN CẤU HÌNH KHO GITHUB CỦA BẠN VÀO ĐÂY
+    // ==========================================
+    const GH_OWNER = "PuongLee269"; 
+    const GH_REPO = "MeMoriClass";     
+    const GH_PATH = "content.json";               
+    
+    const TOKEN_KEY = "memori_github_token";
+    const BACKUP_KEY = "memori_local_backup_v2";
+
+    // Chuỗi băm SHA-256 bảo mật của mật khẩu "mori2026"
+    const PASSWORD_HASH = "49e524ec5e8b490549c26ab2a09460129e17f366314641333e837136d97c6681";
+
+    const form = document.getElementById("settingsForm");
+    const toast = document.getElementById("toast");
+
+    // Khởi tạo đối tượng dữ liệu mặc định gốc y hệt fallbackContent trong index.html
+    const defaults = {
+      site: { title: "ME.MORI Class", description: "ME.MORI Class...", brand: "ME.MORI" },
+      nav: [{ label: "Workshop", href: "#workshops" }, { label: "Phương pháp", href: "#method" }, { label: "Liên hệ", href: "#contact" }],
+      navCourses: { label: "Khóa học", href: "#courses" }, navCta: { label: "Đăng ký", href: "#contact" },
+      hero: { eyebrow: "ME.MORI Class", titleStart: "Học nghệ thuật", titleScript: "kể chuyện", titleEnd: "bằng hình ảnh", text: "Workshop dành cho creator...", primary: { label: "Xem workshop", href: "#courses" }, secondary: { label: "Cách học", href: "#method" }, mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop", mediaAlt: "Nhóm học viên...", note: "Thực hành theo dự án thật..." },
+      intro: { title: "Không gian học tập cho người làm hình ảnh hiện đại", text: "ME.MORI Class kết hợp..." },
+      features: [{ icon: "fa-film", title: "Tư duy cinematic", text: "Hiểu nhịp dựng..." }, { icon: "fa-camera", title: "Thực hành thật", text: "Làm bài tập..." }, { icon: "fa-users", title: "Cộng đồng creator", text: "Kết nối..." }],
+      coursesSection: { title: "Workshop", titleScript: "nổi bật", text: "Các lớp được thiết kế..." },
+      courses: [{ title: "Storytelling cho video ngắn", text: "Xây cấu trúc...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }, { title: "Tư duy hình ảnh cinematic", text: "Rèn bố cục...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }, { title: "Quay dựng cho creator", text: "Biến footage...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }],
+      method: { eyebrow: "Phương pháp", title: "Bắt đầu đơn giản, học bằng dự án thật", text: "Mỗi buổi học tập trung..." },
+      steps: [{ title: "Đăng ký workshop", text: "Chọn chủ đề..." }, { title: "Thực hành tại lớp", text: "Làm bài tập..." }, { title: "Hoàn thiện sản phẩm", text: "Nhận feedback..." }],
+      cta: { title: "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?", label: "Liên hệ đăng ký", href: "mailto:hello@memori.class" },
+      footer: { intro: "Không gian học tập dành cho người yêu điện ảnh...", columns: [{ title: "Khóa học", items: ["Video ngắn", "Tư duy cinematic", "Quay dựng creator"] }, { title: "Cộng đồng", items: ["Workshop", "Feedback nhóm", "Dự án học viên"] }, { title: "Liên hệ", items: ["Instagram", "Facebook", "hello@memori.class"] }] }
+    };
+
+    // KIỂM TRA MẬT KHẨU CỬA VÀO
+    async function hashString(str) {
+      const utf8 = new TextEncoder().encode(str);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
+      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    async function validateGate() {
+      const input = document.getElementById("gatePass").value;
+      if (await hashString(input) === PASSWORD_HASH) {
+        document.getElementById("loginGate").style.display = "none";
+        sessionStorage.setItem("memori_auth", "true");
+      } else {
+        const err = document.getElementById("gateError");
+        err.style.display = "block";
+      }
+    }
+    if (sessionStorage.getItem("memori_auth") === "true") document.getElementById("loginGate").style.display = "none";
+    document.getElementById("gatePass").addEventListener("keypress", (e) => { if (e.key === "Enter") validateGate(); });
+
+    function showToast(msg) {
+      toast.textContent = msg; toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    // ĐỌC DỮ LIỆU TỪ FORM VÀ ĐÓNG GÓI THÀNH ĐỐI TƯỢNG JSON CHUẨN
+    function makeJsonFromForm() {
+      const f = (name) => form.elements[name].value.trim();
+      return {
+        site: { title: f("site_title"), description: f("site_description"), brand: f("site_brand") },
+        nav: defaults.nav, // Giữ nguyên mảng cấu trúc cây nav
+        navCourses: { label: defaults.navCourses.label, href: defaults.navCourses.href },
+        navCta: { label: defaults.navCta.label, href: defaults.navCta.href },
+        hero: {
+          eyebrow: f("hero_eyebrow"), titleStart: f("hero_titleStart"), titleScript: f("hero_titleScript"), titleEnd: f("hero_titleEnd"), text: f("hero_text"),
+          primary: { label: f("hero_primary_label"), href: f("hero_primary_href") },
+          secondary: { label: f("hero_secondary_label"), href: f("hero_secondary_href") },
+          mediaType: f("hero_mediaType"), mediaUrl: f("hero_mediaUrl"), mediaAlt: f("hero_mediaAlt"), note: f("hero_note")
+        },
+        intro: { title: f("intro_title"), text: f("intro_text") },
+        features: [
+          { icon: f("feature0_icon"), title: f("feature0_title"), text: f("feature0_text") },
+          { icon: f("feature1_icon"), title: f("feature1_title"), text: f("feature1_text") },
+          { icon: f("feature2_icon"), title: f("feature2_title"), text: f("feature2_text") }
+        ],
+        coursesSection: { title: f("cs_title"), titleScript: f("cs_titleScript"), text: f("cs_text") },
+        courses: [
+          { title: f("course0_title"), text: f("course0_text"), mediaType: "image", mediaUrl: f("course0_mediaUrl"), mediaAlt: "" },
+          { title: f("course1_title"), text: f("course1_text"), mediaType: "image", mediaUrl: f("course1_mediaUrl"), mediaAlt: "" },
+          { title: f("course2_title"), text: f("course2_text"), mediaType: "image", mediaUrl: f("course2_mediaUrl"), mediaAlt: "" }
+        ],
+        method: { eyebrow: f("method_eyebrow"), title: f("method_title"), text: f("method_text") },
+        steps: [
+          { title: f("step0_title"), text: f("step0_text") },
+          { title: f("step1_title"), text: f("step1_text") },
+          { title: f("step2_title"), text: f("step2_text") }
+        ],
+        cta: { title: f("cta_title"), label: f("cta_label"), href: f("cta_href") },
+        footer: {
+          intro: f("footer_intro"),
+          columns: [
+            { title: f("fcol0_title"), items: f("fcol0_items").split("\n").filter(Boolean) },
+            { title: f("fcol1_title"), items: f("fcol1_items").split("\n").filter(Boolean) },
+            { title: f("fcol2_title"), items: f("fcol2_items").split("\n").filter(Boolean) }
+          ]
+        }
+      };
+    }
+
+    // ĐỔ DỮ LIỆU TỪ ĐỐI TƯỢNG JSON VÀO CÁC Ô INPUT CỦA FORM
+    function fillFormFields(data) {
+      const s = (name, val) => { if(form.elements[name]) form.elements[name].value = val || ""; };
+      s("site_title", data.site?.title); s("site_brand", data.site?.brand); s("site_description", data.site?.description);
+      s("hero_eyebrow", data.hero?.eyebrow); s("hero_titleStart", data.hero?.titleStart); s("hero_titleScript", data.hero?.titleScript); s("hero_titleEnd", data.hero?.titleEnd); s("hero_text", data.hero?.text);
+      s("hero_primary_label", data.hero?.primary?.label); s("hero_primary_href", data.hero?.primary?.href);
+      s("hero_secondary_label", data.hero?.secondary?.label); s("hero_secondary_href", data.hero?.secondary?.href);
+      s("hero_mediaType", data.hero?.mediaType); s("hero_mediaUrl", data.hero?.mediaUrl); s("hero_mediaAlt", data.hero?.mediaAlt); s("hero_note", data.hero?.note);
+      s("intro_title", data.intro?.title); s("intro_text", data.intro?.text);
+      
+      if(data.features?.[0]) { s("feature0_icon", data.features[0].icon); s("feature0_title", data.features[0].title); s("feature0_text", data.features[0].text); }
+      if(data.features?.[1]) { s("feature1_icon", data.features[1].icon); s("feature1_title", data.features[1].title); s("feature1_text", data.features[1].text); }
+      if(data.features?.[2]) { s("feature2_icon", data.features[2].icon); s("feature2_title", data.features[2].title); s("feature2_text", data.features[2].text); }
+      
+      s("cs_title", data.coursesSection?.title); s("cs_titleScript", data.coursesSection?.titleScript); s("cs_text", data.coursesSection?.text);
+      if(data.courses?.[0]) { s("course0_title", data.courses[0].title); s("course0_mediaUrl", data.courses[0].mediaUrl); s("course0_text", data.courses[0].text); }
+      if(data.courses?.[1]) { s("course1_title", data.courses[1].title); s("course1_mediaUrl", data.courses[1].mediaUrl); s("course1_text", data.courses[1].text); }
+      if(data.courses?.[2]) { s("course2_title", data.courses[2].title); s("course2_mediaUrl", data.courses[2].mediaUrl); s("course2_text", data.courses[2].text); }
+      
+      s("method_eyebrow", data.method?.eyebrow); s("method_title", data.method?.title); s("method_text", data.method?.text);
+      if(data.steps?.[0]) { s("step0_title", data.steps[0].title); s("step0_text", data.steps[0].text); }
+      if(data.steps?.[1]) { s("step1_title", data.steps[1].title); s("step1_text", data.steps[1].text); }
+      if(data.steps?.[2]) { s("step2_title", data.steps[2].title); s("step2_text", data.steps[2].text); }
+      
+      s("cta_title", data.cta?.title); s("cta_label", data.cta?.label); s("cta_href", data.cta?.href);
+      s("footer_intro", data.footer?.intro);
+      if(data.footer?.columns?.[0]) { s("fcol0_title", data.footer.columns[0].title); s("fcol0_items", data.footer.columns[0].items.join("\n")); }
+      if(data.footer?.columns?.[1]) { s("fcol1_title", data.footer.columns[1].title); s("fcol1_items", data.footer.columns[1].items.join("\n")); }
+      if(data.footer?.columns?.[2]) { s("fcol2_title", data.footer.columns[2].title); s("fcol2_items", data.footer.columns[2].items.join("\n")); }
+    }
+
+    // TẢI DỮ LIỆU ĐÁM MÂY (HOẶC KÉO CỨU HỘ TỪ BỘ NHỚ LỚP LOCAL CŨ)
+    async function loadData() {
+      try {
+        const response = await fetch(`./${GH_PATH}?t=${Date.now()}`);
+        if (response.ok) {
+          const cloudData = await response.json();
+          fillFormFields({ ...defaults, ...cloudData });
+          return;
+        }
+      } catch (e) { console.log("Chưa thấy tệp cloud, tìm dữ liệu dự phòng cục bộ..."); }
+
+      const localBackup = localStorage.getItem(BACKUP_KEY);
+      if (localBackup) {
+        showToast("⚡ Đã cứu lại dữ liệu chỉnh sửa cũ từ máy cá nhân!");
+        fillFormFields({ ...defaults, ...JSON.parse(localBackup) });
+      } else {
+        fillFormFields(defaults);
+      }
+    }
+
+    // ĐẨY FILE JSON CHỨA TOÀN BỘ NỘI DUNG LÊN GITHUB REPO
+    async function sendToGitHub(jsonData) {
+      let token = localStorage.getItem(TOKEN_KEY);
+      if (!token) {
+        token = prompt("Nhập GitHub Personal Access Token của chủ web để ghi tệp:");
+        if (!token) return showToast("Hủy lưu. Cần có Token để cập nhật dữ liệu!");
+        localStorage.setItem(TOKEN_KEY, token.trim());
+      }
+
+      showToast("Đang kết nối API đám mây GitHub...");
+      localStorage.setItem(BACKUP_KEY, JSON.stringify(jsonData)); // Tạo một bản local phòng hờ
+
+      const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
+      const base64Content = btoa(unescape(encodeURIComponent(JSON.stringify(jsonData, null, 2))));
+
+      try {
+        let sha = null;
+        const resGet = await fetch(url, { headers: { "Authorization": `token ${token}` } });
+        if (resGet.ok) {
+          const info = await resGet.json();
+          sha = info.sha;
+        }
+
+        const resPut = await fetch(url, {
+          method: "PUT",
+          headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ message: "⚡ Update content.json từ Admin Panel", content: base64Content, sha: sha })
+        });
+
+        if (resPut.ok) {
+          showToast("🚀 Đồng bộ thành công! Chờ GitHub Pages cập nhật giao diện (khoảng 30 giây).");
+        } else {
+          if (resPut.status === 401 || resPut.status === 403) {
+            localStorage.removeItem(TOKEN_KEY);
+            showToast("Token hết hạn hoặc sai quyền. Vui lòng bấm lưu để thử lại.");
+          } else {
+            showToast("Lỗi đồng bộ hệ thống.");
+          }
+        }
+      } catch (err) { showToast("Mất kết nối mạng tới API GitHub."); }
+    }
+
+    // HỆ THỐNG ĐIỀU HƯỚNG TABS
+    document.querySelectorAll(".tab").forEach((tab) => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+        tab.classList.add("active");
+        document.querySelector(`[data-section="${tab.dataset.tab}"]`).classList.add("active");
+      });
+    });
+
+    document.getElementById("saveBtn").addEventListener("click", () => sendToGitHub(makeJsonFromForm()));
+    document.getElementById("resetBtn").addEventListener("click", async () => {
+      if(!confirm("Xóa toàn bộ nội dung đã sửa để đồng bộ tệp mặc định gốc lên GitHub?")) return;
+      await sendToGitHub(defaults);
+      fillFormFields(defaults);
+    });
+
+    loadData();
+  </script>
+</body>
+</html>

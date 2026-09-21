@@ -1,182 +1,588 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#080706" />
-  <title>Ember Network — interaction prototype</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="ME.MORI Class - workshop kể chuyện bằng hình ảnh, quay dựng và tư duy cinematic cho creator.">
+  <title>ME.MORI Class</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Lora:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
   <style>
-    :root { color-scheme: dark; }
-    * { box-sizing: border-box; }
-    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #080706; }
-    body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; color: #ffe9cf; }
-    #scene { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; cursor: crosshair; }
-    .hint { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); color: rgba(255, 224, 194, .45); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; pointer-events: none; transition: opacity .6s ease; }
-    .hint.is-done { opacity: 0; }
-    .reset { position: fixed; right: 18px; bottom: 16px; border: 1px solid rgba(255, 159, 91, .32); border-radius: 999px; background: rgba(28, 12, 6, .56); color: rgba(255, 216, 182, .72); padding: 7px 11px; font: 10px/1 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; opacity: .6; transition: opacity .2s ease, border-color .2s ease; }
-    .reset:hover, .reset:focus-visible { opacity: 1; border-color: rgba(255, 176, 104, .8); outline: none; }
-    .status { position: fixed; top: 16px; left: 18px; color: rgba(255, 202, 157, .28); font: 10px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace; letter-spacing: .1em; text-transform: uppercase; pointer-events: none; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: #fff8ec;
+      color: #161412;
+      font-family: "Be Vietnam Pro", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img, video, iframe { display: block; width: 100%; }
+    .container { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 248, 236, 0.92);
+      border-bottom: 1px solid rgba(22, 20, 18, 0.08);
+      backdrop-filter: blur(14px);
+    }
+    .nav {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      min-height: 76px;
+      gap: 24px;
+    }
+    .nav-links, .nav-actions { display: flex; align-items: center; gap: 22px; }
+    .nav-actions { justify-content: flex-end; }
+    .brand { font-size: 23px; font-weight: 800; letter-spacing: 0.12em; white-space: nowrap; }
+    .nav a { font-size: 14px; font-weight: 700; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 46px;
+      padding: 0 22px;
+      border-radius: 999px;
+      background: #161412;
+      color: #fff;
+      font-weight: 800;
+    }
+    .pill.secondary { background: #f0d281; color: #161412; }
+    
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+      align-items: center;
+      gap: 56px;
+      padding: 72px 0 84px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      color: #7a5222;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { width: 34px; height: 2px; background: #d99b27; content: ""; }
+    h1, h2, h3 { letter-spacing: 0; }
+    h1 { max-width: 700px; font-size: clamp(48px, 7vw, 86px); line-height: 0.98; font-weight: 800; }
+    .script { font-family: "Lora", serif; font-style: italic; font-weight: 700; }
+    .hero p, .section-copy { max-width: 620px; color: #5f574d; font-size: 18px; line-height: 1.8; }
+    .hero p { margin: 26px 0 34px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; }
+    
+    .hero-media {
+      position: relative;
+      min-height: 620px;
+      overflow: hidden;
+      border-radius: 26px;
+      background: #e8cf9a;
+      box-shadow: 0 26px 80px rgba(38, 30, 17, 0.2);
+    }
+    .hero-media img, .hero-media video, .hero-media iframe { height: 620px; object-fit: cover; border: 0; }
+    
+    .mute-btn {
+      position: absolute;
+      left: 24px;
+      bottom: 24px;
+      z-index: 5;
+      background: rgba(22, 20, 18, 0.65);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .mute-btn:hover {
+      background: rgba(22, 20, 18, 0.85);
+      transform: scale(1.05);
+    }
+
+    .hero-note {
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      max-width: 280px;
+      padding: 20px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 18px 50px rgba(22, 20, 18, 0.18);
+      color: #2a241d;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.6;
+    }
+    
+    section { padding: 88px 0; }
+    .light { background: #fff; }
+    .dark { background: #171513; color: #fff; }
+    .dark .section-copy { color: #d3c9bd; }
+    .section-heading {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(280px, 0.55fr);
+      align-items: end;
+      gap: 40px;
+      margin-bottom: 42px;
+    }
+    h2 { font-size: clamp(34px, 5vw, 58px); line-height: 1.05; font-weight: 800; }
+    .cards, .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    
+    .card {
+      min-height: 260px;
+      padding: 28px;
+      border: 1px solid rgba(22, 20, 18, 0.08);
+      border-radius: 8px;
+      background: #fffaf1;
+    }
+    .card i {
+      display: inline-flex;
+      width: 54px;
+      height: 54px;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+      border-radius: 50%;
+      background: #f1c55f;
+      font-size: 22px;
+    }
+    .card h3, .course h3 { margin-bottom: 14px; font-size: 23px; }
+    .card p, .course p, .step p { color: #645b51; line-height: 1.7; }
+    .course { overflow: hidden; border-radius: 8px; background: #fff; color: #161412; }
+    .course img, .course video { height: 245px; object-fit: cover; }
+    .course-content { padding: 24px; }
+    
+    /* 🛠 THAY ĐỔI BỐ CỤC LỘ TRÌNH: TIÊU ĐỀ TRÊN - LƯỚI KHUNG VUÔNG 2 HÀNG DƯỚI */
+    .steps { display: flex; flex-direction: column; gap: 48px; align-items: flex-start; }
+    .step-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; width: 100%; }
+    
+    /* BIẾN THÀNH CÁC KHUNG VUÔNG ĐỒNG ĐỀU */
+    .step { 
+      display: flex; flex-direction: column; gap: 16px; align-items: flex-start; padding: 30px 24px; 
+      border-radius: 12px; background: #fff; cursor: pointer; min-height: 240px;
+      box-shadow: 0 4px 20px rgba(42, 35, 25, 0.03);
+      transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+    }
+    .step:hover {
+      transform: translateY(-6px);
+      background-color: #fffdf2;
+      box-shadow: 0 16px 40px rgba(217, 155, 39, 0.12);
+    }
+    .step span {
+      display: inline-flex; width: 34px; height: 34px; flex: 0 0 34px;
+      align-items: center; justify-content: center; border-radius: 50%;
+      background: #171513; color: #fff; font-weight: 800; font-size: 14px;
+    }
+    .step strong { display: block; font-size: 18px; color: #161412; }
+    .step p { font-size: 14px; line-height: 1.6; }
+
+    .cta { padding: 72px 0; background: #efc45b; }
+    .cta-row { display: flex; align-items: center; justify-content: space-between; gap: 28px; }
+    .cta h2 { max-width: 720px; }
+    
+    footer { padding: 58px 0; background: #171513; color: #fff; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr repeat(3, 1fr); gap: 30px; }
+    footer p, footer li { color: #c8c0b5; line-height: 1.8; }
+    footer ul { list-style: none; }
+    footer h3 { margin-bottom: 16px; font-size: 16px; }
+    
+    /* KHUNG POPUP VIDEO (MODAL) */
+    .v-modal {
+      position: fixed; inset: 0; z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .v-modal.show { opacity: 1; pointer-events: auto; }
+    .v-modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); }
+    .v-modal-content {
+      position: relative; width: min(900px, 92%); aspect-ratio: 16/9;
+      background: #000; border-radius: 16px; overflow: hidden; z-index: 10;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+    }
+    .v-modal-close {
+      position: absolute; top: 12px; right: 16px; z-index: 11;
+      background: rgba(255,255,255,0.25); border: 0; color: #fff;
+      font-size: 28px; width: 38px; height: 38px; line-height: 34px;
+      border-radius: 50%; cursor: pointer; transition: background 0.2s;
+    }
+    .v-modal-close:hover { background: rgba(255,255,255,0.45); }
+    .v-modal-content iframe, .v-modal-content video { width: 100%; height: 100%; border: 0; }
+
+    @media (max-width: 900px) {
+      .nav { grid-template-columns: 1fr; padding: 18px 0; text-align: center; }
+      .nav-links, .nav-actions { justify-content: center; flex-wrap: wrap; }
+      .hero, .section-heading, .steps, .cta-row, .footer-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 48px; }
+      .hero-media, .hero-media img, .hero-media video, .hero-media iframe { min-height: 420px; height: 420px; }
+      .cards, .course-grid { grid-template-columns: 1fr; }
+      
+      /* ĐIỀU CHỈNH LƯỚI TRÊN TABLET THÀNH 2 CỘT */
+      .step-list { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    }
+    @media (max-width: 600px) {
+      /* ĐIỀU CHỈNH LƯỚI TRÊN MOBILE THÀNH 1 CỘT DỌC */
+      .step-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .container { width: min(100% - 24px, 1120px); }
+      .nav-links { display: none; }
+      .brand { font-size: 20px; }
+      h1 { font-size: 44px; }
+      .hero-note { right: 14px; bottom: 14px; left: 14px; max-width: none; }
+      section { padding: 64px 0; }
+    }
   </style>
 </head>
 <body>
-  <canvas id="scene" aria-label="Một mạng lưới sáu khối sáng. Di chuyển con trỏ qua các khối để nối chúng."></canvas>
-  <div class="status" id="status">0 / 6 liên kết</div>
-  <div class="hint" id="hint">đưa con trỏ qua một khối</div>
-  <button class="reset" id="reset" type="button">Reset</button>
+  <header class="topbar">
+    <nav class="container nav" aria-label="Điều hướng chính">
+      <div class="nav-links" id="navLinks"></div>
+      <a class="brand" id="brand" href="#">ME.MORI</a>
+      <div class="nav-actions">
+        <a id="navCourses" href="#courses">Khóa học</a>
+        <a class="pill" id="navCta" href="#contact">Đăng ký</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="container hero">
+      <div>
+        <div class="eyebrow" id="heroEyebrow"></div>
+        <h1><span id="heroTitleStart"></span> <span class="script" id="heroTitleScript"></span> <span id="heroTitleEnd"></span></h1>
+        <p id="heroText"></p>
+        <div class="hero-actions">
+          <a class="pill" id="heroPrimary"></a>
+          <a class="pill secondary" id="heroSecondary"></a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div id="heroMedia"></div>
+        <button id="unmuteHeroBtn" class="mute-btn" style="display: none;">
+          <i class="fa-solid fa-volume-xmark"></i> Bật âm thanh
+        </button>
+        <div class="hero-note" id="heroNote"></div>
+      </div>
+    </section>
+
+    <section id="workshops" class="light">
+      <div class="container">
+        <div class="section-heading">
+          <h2 id="introTitle"></h2>
+          <p class="section-copy" id="introText"></p>
+        </div>
+        <div class="cards" id="features"></div>
+      </div>
+    </section>
+
+    <section id="courses" class="dark">
+      <div class="container">
+        <div class="section-heading">
+          <h2><span id="coursesTitle"></span> <span class="script" id="coursesTitleScript"></span></h2>
+          <p class="section-copy" id="coursesText"></p>
+        </div>
+        <div class="course-grid" id="courseGrid"></div>
+      </div>
+    </section>
+
+    <section id="method">
+      <div class="container steps">
+        <div>
+          <div class="eyebrow" id="methodEyebrow"></div>
+          <h2 id="methodTitle"></h2>
+          <p class="section-copy" id="methodText"></p>
+        </div>
+        <div class="step-list" id="steps"></div>
+      </div>
+    </section>
+
+    <section id="contact" class="cta">
+      <div class="container cta-row">
+        <h2 id="ctaTitle"></h2>
+        <a class="pill" id="ctaLink"><i class="fa-solid fa-envelope" aria-hidden="true"></i> <span></span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid" id="footerGrid"></div>
+  </footer>
+
+  <div id="videoModal" class="v-modal">
+    <div class="v-modal-bg"></div>
+    <div class="v-modal-content">
+      <button class="v-modal-close" id="modalCloseBtn">&times;</button>
+      <div id="vModalBody" style="width:100%; height:100%;"></div>
+    </div>
+  </div>
+
   <script>
-    // One place to tune the movement, timing and material feeling.
-    const CONFIG = {
-      nodeCount: 6, linksToComplete: 6, nodeSize: 18, cornerRadius: 4,
-      floatAmplitude: 22, floatSpeed: 0.00034, floatSpeedSpread: 0.00011,
-      maxDrift: 26, spring: 0.018, damping: 0.88, centerPull: 0.0009,
-      hoverRadius: 32, baseGlow: 15, activeGlow: 34, linkGlow: 18, linkWidth: 1.4,
-      hexagonConvergeMs: 2200, hexagonHoldMs: 900, collapseMs: 900,
-      condenseMs: 420, burstMs: 1050, sunHoldMs: 1700,
-      morphMs: 1900, ringRadius: 106, linkAppearStaggerMs: 35,
-      particleCount: 38, particleLifeMs: 1500, shakePx: 2.2
+    // BỘ DỮ LIỆU DỰ PHÒNG MẶC ĐỊNH GỒM 6 MÔN HỌC CHIA ĐỀU THÀNH KHỐI VUÔNG
+    const fallbackContent = {
+      site: {
+        title: "ME.MORI Class",
+        description: "ME.MORI Class - workshop kể chuyện bằng hình ảnh, quay dựng và tư duy cinematic cho creator.",
+        brand: "ME.MORI"
+      },
+      nav: [
+        { label: "Workshop", href: "#workshops" },
+        { label: "Lộ trình", href: "#method" },
+        { label: "Liên hệ", href: "#contact" }
+      ],
+      navCourses: { label: "Khóa học", href: "#courses" },
+      navCta: { label: "Đăng ký", href: "#contact" },
+      hero: {
+        eyebrow: "ME.MORI Class",
+        titleStart: "Học nghệ thuật",
+        titleScript: "kể chuyện",
+        titleEnd: "bằng hình ảnh",
+        text: "Workshop dành cho creator muốn xây dựng tư duy cinematic, quay dựng có cảm xúc và biến ý tưởng thành câu chuyện rõ ràng trên màn hình.",
+        primary: { label: "Xem workshop", href: "#courses" },
+        secondary: { label: "Lộ trình", href: "#method" },
+        mediaType: "video",
+        mediaUrl: "https://www.youtube.com/watch?v=kXKm842UXiY",
+        mediaAlt: "Nhóm học viên cùng trao đổi trong lớp học sáng tạo",
+        note: "Thực hành theo dự án thật, nhận phản hồi trực tiếp và hoàn thiện góc nhìn cá nhân."
+      },
+      intro: {
+        title: "Không gian học tập cho người làm hình ảnh hiện đại",
+        text: "ME.MORI Class kết hợp điện ảnh, storytelling và kỹ năng sản xuất nội dung để giúp học viên biết mình muốn kể gì, vì sao câu chuyện đáng xem và nên thể hiện nó như thế nào."
+      },
+      features: [
+        { icon: "fa-film", title: "Tư duy cinematic", text: "Hiểu nhịp dựng, khung hình, chuyển cảnh và cách tạo cảm xúc bằng lựa chọn thị giác." },
+        { icon: "fa-camera", title: "Thực hành thật", text: "Làm bài tập tại lớp, quay dựng theo brief và nhận phản hồi để cải thiện từng phiên bản." },
+        { icon: "fa-users", title: "Cộng đồng creator", text: "Kết nối với những người cùng quan tâm đến video, điện ảnh và kể chuyện bằng hình ảnh." }
+      ],
+      coursesSection: {
+        title: "Workshop",
+        titleScript: "nổi bật",
+        text: "Các lớp được thiết kế ngắn gọn, tập trung vào kỹ năng có thể áp dụng ngay cho video cá nhân, thương hiệu hoặc dự án sáng tạo."
+      },
+      courses: [
+        { title: "Storytelling cho video ngắn", text: "Xây cấu trúc câu chuyện, mở đầu cuốn hút và thông điệp dễ nhớ.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" },
+        { title: "Tư duy hình ảnh cinematic", text: "Rèn bố cục, ánh sáng, chuyển động máy và nhịp cảm xúc.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" },
+        { title: "Quay dựng cho creator", text: "Biến footage thô thành sản phẩm hoàn chỉnh, rõ nhịp và rõ ý.", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }
+      ],
+      method: {
+        eyebrow: "Lộ trình",
+        title: "Chương trình 6 môn học chuyên sâu",
+        text: "Lộ trình học tập tích hợp đa chiều được dàn trang khoa học giúp bạn định hình tư duy cinematic bài bản."
+      },
+      
+      // ĐÃ CẬP NHẬT: 6 MÔN HỌC ĐƯỢC THIẾT KẾ PHÂN BỔ ĐỀU VÀO LƯỚI KHUNG VUÔNG
+      steps: [
+        { title: "Tư duy thị giác", text: "Khai phá nhãn quan cinematic, học cách cảm nhận ánh sáng và xây dựng góc nhìn cá nhân độc đáo.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
+        { title: "Kể chuyện bằng hình", text: "Ứng dụng nghệ thuật Storytelling cấu trúc Hollywood để biến ý tưởng thô thành kịch bản cuốn hút.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
+        { title: "Ngôn ngữ khung hình", text: "Làm chủ các quy tắc bố cục điện ảnh, hướng chuyển động máy và tạo nhịp điệu cảm xúc thị giác.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
+        { title: "Công cụ thiết bị", text: "Tối ưu hóa máy ảnh, điện thoại sẵn có và thiết lập ánh sáng cơ bản đạt hiệu quả hình ảnh tốt nhất.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
+        { title: "Hậu kỳ & Dựng phim", text: "Làm chủ phần mềm biên tập, cắt dựng footage thô nhịp nhàng, lồng ghép âm thanh đúng điểm rơi.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" },
+        { title: "Trải nghiệm thực tế", text: "Thực hành sản xuất dự án hoàn chỉnh ngay tại lớp và nhận đánh giá phản hồi chuyên sâu từng cá nhân.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" }
+      ],
+      cta: { title: "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?", label: "Liên hệ đăng ký", href: "mailto:hello@memori.class" },
+      footer: {
+        intro: "Không gian học tập dành cho người yêu điện ảnh, storytelling và nghệ thuật hình ảnh hiện đại.",
+        columns: [
+          { title: "Khóa học", items: ["Video ngắn", "Tư duy cinematic", "Quay dựng creator"] },
+          { title: "Cộng đồng", items: ["Workshop", "Feedback nhóm", "Dự án học viên"] },
+          { title: "Liên hệ", items: ["Instagram", "Facebook", "hello@memori.class"] }
+        ]
+      }
     };
 
-    const canvas = document.getElementById('scene'), ctx = canvas.getContext('2d');
-    const status = document.getElementById('status'), hint = document.getElementById('hint'), resetButton = document.getElementById('reset');
-    const TAU = Math.PI * 2;
-    let width = 0, height = 0, dpr = 1, last = performance.now(), time = 0;
-    let pointer = { x: -1000, y: -1000 }, hovered = -1, previous = -1;
-    let links = new Set(), phase = 'floating', phaseStarted = 0, particles = [], shockwave = 0, linkRevealTimers = [];
-    const seed = [
-      { x: .19, y: .27, phase: .4 }, { x: .46, y: .18, phase: 2.1 }, { x: .75, y: .28, phase: 4.5 },
-      { x: .83, y: .67, phase: 1.3 }, { x: .48, y: .78, phase: 3.2 }, { x: .16, y: .67, phase: 5.4 }
-    ];
-    let nodes = [];
+    const setText = (id, value) => { document.getElementById(id).textContent = value || ""; };
+    const setLink = (id, item) => {
+      const el = document.getElementById(id);
+      el.href = item?.href || "#";
+      if (item?.label) el.textContent = item.label;
+    };
 
-    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
-    const lerp = (a, b, t) => a + (b - a) * t;
-    const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-    const easeOut = t => 1 - Math.pow(1 - t, 3);
-    const keyFor = (a, b) => a < b ? `${a}-${b}` : `${b}-${a}`;
-    const allPairs = () => { const out = []; for (let a = 0; a < nodes.length; a++) for (let b = a + 1; b < nodes.length; b++) out.push(keyFor(a, b)); return out; };
-    const center = () => ({ x: width / 2, y: height / 2 });
-    const ringTarget = id => { const angle = -Math.PI / 2 + (id / CONFIG.nodeCount) * TAU; return { x: width / 2 + Math.cos(angle) * CONFIG.ringRadius, y: height / 2 + Math.sin(angle) * CONFIG.ringRadius }; };
+    const getYouTubeId = (url) => {
+      try {
+        const parsed = new URL(url);
+        if (parsed.hostname.includes("youtu.be")) return parsed.pathname.split("/").filter(Boolean)[0] || "";
+        if (parsed.pathname.startsWith("/shorts/")) return parsed.pathname.split("/").filter(Boolean)[1] || "";
+        if (parsed.pathname.startsWith("/embed/")) return parsed.pathname.split("/").filter(Boolean)[1] || "";
+        return parsed.searchParams.get("v") || "";
+      } catch { return ""; }
+    };
 
-    function resize() {
-      dpr = Math.min(window.devicePixelRatio || 1, 2); width = window.innerWidth; height = window.innerHeight;
-      canvas.width = Math.round(width * dpr); canvas.height = Math.round(height * dpr);
-      canvas.style.width = width + 'px'; canvas.style.height = height + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      nodes.forEach(n => { n.homeX = seed[n.id].x * width; n.homeY = seed[n.id].y * height; });
-    }
+    const mediaMarkup = (item, className = "") => {
+      const url = item?.mediaUrl || "";
+      const alt = item?.mediaAlt || "";
+      const youtubeId = getYouTubeId(url);
 
-    function reset() {
-      linkRevealTimers.forEach(clearTimeout); linkRevealTimers = [];
-      links = new Set(); hovered = -1; previous = -1; phase = 'floating'; phaseStarted = performance.now(); particles = []; shockwave = 0;
-      hint.classList.remove('is-done'); status.textContent = `0 / ${CONFIG.linksToComplete} liên kết`;
-      nodes = seed.map((s, id) => ({ id, x: s.x * width, y: s.y * height, vx: 0, vy: 0, homeX: s.x * width, homeY: s.y * height, seed: s.phase }));
-    }
-
-    function beginCompletion() {
-      phase = 'converging'; phaseStarted = performance.now(); hint.classList.add('is-done');
-      allPairs().forEach((key, i) => { const timer = setTimeout(() => links.add(key), i * CONFIG.linkAppearStaggerMs); linkRevealTimers.push(timer); });
-      status.textContent = 'mạng lưới hoàn chỉnh';
-    }
-
-    function addLink(a, b) {
-      if (a < 0 || b < 0 || a === b || phase !== 'floating') return;
-      const key = keyFor(a, b); if (links.has(key)) return; links.add(key);
-      status.textContent = `${Math.min(links.size, CONFIG.linksToComplete)} / ${CONFIG.linksToComplete} liên kết`;
-      if (links.size >= CONFIG.linksToComplete) beginCompletion();
-    }
-
-    function updateHover() {
-      if (phase !== 'floating') return;
-      let next = -1, best = CONFIG.hoverRadius * CONFIG.hoverRadius;
-      nodes.forEach(n => { const dx = pointer.x - n.x, dy = pointer.y - n.y, d2 = dx * dx + dy * dy; if (d2 < best) { best = d2; next = n.id; } });
-      if (next !== hovered) { hovered = next; if (hovered !== -1) { addLink(previous, hovered); previous = hovered; } }
-    }
-
-    function createBurstParticles() {
-      particles = Array.from({ length: CONFIG.particleCount }, (_, i) => { const a = (i / CONFIG.particleCount) * TAU + Math.sin(i * 7.3) * .12; const speed = 42 + (i % 5) * 14; return { angle: a, speed, size: 1 + (i % 3) * .55, life: CONFIG.particleLifeMs * (.72 + (i % 7) / 20), age: 0, drift: (i % 2 ? 1 : -1) * (.12 + (i % 4) * .04) }; });
-    }
-
-    function updateParticles(dt) { particles.forEach(p => { p.age += dt; p.angle += p.drift * dt * .001; }); particles = particles.filter(p => p.age < p.life); }
-    function progress(now, ms) { return clamp((now - phaseStarted) / ms, 0, 1); }
-
-    function update(dt, now) {
-      updateHover();
-      const convergeT = phase === 'converging' ? progress(now, CONFIG.hexagonConvergeMs) : phase === 'hexagon' ? 1 : phase === 'collapsing' ? progress(now, CONFIG.collapseMs) : phase === 'condense' || phase === 'burst' || phase === 'sun' || phase === 'morph' || phase === 'flame' ? 1 : 0;
-      nodes.forEach(n => {
-        const breathe = Math.sin(time * (CONFIG.floatSpeed + (n.id % 3) * CONFIG.floatSpeedSpread) + n.seed) * CONFIG.floatAmplitude;
-        const sway = Math.cos(time * (CONFIG.floatSpeed * .71) + n.seed * 1.7) * CONFIG.floatAmplitude * .56;
-        let tx = n.homeX + sway, ty = n.homeY + breathe;
-        if (phase !== 'floating') { const ring = ringTarget(n.id), c = center(); if (phase === 'converging') { tx = lerp(n.homeX + sway, ring.x, ease(convergeT)); ty = lerp(n.homeY + breathe, ring.y, ease(convergeT)); } else if (phase === 'hexagon') { tx = ring.x; ty = ring.y; } else { const collapseT = phase === 'collapsing' ? ease(progress(now, CONFIG.collapseMs)) : 1; tx = lerp(ring.x, c.x, collapseT); ty = lerp(ring.y, c.y, collapseT); } }
-        const dx = tx - n.x, dy = ty - n.y, boost = phase === 'converging' || phase === 'collapsing' ? 1 + convergeT * .8 : 1;
-        n.vx = (n.vx + dx * CONFIG.spring * dt * .06 * boost) * Math.pow(CONFIG.damping, dt / 16);
-        n.vy = (n.vy + dy * CONFIG.spring * dt * .06 * boost) * Math.pow(CONFIG.damping, dt / 16);
-        if (phase === 'floating') { n.vx += (width / 2 - n.x) * CONFIG.centerPull * dt * .02; n.vy += (height / 2 - n.y) * CONFIG.centerPull * dt * .02; }
-        if (phase === 'condense') { const c = center(), jitter = Math.sin(time * .014 + n.seed) * 2.8; n.vx += (c.x - n.x + jitter) * .003 * dt; n.vy += (c.y - n.y - jitter) * .003 * dt; }
-        n.x += clamp(n.vx, -CONFIG.maxDrift, CONFIG.maxDrift) * dt * .06; n.y += clamp(n.vy, -CONFIG.maxDrift, CONFIG.maxDrift) * dt * .06;
-      });
-      if (phase === 'flame' && particles.length < 8 && Math.random() < dt * .004) particles.push({ angle: -Math.PI / 2 + (Math.random() - .5) * .72, speed: 12 + Math.random() * 18, size: .7 + Math.random() * .8, life: 700 + Math.random() * 520, age: 0, drift: (Math.random() - .5) * .22 });
-      updateParticles(dt);
-      if (phase === 'converging' && convergeT >= 1) { phase = 'hexagon'; phaseStarted = now; }
-      else if (phase === 'hexagon' && now - phaseStarted >= CONFIG.hexagonHoldMs) { phase = 'collapsing'; phaseStarted = now; }
-      else if (phase === 'collapsing' && progress(now, CONFIG.collapseMs) >= 1) { phase = 'condense'; phaseStarted = now; }
-      else if (phase === 'condense' && progress(now, CONFIG.condenseMs) >= 1) { phase = 'burst'; phaseStarted = now; shockwave = 0; createBurstParticles(); }
-      else if (phase === 'burst' && progress(now, CONFIG.burstMs) >= 1) { phase = 'sun'; phaseStarted = now; }
-      else if (phase === 'sun' && now - phaseStarted >= CONFIG.sunHoldMs) { phase = 'morph'; phaseStarted = now; }
-      else if (phase === 'morph' && progress(now, CONFIG.morphMs) >= 1) { phase = 'flame'; phaseStarted = now; }
-      if (phase === 'burst') shockwave = easeOut(progress(now, CONFIG.burstMs));
-    }
-
-    function drawBackground() {
-      const c = center(), g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, Math.max(width, height) * .72);
-      g.addColorStop(0, '#1b0c06'); g.addColorStop(.4, '#0d0907'); g.addColorStop(1, '#050505'); ctx.fillStyle = g; ctx.fillRect(0, 0, width, height);
-      const glow = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, Math.min(width, height) * .35); glow.addColorStop(0, 'rgba(139, 42, 9, .09)'); glow.addColorStop(1, 'rgba(0,0,0,0)'); ctx.fillStyle = glow; ctx.fillRect(0, 0, width, height);
-    }
-
-    function drawLink(a, b, alpha = 1, widthBoost = 0) {
-      const na = nodes[a], nb = nodes[b], pulse = phase === 'burst' ? 1.1 : 1;
-      const grad = ctx.createLinearGradient(na.x, na.y, nb.x, nb.y); grad.addColorStop(0, `rgba(255, 102, 35, ${.2 * alpha})`); grad.addColorStop(.5, `rgba(255, 188, 90, ${.85 * alpha})`); grad.addColorStop(1, `rgba(255, 102, 35, ${.2 * alpha})`);
-      ctx.save(); ctx.lineCap = 'round'; ctx.shadowColor = `rgba(255, 109, 42, ${.55 * alpha})`; ctx.shadowBlur = CONFIG.linkGlow * pulse; ctx.strokeStyle = grad; ctx.lineWidth = (CONFIG.linkWidth + widthBoost) * pulse; ctx.beginPath(); ctx.moveTo(na.x, na.y); ctx.lineTo(nb.x, nb.y); ctx.stroke(); ctx.restore();
-    }
-
-    function roundedRect(x, y, w, h, r) { ctx.beginPath(); ctx.roundRect(x - w / 2, y - h / 2, w, h, r); }
-    function drawNodes(now) {
-      const c = center(), convergeT = phase === 'converging' ? progress(now, CONFIG.hexagonConvergeMs) : phase === 'hexagon' ? 1 : phase === 'collapsing' ? progress(now, CONFIG.collapseMs) : phase === 'floating' ? 0 : 1;
-      const nodeAlpha = phase === 'burst' ? 1 - easeOut(progress(now, CONFIG.burstMs)) : phase === 'condense' ? 1 : phase === 'sun' || phase === 'morph' || phase === 'flame' ? 0 : 1;
-      nodes.forEach(n => { const linked = [...links].some(k => k.split('-').map(Number).includes(n.id)), hover = n.id === hovered && phase === 'floating'; const squeeze = phase === 'hexagon' ? .84 : lerp(1, .18, ease(convergeT)); const shake = phase === 'condense' ? Math.sin(time * .025 + n.seed) * 3 : 0; const x = lerp(n.x, c.x, phase === 'condense' ? .98 : 0) + shake, y = lerp(n.y, c.y, phase === 'condense' ? .98 : 0) - shake; ctx.save(); ctx.globalAlpha = nodeAlpha; ctx.translate(x, y); ctx.shadowColor = hover ? '#ffcc83' : '#ff6d2c'; ctx.shadowBlur = (hover ? CONFIG.activeGlow : linked ? CONFIG.activeGlow * .75 : CONFIG.baseGlow) * (1 + convergeT * 1.8); const size = CONFIG.nodeSize * (hover ? 1.08 : 1) * squeeze; ctx.fillStyle = hover ? '#ffc17a' : linked ? '#ff8d4b' : '#e75625'; roundedRect(0, 0, size, size, CONFIG.cornerRadius); ctx.fill(); ctx.restore(); });
-    }
-
-    // The sun and flame share 16 points, so the transformation stays one continuous body.
-    const SUN = Array.from({ length: 16 }, (_, i) => { const a = -Math.PI / 2 + i * TAU / 16, r = 56 + (i % 2 ? 1.5 : 0); return [Math.cos(a) * r, Math.sin(a) * r]; });
-    const FLAME = [[0,-78],[19,-57],[31,-35],[37,-9],[33,12],[24,29],[17,44],[8,57],[0,72],[-10,57],[-18,43],[-29,29],[-35,10],[-31,-10],[-24,-31],[-12,-58]];
-    const FLAME_CORE = [[0,-54],[13,-40],[16,-24],[10,-14],[18,-4],[14,8],[9,19],[3,30],[-3,26],[-9,18],[-14,8],[-11,-2],[-17,-12],[-9,-23],[-7,-38],[-3,-48]];
-    function blendShape(a, b, t) { return a.map((p, i) => [lerp(p[0], b[i][0], t), lerp(p[1], b[i][1], t)]); }
-    function pathShape(points, wobble = 0) { ctx.beginPath(); points.forEach((p, i) => { const x = p[0] + Math.sin(time * .009 + i * 1.8) * wobble, y = p[1] + Math.cos(time * .007 + i * 1.3) * wobble * .6; if (i === 0) ctx.moveTo(x, y); else { const prev = points[i - 1], mx = (prev[0] + x) / 2, my = (prev[1] + y) / 2; ctx.quadraticCurveTo(prev[0], prev[1], mx, my); } }); const first = points[0], lastPoint = points[points.length - 1]; ctx.quadraticCurveTo(lastPoint[0], lastPoint[1], (lastPoint[0] + first[0]) / 2, (lastPoint[1] + first[1]) / 2); ctx.closePath(); }
-
-    function drawParticles(now) {
-      const c = center(); particles.forEach(p => { const ageT = p.age / p.life, distance = p.speed * ageT * (phase === 'flame' ? .28 : 1), lift = phase === 'flame' ? ageT * 38 : ageT * 10, x = c.x + Math.cos(p.angle) * distance, y = c.y + Math.sin(p.angle) * distance - lift; ctx.save(); ctx.globalAlpha = (1 - ageT) * .75; ctx.fillStyle = ageT < .35 ? '#ffd994' : '#f26b2d'; ctx.shadowColor = '#ff8a3d'; ctx.shadowBlur = 12; ctx.beginPath(); ctx.arc(x, y, p.size * (1 - ageT * .35), 0, TAU); ctx.fill(); ctx.restore(); });
-    }
-
-    function drawEnergy(now) {
-      if (phase === 'floating' || phase === 'converging' || phase === 'hexagon' || phase === 'collapsing') return;
-      const c = center(), burstT = phase === 'burst' ? easeOut(progress(now, CONFIG.burstMs)) : 1, morphT = phase === 'morph' ? ease(progress(now, CONFIG.morphMs)) : phase === 'flame' ? 1 : 0;
-      const settle = phase === 'burst' ? 1 + Math.sin(burstT * Math.PI) * .12 : phase === 'sun' ? 1 + Math.sin((now - phaseStarted) * .006) * .025 : 1 + Math.sin(time * .006) * .028;
-      const flash = phase === 'condense' ? 1 - progress(now, CONFIG.condenseMs) : phase === 'burst' ? 1 - burstT : 0;
-      if (flash > 0) { ctx.save(); ctx.globalAlpha = flash * .3; const r = 20 + flash * 120; const g = ctx.createRadialGradient(c.x, c.y, 0, c.x, c.y, r); g.addColorStop(0, '#fff3c4'); g.addColorStop(.35, '#ff9c54'); g.addColorStop(1, 'rgba(255,92,28,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(c.x, c.y, r, 0, TAU); ctx.fill(); ctx.restore(); }
-      ctx.save(); ctx.translate(c.x, c.y); ctx.scale(settle, settle);
-      if (phase === 'sun' || phase === 'burst') {
-        const rayPulse = 1 + Math.sin(time * .008) * .06; ctx.save(); ctx.globalAlpha = (phase === 'burst' ? burstT : 1) * .66; ctx.strokeStyle = '#ffab57'; ctx.shadowColor = '#ff7131'; ctx.shadowBlur = 22; ctx.lineWidth = 3; ctx.lineCap = 'round'; for (let i = 0; i < 12; i++) { const a = i * TAU / 12 + Math.sin(time * .002 + i) * .025, inner = 64 * rayPulse, outer = 76 + Math.sin(time * .006 + i * 2) * 5; ctx.beginPath(); ctx.moveTo(Math.cos(a) * inner, Math.sin(a) * inner); ctx.lineTo(Math.cos(a) * outer, Math.sin(a) * outer); ctx.stroke(); } ctx.restore();
+      if (youtubeId) {
+        return `<iframe class="${className}" src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${youtubeId}&playsinline=1&rel=0&modestbranding=1&enablejsapi=1" title="${escapeHtml(alt)}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
       }
-      const shape = phase === 'condense' ? SUN.map(p => [p[0] * .08, p[1] * .08]) : blendShape(SUN, FLAME, morphT); const outer = ctx.createRadialGradient(-10, -25, 4, 0, 0, 92); outer.addColorStop(0, '#fff5c7'); outer.addColorStop(.16, '#ffd978'); outer.addColorStop(.45, '#ff9a43'); outer.addColorStop(.76, '#f45b26'); outer.addColorStop(1, 'rgba(120,25,5,0)'); pathShape(shape, phase === 'flame' ? 4.2 : .7); ctx.fillStyle = outer; ctx.globalAlpha = phase === 'burst' ? burstT : 1; ctx.shadowColor = '#ff7131'; ctx.shadowBlur = 32 + flash * 45; ctx.fill();
-      if (phase === 'flame') { ctx.save(); ctx.globalAlpha = .52; ctx.strokeStyle = '#ffbd65'; ctx.lineWidth = 1.4; ctx.shadowColor = '#ff9b3d'; ctx.shadowBlur = 10; pathShape(shape, 3.5); ctx.stroke(); ctx.restore(); }
-      const inner = blendShape(SUN.map(p => [p[0] * .42, p[1] * .42]), FLAME_CORE, morphT); pathShape(inner, phase === 'flame' ? 2.8 : .25); ctx.fillStyle = phase === 'flame' ? '#ffe48a' : 'rgba(255,235,171,.72)'; ctx.shadowBlur = 18; ctx.fill();
-      ctx.restore();
-      if (phase === 'burst' && shockwave > 0) { ctx.save(); ctx.globalAlpha = (1 - shockwave) * .4; ctx.strokeStyle = '#ffb46a'; ctx.shadowColor = '#ff7a37'; ctx.shadowBlur = 18; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(c.x, c.y, 14 + shockwave * 130, 0, TAU); ctx.stroke(); ctx.restore(); }
+
+      const type = item?.mediaType === "video" ? "video" : "image";
+      if (type === "video") {
+        return `<video class="${className}" src="${url}" aria-label="${escapeHtml(alt)}" autoplay muted loop playsinline></video>`;
+      }
+      return `<img class="${className}" src="${url}" alt="${escapeHtml(alt)}">`;
+    };
+
+    const escapeHtml = (value = "") => String(value).replace(/[&<>"']/g, (char) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
+    }[char]));
+
+    const modal = document.getElementById("videoModal");
+    const modalBody = document.getElementById("vModalBody");
+
+    function openModalVideo(url) {
+      const youtubeId = getYouTubeId(url);
+      if (youtubeId) {
+        modalBody.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=0&controls=1&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+      } else {
+        modalBody.innerHTML = `<video src="${url}" autoplay controls playsinline></video>`;
+      }
+      modal.classList.add("show");
     }
 
-    function draw(now) { drawBackground(); links.forEach(key => { const [a, b] = key.split('-').map(Number); const alpha = phase === 'converging' ? .55 + progress(now, CONFIG.hexagonConvergeMs) * .45 : 1; drawLink(a, b, alpha, phase === 'burst' ? 1 : 0); }); drawNodes(now); drawEnergy(now); drawParticles(now); }
-    function frame(now) { const dt = Math.min(40, now - last); last = now; time += dt; update(dt, now); draw(now); requestAnimationFrame(frame); }
-    canvas.addEventListener('pointermove', e => { const rect = canvas.getBoundingClientRect(); pointer.x = e.clientX - rect.left; pointer.y = e.clientY - rect.top; updateHover(); });
-    canvas.addEventListener('pointerleave', () => { pointer.x = pointer.y = -1000; hovered = -1; });
-    resetButton.addEventListener('click', reset); window.addEventListener('resize', resize); resize(); reset(); requestAnimationFrame(frame);
+    function closeModalVideo() {
+      modal.classList.remove("show");
+      modalBody.innerHTML = "";
+    }
+    document.getElementById("modalCloseBtn").addEventListener("click", closeModalVideo);
+    document.querySelector(".v-modal-bg").addEventListener("click", closeModalVideo);
+
+    function render(content) {
+      document.title = content.site.title;
+      document.querySelector('meta[name="description"]').content = content.site.description;
+      setText("brand", content.site.brand);
+      document.getElementById("navLinks").innerHTML = content.nav.map((item) => `<a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>`).join("");
+      setLink("navCourses", content.navCourses);
+      setLink("navCta", content.navCta);
+      setText("heroEyebrow", content.hero.eyebrow);
+      setText("heroTitleStart", content.hero.titleStart);
+      setText("heroTitleScript", content.hero.titleScript);
+      setText("heroTitleEnd", content.hero.titleEnd);
+      setText("heroText", content.hero.text);
+      setLink("heroPrimary", content.hero.primary);
+      setLink("heroSecondary", content.hero.secondary);
+      
+      const heroContainer = document.getElementById("heroMedia");
+      heroContainer.innerHTML = mediaMarkup(content.hero);
+      setText("heroNote", content.hero.note);
+      setText("introTitle", content.intro.title);
+      setText("introText", content.intro.text);
+      
+      document.getElementById("features").innerHTML = content.features.map((item) => `
+        <article class="card">
+          <i class="fa-solid ${escapeHtml(item.icon)}" aria-hidden="true"></i>
+          <h3>${escapeHtml(item.title)}</h3>
+          <p>${escapeHtml(item.text)}</p>
+        </article>
+      `).join("");
+      
+      setText("coursesTitle", content.coursesSection.title);
+      setText("coursesTitleScript", content.coursesSection.titleScript);
+      setText("coursesText", content.coursesSection.text);
+      document.getElementById("courseGrid").innerHTML = content.courses.map((item) => `
+        <article class="course">
+          ${mediaMarkup(item)}
+          <div class="course-content">
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.text)}</p>
+          </div>
+        </article>
+      `).join("");
+      
+      setText("methodEyebrow", content.method.eyebrow);
+      setText("methodTitle", content.method.title);
+      setText("methodText", content.method.text);
+
+      // CẤU TRÚC ĐỔ LƯỚI KHUNG VUÔNG CHO LỘ TRÌNH 6 MÔN
+      document.getElementById("steps").innerHTML = content.steps.map((item, index) => `
+        <div class="step" data-video="${escapeHtml(item.videoUrl || '')}">
+          <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 4px;">
+            <span>${index + 1}</span>
+            <i class="fa-solid fa-circle-play" style="color: #d99b27; font-size: 22px; opacity: 0.8;"></i>
+          </div>
+          <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 10px;">
+            <strong style="margin-bottom: 8px;">${escapeHtml(item.title)}</strong>
+            <p>${escapeHtml(item.text)}</p>
+          </div>
+        </div>
+      `).join("");
+
+      document.querySelectorAll(".step").forEach((stepCard) => {
+        stepCard.addEventListener("click", () => {
+          const videoUrl = stepCard.dataset.video;
+          if (videoUrl) openModalVideo(videoUrl);
+        });
+      });
+
+      setText("ctaTitle", content.cta.title);
+      const ctaLink = document.getElementById("ctaLink");
+      ctaLink.href = content.cta.href;
+      ctaLink.querySelector("span").textContent = content.cta.label;
+      
+      document.getElementById("footerGrid").innerHTML = `
+        <div>
+          <div class="brand">${escapeHtml(content.site.brand)}</div>
+          <p>${escapeHtml(content.footer.intro)}</p>
+        </div>
+        ${content.footer.columns.map((column) => `
+          <div>
+            <h3>${escapeHtml(column.title)}</h3>
+            <ul>${column.items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+          </div>
+        `).join("")}
+      `;
+
+      const unmuteBtn = document.getElementById("unmuteHeroBtn");
+      const hasVideo = heroContainer.querySelector("iframe, video");
+      unmuteBtn.style.display = hasVideo ? "flex" : "none";
+
+      let isHeroMuted = true;
+      unmuteBtn.addEventListener("click", () => {
+        const iframe = heroContainer.querySelector("iframe");
+        const video = heroContainer.querySelector("video");
+        isHeroMuted = !isHeroMuted;
+
+        if (iframe) {
+          const command = isHeroMuted ? "mute" : "unMute";
+          iframe.contentWindow.postMessage(JSON.stringify({ event: "command", func: command, args: "" }), "*");
+        } else if (video) {
+          video.muted = isHeroMuted;
+        }
+
+        unmuteBtn.innerHTML = isHeroMuted 
+          ? `<i class="fa-solid fa-volume-xmark"></i> Bật âm thanh` 
+          : `<i class="fa-solid fa-volume-high"></i> Tắt âm thanh`;
+      });
+    }
+
+    (async function() {
+      let settings;
+      try {
+        const response = await fetch(`./content.json?t=${Date.now()}`);
+        if (response.ok) { settings = await response.json(); }
+        else { throw new Error(); }
+      } catch (e) {
+        const saved = localStorage.getItem("memori_local_backup_v2");
+        if (saved) { try { settings = JSON.parse(saved); } catch(err) {} }
+      }
+      render(settings || fallbackContent);
+    })();
   </script>
 </body>
 </html>
