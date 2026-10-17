@@ -142,6 +142,7 @@
         <button class="tab" type="button" data-tab="intro">Giới thiệu & Đặc điểm</button>
         <button class="tab" type="button" data-tab="courses">Danh sách Lớp học</button>
         <button class="tab" type="button" data-tab="method">Phương pháp & CTA</button>
+        <button class="tab" type="button" data-tab="extra">Mục mở rộng</button>
         <button class="tab" type="button" data-tab="footer">Chân trang (Footer)</button>
       </nav>
 
@@ -294,6 +295,13 @@
           </div>
         </section>
 
+        <section class="section" data-section="extra">
+          <div class="section-head"><h2>Mục mở rộng (giá, lịch, giảng viên, đánh giá, FAQ)</h2><p>Để trống thì trang chủ không hiện các mục này. Dán JSON gồm các khóa <code>pricing</code>, <code>schedule</code>, <code>instructors</code>, <code>testimonials</code>, <code>faq</code>; mỗi khóa có <code>title</code>, <code>text</code> và <code>items</code>.</p></div>
+          <div class="grid">
+            <div class="field full"><label>JSON mục mở rộng</label><textarea name="extra_json" rows="14" spellcheck="false" placeholder='{"faq":{"title":"...","text":"...","items":[{"q":"...","a":"..."}]}}'></textarea></div>
+          </div>
+        </section>
+
         <section class="section" data-section="footer">
           <div class="section-head"><h2>Chân trang (Footer)</h2><p>Sửa đổi mô tả chân trang và hệ thống nội dung 3 cột thông tin danh mục.</p></div>
           <div class="grid">
@@ -383,9 +391,29 @@
     }
 
     // ĐỌC DỮ LIỆU TỪ FORM VÀ ĐÓNG GÓI THÀNH ĐỐI TƯỢNG JSON CHUẨN
+    const EXTRA_KEYS = ["pricing", "schedule", "instructors", "testimonials", "faq"];
+
+    // Đọc ô JSON mục mở rộng; trả về null nếu JSON sai để chặn việc lưu
+    function readExtraFromForm() {
+      const raw = form.elements["extra_json"].value.trim();
+      if (!raw) return {};
+      try {
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error();
+        const out = {};
+        EXTRA_KEYS.forEach(k => { if (parsed[k] !== undefined) out[k] = parsed[k]; });
+        return out;
+      } catch (e) {
+        return null;
+      }
+    }
+
     function makeJsonFromForm() {
       const f = (name) => form.elements[name].value.trim();
+      const extra = readExtraFromForm();
+      if (extra === null) { showToast("❌ JSON ở tab Mục mở rộng không hợp lệ, chưa lưu."); return null; }
       return {
+        ...extra,
         site: { title: f("site_title"), description: f("site_description"), brand: f("site_brand") },
         nav: defaults.nav, // Giữ nguyên mảng cấu trúc cây nav
         navCourses: { label: defaults.navCourses.label, href: defaults.navCourses.href },
@@ -444,6 +472,10 @@
       s("method_eyebrow", data.method?.eyebrow); s("method_title", data.method?.title); s("method_text", data.method?.text);
       [0, 1, 2, 3, 4, 5].forEach(i => { const st = data.steps?.[i] || {}; s(`step${i}_title`, st.title); s(`step${i}_text`, st.text); s(`step${i}_videoUrl`, st.videoUrl); });
       
+      const extraOut = {};
+      EXTRA_KEYS.forEach(k => { if (data[k] !== undefined) extraOut[k] = data[k]; });
+      s("extra_json", Object.keys(extraOut).length ? JSON.stringify(extraOut, null, 2) : "");
+
       s("cta_title", data.cta?.title); s("cta_label", data.cta?.label); s("cta_href", data.cta?.href);
       s("footer_intro", data.footer?.intro);
       if(data.footer?.columns?.[0]) { s("fcol0_title", data.footer.columns[0].title); s("fcol0_items", data.footer.columns[0].items.join("\n")); }
@@ -523,7 +555,7 @@
       });
     });
 
-    document.getElementById("saveBtn").addEventListener("click", () => sendToGitHub(makeJsonFromForm()));
+    document.getElementById("saveBtn").addEventListener("click", () => { const json = makeJsonFromForm(); if (json) sendToGitHub(json); });
     document.getElementById("resetBtn").addEventListener("click", async () => {
       if(!confirm("Xóa toàn bộ nội dung đã sửa để đồng bộ tệp mặc định gốc lên GitHub?")) return;
       await sendToGitHub(defaults);
