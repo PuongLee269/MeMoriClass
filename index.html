@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="ME.MORI Class - workshop kể chuyện bằng hình ảnh, quay dựng và tư duy cinematic cho creator.">
   <title>ME.MORI Class</title>
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:site_name" content="ME.MORI Class">
+  <meta property="og:title" content="ME.MORI Class">
+  <meta property="og:description" content="ME.MORI Class - workshop kể chuyện bằng hình ảnh, quay dựng và tư duy cinematic cho creator.">
+  <meta name="twitter:card" content="summary">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Lora:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
@@ -203,6 +209,14 @@
     footer ul { list-style: none; }
     footer h3 { margin-bottom: 16px; font-size: 16px; }
     
+    /* CÁC MỤC MỞ RỘNG (CHỈ HIỆN KHI content.json CÓ DỮ LIỆU) */
+    .extra-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; margin-top: 32px; }
+    .extra-item { padding: 26px; border-radius: 18px; background: #fff; border: 1px solid #eadfcf; }
+    .extra-item h3 { margin-bottom: 8px; font-size: 20px; }
+    .extra-item .extra-meta { margin-bottom: 10px; font-weight: 700; color: #d99b27; }
+    .extra-item p { color: #645b51; line-height: 1.7; }
+    .extra-item img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; margin-bottom: 14px; }
+
     /* KHUNG POPUP VIDEO (MODAL) */
     .v-modal {
       position: fixed; inset: 0; z-index: 9999;
@@ -312,6 +326,8 @@
         <div class="step-list" id="steps"></div>
       </div>
     </section>
+
+    <div id="extraSections"></div>
 
     <section id="contact" class="cta">
       <div class="container cta-row">
@@ -463,9 +479,50 @@
     document.getElementById("modalCloseBtn").addEventListener("click", closeModalVideo);
     document.querySelector(".v-modal-bg").addEventListener("click", closeModalVideo);
 
+    // Mục mở rộng: chỉ vẽ khi content.json có items, nên chưa có dữ liệu thì không hiện gì.
+    // Mỗi phần tử trong `fields` là [khóa dữ liệu, cách hiển thị].
+    const EXTRA_SECTIONS = {
+      pricing: { id: "pricing", fields: { title: "name", meta: "price", text: "note" } },
+      schedule: { id: "schedule", fields: { title: "name", meta: "date", text: "note" } },
+      instructors: { id: "instructors", fields: { title: "name", meta: "role", text: "bio", image: "photo" } },
+      testimonials: { id: "testimonials", fields: { title: "name", meta: "role", text: "quote" } },
+      faq: { id: "faq", fields: { title: "q", text: "a" } }
+    };
+
+    function renderExtraSections(content) {
+      const host = document.getElementById("extraSections");
+      host.innerHTML = Object.keys(EXTRA_SECTIONS).map((key) => {
+        const section = content[key];
+        const items = section && Array.isArray(section.items) ? section.items : [];
+        if (!items.length) return "";
+        const map = EXTRA_SECTIONS[key].fields;
+        return `
+          <section id="${EXTRA_SECTIONS[key].id}" class="light">
+            <div class="container">
+              <div class="section-heading">
+                <h2>${escapeHtml(section.title || "")}</h2>
+                <p class="section-copy">${escapeHtml(section.text || "")}</p>
+              </div>
+              <div class="extra-items">
+                ${items.map((item) => `
+                  <article class="extra-item">
+                    ${map.image && item[map.image] ? `<img src="${escapeHtml(item[map.image])}" alt="${escapeHtml(item[map.title] || "")}">` : ""}
+                    <h3>${escapeHtml(item[map.title] || "")}</h3>
+                    ${map.meta && item[map.meta] ? `<div class="extra-meta">${escapeHtml(item[map.meta])}</div>` : ""}
+                    <p>${escapeHtml(item[map.text] || "")}</p>
+                  </article>
+                `).join("")}
+              </div>
+            </div>
+          </section>`;
+      }).join("");
+    }
+
     function render(content) {
       document.title = content.site.title;
       document.querySelector('meta[name="description"]').content = content.site.description;
+      document.querySelector('meta[property="og:title"]').content = content.site.title;
+      document.querySelector('meta[property="og:description"]').content = content.site.description;
       setText("brand", content.site.brand);
       document.getElementById("navLinks").innerHTML = content.nav.map((item) => `<a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>`).join("");
       setLink("navCourses", content.navCourses);
@@ -529,6 +586,8 @@
           if (videoUrl) openModalVideo(videoUrl);
         });
       });
+
+      renderExtraSections(content);
 
       setText("ctaTitle", content.cta.title);
       const ctaLink = document.getElementById("ctaLink");
