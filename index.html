@@ -217,6 +217,16 @@
     .extra-item p { color: #645b51; line-height: 1.7; }
     .extra-item img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; margin-bottom: 14px; }
 
+    /* NÚT ĐĂNG KÝ CỐ ĐỊNH TRÊN ĐIỆN THOẠI */
+    .sticky-cta { display: none; }
+    @media (max-width: 700px) {
+      .sticky-cta {
+        display: flex; position: fixed; left: 12px; right: 12px; bottom: 12px; z-index: 50;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      }
+      body { padding-bottom: 70px; }
+    }
+
     /* KHUNG POPUP VIDEO (MODAL) */
     .v-modal {
       position: fixed; inset: 0; z-index: 9999;
@@ -340,6 +350,8 @@
   <footer>
     <div class="container footer-grid" id="footerGrid"></div>
   </footer>
+
+  <a class="pill sticky-cta" id="stickyCta" href="#contact"></a>
 
   <div id="videoModal" class="v-modal">
     <div class="v-modal-bg"></div>
@@ -477,6 +489,7 @@
       modalBody.innerHTML = "";
     }
     document.getElementById("modalCloseBtn").addEventListener("click", closeModalVideo);
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModalVideo(); });
     document.querySelector(".v-modal-bg").addEventListener("click", closeModalVideo);
 
     // Mục mở rộng: chỉ vẽ khi content.json có items, nên chưa có dữ liệu thì không hiện gì.
@@ -527,6 +540,7 @@
       document.getElementById("navLinks").innerHTML = content.nav.map((item) => `<a href="${escapeHtml(item.href)}">${escapeHtml(item.label)}</a>`).join("");
       setLink("navCourses", content.navCourses);
       setLink("navCta", content.navCta);
+      setLink("stickyCta", content.navCta);
       setText("heroEyebrow", content.hero.eyebrow);
       setText("heroTitleStart", content.hero.titleStart);
       setText("heroTitleScript", content.hero.titleScript);
@@ -568,10 +582,10 @@
 
       // CẤU TRÚC ĐỔ LƯỚI KHUNG VUÔNG CHO LỘ TRÌNH 6 MÔN
       document.getElementById("steps").innerHTML = content.steps.map((item, index) => `
-        <div class="step" data-video="${escapeHtml(item.videoUrl || '')}">
+        <div class="step" data-video="${escapeHtml(item.videoUrl || '')}"${item.videoUrl ? ' role="button" tabindex="0"' : ""} aria-label="${escapeHtml(item.title)}">
           <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-bottom: 4px;">
             <span>${index + 1}</span>
-            <i class="fa-solid fa-circle-play" style="color: #d99b27; font-size: 22px; opacity: 0.8;"></i>
+            ${item.videoUrl ? '<i class="fa-solid fa-circle-play" style="color: #d99b27; font-size: 22px; opacity: 0.8;" aria-hidden="true"></i>' : ""}
           </div>
           <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; margin-top: 10px;">
             <strong style="margin-bottom: 8px;">${escapeHtml(item.title)}</strong>
@@ -581,9 +595,10 @@
       `).join("");
 
       document.querySelectorAll(".step").forEach((stepCard) => {
-        stepCard.addEventListener("click", () => {
-          const videoUrl = stepCard.dataset.video;
-          if (videoUrl) openModalVideo(videoUrl);
+        const open = () => { if (stepCard.dataset.video) openModalVideo(stepCard.dataset.video); };
+        stepCard.addEventListener("click", open);
+        stepCard.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
         });
       });
 

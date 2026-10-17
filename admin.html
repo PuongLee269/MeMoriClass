@@ -243,48 +243,14 @@
         </section>
 
         <section class="section" data-section="method">
-          <div class="section-head"><h2>Lộ trình các bước học tập & CTA</h2><p>Quản lý lộ trình 6 môn học (kèm link video) và bảng đăng ký nhanh cuối trang.</p></div>
+          <div class="section-head"><h2>Lộ trình các bước học tập & CTA</h2><p>Quản lý lộ trình các môn học (thêm/xóa tùy ý, kèm link video) và bảng đăng ký nhanh cuối trang.</p></div>
           <div class="grid">
             <div class="field"><label>Dòng chữ nhỏ Eyebrow</label><input name="method_eyebrow" /></div>
             <div class="field"><label>Tiêu đề lớn Phương pháp</label><input name="method_title" /></div>
             <div class="field full"><label>Mô tả chi tiết phương pháp</label><textarea name="method_text"></textarea></div>
             
-            <div class="field-group">
-              <h4>Môn / bước 1</h4>
-              <div class="field"><label>Tiêu đề</label><input name="step0_title" /></div>
-              <div class="field"><label>Nội dung chi tiết</label><input name="step0_text" /></div>
-              <div class="field"><label>Link video (videoUrl)</label><input name="step0_videoUrl" /></div>
-            </div>
-            <div class="field-group">
-              <h4>Môn / bước 2</h4>
-              <div class="field"><label>Tiêu đề</label><input name="step1_title" /></div>
-              <div class="field"><label>Nội dung chi tiết</label><input name="step1_text" /></div>
-              <div class="field"><label>Link video (videoUrl)</label><input name="step1_videoUrl" /></div>
-            </div>
-            <div class="field-group">
-              <h4>Môn / bước 3</h4>
-              <div class="field"><label>Tiêu đề</label><input name="step2_title" /></div>
-              <div class="field"><label>Nội dung chi tiết</label><input name="step2_text" /></div>
-              <div class="field"><label>Link video (videoUrl)</label><input name="step2_videoUrl" /></div>
-            </div>
-            <div class="field-group">
-              <h4>Môn / bước 4</h4>
-              <div class="field"><label>Tiêu đề</label><input name="step3_title" /></div>
-              <div class="field"><label>Nội dung chi tiết</label><input name="step3_text" /></div>
-              <div class="field"><label>Link video (videoUrl)</label><input name="step3_videoUrl" /></div>
-            </div>
-            <div class="field-group">
-              <h4>Môn / bước 5</h4>
-              <div class="field"><label>Tiêu đề</label><input name="step4_title" /></div>
-              <div class="field"><label>Nội dung chi tiết</label><input name="step4_text" /></div>
-              <div class="field"><label>Link video (videoUrl)</label><input name="step4_videoUrl" /></div>
-            </div>
-            <div class="field-group">
-              <h4>Môn / bước 6</h4>
-              <div class="field"><label>Tiêu đề</label><input name="step5_title" /></div>
-              <div class="field"><label>Nội dung chi tiết</label><input name="step5_text" /></div>
-              <div class="field"><label>Link video (videoUrl)</label><input name="step5_videoUrl" /></div>
-            </div>
+            <div class="full" id="stepsEditor" style="grid-column: 1 / -1;"></div>
+            <div class="full" style="grid-column: 1 / -1;"><button type="button" id="addStepBtn">+ Thêm môn / bước</button></div>
 
             <div class="field-group">
               <h4>Khối kêu gọi đăng ký (CTA Block)</h4>
@@ -408,6 +374,36 @@
       }
     }
 
+    // TRÌNH SỬA LỘ TRÌNH: số môn tùy ý, mỗi môn có tiêu đề, nội dung, videoUrl
+    function addStepRow(st = {}) {
+      const row = document.createElement("div");
+      row.className = "field-group step-row";
+      row.innerHTML = `
+        <h4>Môn / bước <span class="step-no"></span> <button type="button" class="danger remove-step" style="float:right">Xóa</button></h4>
+        <div class="field"><label>Tiêu đề</label><input data-k="title" /></div>
+        <div class="field"><label>Nội dung chi tiết</label><input data-k="text" /></div>
+        <div class="field full"><label>Link video (videoUrl)</label><input data-k="videoUrl" /></div>`;
+      ["title", "text", "videoUrl"].forEach(k => { row.querySelector(`[data-k="${k}"]`).value = st[k] || ""; });
+      row.querySelector(".remove-step").addEventListener("click", () => { row.remove(); renumberSteps(); });
+      document.getElementById("stepsEditor").appendChild(row);
+      renumberSteps();
+    }
+    function renumberSteps() {
+      document.querySelectorAll("#stepsEditor .step-no").forEach((el, i) => { el.textContent = i + 1; });
+    }
+    function setStepsEditor(steps) {
+      document.getElementById("stepsEditor").innerHTML = "";
+      (steps || []).forEach(addStepRow);
+    }
+    function readStepsFromForm() {
+      return [...document.querySelectorAll("#stepsEditor .step-row")]
+        .map(row => {
+          const v = (k) => row.querySelector(`[data-k="${k}"]`).value.trim();
+          return { title: v("title"), text: v("text"), videoUrl: v("videoUrl") };
+        })
+        .filter(st => st.title || st.text);
+    }
+
     function makeJsonFromForm() {
       const f = (name) => form.elements[name].value.trim();
       const extra = readExtraFromForm();
@@ -437,7 +433,7 @@
           { title: f("course2_title"), text: f("course2_text"), mediaType: "image", mediaUrl: f("course2_mediaUrl"), mediaAlt: "" }
         ],
         method: { eyebrow: f("method_eyebrow"), title: f("method_title"), text: f("method_text") },
-        steps: [0, 1, 2, 3, 4, 5].map(i => ({ title: f(`step${i}_title`), text: f(`step${i}_text`), videoUrl: f(`step${i}_videoUrl`) })),
+        steps: readStepsFromForm(),
         cta: { title: f("cta_title"), label: f("cta_label"), href: f("cta_href") },
         footer: {
           intro: f("footer_intro"),
@@ -470,7 +466,7 @@
       if(data.courses?.[2]) { s("course2_title", data.courses[2].title); s("course2_mediaUrl", data.courses[2].mediaUrl); s("course2_text", data.courses[2].text); }
       
       s("method_eyebrow", data.method?.eyebrow); s("method_title", data.method?.title); s("method_text", data.method?.text);
-      [0, 1, 2, 3, 4, 5].forEach(i => { const st = data.steps?.[i] || {}; s(`step${i}_title`, st.title); s(`step${i}_text`, st.text); s(`step${i}_videoUrl`, st.videoUrl); });
+      setStepsEditor(data.steps);
       
       const extraOut = {};
       EXTRA_KEYS.forEach(k => { if (data[k] !== undefined) extraOut[k] = data[k]; });
@@ -555,6 +551,7 @@
       });
     });
 
+    document.getElementById("addStepBtn").addEventListener("click", () => addStepRow());
     document.getElementById("saveBtn").addEventListener("click", () => { const json = makeJsonFromForm(); if (json) sendToGitHub(json); });
     document.getElementById("resetBtn").addEventListener("click", async () => {
       if(!confirm("Xóa toàn bộ nội dung đã sửa để đồng bộ tệp mặc định gốc lên GitHub?")) return;
