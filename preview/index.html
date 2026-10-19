@@ -127,7 +127,7 @@ document.querySelectorAll('[data-chess]').forEach(function(btn){btn.addEventList
 if(!hasSeen())begin();
 })();
 
-(function(){
+document.addEventListener('DOMContentLoaded',function(){
 var modal=document.getElementById('videoModal'),frame=document.getElementById('videoModalFrame'),label=document.getElementById('videoModalTitle'),original=document.getElementById('videoModalOriginal');
 if(!modal||!frame)return;
 function spec(href){
@@ -154,7 +154,16 @@ document.querySelectorAll('.frame-card a,.lesson a,.short a').forEach(function(l
 document.getElementById('videoModalClose').addEventListener('click',close);
 modal.addEventListener('click',function(e){if(e.target===modal)close();});
 modal.addEventListener('close',function(){frame.src='about:blank';document.body.style.overflow='';});
-})();
+// Thumbnail areas are clickable as well as the text links.
+document.querySelectorAll('.lesson,.short').forEach(function(card){
+ card.style.cursor='pointer';
+ card.addEventListener('click',function(e){
+   if(e.target.closest('a,button'))return;
+   var link=card.querySelector('a[href*="youtube.com/shorts/"],a[href*="drive.google.com/file/d/"]');
+   if(link)link.click();
+ });
+});
+});
 </script>
 <dialog id="videoModal" class="video-modal" aria-label="Trình chiếu video trên Me.Mori">
 <div class="viewer-header"><strong id="videoModalTitle">Xem tác phẩm</strong><button type="button" class="viewer-close" id="videoModalClose" aria-label="Đóng trình phát">×</button></div>
