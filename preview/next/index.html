@@ -141,7 +141,7 @@ function begin(){intro.classList.add('active');document.body.classList.add('intr
 function closeIntro(hash){clearTimer();intro.classList.remove('active');document.body.classList.remove('intro-open');markSeen();if(hash){var elem=document.querySelector(hash);if(elem)elem.scrollIntoView({behavior:'smooth'})}}
 document.getElementById('readyIntro').addEventListener('click',function(){showStage(1)});
 document.getElementById('skipIntro').addEventListener('click',function(){closeIntro('#top')});
-document.getElementById('introEnroll').addEventListener('click',function(){closeIntro();window.location.href='f2/#register'});
+document.getElementById('introEnroll').addEventListener('click',function(){closeIntro();window.location.href='/MeMoriClass/preview/f2/#register'});
 document.getElementById('introExplore').addEventListener('click',function(){closeIntro('#top')});
 document.getElementById('replayIntro').addEventListener('click',begin);
 document.getElementById('replayFooter').addEventListener('click',begin);
