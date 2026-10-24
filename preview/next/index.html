@@ -70,7 +70,58 @@
 <section class="stage" id="s-finish"><div class="intro-art"><div class="last-spark"></div></div><p class="intro-small">Và hôm nay, câu chuyện tiếp tục</p><h2 class="intro-title">Hãy kể <em>câu chuyện</em><br>của riêng mình.</h2><p class="intro-copy" style="font-size:clamp(23px,3.4vw,42px);max-width:730px">Me.Mori Class cùng bạn tìm thấy một cách nhìn và một giọng kể không thể sao chép.</p><div class="intro-actions"><button class="intro-button" id="introEnroll">Thử buổi học đầu ↗</button><button class="intro-ghost" id="introExplore">Khám phá thư viện →</button></div></section>
 </div>
 
-<style id="next-interactive-hero">
+<style id="four-frame-continuation">
+body{overflow:hidden}.next-copy{top:11%;width:min(1160px,calc(100% - 36px))}
+.next-copy h1{font-size:clamp(52px,6.8vw,98px);line-height:.84;margin:19px 0 0}
+.drop-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;width:min(570px,100%);margin:26px auto 0;pointer-events:auto}
+.drop-tile{aspect-ratio:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:8px;border:1px solid #e6d6b68a;background:#e9ddc51c;color:#f2e8d4;backdrop-filter:blur(4px);transition:background .25s,border-color .25s,transform .25s,box-shadow .25s}
+.drop-tile span{font:normal 31px Georgia,serif;color:#e9c995}.drop-tile small{font-size:8px;letter-spacing:.12em;line-height:1.5;max-width:90px}
+.drop-tile:hover,.drop-tile.is-target,.drop-tile:focus-visible{background:#d9bb8d3d;border-color:#e9c995;transform:translateY(-4px);box-shadow:0 10px 35px #05110d55}
+.drop-tile.is-target{outline:2px solid #e9c995;outline-offset:3px}
+.float-card{touch-action:none;cursor:grab}.float-card:active,.float-card.is-dragging{cursor:grabbing}.float-card.is-dragging{opacity:.2;animation:none}
+.drag-ghost{position:fixed;z-index:1200;pointer-events:none;overflow:hidden;border:1px solid #f3dfb7;box-shadow:0 20px 70px #0009;transform:translate(-50%,-50%) rotate(-3deg);opacity:.94}
+.drag-ghost img{display:block;width:100%;height:100%;object-fit:cover}
+.story-next{position:fixed;z-index:50;inset:0;display:none;overflow:hidden;align-items:center;background:#10231e;color:#f6efdf;opacity:0}
+.story-next.active{display:flex;animation:story-page-in .65s ease forwards}
+@keyframes story-page-in{to{opacity:1}}
+.story-next-image,.story-next-shade{position:absolute;inset:0}
+.story-next-image img{width:100%;height:100%;object-fit:cover;filter:saturate(.72) brightness(.72)}
+.story-next-shade{background:linear-gradient(90deg,#0b1c18e8 0%,#10231dad 48%,#0b17174f 100%),linear-gradient(0deg,#09161288,transparent 45%)}
+.story-next-top{position:absolute;z-index:2;inset:25px 34px auto;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.story-step{font-size:10px;letter-spacing:.16em;color:#eee0c6}.story-step b{font:normal 17px Georgia,serif;color:#e9c995;margin-left:7px}
+.story-next-copy{position:relative;z-index:2;width:min(670px,calc(100% - 48px));margin-left:max(calc((100vw - 1110px)/2),7vw);padding:100px 0}
+.story-next-copy .kicker{color:#e7c38e;letter-spacing:.2em}
+.story-next-copy h2{font-size:clamp(58px,8vw,108px);line-height:.82;letter-spacing:-.045em;margin:24px 0}
+.story-next-copy h2 em{color:#e5bd82;font-weight:400}
+.story-next-copy p{max-width:480px;color:#e5e4d8;font-size:13px;line-height:1.9}
+.story-back{margin-top:22px;padding:12px 0;background:transparent;color:#f6ebd5;border-bottom:1px solid #d9bd91;font-size:11px}
+.story-next-caption{position:absolute;z-index:2;right:30px;bottom:25px;font-size:9px;letter-spacing:.15em;color:#fff1d1;text-transform:uppercase}
+@media(max-width:700px){
+ .next-copy{top:13%;width:calc(100% - 28px)}
+ .next-copy h1{font-size:clamp(45px,11vw,67px);line-height:.88;margin-top:15px}
+ .drop-grid{width:min(300px,88vw);grid-template-columns:repeat(2,1fr);gap:8px;margin:15px auto 0}
+ .drop-tile{gap:5px}.drop-tile span{font-size:24px}.drop-tile small{font-size:7px}
+ .float-card{width:clamp(86px,24vw,108px)}
+ .float-card:nth-child(n+5){display:none}
+ .next-hint{bottom:12px;font-size:8px}
+ .story-next{align-items:end}
+ .story-next-image img{object-position:center}
+ .story-next-shade{background:linear-gradient(0deg,#081611f2 0%,#0b1914c7 47%,#0c17176b 100%)}
+ .story-next-top{inset:18px 18px auto}
+ .story-step{font-size:8px;letter-spacing:.1em}
+ .story-next-copy{width:calc(100% - 36px);margin:0;padding:0 0 72px 18px}
+ .story-next-copy h2{font-size:clamp(55px,14vw,74px);margin:18px 0}
+ .story-next-copy p{font-size:12px;max-width:360px}
+ .story-next-caption{right:17px;bottom:17px;font-size:8px}
+}
+@media(max-height:760px) and (min-width:701px){
+ .next-copy{top:7%}.next-copy h1{font-size:clamp(46px,6vw,82px);margin-top:13px}
+ .drop-grid{width:min(470px,90%);gap:9px;margin-top:16px}
+ .drop-tile small{font-size:7px}
+ .float-card{width:clamp(100px,12vw,170px)}
+}
+@media(prefers-reduced-motion:reduce){.drop-tile,.story-next.active{animation:none!important;transition:none!important;opacity:1}}
+</style><style id="next-interactive-hero">
 body{overflow:hidden}
 .next-hero{height:100svh;min-height:560px;position:relative;isolation:isolate;overflow:hidden;background:#101e1b;color:#f8f0df;display:grid;place-items:center}
 .next-hero:before{content:"";position:absolute;inset:0;z-index:-2;background:radial-gradient(ellipse at 50% 45%,#38534a 0%,#20372f 40%,#0d1d1a 100%)}
@@ -115,9 +166,15 @@ body{overflow:hidden}
   <button class="float-card" style="--x:34%;--y:15%;--r:4deg;--delay:-2.5s;--float:7.7s" aria-label="Đổi vị trí hình ảnh: một hình ảnh khác trong thư viện"><img src="https://drive.google.com/thumbnail?id=1NAvA4W5geGgtcIvdB2YPRasayWzQmskH&sz=w800" alt="Ảnh khác từ thư viện Me.Mori" loading="lazy"><span>GÓC NHÌN CỦA RIÊNG MÌNH</span></button>
   <button class="float-card" style="--x:68%;--y:83%;--r:-3deg;--delay:-5s;--float:8.3s" aria-label="Đổi vị trí hình ảnh: mảnh chuyện cuối"><img src="https://drive.google.com/thumbnail?id=1bC-R5JQRH9bLbSM9xzG5cTScdR6CVuJt&sz=w800" alt="Tư liệu hình ảnh bổ sung trong thư viện Me.Mori" loading="lazy"><span>MỘT CÂU CHUYỆN ĐANG THÀNH HÌNH</span></button>
  </div>
- <div class="next-copy"><span class="kicker">Me.Mori Class · Kể chuyện từ trải nghiệm thật</span><h1>Một đời sống.<br>Vô vàn <em>câu chuyện.</em></h1></div>
- <p class="next-hint">CHẠM HOẶC DI CHUỘT VÀO MỘT KHUNG HÌNH ĐỂ KHÁM PHÁ</p>
+ <div class="next-copy"><span class="kicker">Me.Mori Class · Kể chuyện từ trải nghiệm thật</span><h1>Một đời sống.<br>Vô vàn <em>câu chuyện.</em></h1><div class="drop-grid" role="group" aria-label="Bốn khung hình — kéo một ảnh vào để tiếp tục"><button class="drop-tile" type="button" data-slot="01" aria-label="Khung hình 01 — thả ảnh vào để tiếp tục"><span>01</span><small>THẢ ẢNH VÀO ĐÂY</small></button><button class="drop-tile" type="button" data-slot="02" aria-label="Khung hình 02 — thả ảnh vào để tiếp tục"><span>02</span><small>THẢ ẢNH VÀO ĐÂY</small></button><button class="drop-tile" type="button" data-slot="03" aria-label="Khung hình 03 — thả ảnh vào để tiếp tục"><span>03</span><small>THẢ ẢNH VÀO ĐÂY</small></button><button class="drop-tile" type="button" data-slot="04" aria-label="Khung hình 04 — thả ảnh vào để tiếp tục"><span>04</span><small>THẢ ẢNH VÀO ĐÂY</small></button></div></div>
+ <p class="next-hint">KÉO ẢNH VÀO MỘT Ô · HOẶC CHỌN ẢNH RỒI CHỌN Ô</p>
 </main>
+<section class="story-next" id="storyNext" aria-label="Phần tiếp theo của câu chuyện" aria-hidden="true">
+ <div class="story-next-image"><img id="chosenFrame" src="" alt=""></div><div class="story-next-shade"></div>
+ <div class="story-next-top"><span class="next-brand">ME.MORI</span><span class="story-step">PHẦN TIẾP THEO · KHUNG HÌNH <b id="chosenSlot">01</b></span></div>
+ <div class="story-next-copy"><span class="kicker">MỘT ĐIỂM BẮT ĐẦU</span><h2>Mọi câu chuyện<br>bắt đầu từ điều<br>ta chọn <em>nhìn.</em></h2><p>Bạn vừa chọn một khung hình. Từ một khoảnh khắc nhỏ, có thể mở ra nhiều cách kể — bằng trải nghiệm và góc nhìn của chính bạn.</p><button type="button" id="backToFrames" class="story-back">← Trở lại những khung hình</button></div>
+ <span class="story-next-caption" id="chosenCaption"></span>
+</section>
 <footer style="display:none"><button id="replayFooter" type="button">Xem lại</button></footer>
 <script>(function(){
 'use strict';
@@ -153,24 +210,53 @@ if(!hasSeen())begin();
  const positions=()=> mobile()
  ? [[22,20],[78,22],[22,78],[78,76]]
  : [[9,78],[25,76],[41,80],[59,77],[75,80],[91,76]];
- let cursor=0,locked=false;
+ const tiles=[...document.querySelectorAll('.drop-tile')],nextPage=document.getElementById('storyNext');
+ const chosenImage=document.getElementById('chosenFrame'),chosenSlot=document.getElementById('chosenSlot'),chosenCaption=document.getElementById('chosenCaption');
+ let cursor=0,locked=false,hoverTimer=null,drag=null,selectedCard=null;
  function layoutCards(){const ps=positions();cards.forEach((card,i)=>{if(ps[i]){card.style.setProperty('--x',ps[i][0]+'%');card.style.setProperty('--y',ps[i][1]+'%')}})}
  layoutCards();window.addEventListener('resize',layoutCards,{passive:true});
  function relocate(card){
-  if(locked)return;locked=true;
-  card.classList.add('is-leaving');
-  setTimeout(()=>{
-   const all=positions(),p=all[cursor++%all.length];
-   card.style.setProperty('--x',p[0]+'%');card.style.setProperty('--y',p[1]+'%');
-   card.style.setProperty('--r',(Math.random()*12-6)+'deg');
-   card.classList.remove('is-leaving');card.style.animation='none';void card.offsetWidth;card.style.animation='';
-   locked=false;
-  },460);
+  if(locked)return;locked=true;card.classList.add('is-leaving');
+  setTimeout(()=>{const all=positions(),p=all[cursor++%all.length];card.style.setProperty('--x',p[0]+'%');card.style.setProperty('--y',p[1]+'%');card.style.setProperty('--r',(Math.random()*12-6)+'deg');card.classList.remove('is-leaving');card.style.animation='none';void card.offsetWidth;card.style.animation='';locked=false},460);
  }
+ function openNext(tile,card){
+  chosenImage.src=card.querySelector('img').src;chosenImage.alt=card.querySelector('img').alt;
+  chosenSlot.textContent=tile.dataset.slot;chosenCaption.textContent=card.querySelector('span').textContent;
+  nextPage.setAttribute('aria-hidden','false');nextPage.classList.add('active');document.body.classList.add('story-open');
+  try{history.pushState({storyPage:true},'','#phan-tiep-theo-'+tile.dataset.slot.toLowerCase())}catch(e){}
+  document.getElementById('backToFrames').focus({preventScroll:true});
+ }
+ function closeNext(updateHistory){
+  nextPage.classList.remove('active');nextPage.setAttribute('aria-hidden','true');document.body.classList.remove('story-open');
+  if(updateHistory&&location.hash.indexOf('#phan-tiep-theo-')===0)history.back();
+  document.getElementById('replayIntro').focus({preventScroll:true});
+ }
+ document.getElementById('backToFrames').addEventListener('click',()=>closeNext(true));
+ window.addEventListener('popstate',()=>{if(nextPage.classList.contains('active'))closeNext(false)});
+ function markTile(tile){tiles.forEach(t=>t.classList.toggle('is-target',t===tile))}
  cards.forEach(card=>{
-  card.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')relocate(card)});
-  card.addEventListener('click',()=>relocate(card));
-  card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();relocate(card)}});
+  card.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>{if(!drag)relocate(card)},700)}});
+  card.addEventListener('pointerleave',()=>clearTimeout(hoverTimer));
+  card.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;clearTimeout(hoverTimer);e.preventDefault();card.setPointerCapture(e.pointerId);drag={card,id:e.pointerId,startX:e.clientX,startY:e.clientY,moved:false,ghost:null};});
+  card.addEventListener('pointermove',e=>{
+   if(!drag||drag.id!==e.pointerId)return;
+   if(!drag.moved&&Math.hypot(e.clientX-drag.startX,e.clientY-drag.startY)>8){
+    drag.moved=true;card.classList.add('is-dragging');const img=card.querySelector('img'),r=card.getBoundingClientRect();
+    drag.ghost=document.createElement('div');drag.ghost.className='drag-ghost';drag.ghost.style.width=Math.min(r.width,190)+'px';drag.ghost.style.aspectRatio='1.38';drag.ghost.innerHTML='<img alt="" src="'+img.src+'">';document.body.appendChild(drag.ghost);
+   }
+   if(drag.moved){drag.ghost.style.left=e.clientX+'px';drag.ghost.style.top=e.clientY+'px';markTile(document.elementFromPoint(e.clientX,e.clientY)?.closest('.drop-tile')||null)}
+  });
+  card.addEventListener('pointerup',e=>{
+   if(!drag||drag.id!==e.pointerId)return;const state=drag;drag=null;
+   const target=state.moved?document.elementFromPoint(e.clientX,e.clientY)?.closest('.drop-tile'):null;
+   if(state.ghost)state.ghost.remove();card.classList.remove('is-dragging');markTile(null);
+   if(target)openNext(target,card);else if(state.moved)relocate(card);else relocate(card);
+  });
+  card.addEventListener('pointercancel',()=>{if(drag?.card===card){drag.ghost?.remove();drag=null;card.classList.remove('is-dragging');markTile(null)}});
+  card.addEventListener('click',e=>{if(e.detail===0){selectedCard=card;cards.forEach(c=>c.classList.toggle('is-selected',c===card));card.setAttribute('aria-pressed','true')}});
  });
+ tiles.forEach(tile=>tile.addEventListener('click',()=>{if(selectedCard)openNext(tile,selectedCard)}));
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nextPage.classList.contains('active'))closeNext(true)});
+
 })();
 </script></body></html>
