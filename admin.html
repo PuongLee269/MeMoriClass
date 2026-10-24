@@ -242,26 +242,47 @@
         </section>
 
         <section class="section" data-section="method">
-          <div class="section-head"><h2>Lộ trình các bước học tập & CTA</h2><p>Quản lý nội dung 3 bước thực hành và bảng đăng ký nhanh cuối trang.</p></div>
+          <div class="section-head"><h2>Lộ trình các bước học tập & CTA</h2><p>Quản lý lộ trình 6 môn học (kèm link video) và bảng đăng ký nhanh cuối trang.</p></div>
           <div class="grid">
             <div class="field"><label>Dòng chữ nhỏ Eyebrow</label><input name="method_eyebrow" /></div>
             <div class="field"><label>Tiêu đề lớn Phương pháp</label><input name="method_title" /></div>
             <div class="field full"><label>Mô tả chi tiết phương pháp</label><textarea name="method_text"></textarea></div>
             
             <div class="field-group">
-              <h4>Bước 1</h4>
-              <div class="field"><label>Tiêu đề bước</label><input name="step0_title" /></div>
+              <h4>Môn / bước 1</h4>
+              <div class="field"><label>Tiêu đề</label><input name="step0_title" /></div>
               <div class="field"><label>Nội dung chi tiết</label><input name="step0_text" /></div>
+              <div class="field"><label>Link video (videoUrl)</label><input name="step0_videoUrl" /></div>
             </div>
             <div class="field-group">
-              <h4>Bước 2</h4>
-              <div class="field"><label>Tiêu đề bước</label><input name="step1_title" /></div>
+              <h4>Môn / bước 2</h4>
+              <div class="field"><label>Tiêu đề</label><input name="step1_title" /></div>
               <div class="field"><label>Nội dung chi tiết</label><input name="step1_text" /></div>
+              <div class="field"><label>Link video (videoUrl)</label><input name="step1_videoUrl" /></div>
             </div>
             <div class="field-group">
-              <h4>Bước 3</h4>
-              <div class="field"><label>Tiêu đề bước</label><input name="step2_title" /></div>
+              <h4>Môn / bước 3</h4>
+              <div class="field"><label>Tiêu đề</label><input name="step2_title" /></div>
               <div class="field"><label>Nội dung chi tiết</label><input name="step2_text" /></div>
+              <div class="field"><label>Link video (videoUrl)</label><input name="step2_videoUrl" /></div>
+            </div>
+            <div class="field-group">
+              <h4>Môn / bước 4</h4>
+              <div class="field"><label>Tiêu đề</label><input name="step3_title" /></div>
+              <div class="field"><label>Nội dung chi tiết</label><input name="step3_text" /></div>
+              <div class="field"><label>Link video (videoUrl)</label><input name="step3_videoUrl" /></div>
+            </div>
+            <div class="field-group">
+              <h4>Môn / bước 5</h4>
+              <div class="field"><label>Tiêu đề</label><input name="step4_title" /></div>
+              <div class="field"><label>Nội dung chi tiết</label><input name="step4_text" /></div>
+              <div class="field"><label>Link video (videoUrl)</label><input name="step4_videoUrl" /></div>
+            </div>
+            <div class="field-group">
+              <h4>Môn / bước 6</h4>
+              <div class="field"><label>Tiêu đề</label><input name="step5_title" /></div>
+              <div class="field"><label>Nội dung chi tiết</label><input name="step5_text" /></div>
+              <div class="field"><label>Link video (videoUrl)</label><input name="step5_videoUrl" /></div>
             </div>
 
             <div class="field-group">
@@ -330,8 +351,8 @@
       features: [{ icon: "fa-film", title: "Tư duy cinematic", text: "Hiểu nhịp dựng..." }, { icon: "fa-camera", title: "Thực hành thật", text: "Làm bài tập..." }, { icon: "fa-users", title: "Cộng đồng creator", text: "Kết nối..." }],
       coursesSection: { title: "Workshop", titleScript: "nổi bật", text: "Các lớp được thiết kế..." },
       courses: [{ title: "Storytelling cho video ngắn", text: "Xây cấu trúc...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }, { title: "Tư duy hình ảnh cinematic", text: "Rèn bố cục...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }, { title: "Quay dựng cho creator", text: "Biến footage...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }],
-      method: { eyebrow: "Phương pháp", title: "Bắt đầu đơn giản, học bằng dự án thật", text: "Mỗi buổi học tập trung..." },
-      steps: [{ title: "Đăng ký workshop", text: "Chọn chủ đề..." }, { title: "Thực hành tại lớp", text: "Làm bài tập..." }, { title: "Hoàn thiện sản phẩm", text: "Nhận feedback..." }],
+      method: { eyebrow: "Lộ trình", title: "Chương trình 6 môn học chuyên sâu", text: "Lộ trình học tập tích hợp đa chiều được dàn trang khoa học giúp bạn định hình tư duy cinematic bài bản." },
+      steps: [{ title: "Tư duy thị giác", text: "Khai phá nhãn quan cinematic, học cách cảm nhận ánh sáng và xây dựng góc nhìn cá nhân độc đáo.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" }, { title: "Kể chuyện bằng hình", text: "Ứng dụng nghệ thuật Storytelling cấu trúc Hollywood để biến ý tưởng thô thành kịch bản cuốn hút.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" }, { title: "Ngôn ngữ khung hình", text: "Làm chủ các quy tắc bố cục điện ảnh, hướng chuyển động máy và tạo nhịp điệu cảm xúc thị giác.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" }, { title: "Công cụ thiết bị", text: "Tối ưu hóa máy ảnh, điện thoại sẵn có và thiết lập ánh sáng cơ bản đạt hiệu quả hình ảnh tốt nhất.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" }, { title: "Hậu kỳ & Dựng phim", text: "Làm chủ phần mềm biên tập, cắt dựng footage thô nhịp nhàng, lồng ghép âm thanh đúng điểm rơi.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" }, { title: "Trải nghiệm thực tế", text: "Thực hành sản xuất dự án hoàn chỉnh ngay tại lớp và nhận đánh giá phản hồi chuyên sâu từng cá nhân.", videoUrl: "https://www.youtube.com/watch?v=kXKm842UXiY" }],
       cta: { title: "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?", label: "Liên hệ đăng ký", href: "mailto:hello@memori.class" },
       footer: { intro: "Không gian học tập dành cho người yêu điện ảnh...", columns: [{ title: "Khóa học", items: ["Video ngắn", "Tư duy cinematic", "Quay dựng creator"] }, { title: "Cộng đồng", items: ["Workshop", "Feedback nhóm", "Dự án học viên"] }, { title: "Liên hệ", items: ["Instagram", "Facebook", "hello@memori.class"] }] }
     };
@@ -388,11 +409,7 @@
           { title: f("course2_title"), text: f("course2_text"), mediaType: "image", mediaUrl: f("course2_mediaUrl"), mediaAlt: "" }
         ],
         method: { eyebrow: f("method_eyebrow"), title: f("method_title"), text: f("method_text") },
-        steps: [
-          { title: f("step0_title"), text: f("step0_text") },
-          { title: f("step1_title"), text: f("step1_text") },
-          { title: f("step2_title"), text: f("step2_text") }
-        ],
+        steps: [0, 1, 2, 3, 4, 5].map(i => ({ title: f(`step${i}_title`), text: f(`step${i}_text`), videoUrl: f(`step${i}_videoUrl`) })),
         cta: { title: f("cta_title"), label: f("cta_label"), href: f("cta_href") },
         footer: {
           intro: f("footer_intro"),
@@ -425,9 +442,7 @@
       if(data.courses?.[2]) { s("course2_title", data.courses[2].title); s("course2_mediaUrl", data.courses[2].mediaUrl); s("course2_text", data.courses[2].text); }
       
       s("method_eyebrow", data.method?.eyebrow); s("method_title", data.method?.title); s("method_text", data.method?.text);
-      if(data.steps?.[0]) { s("step0_title", data.steps[0].title); s("step0_text", data.steps[0].text); }
-      if(data.steps?.[1]) { s("step1_title", data.steps[1].title); s("step1_text", data.steps[1].text); }
-      if(data.steps?.[2]) { s("step2_title", data.steps[2].title); s("step2_text", data.steps[2].text); }
+      [0, 1, 2, 3, 4, 5].forEach(i => { const st = data.steps?.[i] || {}; s(`step${i}_title`, st.title); s(`step${i}_text`, st.text); s(`step${i}_videoUrl`, st.videoUrl); });
       
       s("cta_title", data.cta?.title); s("cta_label", data.cta?.label); s("cta_href", data.cta?.href);
       s("footer_intro", data.footer?.intro);
