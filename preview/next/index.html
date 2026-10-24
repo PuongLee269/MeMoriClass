@@ -77,9 +77,9 @@ body{overflow:hidden}
 .next-hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#08141162 0%,transparent 24%,#08141138 72%,#081411ad 100%),radial-gradient(ellipse at center,transparent 20%,#08141152 100%);pointer-events:none}
 .next-top{position:absolute;inset:24px 34px auto;display:flex;justify-content:space-between;align-items:center;z-index:5}
 .next-brand{letter-spacing:.25em;font-weight:700;font-size:13px}.next-replay{color:#f3e6cc;background:transparent;border:0;border-bottom:1px solid #cbb28c;padding:7px 0;font-size:11px}
-.next-copy{position:relative;z-index:3;text-align:center;width:min(900px,calc(100% - 40px));padding:30px 0 130px;pointer-events:none}
+.next-copy{position:absolute;z-index:3;top:17%;left:50%;translate:-50% 0;text-align:center;width:min(1160px,calc(100% - 40px));padding:0;pointer-events:none}
 .next-copy .kicker{color:#e2c391;letter-spacing:.21em}
-.next-copy h1{font-size:clamp(64px,10.5vw,148px);line-height:.79;letter-spacing:-.055em;margin:27px 0 0;text-wrap:balance;text-shadow:0 4px 50px #06110e70}
+.next-copy h1{font-size:clamp(58px,7.2vw,108px);line-height:.88;letter-spacing:-.055em;margin:27px 0 0;text-wrap:balance;text-shadow:0 4px 50px #06110e70}
 .next-copy h1 em{font-weight:400;color:#e6c18b}
 .next-hint{position:absolute;z-index:5;bottom:26px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:10px;letter-spacing:.13em;color:#dddfd1b8}
 .float-field{position:absolute;inset:0;z-index:2;pointer-events:none}
@@ -95,8 +95,8 @@ body{overflow:hidden}
 .next-replay{pointer-events:auto}
 @media(max-width:700px){
  .next-top{inset:17px 17px auto}.next-brand{font-size:11px}
- .next-copy{padding:18px 0 150px;width:calc(100% - 30px)}
- .next-copy h1{font-size:clamp(57px,13vw,92px);line-height:.84;margin-top:22px}
+ .next-copy{top:31%;width:calc(100% - 30px)}
+ .next-copy h1{font-size:clamp(54px,12vw,78px);line-height:.86;margin-top:22px}
  .float-card{width:clamp(92px,27vw,132px);aspect-ratio:1.32}
  .float-card:nth-child(1){--x:22%;--y:20%!important}.float-card:nth-child(2){--x:78%;--y:22%!important}
  .float-card:nth-child(3){--x:17%;--y:78%!important}.float-card:nth-child(4){--x:83%;--y:76%!important}
@@ -152,7 +152,7 @@ if(!hasSeen())begin();
  const mobile=()=>matchMedia('(max-width:700px)').matches;
  const positions=()=> mobile()
  ? [[22,20],[78,22],[22,78],[78,76]]
- : [[13+Math.random()*14,25+Math.random()*18],[73+Math.random()*14,24+Math.random()*20],[12+Math.random()*16,66+Math.random()*15],[74+Math.random()*15,65+Math.random()*16],[35+Math.random()*18,13+Math.random()*6],[39+Math.random()*22,83+Math.random()*5]];
+ : [[9,78],[25,76],[41,80],[59,77],[75,80],[91,76]];
  let cursor=0,locked=false;
  function layoutCards(){const ps=positions();cards.forEach((card,i)=>{if(ps[i]){card.style.setProperty('--x',ps[i][0]+'%');card.style.setProperty('--y',ps[i][1]+'%')}})}
  layoutCards();window.addEventListener('resize',layoutCards,{passive:true});
