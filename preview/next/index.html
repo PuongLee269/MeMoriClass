@@ -205,7 +205,7 @@ if(!hasSeen())begin();
    else relocate(card);
   });
   card.addEventListener('pointercancel',()=>{if(drag?.card===card){drag.ghost?.remove();drag=null;card.classList.remove('is-dragging');markTile(null)}});
-  card.addEventListener('click',e=>{if(e.detail===0){selectedCard=card;cards.forEach(c=>c.classList.toggle('is-selected',c===card));card.setAttribute('aria-pressed','true')}});
+  card.addEventListener('click',e=>{if(e.detail===0||matchMedia('(hover: none) and (pointer: coarse)').matches){selectedCard=card;cards.forEach(c=>{c.classList.toggle('is-selected',c===card);c.setAttribute('aria-pressed',c===card?'true':'false')})}});
  });
  tiles.forEach(tile=>tile.addEventListener('click',()=>{if(selectedCard)openNext(tile,selectedCard)}));
  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nextPage.classList.contains('active'))closeNext(true)});
