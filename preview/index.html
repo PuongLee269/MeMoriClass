@@ -133,7 +133,7 @@ body{overflow:hidden}
  .next-copy{top:31%;width:calc(100% - 30px)}
  .next-copy h1{font-size:clamp(54px,12vw,78px);line-height:.86;margin-top:22px}
  .float-card{width:clamp(92px,27vw,132px);aspect-ratio:1.32}
- .float-card:nth-child(1){--x:22%;--y:20%!important}.float-card:nth-child(2){--x:78%;--y:22%!important}
+ .float-card:nth-child(1){--x:22%;--y:15%!important}.float-card:nth-child(2){--x:78%;--y:15%!important}
  .float-card:nth-child(3){--x:17%;--y:78%!important}.float-card:nth-child(4){--x:83%;--y:76%!important}
  .float-card:nth-child(n+5){display:none}
  .next-hint{font-size:9px;bottom:19px}
@@ -199,7 +199,7 @@ if(!hasSeen())begin();
  const cards=[...document.querySelectorAll('.float-card')], field=document.getElementById('floatField');
  const mobile=()=>matchMedia('(max-width:700px)').matches;
  const positions=()=> mobile()
- ? [[22,20],[78,22],[22,78],[78,76]]
+ ? [[22,15],[78,15],[22,78],[78,76]]
  : [[9,78],[25,76],[41,80],[59,77],[75,80],[91,76]];
  const tiles=[...document.querySelectorAll('.drop-tile')],nextPage=document.getElementById('storyNext');
  const progress=document.getElementById('dropProgress'),storyImages=[...document.querySelectorAll('[data-story-frame]')];
@@ -305,7 +305,7 @@ body{overflow:hidden}.next-copy{top:11%;width:min(1160px,calc(100% - 36px))}
 .story-back{margin-top:22px;padding:12px 0;background:transparent;color:#f6ebd5;border-bottom:1px solid #d9bd91;font-size:11px}
 .story-next-caption{position:absolute;z-index:2;right:30px;bottom:25px;font-size:9px;letter-spacing:.15em;color:#fff1d1;text-transform:uppercase}
 @media(max-width:700px){
- .next-copy{top:13%;width:calc(100% - 28px)}
+ .next-copy{top:22%;width:calc(100% - 28px)}
  .next-copy h1{font-size:clamp(45px,11vw,67px);line-height:.88;margin-top:15px}
  .drop-grid{width:calc(100% - 22px);grid-template-columns:repeat(4,1fr);gap:6px;margin:15px auto 0}.drop-progress{font-size:7px;letter-spacing:.06em;margin-top:7px}.drop-progress span{margin-left:3px}
  .drop-tile{gap:5px;padding:4px}.drop-tile>span{font-size:22px}.drop-tile>small{font-size:7px;letter-spacing:.02em;max-width:75px}.drop-tile .tile-number{font-size:19px}.drop-tile .tile-action{font-size:6px}
