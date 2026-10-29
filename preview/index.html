@@ -227,7 +227,7 @@ if(!hasSeen())begin();
  function openNext(){
   if(transitioning||placements.some(card=>!card))return;transitioning=true;
   storyImages.forEach((img,i)=>{const source=placements[i].querySelector('img');img.src=source.src;img.alt='Khung hình '+String(i+1).padStart(2,'0')+': '+source.alt});
-  document.getElementById('top').inert=true;nextPage.setAttribute('aria-hidden','false');nextPage.classList.add('active');document.body.classList.add('story-open');
+  document.getElementById('top').inert=true;nextPage.inert=false;nextPage.setAttribute('aria-hidden','false');nextPage.classList.add('active');document.body.classList.add('story-open');
   try{history.pushState({storyPage:true},'','#phan-tiep-theo')}catch(e){}
   document.getElementById('backToFrames').focus({preventScroll:true});
  }

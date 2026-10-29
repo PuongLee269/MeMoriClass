@@ -1,0 +1,38 @@
+name: Story journey checks
+on:
+  pull_request:
+    paths:
+      - 'preview/**'
+      - 'tests/check_journey*'
+      - '.github/workflows/story-checks.yml'
+permissions:
+  contents: read
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check scripts and guide responses
+        run: |
+          node --check preview/story-journey.js
+          node tests/check_journey_logic.cjs
+      - name: Install browser for interaction checks
+        run: |
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Check story at desktop and phone sizes
+        run: python tests/check_journey.py
+      - name: Keep browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: story-browser-screenshots
+          path: /tmp/journey-*.png
+          if-no-files-found: ignore

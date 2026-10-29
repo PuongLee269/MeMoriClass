@@ -1,10 +1,12 @@
 from playwright.sync_api import sync_playwright
 from pathlib import Path
+import os
 
 with sync_playwright() as p:
- browser=p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox'])
+ browser=p.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH') or None,args=['--no-sandbox'])
  for width,height in [(1440,900),(390,844),(320,568)]:
-  page=browser.new_page(viewport={'width':width,'height':height},reduced_motion='reduce')
+  page=browser.new_page(viewport={'width':width,'height':height},reduced_motion='reduce',has_touch=width<700)
+  page.set_default_timeout(10000)
   errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   page.route('https://**/*',lambda route:route.abort())
   page.goto(Path('preview/index.html').resolve().as_uri())
@@ -19,7 +21,10 @@ with sync_playwright() as p:
   for i in range(4):
    card=page.locator('.float-card').nth(i)
    expected.append(card.locator('img').get_attribute('src'))
-   card.focus();page.keyboard.press('Enter');page.locator('.drop-tile').nth(i).click()
+   if width<700:
+    card.tap();page.locator('.drop-tile').nth(i).tap()
+   else:
+    card.focus();page.keyboard.press('Enter');page.locator('.drop-tile').nth(i).click()
    if i<3:assert not page.locator('#storyNext').evaluate('(e)=>e.classList.contains("active")')
   page.wait_for_selector('#storyNext.active')
   assert page.locator('[data-story-frame]').evaluate_all('(els)=>els.map(e=>e.getAttribute("src"))')==expected
