@@ -156,8 +156,23 @@ body{overflow:hidden}
 <section class="story-next" id="storyNext" aria-label="Phần tiếp theo của câu chuyện" aria-hidden="true">
  <div class="story-next-image" id="chosenFrames"><img data-story-frame="0" src="" alt=""><img data-story-frame="1" src="" alt=""><img data-story-frame="2" src="" alt=""><img data-story-frame="3" src="" alt=""></div><div class="story-next-shade"></div>
  <div class="story-next-top"><span class="next-brand">ME.MORI</span><span class="story-step">BỐN KHUNG HÌNH · MỘT CÂU CHUYỆN</span></div>
- <div class="story-next-copy"><span class="kicker">MỘT ĐIỂM BẮT ĐẦU</span><h2>Mọi câu chuyện<br>bắt đầu từ điều<br>ta chọn <em>nhìn.</em></h2><p>Bốn khung hình bạn vừa chọn đã tạo nên điểm khởi đầu. Từ những khoảnh khắc nhỏ, có thể mở ra nhiều cách kể — bằng trải nghiệm và góc nhìn của chính bạn.</p><button type="button" id="backToFrames" class="story-back">← Trở lại những khung hình</button></div>
+ <div class="story-next-copy"><span class="kicker">MỘT ĐIỂM BẮT ĐẦU</span><h2>Mọi câu chuyện<br>bắt đầu từ điều<br>ta chọn <em>nhìn.</em></h2><p>Bốn khung hình bạn vừa chọn đã tạo nên điểm khởi đầu. Từ những khoảnh khắc nhỏ, có thể mở ra nhiều cách kể — bằng trải nghiệm và góc nhìn của chính bạn.</p><div class="story-actions"><button type="button" id="backToFrames" class="story-back">← Trở lại những khung hình</button><button type="button" id="meetBeetle" class="story-continue">Tiếp tục cùng bọ cánh cứng ↗</button></div></div>
  <span class="story-next-caption">BỘ ẢNH CỦA BẠN · THEO THỨ TỰ 01 — 04</span>
+</section>
+<section class="beetle-guide" id="beetleGuide" aria-hidden="true" aria-labelledby="beetleTitle">
+ <header class="guide-top"><a class="next-brand" href="#top">ME.MORI</a><span class="guide-step">MỘT CUỘC TRÒ CHUYỆN VỀ F2</span><button type="button" id="guideBack" class="guide-back">← Về câu chuyện của bạn</button></header>
+ <div class="guide-layout"><div class="guide-character" aria-hidden="true"><span class="beetle-mark">🪲</span><span class="beetle-caption">BỌ CÁNH CỨNG<br>NGƯỜI DẪN ĐƯỜNG</span></div>
+  <div class="guide-content"><span class="kicker">ME.MORI CLASS · F2</span><h2 id="beetleTitle">Bạn đang tò mò<br>điều gì?</h2><p class="guide-intro">Cứ hỏi bằng lời của bạn. Mình sẽ tìm trong những thông tin đã được Me.Mori xác nhận và dẫn bạn đến đúng phần.</p>
+   <div class="guide-facts" aria-label="Thông tin nhanh về lớp F2"><span>6 học viên</span><span>4 buổi × 3 giờ</span><span>2.400.000đ toàn khóa</span></div>
+   <div class="chat-window" id="chatWindow" role="log" aria-label="Cuộc trò chuyện với bọ cánh cứng" aria-live="polite" aria-relevant="additions">
+    <p class="chat-message beetle-message"><strong>Bọ cánh cứng</strong>Chào bạn. Bạn có thể hỏi về học phí, lịch học, nội dung lớp, video workshop hoặc cách đăng ký.</p>
+   </div>
+   <div class="question-chips" aria-label="Gợi ý câu hỏi"><button type="button" data-question="Học phí bao nhiêu và buổi đầu có phải đóng tiền không?">Học phí & buổi đầu</button><button type="button" data-question="Lịch học gần nhất khi nào?">Lịch học</button><button type="button" data-question="Có video lớp học không?">Video workshop</button><button type="button" data-question="Cho tôi xem bài thực hành">Bài thực hành</button></div>
+   <form id="beetleQuestionForm" class="chat-form"><label class="sr-only" for="beetleQuestion">Nhập câu hỏi cho bọ cánh cứng</label><input id="beetleQuestion" name="question" type="text" autocomplete="off" maxlength="300" placeholder="Bạn muốn hỏi điều gì về Me.Mori F2?" required><button type="submit">Gửi câu hỏi</button></form>
+   <p class="chat-note">Bọ tra cứu theo từ khóa và thông tin đã xác nhận; đây không phải trợ lý AI tổng quát.</p>
+   <nav class="guide-destinations" aria-label="Khám phá Me.Mori F2"><a href="f2/#register">Đăng ký trải nghiệm ↗</a><a href="f2/#classfilm">Xem video workshop</a><a href="f2/#proof">Xem bài thực hành</a><a href="f2/">Mở trang F2 đầy đủ</a></nav>
+  </div>
+ </div>
 </section>
 <footer style="display:none"><button id="replayFooter" type="button">Xem lại</button></footer>
 <script>(function(){
@@ -229,7 +244,7 @@ if(!hasSeen())begin();
   storyImages.forEach((img,i)=>{const source=placements[i].querySelector('img');img.src=source.src;img.alt='Khung hình '+String(i+1).padStart(2,'0')+': '+source.alt});
   nextPage.setAttribute('aria-hidden','false');nextPage.classList.add('active');document.body.classList.add('story-open');
   try{history.pushState({storyPage:true},'','#phan-tiep-theo')}catch(e){}
-  document.getElementById('backToFrames').focus({preventScroll:true});
+  document.getElementById('meetBeetle').focus({preventScroll:true});
  }
  function placeCard(tile,card){
   if(card.classList.contains('is-placed'))return;
@@ -241,12 +256,31 @@ if(!hasSeen())begin();
  }
  function removeCard(index){if(!placements[index])return;placements[index].classList.remove('is-placed');placements[index].removeAttribute('aria-hidden');placements[index]=null;renderTile(tiles[index],index);updateProgress()}
  function closeNext(updateHistory){
-  nextPage.classList.remove('active');nextPage.setAttribute('aria-hidden','true');document.body.classList.remove('story-open');transitioning=false;
+  document.getElementById('beetleGuide').classList.remove('active');document.getElementById('beetleGuide').setAttribute('aria-hidden','true');nextPage.classList.remove('active');nextPage.setAttribute('aria-hidden','true');document.body.classList.remove('story-open');transitioning=false;
   if(updateHistory&&location.hash.indexOf('#phan-tiep-theo')===0)history.back();
   document.getElementById('replayIntro').focus({preventScroll:true});
  }
+ const guide=document.getElementById('beetleGuide');
+ function openGuide(){if(!nextPage.classList.contains('active'))return;guide.classList.add('active');guide.setAttribute('aria-hidden','false');try{history.pushState({beetleGuide:true},'','#tro-chuyen-f2')}catch(e){}document.getElementById('beetleQuestion').focus({preventScroll:true})}
+ function closeGuide(updateHistory){guide.classList.remove('active');guide.setAttribute('aria-hidden','true');if(updateHistory&&location.hash==='#tro-chuyen-f2')history.back();document.getElementById('meetBeetle').focus({preventScroll:true})}
+ document.getElementById('meetBeetle').addEventListener('click',openGuide);
+ document.getElementById('guideBack').addEventListener('click',()=>closeGuide(true));
  document.getElementById('backToFrames').addEventListener('click',()=>closeNext(true));
- window.addEventListener('popstate',()=>{if(nextPage.classList.contains('active'))closeNext(false)});
+ window.addEventListener('popstate',()=>{if(guide.classList.contains('active'))closeGuide(false);else if(nextPage.classList.contains('active')&&location.hash!=='#phan-tiep-theo')closeNext(false)});
+ const answers=[
+  {keys:['hoc phi','gia','bao nhieu tien','2.4 trieu','2 4 trieu','2400000','dong tien','thanh toan','buoi dau','thu nghiem','khong phu hop'],text:'Lớp F2 có 6 học viên, gồm 4 buổi × 3 giờ, học phí 2.400.000 VNĐ toàn khóa. Bạn trải nghiệm buổi đầu trước khi thanh toán. Nếu dừng sau buổi đầu vì không phù hợp thì không phải đóng học phí; nếu học tiếp, thanh toán sau buổi đầu.',label:'Xem thông tin và đăng ký',href:'f2/#register'},
+  {keys:['lich hoc','lich gan nhat','khai giang','ngay nao','dia chi','o dau','con cho','so cho','giu cho'],text:'Lịch gần nhất, địa chỉ cụ thể và số chỗ hiện có cần Me.Mori xác nhận trực tiếp; mình không có dữ liệu cập nhật để trả lời chính xác. Lớp được mô tả với lịch linh hoạt.',label:'Hỏi lịch và đăng ký trải nghiệm',href:'f2/#register'},
+  {keys:['hoc gi','noi dung','4 buoi','bon buoi','buoi 1','buoi 2','buoi 3','buoi 4','chuong trinh','giao trinh'],text:'F2 là lớp thực hành kể chuyện qua video từ trải nghiệm đời sống. Chương trình gồm 4 buổi, mỗi buổi 3 giờ; bạn có thể xem nội dung từng buổi trên trang chi tiết.',label:'Khám phá chương trình F2',href:'f2/#learn'},
+  {keys:['video','workshop','lop hoc dien ra','khong khi lop'],text:'Me.Mori có video tư liệu từ workshop trước đây để bạn hình dung hoạt động. Đây không phải footage của lớp F2 hiện tại hay phản hồi học viên.',label:'Xem video workshop và ghi chú nguồn',href:'f2/#classfilm'},
+  {keys:['tac pham','bai giang','bai thuc hanh','danh co','bon ban dung','4 ban dung','hoc vien lam'],text:'Trang F2 có bài thực hành “Đánh Cờ” với bốn bản dựng để minh họa cách lựa chọn hình ảnh và nhịp dựng làm thay đổi cảm nhận. Phần này ghi rõ các bản dựng do giảng viên thực hiện.',label:'Xem bài thực hành',href:'f2/#proof'},
+  {keys:['giang vien','le hong phuong','phuong','nguoi day','nguoi huong dan'],text:'Trang F2 giới thiệu giảng viên Lê Hồng Phương và ghi chú rõ những thông tin đang chờ bổ sung tư liệu xác minh.',label:'Xem trang F2',href:'f2/'},
+  {keys:['dang ky','tham gia','lien he','facebook','nhan tin','tu van'],text:'Bạn có thể nhắn trực tiếp cho Me.Mori để hỏi lịch, địa điểm và đăng ký trải nghiệm buổi đầu. Website hiện không tự giữ chỗ hoặc thu thanh toán.',label:'Mở kênh đăng ký Facebook',href:'https://www.facebook.com/phuonglhdp/'}
+ ];
+ function normalizeQuestion(value){return value.toLocaleLowerCase('vi').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim()}
+ function addMessage(who,text,answer){const row=document.createElement('p');row.className='chat-message '+(who==='Bạn'?'user-message':'beetle-message');const name=document.createElement('strong');name.textContent=who;row.appendChild(name);row.appendChild(document.createTextNode(text));if(answer){const link=document.createElement('a');link.href=answer.href;link.textContent=answer.label+' →';row.appendChild(link)}document.getElementById('chatWindow').appendChild(row);row.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
+ const questionForm=document.getElementById('beetleQuestionForm'),questionInput=document.getElementById('beetleQuestion');
+ questionForm.addEventListener('submit',function(event){event.preventDefault();const original=questionInput.value.trim();if(!original)return;const normalized=normalizeQuestion(original);addMessage('Bạn',original);const matches=answers.filter(item=>item.keys.some(key=>normalized.includes(key))).slice(0,2);if(matches.length)matches.forEach(answer=>addMessage('Bọ cánh cứng',answer.text,{label:answer.label,href:answer.href}));else addMessage('Bọ cánh cứng','Mình chưa có thông tin đã xác nhận để trả lời câu này. Bạn có thể hỏi về học phí, lịch học, nội dung F2, video workshop, bài thực hành hoặc đăng ký.',{label:'Mở trang F2 đầy đủ',href:'f2/'});questionInput.value='';questionInput.focus()});
+ document.querySelectorAll('.question-chips [data-question]').forEach(button=>button.addEventListener('click',()=>{questionInput.value=button.dataset.question;questionForm.requestSubmit()}));
  function markTile(tile){tiles.forEach(t=>t.classList.toggle('is-target',t===tile))}
  cards.forEach(card=>{
   card.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!card.classList.contains('is-placed')){clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>{if(!drag)relocate(card)},700)}});
@@ -275,7 +309,7 @@ if(!hasSeen())begin();
  tiles.forEach((tile,index)=>tile.addEventListener('click',()=>{
   if(selectedCard)placeCard(tile,selectedCard);else if(placements[index])removeCard(index);
  }));
- document.addEventListener('keydown',e=>{if(e.key==='Escape'&&nextPage.classList.contains('active'))closeNext(true)});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&guide.classList.contains('active'))closeGuide(true);else if(e.key==='Escape'&&nextPage.classList.contains('active'))closeNext(true)});
 })();
 </script><style id="four-frame-continuation">
 body{overflow:hidden}.next-copy{top:11%;width:min(1160px,calc(100% - 36px))}
@@ -328,4 +362,8 @@ body{overflow:hidden}.next-copy{top:11%;width:min(1160px,calc(100% - 36px))}
  .float-card{width:clamp(100px,12vw,170px)}
 }
 @media(prefers-reduced-motion:reduce){.drop-tile,.story-next.active{animation:none!important;transition:none!important;opacity:1}}
+.story-actions{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:8px}.story-next-copy .story-back{margin-top:14px}.story-continue{margin-top:14px;padding:13px 17px;background:#e4c18d;color:#17342d;font-weight:700;font-size:11px;letter-spacing:.02em}.story-continue:hover{background:#f0d6a9;transform:translateY(-2px)}
+.beetle-guide{position:fixed;z-index:60;inset:0;display:none;overflow:auto;background:radial-gradient(ellipse at 14% 35%,#28473d,#11251f 63%,#0a1715);color:#f4eedf}.beetle-guide.active{display:block;animation:story-page-in .45s ease both}.guide-top{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 34px;background:#0d1e1beF;border-bottom:1px solid #d7c69a33;backdrop-filter:blur(12px)}.guide-step{font-size:9px;letter-spacing:.18em;color:#d8c18e}.guide-back{padding:8px 0;border-bottom:1px solid #d8c18e66;background:transparent;color:#f4eedf;font-size:11px}.guide-layout{width:min(1150px,calc(100% - 48px));min-height:calc(100svh - 75px);margin:auto;display:grid;grid-template-columns:.7fr 1.3fr;gap:7vw;align-items:center;padding:42px 0 60px}.guide-character{display:grid;justify-items:center;gap:15px}.beetle-mark{display:grid;place-items:center;width:clamp(160px,24vw,290px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 38% 32%,#6e927263,#19372f 68%,#12251f);box-shadow:0 0 70px #b1c88220;font-size:clamp(90px,15vw,180px);filter:drop-shadow(0 12px 20px #02090788)}.beetle-caption{font-size:9px;letter-spacing:.2em;text-align:center;line-height:1.8;color:#c6c9b3}.guide-content{width:min(700px,100%)}.guide-content>.kicker{color:#dfbb80}.guide-content h2{font-size:clamp(48px,6vw,78px);line-height:.92;margin:15px 0}.guide-intro{max-width:590px;color:#d4ddcf;font-size:13px;line-height:1.8}.guide-facts{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}.guide-facts span{padding:8px 11px;border:1px solid #d8c18e56;color:#f2dfbb;font-size:10px}.chat-window{display:grid;gap:12px;max-height:255px;overflow:auto;padding:12px 14px;margin:14px 0;background:#0715126e;border:1px solid #d8c18e38;overscroll-behavior:contain}.chat-message{display:grid;gap:5px;margin:0;padding:11px 13px;background:#19382f;color:#eef0e4;font-size:12px;line-height:1.7}.chat-message strong{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#e5c891}.chat-message.user-message{background:#e7dcc4;color:#23362d;justify-self:end;max-width:90%}.chat-message.user-message strong{color:#87623a}.chat-message a{justify-self:start;color:#f0cb8e;text-decoration:underline;text-underline-offset:3px;font-weight:700}.question-chips{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.question-chips button{border:1px solid #c9c9af6e;background:#ffffff08;color:#e8e1d1;padding:8px 10px;font-size:10px}.question-chips button:hover{background:#e9ca9250}.chat-form{display:grid;grid-template-columns:1fr auto;gap:8px}.chat-form input{min-width:0;padding:13px 14px;border:1px solid #c9c9af82;background:#f4efdf;color:#1d3128;font-size:12px}.chat-form button{padding:12px 17px;background:#e3c18e;color:#1e362d;font-size:11px;font-weight:700}.chat-note{margin:9px 0 14px;color:#b8c4b7;font-size:9px;line-height:1.6}.guide-destinations{display:flex;flex-wrap:wrap;gap:8px 16px;border-top:1px solid #d8c18e44;padding-top:14px}.guide-destinations a{color:#f0cb8e;font-size:10px;text-decoration:underline;text-underline-offset:3px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:700px){.story-actions{gap:10px;align-items:flex-start;flex-direction:column}.story-continue{margin-top:7px}.guide-top{padding:15px 18px;gap:10px;flex-wrap:wrap}.guide-step{order:3;width:100%;text-align:center;font-size:8px}.guide-back{font-size:10px}.guide-layout{width:calc(100% - 32px);min-height:auto;margin:0 auto;grid-template-columns:1fr;gap:18px;padding:24px 0 38px}.guide-character{display:flex;justify-content:center;gap:10px}.beetle-mark{width:78px;font-size:48px}.beetle-caption{text-align:left;font-size:8px}.guide-content h2{font-size:50px}.guide-intro{font-size:12px;margin-bottom:12px}.guide-facts{gap:6px;margin:13px 0}.guide-facts span{font-size:9px;padding:7px 8px}.chat-window{max-height:230px;margin:10px 0}.chat-form{grid-template-columns:1fr}.chat-form button{min-height:44px}.question-chips button{min-height:38px}.guide-destinations{gap:12px}}
+@media(prefers-reduced-motion:reduce){.story-continue,.beetle-guide.active{animation:none!important;transition:none!important}}
 </style></body></html>
