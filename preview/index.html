@@ -153,15 +153,15 @@ body{overflow:hidden}
  <div class="next-copy"><span class="kicker">Me.Mori Class · Kể chuyện từ trải nghiệm thật</span><h1>Một đời sống.<br>Vô vàn <em>câu chuyện.</em></h1><div class="drop-grid" role="group" aria-label="Bốn khung hình. Hãy kéo một ảnh vào mỗi ô"><button class="drop-tile" type="button" data-slot="01"><span>01</span></button><button class="drop-tile" type="button" data-slot="02"><span>02</span></button><button class="drop-tile" type="button" data-slot="03"><span>03</span></button><button class="drop-tile" type="button" data-slot="04"><span>04</span></button></div><p class="drop-progress" id="dropProgress" aria-live="polite">KÉO ĐỦ 4 ẢNH VÀO CÁC Ô ĐỂ TIẾP TỤC <span>0 / 4</span></p></div>
  <p class="next-hint">KÉO ĐỦ 4 ẢNH VÀO CÁC Ô · CHẠM ẢNH RỒI CHẠM Ô CŨNG ĐƯỢC</p>
 </main>
-<section class="story-next" id="storyNext" aria-label="Phần tiếp theo của câu chuyện" aria-hidden="true">
+<section class="story-next" id="storyNext" role="dialog" aria-modal="true" aria-label="Phần tiếp theo của câu chuyện" aria-hidden="true">
  <div class="story-next-image" id="chosenFrames"><img data-story-frame="0" src="" alt=""><img data-story-frame="1" src="" alt=""><img data-story-frame="2" src="" alt=""><img data-story-frame="3" src="" alt=""></div><div class="story-next-shade"></div>
  <div class="story-next-top"><span class="next-brand">ME.MORI</span><span class="story-step">BỐN KHUNG HÌNH · MỘT CÂU CHUYỆN</span></div>
  <div class="story-next-copy"><span class="kicker">MỘT ĐIỂM BẮT ĐẦU</span><h2>Mọi câu chuyện<br>bắt đầu từ điều<br>ta chọn <em>nhìn.</em></h2><p>Bốn khung hình bạn vừa chọn đã tạo nên điểm khởi đầu. Từ những khoảnh khắc nhỏ, có thể mở ra nhiều cách kể — bằng trải nghiệm và góc nhìn của chính bạn.</p><div class="story-actions"><button type="button" id="backToFrames" class="story-back">← Trở lại những khung hình</button><button type="button" id="meetBeetle" class="story-continue">Tiếp tục cùng bọ cánh cứng ↗</button></div></div>
  <span class="story-next-caption">BỘ ẢNH CỦA BẠN · THEO THỨ TỰ 01 — 04</span>
 </section>
-<section class="beetle-guide" id="beetleGuide" aria-hidden="true" aria-labelledby="beetleTitle">
+<section class="beetle-guide" id="beetleGuide" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="beetleTitle">
  <header class="guide-top"><a class="next-brand" href="#top">ME.MORI</a><span class="guide-step">MỘT CUỘC TRÒ CHUYỆN VỀ F2</span><button type="button" id="guideBack" class="guide-back">← Về câu chuyện của bạn</button></header>
- <div class="guide-layout"><div class="guide-character" aria-hidden="true"><span class="beetle-mark">🪲</span><span class="beetle-caption">BỌ CÁNH CỨNG<br>NGƯỜI DẪN ĐƯỜNG</span></div>
+ <div class="guide-layout"><div class="guide-character" aria-hidden="true"><span class="beetle-mark"><svg class="guide-beetle" viewBox="0 0 180 150" focusable="false"><g class="beetle__shadow"><ellipse cx="88" cy="133" rx="52" ry="8"/></g><g class="beetle__legs"><path d="m60 96-23 14m30-6-18 25m62-35 23 14m-30-5 19 25"/></g><g class="beetle__wings"><path d="M64 84C31 50 25 34 39 27c17-8 42 26 52 57m25 0c20-39 36-57 48-48 13 10-6 39-34 59"/></g><path class="beetle__shell" d="M36 90c2-37 24-62 55-63 33-1 56 23 59 61-17 24-40 35-59 35S51 112 36 90Z"/><path class="beetle__shell-half" d="M91 28v92"/><g class="beetle__spots"><circle cx="61" cy="57" r="6"/><circle cx="46" cy="82" r="5"/><circle cx="74" cy="96" r="6"/><circle cx="119" cy="53" r="6"/><circle cx="137" cy="81" r="5"/><circle cx="108" cy="96" r="6"/></g><path class="beetle__head" d="M79 115c0-19 5-30 12-30s13 12 13 30c-4 10-9 15-13 15s-9-5-12-15Z"/><g class="beetle__eyes"><ellipse cx="84" cy="115" rx="4" ry="6"/><ellipse cx="99" cy="115" rx="4" ry="6"/><circle cx="85" cy="114" r="1.5"/><circle cx="100" cy="114" r="1.5"/></g><path class="beetle__antenna" d="M84 90c-5-12-7-18-15-18m26 18c3-13 7-18 14-21"/><circle class="beetle__antenna-tip" cx="68" cy="71" r="4"/><circle class="beetle__antenna-tip" cx="126" cy="66" r="4"/><path class="beetle__smile" d="M86 125q5 5 10 0"/></svg></span><span class="beetle-caption">BỌ CÁNH CỨNG<br>NGƯỜI DẪN ĐƯỜNG</span></div>
   <div class="guide-content"><span class="kicker">ME.MORI CLASS · F2</span><h2 id="beetleTitle">Bạn đang tò mò<br>điều gì?</h2><p class="guide-intro">Cứ hỏi bằng lời của bạn. Mình sẽ tìm trong những thông tin đã được Me.Mori xác nhận và dẫn bạn đến đúng phần.</p>
    <div class="guide-facts" aria-label="Thông tin nhanh về lớp F2"><span>6 học viên</span><span>4 buổi × 3 giờ</span><span>2.400.000đ toàn khóa</span></div>
    <div class="chat-window" id="chatWindow" role="log" aria-label="Cuộc trò chuyện với bọ cánh cứng" aria-live="polite" aria-relevant="additions">
@@ -192,8 +192,8 @@ function connectSpirit(spirit){if(index!==2||spirit.classList.contains('is-conne
 function showStage(n){clearTimer();index=n;document.querySelectorAll('#intro .stage').forEach(function(el){el.classList.toggle('active',el.id==='s-'+stages[index])});if(n===2)resetOrbit();if(n===3||n===4)timer=setTimeout(function(){showStage(n+1)},5000);if(n===5){cosmosIndex=0;setCosmos()}}
 function setCosmos(){clearTimer();document.getElementById('cosmosText').textContent=cosmosLines[cosmosIndex];timer=setTimeout(function(){if(index!==5)return;if(cosmosIndex<cosmosLines.length-1){cosmosIndex++;setCosmos()}else showStage(6)},5000)}
 function nextStage(){if(index===1){showStage(2);return}if(index===5){if(cosmosIndex<cosmosLines.length-1){cosmosIndex++;setCosmos()}else showStage(6);return}if(index===3||index===4)showStage(index+1)}
-function begin(){stopAmbient();intro.removeAttribute('data-journey');document.querySelectorAll('.journey-choice').forEach(function(choice){choice.setAttribute('aria-pressed','false');choice.classList.remove('chosen')});intro.classList.add('active');document.body.classList.add('intro-open');showStage(0);var choice=document.querySelector('.journey-choice');if(choice)choice.focus()}
-function closeIntro(hash){clearTimer();stopAmbient();intro.classList.remove('active');document.body.classList.remove('intro-open');markSeen();if(hash){var elem=document.querySelector(hash);if(elem)elem.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}}
+function begin(){stopAmbient();intro.removeAttribute('data-journey');document.querySelectorAll('.journey-choice').forEach(function(choice){choice.setAttribute('aria-pressed','false');choice.classList.remove('chosen')});intro.classList.add('active');document.body.classList.add('intro-open');document.querySelector('.next-hero').inert=true;showStage(0);var choice=document.querySelector('.journey-choice');if(choice)choice.focus()}
+function closeIntro(hash){clearTimer();stopAmbient();intro.classList.remove('active');document.body.classList.remove('intro-open');document.querySelector('.next-hero').inert=false;markSeen();if(hash){var elem=document.querySelector(hash);if(elem)elem.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}document.getElementById('replayIntro').focus({preventScroll:true})}
 document.querySelectorAll('.journey-choice[data-journey]').forEach(function(button){button.addEventListener('click',function(){var key=button.dataset.journey;if(!JOURNEYS[key])return;intro.dataset.journey=JOURNEYS[key].tint;document.getElementById('journeyWelcomeLabel').textContent=JOURNEYS[key].label.toUpperCase()+' · MỘT LỜI CHÀO TỪ ME.MORI';document.querySelectorAll('.journey-choice').forEach(function(choice){var selected=choice===button;choice.setAttribute('aria-pressed',String(selected));choice.classList.toggle('chosen',selected)});showStage(1);document.getElementById('readyIntro').focus()})});
 document.getElementById('readyIntro').addEventListener('click',function(){showStage(2)});
 document.querySelectorAll('.spirit').forEach(function(spirit){spirit.addEventListener('pointerenter',function(){connectSpirit(spirit)});spirit.addEventListener('click',function(){connectSpirit(spirit)});spirit.addEventListener('focus',function(){connectSpirit(spirit)})});
@@ -224,7 +224,7 @@ if(!hasSeen())begin();
  layoutCards();window.addEventListener('resize',layoutCards,{passive:true});
  function relocate(card){
   if(locked||card.classList.contains('is-placed'))return;locked=true;card.classList.add('is-leaving');
-  setTimeout(()=>{const all=positions(),p=all[cursor++%all.length];card.style.setProperty('--x',p[0]+'%');card.style.setProperty('--y',p[1]+'%');card.style.setProperty('--r',(Math.random()*12-6)+'deg');card.classList.remove('is-leaving');card.style.animation='none';void card.offsetWidth;card.style.animation='';locked=false},460);
+  setTimeout(()=>{const all=positions(),p=all[cursor++%all.length];card.style.setProperty('--x',p[0]+'%');card.style.setProperty('--y',p[1]+'%');card.style.setProperty('--r',(Math.random()*12-6)+'deg');card.classList.remove('is-leaving');locked=false},460);
  }
  function renderTile(tile,index){
   const card=placements[index];tile.replaceChildren();
@@ -242,30 +242,31 @@ if(!hasSeen())begin();
  function openNext(){
   if(transitioning||placements.some(card=>!card))return;transitioning=true;
   storyImages.forEach((img,i)=>{const source=placements[i].querySelector('img');img.src=source.src;img.alt='Khung hình '+String(i+1).padStart(2,'0')+': '+source.alt});
-  nextPage.setAttribute('aria-hidden','false');nextPage.classList.add('active');document.body.classList.add('story-open');
+  document.querySelector('.next-hero').inert=true;nextPage.inert=false;nextPage.setAttribute('aria-hidden','false');nextPage.classList.add('active');document.body.classList.add('story-open');
   try{history.pushState({storyPage:true},'','#phan-tiep-theo')}catch(e){}
   document.getElementById('meetBeetle').focus({preventScroll:true});
  }
+ function animateEntry(node){const preference=matchMedia('(prefers-reduced-motion: reduce)');if(preference.matches)return;const keyframes=node.classList.contains('drop-tile')?[{opacity:.62},{opacity:1}]:[{opacity:0,transform:'translateY(9px)'},{opacity:1,transform:'translateY(0)'}];if(typeof node.animate!=='function'){node.classList.add('mm-entry-fallback');setTimeout(()=>node.classList.remove('mm-entry-fallback'),360);return}const animation=node.animate(keyframes,{duration:320,easing:'cubic-bezier(.22,1,.36,1)',fill:'both'});const visibility=()=>{if(document.visibilityState==='hidden')animation.pause();else animation.play()};const reduced=event=>{if(event.matches)animation.cancel()};const cleanup=()=>{document.removeEventListener('visibilitychange',visibility);if(preference.removeEventListener)preference.removeEventListener('change',reduced);else if(preference.removeListener)preference.removeListener(reduced)};document.addEventListener('visibilitychange',visibility);if(preference.addEventListener)preference.addEventListener('change',reduced);else if(preference.addListener)preference.addListener(reduced);animation.addEventListener('finish',cleanup,{once:true});animation.addEventListener('cancel',cleanup,{once:true});if(document.visibilityState==='hidden')animation.pause()}
  function placeCard(tile,card){
   if(card.classList.contains('is-placed'))return;
   const index=tiles.indexOf(tile);if(index<0)return;
   if(placements[index]){placements[index].classList.remove('is-placed');placements[index].removeAttribute('aria-hidden');}
   placements[index]=card;card.classList.add('is-placed');card.setAttribute('aria-hidden','true');
   selectedCard=null;cards.forEach(c=>{c.classList.remove('is-selected');c.setAttribute('aria-pressed','false')});
-  renderTile(tile,index);if(updateProgress()===4){progress.querySelector('span').textContent='4 / 4 · ĐANG MỞ';setTimeout(openNext,380)}
+  renderTile(tile,index);animateEntry(tile);if(updateProgress()===4){progress.querySelector('span').textContent='4 / 4 · ĐANG MỞ';setTimeout(openNext,380)}
  }
  function removeCard(index){if(!placements[index])return;placements[index].classList.remove('is-placed');placements[index].removeAttribute('aria-hidden');placements[index]=null;renderTile(tiles[index],index);updateProgress()}
- function closeNext(updateHistory){
-  document.getElementById('beetleGuide').classList.remove('active');document.getElementById('beetleGuide').setAttribute('aria-hidden','true');nextPage.classList.remove('active');nextPage.setAttribute('aria-hidden','true');document.body.classList.remove('story-open');transitioning=false;
+ function closeNext(updateHistory,focusFrames){
+  document.getElementById('beetleGuide').classList.remove('active');document.getElementById('beetleGuide').setAttribute('aria-hidden','true');document.getElementById('beetleGuide').inert=true;nextPage.classList.remove('active');nextPage.setAttribute('aria-hidden','true');nextPage.inert=true;document.querySelector('.next-hero').inert=false;document.body.classList.remove('story-open');transitioning=false;
   if(updateHistory&&location.hash.indexOf('#phan-tiep-theo')===0)history.back();
-  document.getElementById('replayIntro').focus({preventScroll:true});
+  const focusTarget=focusFrames?(tiles.find((tile,index)=>!placements[index])||tiles[0]):document.getElementById('replayIntro');focusTarget.focus({preventScroll:true});
  }
  const guide=document.getElementById('beetleGuide');
- function openGuide(){if(!nextPage.classList.contains('active'))return;guide.classList.add('active');guide.setAttribute('aria-hidden','false');try{history.pushState({beetleGuide:true},'','#tro-chuyen-f2')}catch(e){}document.getElementById('beetleQuestion').focus({preventScroll:true})}
- function closeGuide(updateHistory){guide.classList.remove('active');guide.setAttribute('aria-hidden','true');if(updateHistory&&location.hash==='#tro-chuyen-f2')history.back();document.getElementById('meetBeetle').focus({preventScroll:true})}
+ function openGuide(){if(!nextPage.classList.contains('active'))return;nextPage.inert=true;guide.inert=false;guide.classList.add('active');guide.setAttribute('aria-hidden','false');try{history.pushState({beetleGuide:true},'','#tro-chuyen-f2')}catch(e){}document.getElementById('beetleQuestion').focus({preventScroll:true})}
+ function closeGuide(updateHistory){guide.classList.remove('active');guide.setAttribute('aria-hidden','true');guide.inert=true;nextPage.inert=false;if(updateHistory&&location.hash==='#tro-chuyen-f2')history.back();document.getElementById('meetBeetle').focus({preventScroll:true})}
  document.getElementById('meetBeetle').addEventListener('click',openGuide);
  document.getElementById('guideBack').addEventListener('click',()=>closeGuide(true));
- document.getElementById('backToFrames').addEventListener('click',()=>closeNext(true));
+ document.getElementById('backToFrames').addEventListener('click',()=>closeNext(true,true));
  window.addEventListener('popstate',()=>{if(guide.classList.contains('active'))closeGuide(false);else if(nextPage.classList.contains('active')&&location.hash!=='#phan-tiep-theo')closeNext(false)});
  const answers=[
   {keys:['hoc phi','gia','bao nhieu tien','2.4 trieu','2 4 trieu','2400000','dong tien','thanh toan','buoi dau','thu nghiem','khong phu hop'],text:'Lớp F2 có 6 học viên, gồm 4 buổi × 3 giờ, học phí 2.400.000 VNĐ toàn khóa. Bạn trải nghiệm buổi đầu trước khi thanh toán. Nếu dừng sau buổi đầu vì không phù hợp thì không phải đóng học phí; nếu học tiếp, thanh toán sau buổi đầu.',label:'Xem thông tin và đăng ký',href:'f2/#register'},
@@ -277,7 +278,7 @@ if(!hasSeen())begin();
   {keys:['dang ky','tham gia','lien he','facebook','nhan tin','tu van'],text:'Bạn có thể nhắn trực tiếp cho Me.Mori để hỏi lịch, địa điểm và đăng ký trải nghiệm buổi đầu. Website hiện không tự giữ chỗ hoặc thu thanh toán.',label:'Mở kênh đăng ký Facebook',href:'https://www.facebook.com/phuonglhdp/'}
  ];
  function normalizeQuestion(value){return value.toLocaleLowerCase('vi').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim()}
- function addMessage(who,text,answer){const row=document.createElement('p');row.className='chat-message '+(who==='Bạn'?'user-message':'beetle-message');const name=document.createElement('strong');name.textContent=who;row.appendChild(name);row.appendChild(document.createTextNode(text));if(answer){const link=document.createElement('a');link.href=answer.href;link.textContent=answer.label+' →';row.appendChild(link)}document.getElementById('chatWindow').appendChild(row);row.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
+ function addMessage(who,text,answer){const row=document.createElement('p');row.className='chat-message '+(who==='Bạn'?'user-message':'beetle-message');const name=document.createElement('strong');name.textContent=who;row.appendChild(name);row.appendChild(document.createTextNode(text));if(answer){const link=document.createElement('a');link.href=answer.href;link.textContent=answer.label+' →';row.appendChild(link)}document.getElementById('chatWindow').appendChild(row);animateEntry(row);row.scrollIntoView({block:'nearest',behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
  const questionForm=document.getElementById('beetleQuestionForm'),questionInput=document.getElementById('beetleQuestion');
  questionForm.addEventListener('submit',function(event){event.preventDefault();const original=questionInput.value.trim();if(!original)return;const normalized=normalizeQuestion(original);addMessage('Bạn',original);const matches=answers.filter(item=>item.keys.some(key=>normalized.includes(key))).slice(0,2);if(matches.length)matches.forEach(answer=>addMessage('Bọ cánh cứng',answer.text,{label:answer.label,href:answer.href}));else addMessage('Bọ cánh cứng','Mình chưa có thông tin đã xác nhận để trả lời câu này. Bạn có thể hỏi về học phí, lịch học, nội dung F2, video workshop, bài thực hành hoặc đăng ký.',{label:'Mở trang F2 đầy đủ',href:'f2/'});questionInput.value='';questionInput.focus()});
  document.querySelectorAll('.question-chips [data-question]').forEach(button=>button.addEventListener('click',()=>{questionInput.value=button.dataset.question;questionForm.requestSubmit()}));
@@ -292,7 +293,7 @@ if(!hasSeen())begin();
     drag.moved=true;card.classList.add('is-dragging');const img=card.querySelector('img'),r=card.getBoundingClientRect();
     drag.ghost=document.createElement('div');drag.ghost.className='drag-ghost';drag.ghost.style.width=Math.min(r.width,190)+'px';drag.ghost.style.aspectRatio='1.38';drag.ghost.innerHTML='<img alt="" src="'+img.src+'">';document.body.appendChild(drag.ghost);
    }
-   if(drag.moved){drag.ghost.style.left=e.clientX+'px';drag.ghost.style.top=e.clientY+'px';markTile(document.elementFromPoint(e.clientX,e.clientY)?.closest('.drop-tile')||null)}
+   if(drag.moved){drag.ghost.style.transform='translate3d('+e.clientX+'px,'+e.clientY+'px,0) translate(-50%,-50%) rotate(-3deg)';markTile(document.elementFromPoint(e.clientX,e.clientY)?.closest('.drop-tile')||null)}
   });
   card.addEventListener('pointerup',e=>{
    if(!drag||drag.id!==e.pointerId)return;const state=drag;drag=null;
@@ -366,4 +367,60 @@ body{overflow:hidden}.next-copy{top:11%;width:min(1160px,calc(100% - 36px))}
 .beetle-guide{position:fixed;z-index:60;inset:0;display:none;overflow:auto;background:radial-gradient(ellipse at 14% 35%,#28473d,#11251f 63%,#0a1715);color:#f4eedf}.beetle-guide.active{display:block;animation:story-page-in .45s ease both}.guide-top{position:sticky;top:0;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 34px;background:#0d1e1beF;border-bottom:1px solid #d7c69a33;backdrop-filter:blur(12px)}.guide-step{font-size:9px;letter-spacing:.18em;color:#d8c18e}.guide-back{padding:8px 0;border-bottom:1px solid #d8c18e66;background:transparent;color:#f4eedf;font-size:11px}.guide-layout{width:min(1150px,calc(100% - 48px));min-height:calc(100svh - 75px);margin:auto;display:grid;grid-template-columns:.7fr 1.3fr;gap:7vw;align-items:center;padding:42px 0 60px}.guide-character{display:grid;justify-items:center;gap:15px}.beetle-mark{display:grid;place-items:center;width:clamp(160px,24vw,290px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 38% 32%,#6e927263,#19372f 68%,#12251f);box-shadow:0 0 70px #b1c88220;font-size:clamp(90px,15vw,180px);filter:drop-shadow(0 12px 20px #02090788)}.beetle-caption{font-size:9px;letter-spacing:.2em;text-align:center;line-height:1.8;color:#c6c9b3}.guide-content{width:min(700px,100%)}.guide-content>.kicker{color:#dfbb80}.guide-content h2{font-size:clamp(48px,6vw,78px);line-height:.92;margin:15px 0}.guide-intro{max-width:590px;color:#d4ddcf;font-size:13px;line-height:1.8}.guide-facts{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}.guide-facts span{padding:8px 11px;border:1px solid #d8c18e56;color:#f2dfbb;font-size:10px}.chat-window{display:grid;gap:12px;max-height:255px;overflow:auto;padding:12px 14px;margin:14px 0;background:#0715126e;border:1px solid #d8c18e38;overscroll-behavior:contain}.chat-message{display:grid;gap:5px;margin:0;padding:11px 13px;background:#19382f;color:#eef0e4;font-size:12px;line-height:1.7}.chat-message strong{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:#e5c891}.chat-message.user-message{background:#e7dcc4;color:#23362d;justify-self:end;max-width:90%}.chat-message.user-message strong{color:#87623a}.chat-message a{justify-self:start;color:#f0cb8e;text-decoration:underline;text-underline-offset:3px;font-weight:700}.question-chips{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.question-chips button{border:1px solid #c9c9af6e;background:#ffffff08;color:#e8e1d1;padding:8px 10px;font-size:10px}.question-chips button:hover{background:#e9ca9250}.chat-form{display:grid;grid-template-columns:1fr auto;gap:8px}.chat-form input{min-width:0;padding:13px 14px;border:1px solid #c9c9af82;background:#f4efdf;color:#1d3128;font-size:12px}.chat-form button{padding:12px 17px;background:#e3c18e;color:#1e362d;font-size:11px;font-weight:700}.chat-note{margin:9px 0 14px;color:#b8c4b7;font-size:9px;line-height:1.6}.guide-destinations{display:flex;flex-wrap:wrap;gap:8px 16px;border-top:1px solid #d8c18e44;padding-top:14px}.guide-destinations a{color:#f0cb8e;font-size:10px;text-decoration:underline;text-underline-offset:3px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:700px){.story-actions{gap:10px;align-items:flex-start;flex-direction:column}.story-continue{margin-top:7px}.guide-top{padding:15px 18px;gap:10px;flex-wrap:wrap}.guide-step{order:3;width:100%;text-align:center;font-size:8px}.guide-back{font-size:10px}.guide-layout{width:calc(100% - 32px);min-height:auto;margin:0 auto;grid-template-columns:1fr;gap:18px;padding:24px 0 38px}.guide-character{display:flex;justify-content:center;gap:10px}.beetle-mark{width:78px;font-size:48px}.beetle-caption{text-align:left;font-size:8px}.guide-content h2{font-size:50px}.guide-intro{font-size:12px;margin-bottom:12px}.guide-facts{gap:6px;margin:13px 0}.guide-facts span{font-size:9px;padding:7px 8px}.chat-window{max-height:230px;margin:10px 0}.chat-form{grid-template-columns:1fr}.chat-form button{min-height:44px}.question-chips button{min-height:38px}.guide-destinations{gap:12px}}
 @media(prefers-reduced-motion:reduce){.story-continue,.beetle-guide.active{animation:none!important;transition:none!important}}
-</style></body></html>
+</style>
+<style id="memori-motion-polish">
+:root{--mm-motion-fast:160ms;--mm-motion-normal:340ms;--mm-motion-slow:620ms;--mm-motion-ease:cubic-bezier(.22,1,.36,1)}
+#intro .stage.active>.intro-small,#intro .stage.active>.intro-title,#intro .stage.active>.intro-copy,#intro .stage.active>.journey-prompt,#intro .stage.active>.intro-button,#intro .stage.active>.intro-actions,#intro .journey-grid{animation:mm-scene-reveal var(--mm-motion-slow) var(--mm-motion-ease) both}
+#intro .stage.active>.intro-title{animation-delay:50ms}#intro .stage.active>.intro-copy,#intro .journey-grid{animation-delay:100ms}#intro .stage.active>.intro-button,#intro .stage.active>.intro-actions{animation-delay:160ms}
+@keyframes mm-scene-reveal{from{opacity:0;translate:0 10px}to{opacity:1;translate:0 0}}
+.journey-choice,.drop-tile,.story-continue,.question-chips button,.chat-form button{transition-duration:var(--mm-motion-fast);transition-timing-function:var(--mm-motion-ease)}
+.journey-choice:active,.drop-tile:active,.story-continue:active,.question-chips button:active,.chat-form button:active{transform:scale(.985)}
+.next-hero:before{background:linear-gradient(180deg,#09161255 0%,#0b1b18aa 72%,#081411e3 100%),url('../assets/magic-leaf/forest-night-background.webp') center 52%/cover no-repeat;transform:scale(1.035);transform-origin:center 48%;animation:mm-forest-breathe 28s ease-in-out infinite alternate}
+@keyframes mm-forest-breathe{to{transform:scale(1.075)}}
+.float-card{border:0;box-shadow:0 22px 62px #020a08a8,0 3px 14px #d9c18b14;animation-timing-function:var(--mm-motion-ease),ease-in-out}
+.float-card img{filter:saturate(.76) brightness(.92) contrast(.98);transition:filter var(--mm-motion-normal) var(--mm-motion-ease),transform var(--mm-motion-slow) var(--mm-motion-ease)}
+@keyframes card-arrive{from{opacity:0;scale:.96}to{opacity:.94;scale:1}}
+@keyframes card-leave{to{opacity:0;scale:.97}}
+@keyframes card-float{to{translate:0 -8px;rotate:1.2deg}}
+.float-card.is-dragging{opacity:.12;scale:.97}.drag-ghost{left:0;top:0;will-change:transform;border:0;border-radius:2px;box-shadow:0 18px 52px #0009}
+.drop-tile{border-color:#e6d6b64d;backdrop-filter:none;box-shadow:none;transition:background var(--mm-motion-fast),border-color var(--mm-motion-fast),transform var(--mm-motion-fast)}
+.drop-tile:hover,.drop-tile.is-target,.drop-tile:focus-visible{box-shadow:0 8px 24px #05110d40}
+.story-next-image img{border:0;box-shadow:0 16px 50px #02090752}
+.story-next{display:flex;visibility:hidden;opacity:0;pointer-events:none;transition:opacity var(--mm-motion-slow) var(--mm-motion-ease),visibility 0s linear var(--mm-motion-slow)}
+.story-next.active{display:flex;visibility:visible;opacity:1;pointer-events:auto;animation:none;transition-delay:0s}
+.story-next-copy{opacity:0;translate:0 10px;transition:opacity var(--mm-motion-slow) var(--mm-motion-ease) 80ms,translate var(--mm-motion-slow) var(--mm-motion-ease) 80ms}
+.story-next.active .story-next-copy{opacity:1;translate:0 0}
+.beetle-guide{display:block;visibility:hidden;opacity:0;pointer-events:none;transition:opacity var(--mm-motion-normal) var(--mm-motion-ease),visibility 0s linear var(--mm-motion-normal)}
+.beetle-guide.active{visibility:visible;opacity:1;pointer-events:auto;animation:none;transition-delay:0s}
+.guide-layout{opacity:0;translate:0 8px;transition:opacity var(--mm-motion-normal) var(--mm-motion-ease) 60ms,translate var(--mm-motion-normal) var(--mm-motion-ease) 60ms}
+.beetle-guide.active .guide-layout{opacity:1;translate:0 0}
+.beetle-mark{overflow:visible}.guide-beetle{display:block;width:82%;height:auto;overflow:visible}.beetle-guide.active .guide-beetle{animation:guide-beetle-breathe 4.2s ease-in-out infinite alternate}.guide-beetle .beetle__shadow{fill:#03080570}.guide-beetle .beetle__legs{fill:none;stroke:#1a211d;stroke-width:5;stroke-linecap:round}.guide-beetle .beetle__wings{fill:#c53c31;stroke:#201f19;stroke-width:4;stroke-linejoin:round;opacity:0}.guide-beetle .beetle__shell{fill:#c94236;stroke:#231f1a;stroke-width:5}.guide-beetle .beetle__shell-half{fill:none;stroke:#642720;stroke-width:3}.guide-beetle .beetle__spots{fill:#28241e}.guide-beetle .beetle__head{fill:#252721;stroke:#131713;stroke-width:3}.guide-beetle .beetle__eyes ellipse{fill:#fff4dc}.guide-beetle .beetle__eyes circle{fill:#252721}.guide-beetle .beetle__antenna{fill:none;stroke:#24261f;stroke-width:4;stroke-linecap:round}.guide-beetle .beetle__antenna-tip{fill:#252721}.guide-beetle .beetle__smile{fill:none;stroke:#fff1dc;stroke-width:2;stroke-linecap:round}
+@keyframes guide-beetle-breathe{to{translate:0 -5px;rotate:1deg}}
+.mm-entry-fallback{animation:mm-message-in var(--mm-motion-normal) var(--mm-motion-ease) both}
+@keyframes mm-message-in{from{opacity:0;translate:0 7px}to{opacity:1;translate:0 0}}
+.question-chips button,.chat-form button{min-height:44px}.guide-back{min-height:44px;padding-inline:8px}.drop-tile{min-height:48px}.chat-form input{min-height:46px}
+.story-next button,.beetle-guide button,.beetle-guide a{touch-action:manipulation}
+#intro .stage:not(.active) *,#intro:not(.active) .stage *,#intro .stage.active:not(.mm-inview) *,body.intro-open .float-card,body.story-open .float-card,.next-hero:not(.mm-inview) .float-card,html.mm-page-hidden *{animation-play-state:paused!important}
+html.mm-page-hidden .beetle-guide,html.mm-page-hidden .story-next{transition:none!important}
+@media(prefers-reduced-motion:reduce){
+ #intro .stage.active>.intro-small,#intro .stage.active>.intro-title,#intro .stage.active>.intro-copy,#intro .stage.active>.journey-prompt,#intro .stage.active>.intro-button,#intro .stage.active>.intro-actions,#intro .journey-grid,.float-card,.float-card.is-leaving,.next-hero:before,.drop-tile,.story-next-copy,.guide-layout,.chat-message,.mm-entry-fallback,.guide-beetle{animation:none!important;transition:none!important;translate:none!important}
+ .story-next,.story-next.active,.beetle-guide,.beetle-guide.active{visibility:visible;opacity:1;transition:none!important}
+ .story-next:not(.active),.beetle-guide:not(.active){visibility:hidden;opacity:0}
+ .float-card{opacity:.94;scale:1;filter:none}.float-card.is-leaving{opacity:0}
+ .float-card img{transition:none!important;filter:saturate(.76) brightness(.92)}
+ .drop-tile:hover,.drop-tile.is-target,.drop-tile:focus-visible{transform:none;box-shadow:none}
+}
+</style>
+<script id="memori-motion-controller">(function(){
+ 'use strict';
+ const root=document.documentElement,intro=document.getElementById('intro'),story=document.getElementById('storyNext'),guide=document.getElementById('beetleGuide');
+ function syncVisibility(){root.classList.toggle('mm-page-hidden',document.visibilityState==='hidden')}
+ document.addEventListener('visibilitychange',syncVisibility);syncVisibility();
+ if('IntersectionObserver' in window){const observer=new IntersectionObserver(entries=>entries.forEach(entry=>entry.target.classList.toggle('mm-inview',entry.isIntersecting)),{threshold:.04});document.querySelectorAll('#intro .stage,.next-hero').forEach(node=>observer.observe(node))}
+ document.addEventListener('keydown',event=>{
+  if(event.key!=='Tab')return;const layer=guide.classList.contains('active')?guide:(story.classList.contains('active')?story:(intro.classList.contains('active')?intro:null));if(!layer)return;
+  const items=[...layer.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(node=>node.getClientRects().length&&!node.closest('[inert]'));
+  if(!items.length)return;const first=items[0],last=items[items.length-1];
+  if(!layer.contains(document.activeElement)){event.preventDefault();(event.shiftKey?last:first).focus()}else if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+ },true);
+})();</script></body></html>
