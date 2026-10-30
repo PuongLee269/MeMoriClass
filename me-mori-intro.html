@@ -6,6 +6,9 @@
   <meta name="theme-color" content="#0b1918">
   <meta name="description" content="Một góc rừng đêm yên tĩnh để bắt đầu cuộc trò chuyện cùng Me.Mori.">
   <title>Mình là Bọ — Me.Mori Class</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
       color-scheme: dark;
@@ -50,7 +53,7 @@
     .brand-mark, .question-form, .quiet-links { position:absolute; z-index:2; }
     .brand-mark { left:2.7%; top:2.8%; width:12%; height:9%; pointer-events:none; }
     .brand-mark:not([data-compact="true"]) { transform:translateY(12px); }
-    .brand-label { display:flex; flex-direction:column; align-items:flex-start; gap:0; font-family:"FabfeltScript Bold","Segoe Script",cursive; font-size:calc(42px * var(--art-scale)); font-weight:400; line-height:.78; color:#f8ebcb; white-space:nowrap; }
+    .brand-label { display:flex; flex-direction:column; align-items:flex-start; gap:0; font-family:"Caveat","Segoe Script",cursive; font-size:calc(42px * var(--art-scale)); font-weight:500; line-height:.78; color:#f8ebcb; white-space:nowrap; }
     .brand-label small { align-self:center; margin-left:22%; font:normal calc(9px * var(--art-scale))/1.4 Georgia,serif; letter-spacing:.45em; }
     .brand-mark[data-compact="true"] { left:10px!important; top:16px!important; right:auto!important; width:110px!important; height:42px!important; }
     .brand-mark[data-compact="true"] .brand-label { font-size:29px; line-height:.78; }
@@ -75,7 +78,7 @@
     .send:hover { transform:translate(3px,-1px); color:#fff5d8; filter:drop-shadow(0 0 7px #ffe4a5); }
     .send:hover svg { filter:drop-shadow(0 0 8px #ffe4a5c9); }
     .send:active { transform:translate(2px,0) scale(.94); }
-    .hero-copy { position:absolute; z-index:1; pointer-events:auto; display:block; color:#f5e8c5; font-family:"FabfeltScript Bold","Segoe Script",cursive; font-weight:400; font-style:normal; text-shadow:0 1px 5px #06110f,0 0 1px #fff3d1; cursor:default; }
+    .hero-copy { position:absolute; z-index:1; pointer-events:auto; display:block; color:#f5e8c5; font-family:"Caveat","Segoe Script",cursive; font-weight:500; font-style:normal; text-shadow:0 1px 5px #06110f,0 0 1px #fff3d1; cursor:default; }
     .copy-base { position:relative; z-index:1; display:block; white-space:nowrap; }
     .glow-word { white-space:pre; transition:color .1s ease,text-shadow .1s ease; }
     .glow-run { white-space:nowrap; }
@@ -162,7 +165,7 @@
       .hero-question .copy-base { white-space:normal; }
       .question-form { left:7%!important; top:54%!important; width:31%!important; height:7%!important; grid-template-columns:minmax(0,1fr) 34px; }
       .quiet-links { left:7%!important; top:auto!important; bottom:18%!important; width:auto!important; height:auto!important; display:flex; gap:clamp(14px,5vw,28px); font-size:13px; }
-      .quiet-links a { position:static!important; padding:0; min-height:28px; min-width:0; }
+      .quiet-links a { position:static!important; top:auto!important; left:auto!important; width:auto!important; height:auto!important; padding:0; min-height:28px; min-width:0; }
       .brand-mark { left:4%!important; top:2%!important; width:120px!important; height:48px!important; }
       .status { left:7%!important; top:63%!important; max-width:52%!important; }
       .question-form input::placeholder { font-size:12px; }
