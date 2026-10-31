@@ -33,10 +33,12 @@
 
     const layers = config.layers.map((def, index) => {
       const el = document.createElement('img');
-      el.className = 'paper-layer' + (def.shadow ? ' has-shadow' : '') + (def.className ? ' ' + def.className : '');
+      const roomy = global.matchMedia('(hover: hover) and (min-width: 761px)').matches;   // phones: keep GPU memory low
+      el.className = 'paper-layer' + (def.shadow && roomy ? ' has-shadow' : '') + (def.sway ? ' is-moving' : '') + (def.className ? ' ' + def.className : '');
       el.src = def.src;
       el.alt = '';
       el.decoding = 'async';
+      el.fetchPriority = 'low';
       el.draggable = false;
       el.setAttribute('aria-hidden', 'true');
       Object.assign(el.style, {
@@ -58,7 +60,19 @@
       stage.append(glow);
     });
 
-    const ready = Promise.all(layers.map(({ el }) => (el.decode ? el.decode().catch(() => {}) : Promise.resolve())));
+    // Ready = every image fully downloaded AND decoded (a half-loaded image must never be shown).
+    const waitFor = img => new Promise((resolve, reject) => {
+      if (img.complete && img.naturalWidth) resolve();
+      else { img.addEventListener('load', resolve, { once: true }); img.addEventListener('error', reject, { once: true }); }
+    }).then(() => (img.decode ? img.decode().catch(() => {}) : null));
+    const extra = (config.preload || []).map(src => { const img = new Image(); img.decoding = 'async'; img.src = src; return img; });
+    const all = [...layers.map(L => L.el), ...extra];
+    let loaded = 0;
+    stage.style.opacity = '0';
+    const ready = Promise.all(all.map(img => waitFor(img).then(() => {
+      loaded++;
+      if (config.onProgress) config.onProgress(loaded / all.length);
+    })));
 
     // ---- pointer parallax (fine pointers only) ----
     let parX = 0, parY = 0, aimX = 0, aimY = 0;
@@ -114,14 +128,19 @@
         const angle = breeze + L.pos * (s.gust ?? amp * 1.3);
         const bend = angle * (s.bend ?? 0.5);
         const d = L.def.depth || 0;
-        L.el.style.transform = `translate3d(${(parX * d + L.ix).toFixed(2)}px,${(parY * d + L.iy).toFixed(2)}px,0) rotate(${(angle + L.ir).toFixed(3)}deg) skewX(${bend.toFixed(3)}deg)`;
+        const tx = parX * d + L.ix, ty = parY * d + L.iy, rot = angle + L.ir;
+        // still sheets get no transform at all, so the browser doesn't keep them as separate GPU layers
+        const tf = (!L.def.sway && Math.abs(tx) < 0.05 && Math.abs(ty) < 0.05 && Math.abs(rot) < 0.001)
+          ? 'none'
+          : `translate(${tx.toFixed(2)}px,${ty.toFixed(2)}px) rotate(${rot.toFixed(3)}deg) skewX(${bend.toFixed(3)}deg)`;
+        if (tf !== L._tf) { L.el.style.transform = tf; L._tf = tf; }
         if (L.io !== L._io) { L.el.style.opacity = String(L.io); L._io = L.io; }
       }
       // elements outside the stage (e.g. an animated head) that must move with one layer
       for (const f of followers) {
         const L = f.layer, d = L.def.depth || 0;
         f.el.style.transform = `translate(${((parX * d + L.ix) * stageScale).toFixed(2)}px,${((parY * d + L.iy) * stageScale).toFixed(2)}px)`;
-        f.el.style.opacity = String(L.io);
+        f.el.style.opacity = L.io < 1 ? String(L.io) : '';
       }
       // nothing moves under reduced motion: stop after this frame (a tween restarts the loop)
       if (document.hidden || (still && !tween)) { running = false; return; }
@@ -135,6 +154,11 @@
     return {
       ready,
       layers,
+      reveal(ms = 900) {
+        stage.style.transition = `opacity ${ms}ms ease`;
+        stage.style.opacity = '1';
+        return new Promise(r => setTimeout(r, ms));
+      },
       layout(left, top, scale) {
         stageScale = scale;
         stage.style.transform = `translate(${left}px,${top}px) scale(${scale})`;

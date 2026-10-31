@@ -128,9 +128,15 @@
     .wind-streak path { fill:none; stroke:url(#wind-grad); stroke-width:1.7; stroke-linecap:round; stroke-dasharray:.3 2; stroke-dashoffset:.3; }
     /* Paper layers sit over the still image (the still stays as fallback until they are ready). */
     .forest-paper { z-index:-4; }
-    .lake-ripple { filter:url(#lake-ripple); }
+    @media (hover: hover) and (pointer: fine) and (min-width: 761px) { .lake-ripple { filter:url(#lake-ripple); } }
     @media (prefers-reduced-motion: reduce) { .lake-ripple { filter:none; } }
     .scene.has-paper .artwork { visibility:hidden; }
+    /* tiny inline preview shows instantly while the still image downloads */
+    .artwork { background:#0b1918 url(data:image/webp;base64,UklGRtACAABXRUJQVlA4IMQCAABwDgCdASpAACQAPrVMnkonJKKhrVzLaOAWiWgAs7NVjUlTRCQubfrnmWas3tjQbhZbem8Z8CuJ2LWydwJb662dN/F7SYWnjRn0wxnTefLOUvqOhSzdMZPzlZRZqFrX3LxwYyuGR7Fr/+7MDr2+7a9w7HGMrKI1axQ3COLAAP7upuq12GUkQMbpIh5Y5nyoyRyMaGt9T0bKT4XTB+YyJdaa9I4+NbsVvwblW8W/kCa5jFV6ZKxD+TVRROAIP/I8rndPmfji9H3ZQLN+GI74Rq4v5kmEAf5mlChkuwCVOYGR6Fd7scLHNCZyht+45XIV6h/QXahpP7ReWHmJqPlN9AhN0b48bzRRNufCO7u4L8fHsLqxkLVaSV2VsV6rU243UHmdXakAcpqam0UJC11VM4vfpvSOBfo8PBV83qqYoN8zwLsztyt6hUr7K2RCsOoEfP4QI9KTVQJDgEIqydXKc3RhyQHyBsKrHStWR0dHnpJOZQ587yjgoX+yysbuT7QRYCOfap/+jLiCFuyNwHqoiFdHqQsWFOCp5uA4xs6Z4Sr0GCzv6WaT09y3QyoxVuiAHU8Nase3PX9ZQvdDFPgwUdIknOH2euQk02Fw1Uy0X+AeFMl5xHnpd8lG9bxcNIjCK+eZcxtD1cQeaHx21DPYv8Ijh1rrHqK2rMR9M61IkfsCk4HSFF0LVeKfxc7TReDykNpVXTbNRkY5j2HnUvTBpEXyhnEQEanyq7cRXvtEjKfObdmmY/k/oZzjgOSAQMHgrRiZboQ98QAvoROSro7VIq9z6ZZEDsexLiicKFW63cHx0lNmvcVo7JrDZeKS8xgkup3O3LzfCFBe+XjukEyuNzr7kueiGCl55Rf42LGwMkwm+V041LMjHERBlNr5gashthUAOkY8RxtQZiVG83vWePV2oWL02COcJKzkvI/jSJeKrAAAAAA=) center / cover no-repeat; }
+    .beetle-head { opacity:0; transition:opacity .6s ease; }
+    .scene.has-paper .beetle-head { opacity:1; }
+    .load-bar { position:absolute; z-index:7; left:0; top:0; height:2px; width:100%; transform-origin:0 50%; transform:scaleX(0); background:linear-gradient(90deg,#d9c27a00,#f2d58e,#fff3c8); box-shadow:0 0 8px #ffd98a; transition:transform .4s ease, opacity .6s ease .3s; pointer-events:none; }
+    .load-bar.is-done { opacity:0; }
     /* Chat: focusing the box clears the headline and opens the dialogue in its place. */
     .hero-copy { transition:opacity .4s ease, transform .4s ease; }
     .scene.is-chatting .hero-copy { opacity:0; transform:translateY(-12px); pointer-events:none; }
@@ -180,9 +186,9 @@
     @keyframes head-talk { 0%,100% { rotate:-1deg; translate:0 0; } 50% { rotate:2.4deg; translate:0 -2px; } }
     .beetle-head { position:absolute; z-index:2; overflow:visible; pointer-events:none; transform-origin:43.4% 88.75%; animation:head-wobble 6.8s ease-in-out infinite; }
     .beetle-head-svg { display:block; width:100%; height:100%; overflow:visible; }
-    .beetle-blink .lid { fill:#cf7852; stroke:#8f4c34; stroke-width:1.5; transform-box:fill-box; transform-origin:center; transform:scaleY(0); animation:beetle-blink 6.3s ease-in-out infinite; }
+    .beetle-blink .lid { fill:#cf7852; stroke:#8f4c34; stroke-width:1.5; transform-box:fill-box; transform-origin:center; transform:scaleY(0); opacity:0; animation:beetle-blink 6.3s ease-in-out infinite; }
     .beetle-blink .lid-right { animation-delay:.025s; }
-    .beetle-blink .lid-line { fill:none; stroke:#76412f; stroke-width:1.6; stroke-linecap:round; transform-box:fill-box; transform-origin:center; transform:scaleY(0); animation:beetle-blink 6.3s ease-in-out infinite; }
+    .beetle-blink .lid-line { fill:none; stroke:#76412f; stroke-width:1.6; stroke-linecap:round; transform-box:fill-box; transform-origin:center; transform:scaleY(0); opacity:0; animation:beetle-blink 6.3s ease-in-out infinite; }
     .beetle-blink .lid-line-right { animation-delay:.025s; }
     .beetle-head.is-hover-blinking .beetle-blink .lid,
     .beetle-head.is-hover-blinking .beetle-blink .lid-line { animation:beetle-blink-now .24s ease-in-out both; }
@@ -193,8 +199,8 @@
     @keyframes glow { from { opacity: .08; } 45% { opacity: .72; } to { opacity: .16; } }
     @keyframes wander { from { translate: -3px 2px; } to { translate: 4px -5px; } }
     @keyframes water { from { transform: translate3d(-1.5%,0,0) scaleY(.94); opacity: .55; } to { transform: translate3d(1.5%,2px,0) scaleY(1.04); opacity: .96; } }
-    @keyframes beetle-blink { 0%,88%,100% { transform:scaleY(0); } 89.2%,91% { transform:scaleY(1); } 92.2% { transform:scaleY(0); } }
-    @keyframes beetle-blink-now { 0%,100% { transform:scaleY(0); } 28%,68% { transform:scaleY(1); } }
+    @keyframes beetle-blink { 0%,88%,100% { transform:scaleY(0); opacity:0; } 89.2%,91% { transform:scaleY(1); opacity:1; } 92.2% { transform:scaleY(0); opacity:0; } }
+    @keyframes beetle-blink-now { 0%,100% { transform:scaleY(0); opacity:0; } 28%,68% { transform:scaleY(1); opacity:1; } }
     @keyframes head-wobble { 0%,100% { rotate:-1.1deg; } 50% { rotate:1.2deg; } }
     @media (max-width: 700px) {
       .scene { min-height: 100svh; }
@@ -232,6 +238,7 @@
       .msg { font-size:14.5px; padding:10px 14px 11px; border-radius:14px; max-width:92%; }
       .msg-bot::before { font-size:21px; }
       .music-bars { display:none; }
+      .music-title { position:absolute; right:0; bottom:128px; max-width:80vw; }
       .question-form input::placeholder { font-size:12px; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -264,6 +271,7 @@
   <main class="scene" aria-label="Me.Mori Class — cuộc trò chuyện bên rừng">
     <img class="artwork" src="assets/paper/forest2/composite.webp" alt="Bọ cánh cứng nhỏ bên hồ trong khu rừng đêm, dưới ánh trăng." fetchpriority="high">
     <div class="forest-paper" aria-hidden="true"></div>
+    <div class="load-bar" aria-hidden="true"></div>
     <div class="shade" aria-hidden="true"></div>
     <div class="cursor-aura" aria-hidden="true"></div>
     <div class="wind-layer" aria-hidden="true"></div>
@@ -279,7 +287,7 @@
       <i class="firefly" style="--x:81%;--y:77%;--size:3px;--duration:5.8s;--delay:-2.5s"></i>
     </div>
     <div class="water-glimmer" aria-hidden="true"></div>
-    <div class="beetle-head" aria-hidden="true"><svg class="beetle-head-svg" viewBox="0 0 175 160" preserveAspectRatio="none"><image href="assets/paper/forest2/06-beetle-head.webp" x="-1145" y="-460" width="1672" height="941" preserveAspectRatio="none"/><g class="beetle-blink"><ellipse class="lid lid-left" cx="37" cy="99" rx="8" ry="10"/><path class="lid-line" d="M29 100 Q37 95 45 100"/><ellipse class="lid lid-right" cx="91" cy="110" rx="9" ry="10"/><path class="lid-line lid-line-right" d="M82 111 Q91 105 100 111"/></g></svg></div>
+    <div class="beetle-head" aria-hidden="true"><svg class="beetle-head-svg" viewBox="0 0 175 160" preserveAspectRatio="none"><image href="assets/paper/forest3/06-beetle-head.webp" x="8" y="9" width="155" height="139" preserveAspectRatio="none"/><g class="beetle-blink"><ellipse class="lid lid-left" cx="37" cy="99" rx="8" ry="10"/><path class="lid-line" d="M29 100 Q37 95 45 100"/><ellipse class="lid lid-right" cx="91" cy="110" rx="9" ry="10"/><path class="lid-line lid-line-right" d="M82 111 Q91 105 100 111"/></g></svg></div>
 
     <div class="brand-mark" aria-label="Me.Mori Class"><span class="brand-label"><span>Me.Mori</span><small>CLASS</small></span></div>
     <form class="question-form" aria-label="Hỏi Me.Mori" lang="vi">
@@ -364,6 +372,7 @@
         const imageLeft = box.left + (box.width - renderedWidth) * positionX - scene.getBoundingClientRect().left;
         const imageTop = box.top + (box.height - renderedHeight) * positionY - scene.getBoundingClientRect().top;
         scene.style.setProperty('--art-scale', String(scale));
+        artwork.style.backgroundPosition = getComputedStyle(artwork).objectPosition;
         if (paper) paper.layout(imageLeft, imageTop, scale);
         for (const [element, x, y, width, height] of sharpCopy) {
           element.style.left = `${imageLeft + x * scale}px`;
@@ -500,35 +509,39 @@
       });
 
       // ---- Paper scene: the painting cut into paper layers that sway in the breeze (assets/paper/forest) ----
-      const paper = window.PaperScene ? PaperScene.create(document.querySelector('.forest-paper'), {
+      // Slow connections keep the still image; everything else loads the moving layers in the background.
+      const conn = navigator.connection || {};
+      const lightMode = conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '');
+      const loadBar = document.querySelector('.load-bar');
+      const paper = window.PaperScene && !lightMode ? PaperScene.create(document.querySelector('.forest-paper'), {
         width: 1672, height: 941,
         layers: [
-          { src:'assets/paper/forest2/01-background.webp', x:0, y:0, w:1672, h:941, depth:0 },
-          { src:'assets/paper/forest2/01b-rear-tree-left-trunk.webp', x:0, y:0, w:1672, h:941, depth:.25 },
-          { src:'assets/paper/forest2/01b-rear-tree-left-twigs.webp', x:0, y:0, w:1672, h:941, ox:260, oy:420, depth:.25, sway:{ amp:0.35, period:6.8, bend:.5, gust:0.875 } },
-          { src:'assets/paper/forest2/01c-rear-tree-right-trunk.webp', x:0, y:0, w:1672, h:941, depth:.25 },
-          { src:'assets/paper/forest2/01c-rear-tree-right-twigs.webp', x:0, y:0, w:1672, h:941, ox:1380, oy:420, depth:.25, sway:{ amp:0.35, period:7.4, bend:.5, gust:0.875 } },
-          { src:'assets/paper/forest2/02-trees-left-trunk.webp', x:0, y:0, w:1672, h:941, depth:.25 },
-          { src:'assets/paper/forest2/02-trees-left-twigs.webp', x:0, y:0, w:1672, h:941, ox:120, oy:520, depth:.25, sway:{ amp:0.45, period:6.2, bend:.5, gust:1.125 } },
-          { src:'assets/paper/forest2/03-trees-right-trunk.webp', x:0, y:0, w:1672, h:941, depth:.25 },
-          { src:'assets/paper/forest2/03-trees-right-twigs.webp', x:0, y:0, w:1672, h:941, ox:1560, oy:520, depth:.25, sway:{ amp:0.45, period:6.6, bend:.5, gust:1.125 } },
-          { src:'assets/paper/forest2/04-lake-crop.webp', x:70, y:351, w:1151, h:526, depth:.2, className:'lake-ripple' },
-          { src:'assets/paper/forest2/05-main-bank.webp', x:0, y:0, w:1672, h:941, depth:0.5 },
-          { src:'assets/paper/forest2/07-beetle-body.webp', x:0, y:0, w:1672, h:941, depth:0.5 },
-          { src:'assets/paper/forest2/08-overhead-leaves.webp', x:0, y:0, w:1672, h:941, ox:850, oy:-40, depth:0.45, shadow:true, sway:{ amp:0.45, period:8, bend:0.55 } },
-          { src:'assets/paper/forest2/09-foreground-left.webp', x:0, y:0, w:1672, h:941, ox:150, oy:980, depth:1, sway:{ amp:0.5, period:7.5, bend:0.7 } },
-          { src:'assets/paper/forest2/10-foreground-bottom.webp', x:0, y:0, w:1672, h:941, ox:930, oy:990, depth:0.9, sway:{ amp:0.45, period:5.6, bend:0.75 } },
-          { src:'assets/paper/forest2/11-foreground-right.webp', x:0, y:0, w:1672, h:941, ox:1500, oy:990, depth:0.9, sway:{ amp:0.5, period:6.4, bend:0.7 } }
+          { src:'assets/paper/forest3/back.webp', x:0, y:0, w:1672, h:941, depth:0 },
+          { src:'assets/paper/forest3/01b-rear-tree-left-twigs.webp', x:0, y:0, w:734, h:941, ox:260, oy:420, depth:0.25, sway:{ amp:0.35, period:6.8, bend:0.5, gust:0.9 } },
+          { src:'assets/paper/forest3/01c-rear-tree-right-twigs.webp', x:553, y:0, w:1119, h:941, ox:1380, oy:420, depth:0.25, sway:{ amp:0.35, period:7.4, bend:0.5, gust:0.9 } },
+          { src:'assets/paper/forest3/front-trunks.webp', x:0, y:0, w:1672, h:941, depth:0.25 },
+          { src:'assets/paper/forest3/02-trees-left-twigs.webp', x:94, y:0, w:544, h:941, ox:120, oy:520, depth:0.25, sway:{ amp:0.45, period:6.2, bend:0.5, gust:1.1 } },
+          { src:'assets/paper/forest3/03-trees-right-twigs.webp', x:764, y:0, w:810, h:941, ox:1560, oy:520, depth:0.25, sway:{ amp:0.45, period:6.6, bend:0.5, gust:1.1 } },
+          { src:'assets/paper/forest3/lake.webp', x:70, y:351, w:1151, h:526, depth:0.2, className:'lake-ripple' },
+          { src:'assets/paper/forest3/bank-beetle.webp', x:0, y:17, w:1672, h:924, depth:0.5 },
+          { src:'assets/paper/forest3/08-overhead-leaves.webp', x:496, y:0, w:694, h:210, ox:850, oy:-40, depth:0.45, shadow:true, sway:{ amp:0.45, period:8, bend:0.55 } },
+          { src:'assets/paper/forest3/09-foreground-left.webp', x:0, y:332, w:588, h:609, ox:150, oy:980, depth:1, sway:{ amp:0.5, period:7.5, bend:0.7 } },
+          { src:'assets/paper/forest3/10-foreground-bottom.webp', x:578, y:726, w:704, h:215, ox:930, oy:990, depth:0.9, sway:{ amp:0.45, period:5.6, bend:0.75 } },
+          { src:'assets/paper/forest3/11-foreground-right.webp', x:1217, y:728, w:455, h:213, ox:1500, oy:990, depth:0.9, sway:{ amp:0.5, period:6.4, bend:0.7 } }
         ],
+        preload: ['assets/paper/forest3/06-beetle-head.webp'],
+        onProgress: p => { loadBar.style.transform = `scaleX(${p})`; },
         glows: [[317,297],[337,541],[342,617],[927,602],[831,662],[1255,393],[1417,589],[1527,278],[1574,757],[1473,815]]
       }) : null;
       if (paper) {
-        paper.ready.then(() => {
+        paper.ready.then(() => paper.reveal()).then(() => {
           scene.classList.add('has-paper');
-          paper.enter();
-        });
-        paper.follow(document.querySelector('.beetle-head'), '07-beetle-body'); // head moves with its body
+          loadBar.classList.add('is-done');
+        }).catch(() => loadBar.classList.add('is-done')); // a failed layer: keep the still image
+        paper.follow(document.querySelector('.beetle-head'), 'bank-beetle'); // head moves with its body
         PaperScene.linkTransitions(paper);
+      } else {
+        loadBar.remove();
       }
 
       if (artwork.complete) placeHotspots();
@@ -644,12 +657,16 @@
         // try right away; browsers that block sound start it on the first tap / key outside these buttons
         if (wanted) play().then(ok => {
           if (ok) return;
+          // phones only count a finished tap (pointerup / touchend / click) as permission to play sound
+          const kinds = ['pointerup', 'touchend', 'click', 'keydown'];
+          title.textContent = 'Chạm vào màn hình để nghe tiếng rừng';
+          title.classList.add('is-visible');
           const start = event => {
             if (box.contains(event.target)) return;
-            ['pointerdown', 'keydown'].forEach(t => document.removeEventListener(t, start, true));
+            kinds.forEach(t => document.removeEventListener(t, start, true));
             if (wanted && !box.classList.contains('is-playing')) play();
           };
-          ['pointerdown', 'keydown'].forEach(t => document.addEventListener(t, start, true));
+          kinds.forEach(t => document.addEventListener(t, start, true));
         });
         document.addEventListener('visibilitychange', () => {
           if (!ctx) return;
