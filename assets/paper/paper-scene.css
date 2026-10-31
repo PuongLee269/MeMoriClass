@@ -1,0 +1,10 @@
+/* PaperScene: layered paper-cut artwork. The stage holds layers at the artwork's own pixel size;
+   script scales and places it exactly like `object-fit: cover`. */
+.paper-stage { position:absolute; left:0; top:0; transform-origin:0 0; pointer-events:none; contain:layout style; }
+.paper-layer { position:absolute; display:block; max-width:none; user-select:none; will-change:transform; backface-visibility:hidden; }
+/* soft paper depth: each cut-out casts a small shadow on the sheet behind it */
+.paper-layer.has-shadow { filter:drop-shadow(0 calc(5px * var(--paper-depth, 1)) calc(9px * var(--paper-depth, 1)) rgba(4, 12, 10, .42)); }
+.paper-glow { position:absolute; width:52px; height:52px; margin:-26px 0 0 -26px; border-radius:50%; pointer-events:none; mix-blend-mode:screen; opacity:.12;
+  background:radial-gradient(circle, #ffeaa4f5 0, #ffd96a66 30%, #ffc84a00 70%); animation:paper-glow var(--d, 4s) ease-in-out var(--dl, 0s) infinite alternate; }
+@keyframes paper-glow { from { opacity:.1; transform:scale(.75); } to { opacity:.9; transform:scale(1.15); } }
+@media (prefers-reduced-motion: reduce) { .paper-glow { animation:none; opacity:.4; } }
