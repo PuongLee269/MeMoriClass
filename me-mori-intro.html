@@ -613,7 +613,8 @@
         }
         async function play() {
           ensureContext();
-          try { await ctx.resume(); } catch {}
+          // resume() stays pending until the browser allows sound, so don't wait on it forever
+          await Promise.race([ctx.resume().catch(() => {}), new Promise(r => setTimeout(r, 400))]);
           if (ctx.state !== 'running') { setUI(false); return false; }
           try { await startBed(); } catch { setUI(false); return false; }
           setUI(true); fade(VOLUME, 2.5); showTitle(); scheduleEvent();
