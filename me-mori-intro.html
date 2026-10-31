@@ -128,6 +128,8 @@
     .wind-streak path { fill:none; stroke:url(#wind-grad); stroke-width:1.7; stroke-linecap:round; stroke-dasharray:.3 2; stroke-dashoffset:.3; }
     /* Paper layers sit over the still image (the still stays as fallback until they are ready). */
     .forest-paper { z-index:-4; }
+    .lake-ripple { filter:url(#lake-ripple); }
+    @media (prefers-reduced-motion: reduce) { .lake-ripple { filter:none; } }
     .scene.has-paper .artwork { visibility:hidden; }
     /* Chat: focusing the box clears the headline and opens the dialogue in its place. */
     .hero-copy { transition:opacity .4s ease, transform .4s ease; }
@@ -224,6 +226,14 @@
       <radialGradient id="g-light" cx=".3" cy=".22" r=".75"><stop offset="0" stop-color="#fff6c8" stop-opacity=".5"/><stop offset=".55" stop-color="#fff6c8" stop-opacity=".08"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></radialGradient>
       <linearGradient id="wind-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="0"><stop offset="0" stop-color="#f4e7c4" stop-opacity="0"/><stop offset=".5" stop-color="#f4e7c4" stop-opacity=".75"/><stop offset="1" stop-color="#f4e7c4" stop-opacity="0"/></linearGradient>
     </defs>
+  </svg>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="lake-ripple" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.004 0.045" numOctaves="2" seed="7" result="n">
+        <animate attributeName="baseFrequency" dur="9s" values="0.004 0.045;0.005 0.052;0.004 0.045" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
   </svg>
   <main class="scene" aria-label="Me.Mori Class — cuộc trò chuyện bên rừng">
     <img class="artwork" src="assets/paper/forest2/composite.webp" alt="Bọ cánh cứng nhỏ bên hồ trong khu rừng đêm, dưới ánh trăng." fetchpriority="high">
@@ -457,11 +467,15 @@
         width: 1672, height: 941,
         layers: [
           { src:'assets/paper/forest2/01-background.webp', x:0, y:0, w:1672, h:941, depth:0 },
-          { src:'assets/paper/forest2/01b-rear-tree-left.webp', x:0, y:0, w:1672, h:941, ox:210, oy:941, depth:0.15, shadow:true, sway:{ amp:0.25, period:11, bend:0.3 } },
-          { src:'assets/paper/forest2/01c-rear-tree-right.webp', x:0, y:0, w:1672, h:941, ox:1430, oy:941, depth:0.15, shadow:true, sway:{ amp:0.25, period:12.5, bend:0.3 } },
-          { src:'assets/paper/forest2/02-trees-left.webp', x:0, y:0, w:1672, h:941, ox:140, oy:941, depth:0.35, shadow:true, sway:{ amp:0.4, period:9, bend:0.35 } },
-          { src:'assets/paper/forest2/03-trees-right.webp', x:0, y:0, w:1672, h:941, ox:1560, oy:941, depth:0.35, shadow:true, sway:{ amp:0.4, period:9.8, bend:0.35 } },
-          { src:'assets/paper/forest2/04-lake.webp', x:0, y:0, w:1672, h:941, depth:0.2 },
+          { src:'assets/paper/forest2/01b-rear-tree-left-trunk.webp', x:0, y:0, w:1672, h:941, depth:.25 },
+          { src:'assets/paper/forest2/01b-rear-tree-left-twigs.webp', x:0, y:0, w:1672, h:941, ox:260, oy:420, depth:.25, sway:{ amp:0.35, period:6.8, bend:.5, gust:0.875 } },
+          { src:'assets/paper/forest2/01c-rear-tree-right-trunk.webp', x:0, y:0, w:1672, h:941, depth:.25 },
+          { src:'assets/paper/forest2/01c-rear-tree-right-twigs.webp', x:0, y:0, w:1672, h:941, ox:1380, oy:420, depth:.25, sway:{ amp:0.35, period:7.4, bend:.5, gust:0.875 } },
+          { src:'assets/paper/forest2/02-trees-left-trunk.webp', x:0, y:0, w:1672, h:941, depth:.25 },
+          { src:'assets/paper/forest2/02-trees-left-twigs.webp', x:0, y:0, w:1672, h:941, ox:120, oy:520, depth:.25, sway:{ amp:0.45, period:6.2, bend:.5, gust:1.125 } },
+          { src:'assets/paper/forest2/03-trees-right-trunk.webp', x:0, y:0, w:1672, h:941, depth:.25 },
+          { src:'assets/paper/forest2/03-trees-right-twigs.webp', x:0, y:0, w:1672, h:941, ox:1560, oy:520, depth:.25, sway:{ amp:0.45, period:6.6, bend:.5, gust:1.125 } },
+          { src:'assets/paper/forest2/04-lake-crop.webp', x:70, y:351, w:1151, h:526, depth:.2, className:'lake-ripple' },
           { src:'assets/paper/forest2/05-main-bank.webp', x:0, y:0, w:1672, h:941, depth:0.5 },
           { src:'assets/paper/forest2/07-beetle-body.webp', x:0, y:0, w:1672, h:941, depth:0.5 },
           { src:'assets/paper/forest2/08-overhead-leaves.webp', x:0, y:0, w:1672, h:941, ox:850, oy:-40, depth:0.45, shadow:true, sway:{ amp:1.0, period:8, bend:0.3 } },

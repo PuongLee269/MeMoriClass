@@ -33,7 +33,7 @@
 
     const layers = config.layers.map((def, index) => {
       const el = document.createElement('img');
-      el.className = 'paper-layer' + (def.shadow ? ' has-shadow' : '');
+      el.className = 'paper-layer' + (def.shadow ? ' has-shadow' : '') + (def.className ? ' ' + def.className : '');
       el.src = def.src;
       el.alt = '';
       el.decoding = 'async';
