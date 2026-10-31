@@ -111,11 +111,12 @@
         L.el.style.transform = `translate3d(${(parX * d + L.ix).toFixed(2)}px,${(parY * d + L.iy).toFixed(2)}px,0) rotate(${(angle + L.ir).toFixed(3)}deg) skewX(${bend.toFixed(3)}deg)`;
         if (L.io !== L._io) { L.el.style.opacity = String(L.io); L._io = L.io; }
       }
-      if (document.hidden) { running = false; return; }
+      // nothing moves under reduced motion: stop after this frame (a tween restarts the loop)
+      if (document.hidden || (still && !tween)) { running = false; return; }
       raf = global.requestAnimationFrame(loop);
     }
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden && !running) { last = performance.now(); raf = global.requestAnimationFrame(loop); }
+      if (!document.hidden && !running && !reduceMotion.matches) { last = performance.now(); raf = global.requestAnimationFrame(loop); }
     });
     raf = global.requestAnimationFrame(loop);
 
@@ -152,7 +153,7 @@
           });
         }));
       },
-      exit({ duration = 650, stagger = 60 } = {}) {
+      exit({ duration = 520, stagger = 45 } = {}) {
         if (reduceMotion.matches) return Promise.resolve();
         const order = [...layers].reverse();
         const total = duration + stagger * order.length;
