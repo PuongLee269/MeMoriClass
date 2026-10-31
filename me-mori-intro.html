@@ -131,6 +131,26 @@
     @media (hover: hover) and (pointer: fine) and (min-width: 761px) { .lake-ripple { filter:url(#lake-ripple); } }
     @media (prefers-reduced-motion: reduce) { .lake-ripple { filter:none; } }
     .scene.has-paper .artwork { visibility:hidden; }
+    /* Loading screen: same night-forest look; hides the scene until every layer is ready */
+    .loader { position:fixed; inset:0; z-index:50; display:grid; place-items:center; background:radial-gradient(ellipse at 50% 40%,#173a30 0%,#0b1918 60%,#06100e 100%); transition:opacity .9s ease, visibility .9s; }
+    .loader.is-done { opacity:0; visibility:hidden; }
+    .loader-inner { display:grid; justify-items:center; gap:14px; padding:0 24px; text-align:center; }
+    .loader-logo { display:flex; flex-direction:column; align-items:center; font:400 clamp(44px,8vw,64px)/.8 "Oooh Baby","Segoe Script",cursive; color:#f8ebcb; text-shadow:0 0 18px #ffd98a40; }
+    .loader-logo small { margin-top:10px; font:400 10px/1 Georgia,serif; letter-spacing:.5em; }
+    .loader-text { margin:4px 0 0; font:400 14px/1.4 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif; color:#d9cfae; }
+    .loader-track { width:min(220px,60vw); height:2px; border-radius:2px; background:#f4e7c41f; overflow:hidden; }
+    .loader-track span { display:block; height:100%; width:100%; transform-origin:0 50%; transform:scaleX(.04); background:linear-gradient(90deg,#d9c27a,#fff3c8); box-shadow:0 0 8px #ffd98a; transition:transform .4s ease; }
+    .loader-flies { position:relative; width:160px; height:40px; }
+    .loader-flies i { position:absolute; width:5px; height:5px; border-radius:50%; background:#ffe8a4; box-shadow:0 0 10px 3px #ffd97d88; animation:loader-fly 3.2s ease-in-out infinite; }
+    .loader-flies i:nth-child(1) { left:10%; top:60%; animation-delay:-.4s; } .loader-flies i:nth-child(2) { left:32%; top:20%; animation-delay:-1.2s; }
+    .loader-flies i:nth-child(3) { left:52%; top:70%; animation-delay:-2s; } .loader-flies i:nth-child(4) { left:72%; top:30%; animation-delay:-.8s; } .loader-flies i:nth-child(5) { left:88%; top:65%; animation-delay:-2.6s; }
+    @keyframes loader-fly { 0%,100% { transform:translate(0,0); opacity:.25; } 50% { transform:translate(6px,-9px); opacity:1; } }
+    /* Glow that follows the mouse; on phones a small glow follows the finger while touching */
+    .pointer-glow { position:absolute; z-index:5; left:0; top:0; width:220px; height:220px; margin:-110px 0 0 -110px; border-radius:50%; pointer-events:none; opacity:0; mix-blend-mode:screen;
+      background:radial-gradient(circle,#ffe8a640 0%,#ffe2a01f 35%,#ffe2a000 70%); transition:opacity .35s ease; will-change:transform; }
+    .pointer-glow.is-on { opacity:1; }
+    .pointer-glow.is-touch { width:120px; height:120px; margin:-60px 0 0 -60px; background:radial-gradient(circle,#fff0c066 0%,#ffe2a02e 38%,#ffe2a000 70%); }
+    @media (prefers-reduced-motion: reduce) { .loader-flies i { animation:none; } }
     /* tiny inline preview shows instantly while the still image downloads */
     .artwork { background:#0b1918 url(data:image/webp;base64,UklGRtACAABXRUJQVlA4IMQCAABwDgCdASpAACQAPrVMnkonJKKhrVzLaOAWiWgAs7NVjUlTRCQubfrnmWas3tjQbhZbem8Z8CuJ2LWydwJb662dN/F7SYWnjRn0wxnTefLOUvqOhSzdMZPzlZRZqFrX3LxwYyuGR7Fr/+7MDr2+7a9w7HGMrKI1axQ3COLAAP7upuq12GUkQMbpIh5Y5nyoyRyMaGt9T0bKT4XTB+YyJdaa9I4+NbsVvwblW8W/kCa5jFV6ZKxD+TVRROAIP/I8rndPmfji9H3ZQLN+GI74Rq4v5kmEAf5mlChkuwCVOYGR6Fd7scLHNCZyht+45XIV6h/QXahpP7ReWHmJqPlN9AhN0b48bzRRNufCO7u4L8fHsLqxkLVaSV2VsV6rU243UHmdXakAcpqam0UJC11VM4vfpvSOBfo8PBV83qqYoN8zwLsztyt6hUr7K2RCsOoEfP4QI9KTVQJDgEIqydXKc3RhyQHyBsKrHStWR0dHnpJOZQ587yjgoX+yysbuT7QRYCOfap/+jLiCFuyNwHqoiFdHqQsWFOCp5uA4xs6Z4Sr0GCzv6WaT09y3QyoxVuiAHU8Nase3PX9ZQvdDFPgwUdIknOH2euQk02Fw1Uy0X+AeFMl5xHnpd8lG9bxcNIjCK+eZcxtD1cQeaHx21DPYv8Ijh1rrHqK2rMR9M61IkfsCk4HSFF0LVeKfxc7TReDykNpVXTbNRkY5j2HnUvTBpEXyhnEQEanyq7cRXvtEjKfObdmmY/k/oZzjgOSAQMHgrRiZboQ98QAvoROSro7VIq9z6ZZEDsexLiicKFW63cHx0lNmvcVo7JrDZeKS8xgkup3O3LzfCFBe+XjukEyuNzr7kueiGCl55Rf42LGwMkwm+V041LMjHERBlNr5gashthUAOkY8RxtQZiVG83vWePV2oWL02COcJKzkvI/jSJeKrAAAAAA=) center / cover no-repeat; }
     .beetle-head { opacity:0; transition:opacity .6s ease; }
@@ -268,10 +288,19 @@
       <feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
   </svg>
+  <div class="loader" role="status" aria-live="polite">
+    <div class="loader-inner">
+      <div class="loader-logo">Me.Mori<small>CLASS</small></div>
+      <div class="loader-flies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <p class="loader-text">Bọ đang thắp đèn khu rừng…</p>
+      <div class="loader-track" aria-hidden="true"><span></span></div>
+    </div>
+  </div>
   <main class="scene" aria-label="Me.Mori Class — cuộc trò chuyện bên rừng">
     <img class="artwork" src="assets/paper/forest2/composite.webp" alt="Bọ cánh cứng nhỏ bên hồ trong khu rừng đêm, dưới ánh trăng." fetchpriority="high">
     <div class="forest-paper" aria-hidden="true"></div>
     <div class="load-bar" aria-hidden="true"></div>
+    <div class="pointer-glow" aria-hidden="true"></div>
     <div class="shade" aria-hidden="true"></div>
     <div class="cursor-aura" aria-hidden="true"></div>
     <div class="wind-layer" aria-hidden="true"></div>
@@ -312,6 +341,7 @@
           </div>
   </main>
   <script src="assets/paper/paper-scene.js"></script>
+  <script src="assets/bo-replies.js"></script>
   <script>
     (() => {
       const scene = document.querySelector('.scene');
@@ -513,12 +543,13 @@
       const conn = navigator.connection || {};
       const lightMode = conn.saveData || /(^|-)2g$/.test(conn.effectiveType || '');
       const loadBar = document.querySelector('.load-bar');
+      const loader = document.querySelector('.loader');
+      const loaderBar = loader.querySelector('.loader-track span');
+      let paperReady = false, paperFailed = false;
       const paper = window.PaperScene && !lightMode ? PaperScene.create(document.querySelector('.forest-paper'), {
         width: 1672, height: 941,
         layers: [
           { src:'assets/paper/forest3/back.webp', x:0, y:0, w:1672, h:941, depth:0 },
-          { src:'assets/paper/forest3/01b-rear-tree-left-twigs.webp', x:0, y:0, w:734, h:941, ox:260, oy:420, depth:0.25, sway:{ amp:0.35, period:6.8, bend:0.5, gust:0.9 } },
-          { src:'assets/paper/forest3/01c-rear-tree-right-twigs.webp', x:553, y:0, w:1119, h:941, ox:1380, oy:420, depth:0.25, sway:{ amp:0.35, period:7.4, bend:0.5, gust:0.9 } },
           { src:'assets/paper/forest3/front-trunks.webp', x:0, y:0, w:1672, h:941, depth:0.25 },
           { src:'assets/paper/forest3/02-trees-left-twigs.webp', x:94, y:0, w:544, h:941, ox:120, oy:520, depth:0.25, sway:{ amp:0.45, period:6.2, bend:0.5, gust:1.1 } },
           { src:'assets/paper/forest3/03-trees-right-twigs.webp', x:764, y:0, w:810, h:941, ox:1560, oy:520, depth:0.25, sway:{ amp:0.45, period:6.6, bend:0.5, gust:1.1 } },
@@ -530,18 +561,63 @@
           { src:'assets/paper/forest3/11-foreground-right.webp', x:1217, y:728, w:455, h:213, ox:1500, oy:990, depth:0.9, sway:{ amp:0.5, period:6.4, bend:0.7 } }
         ],
         preload: ['assets/paper/forest3/06-beetle-head.webp'],
-        onProgress: p => { loadBar.style.transform = `scaleX(${p})`; },
+        onProgress: p => { loadBar.style.transform = `scaleX(${p})`; loaderBar.style.transform = `scaleX(${Math.max(.04, p)})`; },
         glows: [[317,297],[337,541],[342,617],[927,602],[831,662],[1255,393],[1417,589],[1527,278],[1574,757],[1473,815]]
       }) : null;
       if (paper) {
-        paper.ready.then(() => paper.reveal()).then(() => {
-          scene.classList.add('has-paper');
-          loadBar.classList.add('is-done');
-        }).catch(() => loadBar.classList.add('is-done')); // a failed layer: keep the still image
+        paper.ready.then(() => { paperReady = true; }).catch(() => { paperFailed = true; });
         paper.follow(document.querySelector('.beetle-head'), 'bank-beetle'); // head moves with its body
         PaperScene.linkTransitions(paper);
       } else {
         loadBar.remove();
+      }
+
+      // ---- Start: wait for fonts, the still image and every paper layer (max 12 s), then lift the loading screen ----
+      const stillReady = new Promise(r => (artwork.complete && artwork.naturalWidth ? r() : (artwork.addEventListener('load', r, { once: true }), artwork.addEventListener('error', r, { once: true }))));
+      const fontsReady = document.fonts ? document.fonts.ready.catch(() => {}) : Promise.resolve();
+      const layersReady = paper ? paper.ready.catch(() => {}) : Promise.resolve();
+      const timeout = new Promise(r => setTimeout(r, 12000));
+      const minShow = new Promise(r => setTimeout(r, 1200));   // never just flash the loading screen
+      Promise.all([minShow, Promise.race([Promise.all([stillReady, fontsReady, layersReady]), timeout])]).then(() => {
+        placeHotspots();
+        loader.classList.add('is-done');
+        loadBar.classList.add('is-done');
+        if (paper && paperReady) {
+          paper.reveal(0);
+          scene.classList.add('has-paper');
+          paper.enter({ duration: 1000, stagger: 70 });
+        } else if (paper && !paperFailed) {
+          // slow network: show the still now, swap in the moving layers when they arrive
+          loadBar.classList.remove('is-done');
+          paper.ready.then(() => paper.reveal()).then(() => { scene.classList.add('has-paper'); loadBar.classList.add('is-done'); }).catch(() => loadBar.classList.add('is-done'));
+        }
+        setTimeout(() => loader.remove(), 1000);
+      });
+
+      // ---- Pointer glow: follows the mouse; on touch screens a small glow follows the finger ----
+      const glow = document.querySelector('.pointer-glow');
+      if (!reduceMotion.matches) {
+        const moveGlow = event => {
+          const box = scene.getBoundingClientRect();
+          glow.style.transform = `translate(${event.clientX - box.left}px,${event.clientY - box.top}px)`;
+        };
+        scene.addEventListener('pointermove', event => {
+          if (event.pointerType === 'touch' && !glow.classList.contains('is-touch')) return;
+          moveGlow(event);
+          glow.classList.add('is-on');
+        }, { passive: true });
+        scene.addEventListener('pointerdown', event => {
+          glow.classList.toggle('is-touch', event.pointerType === 'touch');
+          moveGlow(event);
+          glow.classList.add('is-on');
+        }, { passive: true });
+        const touchEnd = event => { if (event.pointerType === 'touch') glow.classList.remove('is-on'); };
+        scene.addEventListener('pointerup', touchEnd, { passive: true });
+        scene.addEventListener('pointercancel', touchEnd, { passive: true });
+        scene.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch') glow.classList.remove('is-on'); });
+        // dragging a finger can cancel pointer events on phones, so touch events drive the glow there
+        scene.addEventListener('touchmove', event => { const t = event.touches[0]; if (!t) return; glow.classList.add('is-touch', 'is-on'); moveGlow(t); }, { passive: true });
+        scene.addEventListener('touchend', () => glow.classList.remove('is-on'), { passive: true });
       }
 
       if (artwork.complete) placeHotspots();
@@ -796,27 +872,29 @@
       form.addEventListener('focusout', () => window.setTimeout(closeIdleChat, 150));
       field.addEventListener('keydown', event => { if (event.key === 'Escape') field.blur(); });
 
+      // Keyword answers (assets/bo-replies.js). Accents are ignored, longer matching phrases win.
+      const plain = text => text.toLocaleLowerCase('vi').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+      const replyBook = (typeof BO_REPLIES !== 'undefined' ? BO_REPLIES : []).map(entry => ({ ...entry, plainKeys: entry.keys.map(plain) }));
+      function findReply(question) {
+        const q = ` ${plain(question)} `;
+        let best = null, bestScore = 0;
+        for (const entry of replyBook) {
+          let score = 0;
+          for (const key of entry.plainKeys) if (key && q.includes(` ${key} `) || (key.length > 4 && q.includes(key))) score += key.length;
+          if (score > bestScore) { best = entry; bestScore = score; }
+        }
+        if (!best) return { reply: (typeof BO_FALLBACK !== 'undefined' && BO_FALLBACK) || 'Bọ chưa hiểu lắm, bạn hỏi lại giúp mình nhé.', target: null };
+        return { reply: best.reply, target: best.link && best.link.href, label: best.link && best.link.label };
+      }
+
       form.addEventListener('submit', event => {
         event.preventDefault();
         const question = field.value.trim();
         openChat();
         if (!question) { botSay('Bạn hãy nhập câu hỏi vào khung rồi gửi nhé.'); field.focus(); return; }
-        const normalized = question.toLocaleLowerCase('vi');
-        let reply = 'Màn trò chuyện này chưa được kết nối với trợ lý Me.Mori. Bạn có thể xem thông tin lớp học và gửi câu hỏi qua trang chính.';
-        let target = 'index.html#courses';
-        let label = 'Xem thông tin lớp học';
-        if (/đăng ký|dang ky|liên hệ|lien he/.test(normalized)) {
-          reply = 'Bạn có thể xem cách đăng ký và gửi lời nhắn cho Me.Mori tại trang chính.';
-          target = 'index.html#contact'; label = 'Đến mục đăng ký';
-        } else if (/workshop|tác phẩm|tac pham|video|bài học|bai hoc/.test(normalized)) {
-          reply = 'Trang chính có thông tin workshop, nội dung học và các tác phẩm của Me.Mori.';
-          target = 'index.html#workshops'; label = 'Xem workshop';
-        } else if (/lớp|lop|học|hoc|f2|khóa|khoa/.test(normalized)) {
-          reply = 'Me.Mori Class kết hợp điện ảnh, storytelling và kỹ năng sản xuất nội dung. Mở trang lớp để xem thông tin hiện có.';
-          target = 'index.html#courses'; label = 'Xem lớp học';
-        }
-        const link = document.createElement('a');
-        link.href = target; link.textContent = label;
+        const { reply, target, label } = findReply(question);
+        let link = null;
+        if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; }
         userAsked = true;
         addMessage('user').textContent = question;
         field.value = '';
