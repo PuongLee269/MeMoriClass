@@ -45,7 +45,7 @@
       });
       el.style.setProperty('--paper-depth', String(0.6 + (def.depth || 0)));
       stage.append(el);
-      return { el, def, seed: Math.random() * TAU, pos: 0, vel: 0, ix: 0, iy: 0, ir: 0, io: 1 };
+      return { el, def, seed: Math.random() * TAU, pos: 0, vel: 0, gusts: [], ix: 0, iy: 0, ir: 0, io: 1 };
     });
 
     (config.glows || []).forEach(([x, y], i) => {
@@ -102,10 +102,15 @@
         const period = s.period || 6;
         // two waves with unrelated periods: a breeze that never visibly repeats
         const breeze = amp * (0.72 * Math.sin(TAU * time / period + L.seed) + 0.28 * Math.sin(TAU * time / (period * 0.53) + L.seed * 1.7));
-        // damped spring for gust response
-        L.vel += (-16 * L.pos - 3.4 * L.vel) * dt;
+        // soft spring pushed by gusts that swell and fade (no sudden kick)
+        let force = 0;
+        if (L.gusts.length) {
+          L.gusts = L.gusts.filter(g => now - g.t0 < g.dur);
+          for (const g of L.gusts) { const u = (now - g.t0) / g.dur; if (u > 0) force += g.s * Math.sin(Math.PI * u) ** 2; }
+        }
+        L.vel += (-6 * L.pos - 2.6 * L.vel + force * 6) * dt;
         L.pos += L.vel * dt;
-        const angle = breeze + L.pos * (s.gust ?? amp * 2.2);
+        const angle = breeze + L.pos * (s.gust ?? amp * 1.3);
         const bend = angle * (s.bend ?? 0.5);
         const d = L.def.depth || 0;
         L.el.style.transform = `translate3d(${(parX * d + L.ix).toFixed(2)}px,${(parY * d + L.iy).toFixed(2)}px,0) rotate(${(angle + L.ir).toFixed(3)}deg) skewX(${bend.toFixed(3)}deg)`;
@@ -131,7 +136,7 @@
         for (const L of layers) {
           if (!L.def.sway) continue;
           const centre = (L.def.x + L.def.w / 2) / config.width;
-          global.setTimeout(() => { L.vel += 2.6 * strength; }, centre * travelMs);
+          L.gusts.push({ t0: performance.now() + centre * travelMs, dur: 1600 + Math.random() * 500, s: strength });
         }
       },
       enter({ duration = 1100, stagger = 90 } = {}) {

@@ -153,6 +153,28 @@
     .msg-bot a { display:inline-block; margin-top:6px; font-weight:500; font-size:.92em; color:#ffd98a; text-underline-offset:3px; white-space:nowrap; }
     .msg-user { align-self:flex-end; color:#2d2416; border-bottom-right-radius:4px;
       background:linear-gradient(170deg,#f8edcfee,#e9d7a8e6); border:1px solid #fff4d6aa; box-shadow:0 8px 22px #04100c66, inset 0 -2px 0 #c9ad6a55; font-weight:500; }
+    /* Music corner: moss-glass buttons with a gold ring, bottom-right */
+    .music { position:absolute; z-index:6; right:calc(max(16px, env(safe-area-inset-right, 0px)) + 4px); bottom:calc(max(16px, env(safe-area-inset-bottom, 0px)) + 4px); display:flex; align-items:center; gap:8px; }
+    .music-btn { display:grid; place-items:center; width:44px; height:44px; padding:0; border-radius:50%; cursor:pointer; color:#f2d58e;
+      background:radial-gradient(circle at 35% 30%,#1d4335e6,#0b1f19e6); border:1px solid #d9c27a99; box-shadow:0 6px 18px #04100c80, inset 0 0 0 3px #0b1f1955, inset 0 0 0 4px #e7cf8a22;
+      transition:transform .2s ease, box-shadow .2s ease, color .2s ease; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); }
+    .music-btn:hover { transform:translateY(-2px); color:#fff2c8; box-shadow:0 8px 22px #04100c90, 0 0 14px #ffd98a40, inset 0 0 0 3px #0b1f1955, inset 0 0 0 4px #e7cf8a33; }
+    .music-btn:active { transform:scale(.94); }
+    .music-btn:focus-visible { outline:2px solid #f4e7c4; outline-offset:3px; }
+    .music-btn svg { width:20px; height:20px; }
+    .music-toggle .icon-on, .music.is-playing .music-toggle .icon-off { display:none; }
+    .music.is-playing .music-toggle .icon-on { display:block; }
+    .music-bars { display:flex; align-items:flex-end; gap:2px; height:14px; margin-right:2px; opacity:0; transition:opacity .4s ease; }
+    .music-bars i { width:3px; height:4px; border-radius:2px; background:#f2d58e; }
+    .music.is-playing .music-bars { opacity:.85; }
+    .music.is-playing .music-bars i { animation:music-bar 1.1s ease-in-out infinite alternate; }
+    .music-bars i:nth-child(2) { animation-delay:-.4s !important; } .music-bars i:nth-child(3) { animation-delay:-.8s !important; }
+    @keyframes music-bar { from { height:3px; } to { height:14px; } }
+    .music-title { max-width:46vw; padding:6px 12px; border-radius:999px; font:500 13px/1.2 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif; color:#f6ecd0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      background:#0b1f19cc; border:1px solid #d9c27a66; opacity:0; transform:translateX(6px); transition:opacity .4s ease, transform .4s ease; pointer-events:none; }
+    .music-title.is-visible { opacity:1; transform:none; }
+    .music-title::before { content:"♪ "; color:#f2d58e; }
+    @media (prefers-reduced-motion: reduce) { .music.is-playing .music-bars i { animation:none; height:9px; } }
     @keyframes msg-in { from { opacity:0; transform:translateY(8px); } }
     .beetle-head.is-talking { animation:head-talk .44s ease-in-out infinite; }
     @keyframes head-talk { 0%,100% { rotate:-1deg; translate:0 0; } 50% { rotate:2.4deg; translate:0 -2px; } }
@@ -265,6 +287,18 @@
     <nav class="quiet-links" aria-label="Khám phá Me.Mori">
       <a href="index.html#courses">Lớp F2</a><a href="index.html#workshops">Tác phẩm</a><a href="index.html#contact">Đăng ký</a>
     </nav>
+    <div class="music" role="group" aria-label="Nhạc nền">
+      <span class="music-title" aria-live="polite"></span>
+      <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <button class="music-btn music-toggle" type="button" aria-pressed="false" aria-label="Bật nhạc nền">
+        <svg class="icon-off" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m16 9.5 5 5m0-5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <svg class="icon-on" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+      <button class="music-btn music-next" type="button" aria-label="Chuyển bài tiếp theo">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 6.5v11l8-5.5zM17.5 6.5v11" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      </button>
+      <audio class="music-audio" preload="none"></audio>
+    </div>
   </main>
   <script src="assets/paper/paper-scene.js"></script>
   <script>
@@ -478,10 +512,10 @@
           { src:'assets/paper/forest2/04-lake-crop.webp', x:70, y:351, w:1151, h:526, depth:.2, className:'lake-ripple' },
           { src:'assets/paper/forest2/05-main-bank.webp', x:0, y:0, w:1672, h:941, depth:0.5 },
           { src:'assets/paper/forest2/07-beetle-body.webp', x:0, y:0, w:1672, h:941, depth:0.5 },
-          { src:'assets/paper/forest2/08-overhead-leaves.webp', x:0, y:0, w:1672, h:941, ox:850, oy:-40, depth:0.45, shadow:true, sway:{ amp:1.0, period:8, bend:0.3 } },
-          { src:'assets/paper/forest2/09-foreground-left.webp', x:0, y:0, w:1672, h:941, ox:150, oy:980, depth:1, sway:{ amp:1.2, period:7.5, bend:0.45 } },
-          { src:'assets/paper/forest2/10-foreground-bottom.webp', x:0, y:0, w:1672, h:941, ox:930, oy:990, depth:0.9, sway:{ amp:1.0, period:5.6, bend:0.6 } },
-          { src:'assets/paper/forest2/11-foreground-right.webp', x:0, y:0, w:1672, h:941, ox:1500, oy:990, depth:0.9, sway:{ amp:1.2, period:6.4, bend:0.55 } }
+          { src:'assets/paper/forest2/08-overhead-leaves.webp', x:0, y:0, w:1672, h:941, ox:850, oy:-40, depth:0.45, shadow:true, sway:{ amp:0.45, period:8, bend:0.55 } },
+          { src:'assets/paper/forest2/09-foreground-left.webp', x:0, y:0, w:1672, h:941, ox:150, oy:980, depth:1, sway:{ amp:0.5, period:7.5, bend:0.7 } },
+          { src:'assets/paper/forest2/10-foreground-bottom.webp', x:0, y:0, w:1672, h:941, ox:930, oy:990, depth:0.9, sway:{ amp:0.45, period:5.6, bend:0.75 } },
+          { src:'assets/paper/forest2/11-foreground-right.webp', x:0, y:0, w:1672, h:941, ox:1500, oy:990, depth:0.9, sway:{ amp:0.5, period:6.4, bend:0.7 } }
         ],
         glows: [[317,297],[337,541],[342,617],[927,602],[831,662],[1255,393],[1417,589],[1527,278],[1574,757],[1473,815]]
       }) : null;
@@ -497,6 +531,79 @@
       artwork.addEventListener('load', placeHotspots, { once: true });
       new ResizeObserver(placeHotspots).observe(scene);
       window.addEventListener('resize', placeHotspots, { passive: true });
+
+      // ---- Background music: tries to start on load; browsers that block it start on the first tap/key ----
+      (() => {
+        const box = document.querySelector('.music');
+        const audio = box.querySelector('.music-audio');
+        const toggle = box.querySelector('.music-toggle');
+        const nextBtn = box.querySelector('.music-next');
+        const title = box.querySelector('.music-title');
+        const tracks = [
+          { title: 'Ru Bọ', src: 'assets/music/ru-bo.mp3' },
+          { title: 'Trăng Bên Hồ', src: 'assets/music/trang-ben-ho.mp3' },
+          { title: 'Đom Đóm', src: 'assets/music/dom-dom.mp3' }
+        ];
+        const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
+        let index = Number(store.get('memori-music-track')) || 0;
+        let wanted = store.get('memori-music') !== 'off';
+        let fadeTimer = 0, titleTimer = 0;
+        const VOLUME = 0.55;
+        function showTitle() {
+          title.textContent = tracks[index].title;
+          title.classList.add('is-visible');
+          clearTimeout(titleTimer);
+          titleTimer = setTimeout(() => title.classList.remove('is-visible'), 2600);
+        }
+        function fadeTo(target, ms, done) {
+          clearInterval(fadeTimer);
+          const start = audio.volume, t0 = performance.now();
+          fadeTimer = setInterval(() => {
+            const u = Math.min(1, (performance.now() - t0) / ms);
+            audio.volume = start + (target - start) * u;
+            if (u >= 1) { clearInterval(fadeTimer); done && done(); }
+          }, 40);
+        }
+        function setUI(on) {
+          box.classList.toggle('is-playing', on);
+          toggle.setAttribute('aria-pressed', String(on));
+          toggle.setAttribute('aria-label', on ? 'Tắt nhạc nền' : 'Bật nhạc nền');
+        }
+        function load(i) {
+          index = (i + tracks.length) % tracks.length;
+          store.set('memori-music-track', String(index));
+          audio.src = tracks[index].src;
+        }
+        function play() {
+          if (!audio.src) load(index);
+          audio.volume = 0;
+          return audio.play().then(() => { setUI(true); fadeTo(VOLUME, 1500); showTitle(); return true; }).catch(() => { setUI(false); return false; });
+        }
+        function stop() { fadeTo(0, 600, () => audio.pause()); setUI(false); }
+        toggle.addEventListener('click', () => {
+          if (box.classList.contains('is-playing')) { wanted = false; store.set('memori-music', 'off'); stop(); }
+          else { wanted = true; store.set('memori-music', 'on'); play(); }
+        });
+        nextBtn.addEventListener('click', () => {
+          load(index + 1);
+          if (wanted) play(); else showTitle();
+        });
+        audio.addEventListener('ended', () => { load(index + 1); play(); });
+        // autoplay: try now, otherwise on the first interaction outside the music buttons
+        if (wanted) play().then(ok => {
+          if (ok) return;
+          const start = event => {
+            if (box.contains(event.target)) return;
+            ['pointerdown', 'keydown'].forEach(t => document.removeEventListener(t, start, true));
+            if (wanted && !box.classList.contains('is-playing')) play();
+          };
+          ['pointerdown', 'keydown'].forEach(t => document.addEventListener(t, start, true));
+        });
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) { if (!audio.paused) audio.pause(); }
+          else if (wanted && box.classList.contains('is-playing')) audio.play().catch(() => {});
+        });
+      })();
 
       let pointerOverBeetle = false;
       let hoverBlinkTimeout = 0;
