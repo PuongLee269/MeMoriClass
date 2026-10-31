@@ -437,7 +437,8 @@
       else {
         const small = innerWidth < 760 || (navigator.connection && navigator.connection.saveData);
         sceneVideo.muted = true;
-        sceneVideo.src = small ? 'assets/motion/forest-loop-720.mp4' : 'assets/motion/forest-loop-1080.mp4';
+        const ext = sceneVideo.canPlayType('video/mp4; codecs="avc1.42E01E"') ? 'mp4' : 'webm';
+        sceneVideo.src = `assets/motion/forest-loop-${small ? 720 : 1080}.${ext}`;
         sceneVideo.addEventListener('playing', () => sceneVideo.classList.add('is-playing'), { once: true });
         const playScene = () => sceneVideo.play().catch(() => {});
         playScene();
