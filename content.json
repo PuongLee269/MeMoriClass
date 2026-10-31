@@ -95,22 +95,40 @@
     }
   ],
   "method": {
-    "eyebrow": "Phương pháp",
-    "title": "Trải nghiệm phẩm chất",
-    "text": "Mỗi buổi học tập trung vào một kỹ năng rõ ràng, có ví dụ, có thực hành và có feedback để học viên thấy tiến bộ ngay trong sản phẩm của mình."
+    "eyebrow": "Lộ trình",
+    "title": "Chương trình 6 môn học chuyên sâu",
+    "text": "Lộ trình học tập tích hợp đa chiều được dàn trang khoa học giúp bạn định hình tư duy cinematic bài bản."
   },
   "steps": [
     {
-      "title": "Đăng ký workshop",
-      "text": "Chọn chủ đề phù hợp với mục tiêu và kinh nghiệm hiện tại."
+      "title": "Tư duy thị giác",
+      "text": "Khai phá nhãn quan cinematic, học cách cảm nhận ánh sáng và xây dựng góc nhìn cá nhân độc đáo.",
+      "videoUrl": "https://www.youtube.com/watch?v=kXKm842UXiY"
     },
     {
-      "title": "Thực hành tại lớp",
-      "text": "Làm bài tập theo brief, nhận hướng dẫn và chỉnh sửa trực tiếp."
+      "title": "Kể chuyện bằng hình",
+      "text": "Ứng dụng nghệ thuật Storytelling cấu trúc Hollywood để biến ý tưởng thô thành kịch bản cuốn hút.",
+      "videoUrl": "https://www.youtube.com/watch?v=kXKm842UXiY"
     },
     {
-      "title": "Hoàn thiện sản phẩm",
-      "text": "Nhận feedback để cải thiện câu chuyện, nhịp dựng và hình ảnh."
+      "title": "Ngôn ngữ khung hình",
+      "text": "Làm chủ các quy tắc bố cục điện ảnh, hướng chuyển động máy và tạo nhịp điệu cảm xúc thị giác.",
+      "videoUrl": "https://www.youtube.com/watch?v=kXKm842UXiY"
+    },
+    {
+      "title": "Công cụ thiết bị",
+      "text": "Tối ưu hóa máy ảnh, điện thoại sẵn có và thiết lập ánh sáng cơ bản đạt hiệu quả hình ảnh tốt nhất.",
+      "videoUrl": "https://www.youtube.com/watch?v=kXKm842UXiY"
+    },
+    {
+      "title": "Hậu kỳ & Dựng phim",
+      "text": "Làm chủ phần mềm biên tập, cắt dựng footage thô nhịp nhàng, lồng ghép âm thanh đúng điểm rơi.",
+      "videoUrl": "https://www.youtube.com/watch?v=kXKm842UXiY"
+    },
+    {
+      "title": "Trải nghiệm thực tế",
+      "text": "Thực hành sản xuất dự án hoàn chỉnh ngay tại lớp và nhận đánh giá phản hồi chuyên sâu từng cá nhân.",
+      "videoUrl": "https://www.youtube.com/watch?v=kXKm842UXiY"
     }
   ],
   "cta": {
