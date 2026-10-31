@@ -221,13 +221,17 @@
       .hero-title { left:6%!important; top:31%!important; width:88%!important; height:auto!important; font-size:clamp(31px,8.2vw,42px)!important; line-height:1.06; }
       .hero-question { left:7%!important; top:38%!important; width:87%!important; height:auto!important; font-size:clamp(22px,5.9vw,30px)!important; line-height:1.18; white-space:normal; }
       .hero-question .copy-base { white-space:normal; }
-      .question-form { left:7%!important; top:54%!important; width:31%!important; height:7%!important; grid-template-columns:minmax(0,1fr) 34px; }
-      .quiet-links { left:7%!important; top:auto!important; bottom:18%!important; width:auto!important; height:auto!important; display:flex; gap:clamp(14px,5vw,28px); font-size:13px; }
+      .question-form { left:6%!important; top:auto!important; bottom:calc(max(16px, env(safe-area-inset-bottom, 0px)) + 62px)!important; width:88%!important; height:52px!important; grid-template-columns:minmax(0,1fr) 40px; padding:0 6px 0 14px; border-radius:26px; background:#0b1f19b8; border:1px solid #d9c27a80; box-shadow:0 8px 24px #04100c80; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
+      .question-form::after { display:none; }
+      .question-form input { font-size:16px!important; margin-top:0; }
+      .question-form input::placeholder { font-size:15px!important; }
+      .quiet-links { left:7%!important; top:auto!important; bottom:calc(max(16px, env(safe-area-inset-bottom, 0px)) + 8px)!important; width:auto!important; height:auto!important; display:flex; gap:clamp(14px,5vw,28px); font-size:13px; }
       .quiet-links a { position:static!important; top:auto!important; left:auto!important; width:auto!important; height:auto!important; padding:0; min-height:28px; min-width:0; }
       .brand-mark { left:4%!important; top:2%!important; width:120px!important; height:48px!important; }
-      .dialogue { left:7%!important; top:15%!important; width:86%!important; height:37%!important; }
+      .dialogue { left:6%!important; top:12%!important; width:88%!important; height:38%!important; }
       .msg { font-size:14.5px; padding:10px 14px 11px; border-radius:14px; max-width:92%; }
       .msg-bot::before { font-size:21px; }
+      .music-bars { display:none; }
       .question-form input::placeholder { font-size:12px; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -720,7 +724,7 @@
       scene.addEventListener('pointerleave', clearGlow);
 
       // ---- Chat: focusing the box clears the headline and opens the dialogue above it ----
-      let typeTimer = 0, replyTimer = 0, chatStarted = false, userAsked = false;
+      let typeTimer = 0, replyTimer = 0, chatStarted = false, userAsked = false, finishTyping = null;
       function addMessage(role) {
         const row = document.createElement('p');
         row.className = `msg msg-${role}`;
@@ -731,11 +735,13 @@
       }
       function botSay(text, link) {
         window.clearInterval(typeTimer);
+        if (finishTyping) finishTyping();
         const row = addMessage('bot');
         row.insertAdjacentHTML('afterbegin', '<svg class="flourish" viewBox="0 0 34 18" aria-hidden="true"><path d="M2 15c8-1 13-5 16-12M18 3c2 5 7 8 14 9M18 3c-3 1-5 3-5 6 3 0 5-2 5-6Zm0 0c3 0 6 2 7 5-3 1-6-1-7-5Z" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>');
         const node = document.createTextNode('');
         row.append(node);
         const done = () => {
+          finishTyping = null;
           node.data = text;
           if (link) row.append(' ', link);
           dialogue.setAttribute('aria-busy', 'false');
@@ -743,6 +749,7 @@
           dialogue.scrollTop = dialogue.scrollHeight;
         };
         if (reduceMotion.matches) { done(); return; }
+        finishTyping = done;
         dialogue.setAttribute('aria-busy', 'true');
         beetleHead.classList.add('is-talking');
         let i = 0;
