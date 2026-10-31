@@ -84,7 +84,8 @@
     }
 
     // ---- frame loop ----
-    let raf = 0, last = performance.now(), running = false;
+    let raf = 0, last = performance.now(), running = false, stageScale = 1;
+    const followers = [];
     const clockStart = performance.now();
     function loop(now) {
       running = true;
@@ -116,6 +117,12 @@
         L.el.style.transform = `translate3d(${(parX * d + L.ix).toFixed(2)}px,${(parY * d + L.iy).toFixed(2)}px,0) rotate(${(angle + L.ir).toFixed(3)}deg) skewX(${bend.toFixed(3)}deg)`;
         if (L.io !== L._io) { L.el.style.opacity = String(L.io); L._io = L.io; }
       }
+      // elements outside the stage (e.g. an animated head) that must move with one layer
+      for (const f of followers) {
+        const L = f.layer, d = L.def.depth || 0;
+        f.el.style.transform = `translate(${((parX * d + L.ix) * stageScale).toFixed(2)}px,${((parY * d + L.iy) * stageScale).toFixed(2)}px)`;
+        f.el.style.opacity = String(L.io);
+      }
       // nothing moves under reduced motion: stop after this frame (a tween restarts the loop)
       if (document.hidden || (still && !tween)) { running = false; return; }
       raf = global.requestAnimationFrame(loop);
@@ -129,7 +136,12 @@
       ready,
       layers,
       layout(left, top, scale) {
+        stageScale = scale;
         stage.style.transform = `translate(${left}px,${top}px) scale(${scale})`;
+      },
+      follow(el, srcPart) {
+        const layer = layers.find(L => L.def.src.includes(srcPart));
+        if (layer) followers.push({ el, layer });
       },
       gust(strength = 1, travelMs = 2600) {
         if (reduceMotion.matches) return;

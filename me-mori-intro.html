@@ -524,6 +524,7 @@
           scene.classList.add('has-paper');
           paper.enter();
         });
+        paper.follow(document.querySelector('.beetle-head'), '07-beetle-body'); // head moves with its body
         PaperScene.linkTransitions(paper);
       }
 
@@ -539,10 +540,11 @@
         const toggle = box.querySelector('.music-toggle');
         const nextBtn = box.querySelector('.music-next');
         const title = box.querySelector('.music-title');
+        const EXT = audio.canPlayType('audio/ogg; codecs="vorbis"') ? 'ogg' : 'mp3'; // ogg loops without the mp3 gap
         const tracks = [
-          { title: 'Ru Bọ', src: 'assets/music/ru-bo.mp3' },
-          { title: 'Trăng Bên Hồ', src: 'assets/music/trang-ben-ho.mp3' },
-          { title: 'Đom Đóm', src: 'assets/music/dom-dom.mp3' }
+          { title: 'Ru Bọ', src: 'assets/music/ru-bo.' + EXT },
+          { title: 'Trăng Bên Hồ', src: 'assets/music/trang-ben-ho.' + EXT },
+          { title: 'Đom Đóm', src: 'assets/music/dom-dom.' + EXT }
         ];
         const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
         let index = Number(store.get('memori-music-track')) || 0;
