@@ -114,9 +114,25 @@
       filter: blur(1.1px); transform: translateX(-2%); animation: water 13s ease-in-out infinite alternate;
     }
     .water-glimmer::after { inset: 37% -8% 4%; opacity: .56; filter: blur(2px); animation-duration: 18s; animation-direction: alternate-reverse; }
-    .wind-layer { position:absolute; z-index:1; inset:0; overflow:hidden; pointer-events:none; }
-    .wind-leaf { position:absolute; left:-14vw; top:var(--start-y); width:clamp(34px,5vw,74px); aspect-ratio:120/70; opacity:0; filter:drop-shadow(0 2px 3px #07120f80); animation:wind-flight var(--flight-duration,7s) cubic-bezier(.38,.03,.63,.98) var(--flight-delay,0s) both; will-change:transform,opacity; }
-    .wind-leaf svg { display:block; width:100%; height:100%; overflow:visible; }
+    /* Leaves + wind: painted-style SVG leaves flown with the Web Animations API (see script). */
+    .wind-layer, .wind-front { position:absolute; inset:0; overflow:hidden; pointer-events:none; }
+    .wind-layer { z-index:1; }
+    .wind-front { z-index:4; }
+    .leaf { position:absolute; left:0; top:0; opacity:0; pointer-events:none; will-change:transform,opacity; filter:drop-shadow(0 3px 4px #04100d85); }
+    .leaf svg { display:block; width:100%; height:100%; overflow:visible; }
+    .leaf.is-far { filter:drop-shadow(0 1px 2px #04100d60) blur(.6px); }
+    .leaf.is-near { filter:drop-shadow(0 7px 9px #04100d70) blur(2.4px); }
+    .wind-streak { position:absolute; left:0; top:0; width:clamp(260px,42vw,620px); aspect-ratio:5/1; opacity:0; pointer-events:none; will-change:transform,opacity; }
+    .wind-streak svg { display:block; width:100%; height:100%; overflow:visible; }
+    .wind-streak path { fill:none; stroke:url(#wind-grad); stroke-width:1.7; stroke-linecap:round; stroke-dasharray:.3 2; stroke-dashoffset:.3; }
+    /* Foliage sway: copies of the artwork, masked to one plant each (mask + origin are set in px by script). */
+    .sway-layer { pointer-events:none; animation:sway var(--dur,9s) ease-in-out var(--delay,0s) infinite alternate; will-change:transform; }
+    @keyframes sway { from { transform:rotate(calc(var(--amp,1deg) * -1)) translateX(calc(var(--tx,0px) * -1)); } to { transform:rotate(var(--amp,1deg)) translateX(var(--tx,0px)); } }
+    /* Painted fireflies get a soft pulse. */
+    .glow-spot { position:absolute; width:calc(50px * var(--art-scale)); aspect-ratio:1; margin:calc(-25px * var(--art-scale)) 0 0 calc(-25px * var(--art-scale)); border-radius:50%; pointer-events:none; mix-blend-mode:screen; opacity:.12; background:radial-gradient(circle,#ffeaa4f5 0,#ffd96a66 30%,#ffc84a00 70%); animation:spot-pulse var(--d,4s) ease-in-out var(--dl,0s) infinite alternate; }
+    @keyframes spot-pulse { from { opacity:.1; transform:scale(.75); } to { opacity:.9; transform:scale(1.15); } }
+    .beetle-head.is-talking { animation:head-talk .44s ease-in-out infinite; }
+    @keyframes head-talk { 0%,100% { rotate:-1deg; translate:0 0; } 50% { rotate:2.4deg; translate:0 -2px; } }
     .beetle-head { position:absolute; z-index:2; overflow:visible; pointer-events:none; transform-origin:48% 91%; animation:head-wobble 6.8s ease-in-out infinite; }
     .beetle-head-svg { display:block; width:100%; height:100%; overflow:visible; }
     .beetle-blink .lid { fill:#cf7852; stroke:#8f4c34; stroke-width:1.5; transform-box:fill-box; transform-origin:center; transform:scaleY(0); animation:beetle-blink 6.3s ease-in-out infinite; }
@@ -132,7 +148,6 @@
     @keyframes glow { from { opacity: .08; } 45% { opacity: .72; } to { opacity: .16; } }
     @keyframes wander { from { translate: -3px 2px; } to { translate: 4px -5px; } }
     @keyframes water { from { transform: translate3d(-1.5%,0,0) scaleY(.94); opacity: .55; } to { transform: translate3d(1.5%,2px,0) scaleY(1.04); opacity: .96; } }
-    @keyframes wind-flight { 0% { opacity:0; transform:translate3d(0,0,0) rotate(var(--start-rot,-25deg)) scale(var(--leaf-scale,.8)); } 9% { opacity:var(--leaf-opacity,.86); } 50% { opacity:var(--leaf-opacity,.86); transform:translate3d(58vw,var(--drift-y,5vh),0) rotate(calc(var(--start-rot,-25deg) + 185deg)) scale(var(--leaf-scale,.8)); } 92% { opacity:var(--leaf-opacity,.86); } 100% { opacity:0; transform:translate3d(128vw,var(--end-y,12vh),0) rotate(calc(var(--start-rot,-25deg) + 390deg)) scale(var(--leaf-scale,.8)); } }
     @keyframes beetle-blink { 0%,88%,100% { transform:scaleY(0); } 89.2%,91% { transform:scaleY(1); } 92.2% { transform:scaleY(0); } }
     @keyframes beetle-blink-now { 0%,100% { transform:scaleY(0); } 28%,68% { transform:scaleY(1); } }
     @keyframes head-wobble { 0%,100% { rotate:-1.1deg; } 50% { rotate:1.2deg; } }
@@ -173,15 +188,28 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .15s !important; }
       .artwork { transform: none; }
+      .sway-layer, .glow-spot, .wind-layer, .wind-front { display:none; }
     }
   </style>
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="g-gold" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#8d7a2c"/><stop offset=".5" stop-color="#c3ad4a"/><stop offset="1" stop-color="#ecdc84"/></linearGradient>
+      <linearGradient id="g-green" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#3a5733"/><stop offset=".55" stop-color="#6b8a45"/><stop offset="1" stop-color="#a9bf6a"/></linearGradient>
+      <linearGradient id="g-olive" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#55632f"/><stop offset=".6" stop-color="#8b9a4b"/><stop offset="1" stop-color="#c3c87f"/></linearGradient>
+      <linearGradient id="g-amber" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#7a4b24"/><stop offset=".55" stop-color="#b57d38"/><stop offset="1" stop-color="#e3b872"/></linearGradient>
+      <linearGradient id="g-petal" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#e6d3a6"/><stop offset=".6" stop-color="#f7ecc8"/><stop offset="1" stop-color="#fffaf0"/></linearGradient>
+      <radialGradient id="g-light" cx=".3" cy=".22" r=".75"><stop offset="0" stop-color="#fff6c8" stop-opacity=".5"/><stop offset=".55" stop-color="#fff6c8" stop-opacity=".08"/><stop offset="1" stop-color="#000" stop-opacity=".18"/></radialGradient>
+      <linearGradient id="wind-grad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="600" y2="0"><stop offset="0" stop-color="#f4e7c4" stop-opacity="0"/><stop offset=".5" stop-color="#f4e7c4" stop-opacity=".75"/><stop offset="1" stop-color="#f4e7c4" stop-opacity="0"/></linearGradient>
+    </defs>
+  </svg>
   <main class="scene" aria-label="Me.Mori Class — cuộc trò chuyện bên rừng">
     <img class="artwork" src="assets/me-mori-intro-clean.webp" alt="Bọ cánh cứng nhỏ bên hồ trong khu rừng đêm, dưới ánh trăng." fetchpriority="high">
     <div class="shade" aria-hidden="true"></div>
     <div class="cursor-aura" aria-hidden="true"></div>
     <div class="wind-layer" aria-hidden="true"></div>
+    <div class="wind-front" aria-hidden="true"></div>
     <h1 class="hero-copy hero-title"><span class="copy-base">Mình là Bọ.</span></h1>
     <p class="hero-copy hero-question"><span class="copy-base">Bạn đang tò mò điều gì?</span></p>
     <div class="fireflies" aria-hidden="true">
@@ -201,7 +229,7 @@
       <input id="question" name="question" type="text" lang="vi" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="true" placeholder="Hỏi Me.Mori…">
       <button class="send" type="submit" aria-label="Gửi câu hỏi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.2 11.6 20.5 3.8l-5.3 16.4-3.5-6.4-8.5-2.2Zm8.5 2.2 5.2-5.1" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only">Gửi câu hỏi</span></button>
     </form>
-    <p class="status" role="status" aria-live="polite"></p>
+    <p class="status" role="status" aria-live="polite" aria-busy="false"></p>
     <nav class="quiet-links" aria-label="Khám phá Me.Mori">
       <a href="index.html#courses">Lớp F2</a><a href="index.html#workshops">Tác phẩm</a><a href="index.html#contact">Đăng ký</a>
     </nav>
@@ -266,6 +294,9 @@
         const imageLeft = box.left + (box.width - renderedWidth) * positionX - scene.getBoundingClientRect().left;
         const imageTop = box.top + (box.height - renderedHeight) * positionY - scene.getBoundingClientRect().top;
         scene.style.setProperty('--art-scale', String(scale));
+        const sceneBox = scene.getBoundingClientRect();
+        placeSway(imageLeft, imageTop, scale, box.left - sceneBox.left, box.top - sceneBox.top);
+        placeSpots(imageLeft, imageTop, scale);
         for (const [element, x, y, width, height] of sharpCopy) {
           element.style.left = `${imageLeft + x * scale}px`;
           element.style.top = `${imageTop + y * scale}px`;
@@ -282,41 +313,176 @@
         const compact = innerWidth / innerHeight < artwork.naturalWidth / artwork.naturalHeight;
         brand.dataset.compact = String(compact);
       }
+
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+      const windFront = document.querySelector('.wind-front');
+      const random = (min, max) => min + Math.random() * (max - min);
+      const pick = list => list[Math.floor(Math.random() * list.length)];
+
+      // ---- Painted-style leaves (gradient fill, soft rim light, veins) ----
+      const leafKinds = [
+        { grad:'g-gold', weight:3, vein:'#fff3b0', d:'M50 97C49 87 49 78 48 70 38 72 28 68 18 60 26 58 30 54 28 48 22 46 16 42 10 34 20 34 28 34 32 30 30 24 28 18 28 10 36 16 42 20 46 28 47 18 48 10 50 2 52 10 53 18 54 28 58 20 64 16 72 10 72 18 70 24 68 30 72 34 80 34 90 34 84 42 78 46 72 48 70 54 74 58 82 60 72 68 62 72 52 70 51 78 51 86 50 97Z', v:'M50 95V12M49 70 20 52M51 70 80 52M50 52 28 36M50 52 72 36' },
+        { grad:'g-green', weight:3, vein:'#e6efb0', d:'M50 98C28 84 14 62 20 38 25 20 38 8 50 2 62 8 75 20 80 38 86 62 72 84 50 98Z', v:'M50 96C51 70 50 40 50 6M50 78 28 62M50 78 72 62M50 56 26 40M50 56 74 40M50 34 36 22M50 34 64 22' },
+        { grad:'g-olive', weight:2, vein:'#f1f2b8', d:'M50 98C38 82 33 52 43 26 46 15 48 8 50 2 52 8 54 15 57 26 67 52 62 82 50 98Z', v:'M50 96V6M50 76 41 62M50 76 59 62M50 54 42 40M50 54 58 40' },
+        { grad:'g-amber', weight:2, vein:'#ffe2a6', d:'M50 98C30 86 12 66 18 44 22 30 34 22 40 14 44 8 48 6 50 2 54 8 60 10 66 18 74 28 84 40 82 54 80 74 66 88 50 98Z', v:'M50 96C50 66 50 36 50 6M50 76 26 60M50 76 74 60M50 52 28 36M50 52 72 36' },
+        { grad:'g-petal', weight:1, vein:'#e8d6a4', d:'M50 96C28 80 18 52 30 28 36 14 46 6 50 2 54 6 64 14 70 28 82 52 72 80 50 96Z', v:'M50 92C50 64 50 34 50 10' }
+      ];
+      const leafBag = leafKinds.flatMap(kind => Array(kind.weight).fill(kind));
+      const leafSVG = kind => `<svg viewBox="0 0 100 100" aria-hidden="true"><path d="${kind.d}" fill="url(#${kind.grad})" stroke="#0b1d12" stroke-opacity=".5" stroke-width="1.6" stroke-linejoin="round"/><path d="${kind.d}" fill="url(#g-light)"/><path d="${kind.v}" fill="none" stroke="${kind.vein}" stroke-opacity=".55" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M50 97q-1 4-5 8" fill="none" stroke="#6d5b30" stroke-width="2.2" stroke-linecap="round"/></svg>`;
+
+      // Wind: thin cream strokes with a curl, drawn on and off as a gust passes.
+      const windPaths = [
+        'M4 74C86 40 150 98 240 64 322 33 392 52 470 62 520 68 560 56 590 40',
+        'M0 60C90 88 170 30 262 56 340 78 380 92 452 70 500 56 520 40 548 48 574 56 568 78 548 76 534 74 536 62 548 60',
+        'M10 50C100 70 190 40 300 58 380 70 450 54 520 44'
+      ];
+      function spawnStreaks(y, duration, W, H) {
+        const count = Math.round(random(2, 3));
+        for (let i = 0; i < count; i++) {
+          const streak = document.createElement('div');
+          streak.className = 'wind-streak';
+          streak.innerHTML = `<svg viewBox="0 0 600 120" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="${pick(windPaths)}"/></svg>`;
+          windLayer.append(streak);
+          const yy = y + random(-.1, .14) * H;
+          const run = duration * random(.5, .62);
+          const delay = i * random(180, 520);
+          const move = streak.animate([
+            { transform:`translate3d(${-.5 * W}px,${yy}px,0)`, opacity:0 },
+            { opacity:.85, offset:.2 },
+            { opacity:.85, offset:.78 },
+            { transform:`translate3d(${W}px,${yy + random(-30, 30)}px,0)`, opacity:0 }
+          ], { duration:run, delay, easing:'cubic-bezier(.3,.1,.5,.9)', fill:'both' });
+          streak.querySelector('path').animate([{ strokeDashoffset:.3 }, { strokeDashoffset:-1.5 }], { duration:run, delay, easing:'ease-in-out', fill:'both' });
+          move.onfinish = () => streak.remove();
+        }
+      }
+
+      let activeLeaves = 0;
+      function spawnLeaf(yHint) {
+        const W = innerWidth, H = innerHeight;
+        const unit = Math.max(.75, Math.min(1.3, W / 1440));
+        const roll = Math.random();
+        const depth = roll < .28 ? 'far' : roll < .82 ? 'mid' : 'near';
+        const cfg = {
+          far:  { size:[24, 36],  speed:[70, 95],   opacity:.6,  layer:windLayer },
+          mid:  { size:[48, 74],  speed:[105, 145], opacity:.92, layer:windLayer },
+          near: { size:[88, 128], speed:[150, 200], opacity:.55, layer:windFront }
+        }[depth];
+        const size = random(...cfg.size) * unit;
+        const travel = W + size * 2.4;
+        const duration = Math.min(18, Math.max(6.5, travel / random(...cfg.speed))) * 1000;
+        const leaf = document.createElement('span');
+        leaf.className = `leaf is-${depth}`;
+        leaf.style.width = leaf.style.height = `${size}px`;
+        leaf.innerHTML = leafSVG(pick(leafBag));
+        const svg = leaf.firstElementChild;
+        cfg.layer.append(leaf);
+
+        const x0 = -size * 1.3, x1 = W + size * 1.3;
+        // big blurred leaves keep to the top/bottom bands so they never cover the headline
+        const yStart = yHint ?? (depth === 'near' ? (Math.random() < .5 ? random(.04, .2) : random(.62, .8)) : random(.1, .6)) * H;
+        const fall = random(.04, .2) * H;
+        const amp = random(.018, .045) * H * (depth === 'near' ? 1.4 : 1);
+        const swings = random(1.4, 2.6);
+        const phase = random(0, 6.283), phase2 = random(0, 6.283);
+        const rot0 = random(-40, 40), spin = random(-60, 140);
+        const flipAmp = random(40, 72), flips = random(2.2, 3.8);
+        const gust = random(.02, .05), gustF = random(1, 2);
+        const steps = 40, TAU = Math.PI * 2;
+        const body = [], flutter = [];
+        for (let i = 0; i <= steps; i++) {
+          const t = i / steps;
+          const e = t + gust * Math.sin(TAU * gustF * t + phase) * Math.sin(Math.PI * t);
+          const x = x0 + (x1 - x0) * e;
+          const y = yStart + fall * t + amp * Math.sin(TAU * swings * t + phase);
+          const r = rot0 + spin * t + 26 * Math.sin(TAU * swings * t + phase + 1.2);
+          const fade = t < .07 ? t / .07 : t > .93 ? (1 - t) / .07 : 1;
+          body.push({ offset:t, opacity:cfg.opacity * fade, transform:`translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) rotate(${r.toFixed(1)}deg)` });
+          const flip = flipAmp * Math.sin(TAU * flips * t + phase2);
+          const tilt = 18 * Math.sin(TAU * flips * .7 * t + phase);
+          flutter.push({ offset:t, transform:`perspective(520px) rotateY(${flip.toFixed(1)}deg) rotateX(${tilt.toFixed(1)}deg)`, filter:`brightness(${(.78 + .3 * Math.cos(flip * Math.PI / 180)).toFixed(2)})` });
+        }
+        activeLeaves++;
+        svg.animate(flutter, { duration, easing:'linear', fill:'both' });
+        const flight = leaf.animate(body, { duration, easing:'linear', fill:'both' });
+        flight.onfinish = () => { leaf.remove(); activeLeaves--; };
+        return { yStart, duration, W, H };
+      }
+
+      function spawnGust() {
+        const first = spawnLeaf();
+        spawnStreaks(first.yStart, first.duration, first.W, first.H);
+        if (Math.random() < .22) window.setTimeout(() => { if (!document.hidden) spawnLeaf(first.yStart + random(-.08, .08) * first.H); }, random(400, 1100));
+      }
+      let leafTimer = 0;
+      function scheduleLeaf(initial) {
+        window.clearTimeout(leafTimer);
+        leafTimer = window.setTimeout(() => {
+          const limit = innerWidth < 700 ? 3 : 4;
+          if (!document.hidden && !reduceMotion.matches && activeLeaves < limit) spawnGust();
+          scheduleLeaf(false);
+        }, initial ? random(600, 1500) : random(3000, 7000));
+      }
+      if (!reduceMotion.matches) scheduleLeaf(true);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) window.clearTimeout(leafTimer);
+        else if (!reduceMotion.matches) scheduleLeaf(false);
+      });
+
+      // ---- Foliage sway: masked copies of the artwork, one per plant (artwork pixel coordinates) ----
+      const swayDefs = [
+        { cx:836,  cy:56,  rx:540, ry:190, ox:836,  oy:0,   amp:.8,  dur:12, delay:-3 },
+        { cx:200,  cy:750, rx:400, ry:320, ox:50,   oy:941, amp:1.5, dur:9,  delay:-1 },
+        { cx:184,  cy:452, rx:234, ry:132, ox:134,  oy:583, amp:1.8, dur:7,  delay:-5 },
+        { cx:1540, cy:490, rx:150, ry:198, ox:1672, oy:941, amp:1.3, dur:10, delay:-2 },
+        { cx:1471, cy:875, rx:300, ry:132, ox:1672, oy:941, amp:1.1, dur:11, delay:-6 },
+        { cx:870,  cy:931, rx:368, ry:94,  ox:870,  oy:941, amp:.9,  dur:8,  delay:-4 },
+        { cx:635,  cy:772, rx:400, ry:85,  ox:635,  oy:772, amp:0,   dur:14, delay:-2, tx:3 }
+      ];
+      const swayLayers = [];
+      if (!reduceMotion.matches) {
+        const count = innerWidth < 700 ? 4 : swayDefs.length;
+        swayDefs.slice(0, count).forEach(def => {
+          const layer = artwork.cloneNode(false);
+          layer.className = 'artwork sway-layer';
+          layer.alt = '';
+          layer.setAttribute('aria-hidden', 'true');
+          layer.removeAttribute('fetchpriority');
+          layer.style.setProperty('--amp', `${def.amp}deg`);
+          layer.style.setProperty('--tx', `${def.tx || 0}px`);
+          layer.style.setProperty('--dur', `${def.dur}s`);
+          layer.style.setProperty('--delay', `${def.delay}s`);
+          swayLayers.push([layer, def]);
+        });
+        artwork.after(...swayLayers.map(([layer]) => layer));
+      }
+      function placeSway(imageLeft, imageTop, scale, boxX, boxY) {
+        for (const [layer, def] of swayLayers) {
+          const left = imageLeft - boxX, top = imageTop - boxY;
+          const mask = `radial-gradient(ellipse ${def.rx * scale}px ${def.ry * scale}px at ${left + def.cx * scale}px ${top + def.cy * scale}px,#000 45%,transparent 100%)`;
+          layer.style.maskImage = layer.style.webkitMaskImage = mask;
+          layer.style.transformOrigin = `${left + def.ox * scale}px ${top + def.oy * scale}px`;
+        }
+      }
+
+      // Painted fireflies pulse (artwork pixel coordinates).
+      const spotData = [[317,297],[337,541],[342,617],[927,602],[831,662],[1255,393],[1417,589],[1527,278],[1574,757],[1473,815]];
+      const spots = spotData.map(([x, y], i) => {
+        const el = document.createElement('i');
+        el.className = 'glow-spot';
+        el.style.setProperty('--d', `${(3 + (i * 1.37) % 3.5).toFixed(2)}s`);
+        el.style.setProperty('--dl', `${(-i * .9).toFixed(2)}s`);
+        document.querySelector('.fireflies').append(el);
+        return [el, x, y];
+      });
+      function placeSpots(imageLeft, imageTop, scale) {
+        for (const [el, x, y] of spots) { el.style.left = `${imageLeft + x * scale}px`; el.style.top = `${imageTop + y * scale}px`; }
+      }
+
       if (artwork.complete) placeHotspots();
       artwork.addEventListener('load', placeHotspots, { once: true });
       new ResizeObserver(placeHotspots).observe(scene);
       window.addEventListener('resize', placeHotspots, { passive: true });
-
-      // Hand-drawn, transparent leaf sketches travel across the scene in small wind gusts.
-      const leafDrawings = [
-        '<svg viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg"><path d="M8 54C27 44 41 17 92 12c-8 36-37 51-84 42Z" fill="#9b9b54" stroke="#d0bd76" stroke-width="2.2" stroke-linejoin="round"/><path d="M12 53 91 14M36 42l-4-17m18 8 1-16m-1 28 17 6m-4-20 19 5" fill="none" stroke="#ddca87" stroke-width="1.5" stroke-linecap="round"/><path d="M8 54q-5 5-7 10" fill="none" stroke="#c5a96a" stroke-width="2" stroke-linecap="round"/></svg>',
-        '<svg viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg"><path d="M7 48C22 17 55 8 105 18c-13 28-49 43-98 30Z" fill="#788752" stroke="#b9ba78" stroke-width="2.4" stroke-linejoin="round"/><path d="M10 48 103 19M33 41l-5-16m22 10 4-17m0 29 18 5m-5-20 21 3" fill="none" stroke="#d4cc91" stroke-width="1.4" stroke-linecap="round"/><path d="M7 48 1 53" fill="none" stroke="#b49c61" stroke-width="2" stroke-linecap="round"/></svg>',
-        '<svg viewBox="0 0 120 70" xmlns="http://www.w3.org/2000/svg"><path d="M10 56C22 24 52 9 97 10c-8 34-38 51-87 46Z" fill="#b0894d" stroke="#dec18a" stroke-width="2.3" stroke-linejoin="round"/><path d="M12 55 95 12M34 43l-1-17m20 8 5-17m-3 29 18 4m-2-21 19 1" fill="none" stroke="#f0d49a" stroke-width="1.5" stroke-linecap="round"/><path d="M10 56q-4 3-6 8" fill="none" stroke="#cfaa70" stroke-width="2" stroke-linecap="round"/></svg>'
-      ];
-      const random = (min, max) => min + Math.random() * (max - min);
-      function spawnWindGust() {
-        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        const count = Math.floor(random(2, 4));
-        for (let i = 0; i < count; i++) {
-          const leaf = document.createElement('span');
-          const startY = random(17, 78);
-          const drift = random(-15, 15);
-          leaf.className = 'wind-leaf';
-          leaf.innerHTML = leafDrawings[Math.floor(Math.random() * leafDrawings.length)];
-          leaf.style.setProperty('--start-y', `${startY}vh`);
-          leaf.style.setProperty('--drift-y', `${drift}vh`);
-          leaf.style.setProperty('--end-y', `${drift * 1.8}vh`);
-          leaf.style.setProperty('--start-rot', `${random(-48, 48)}deg`);
-          leaf.style.setProperty('--flight-duration', `${random(5, 10).toFixed(2)}s`);
-          leaf.style.setProperty('--flight-delay', `${(i * random(.25, .7)).toFixed(2)}s`);
-          leaf.style.setProperty('--leaf-scale', random(.62, 1.08).toFixed(2));
-          leaf.style.setProperty('--leaf-opacity', random(.72, .94).toFixed(2));
-          windLayer.append(leaf);
-          leaf.addEventListener('animationend', () => leaf.remove(), { once: true });
-        }
-        window.setTimeout(spawnWindGust, random(10500, 16000));
-      }
-      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) window.setTimeout(spawnWindGust, random(1200, 2600));
 
       let pointerOverBeetle = false;
       let hoverBlinkTimeout = 0;
@@ -383,6 +549,27 @@
       }, { passive:true });
       scene.addEventListener('pointerleave', clearGlow);
 
+      let typeTimer = 0;
+      function say(text, link) {
+        window.clearInterval(typeTimer);
+        const node = document.createTextNode('');
+        status.replaceChildren(node);
+        status.classList.add('is-visible');
+        const done = () => {
+          node.data = text;
+          if (link) status.append(' ', link);
+          status.setAttribute('aria-busy', 'false');
+          beetleHead.classList.remove('is-talking');
+        };
+        if (reduceMotion.matches) { done(); return; }
+        status.setAttribute('aria-busy', 'true');
+        beetleHead.classList.add('is-talking');
+        let i = 0;
+        typeTimer = window.setInterval(() => {
+          node.data = text.slice(0, ++i);
+          if (i >= text.length) { window.clearInterval(typeTimer); done(); }
+        }, 22);
+      }
       form.addEventListener('submit', event => {
         event.preventDefault();
         const question = field.value.trim();
@@ -400,13 +587,12 @@
           reply = 'Me.Mori Class kết hợp điện ảnh, storytelling và kỹ năng sản xuất nội dung. Mở trang lớp để xem thông tin hiện có.';
           target = 'index.html#courses'; label = 'Xem lớp học';
         }
-        status.replaceChildren(document.createTextNode(question ? reply : 'Bạn hãy nhập câu hỏi vào khung rồi gửi nhé.'));
+        let link = null;
         if (question) {
-          const link = document.createElement('a');
+          link = document.createElement('a');
           link.href = target; link.textContent = label;
-          status.append(' ', link);
         }
-        status.classList.add('is-visible');
+        say(question ? reply : 'Bạn hãy nhập câu hỏi vào khung rồi gửi nhé.', link);
         if (!question) field.focus();
       });
       field.addEventListener('focus', () => status.classList.remove('is-visible'));
