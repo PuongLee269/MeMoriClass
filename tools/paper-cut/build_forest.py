@@ -45,7 +45,20 @@ def save(im, name, opaque=False):
 l08 = load('08-overhead-leaves')
 m = np.ones((H, W), np.float32); m[:27, 1148:] = 0; m = cv2.GaussianBlur(m, (0, 0), 2)
 l08[..., 3] = (soften(l08[..., 3]).astype(np.float32) * m).astype(np.uint8)
-l01c = load('01c-rear-tree-right'); l01c[..., 3] = soften(l01c[..., 3])
+l01c = load('01c-rear-tree-right')
+# the dark leaf clump above the moon ends in a straight cut (y~75): fade only that clump, keep the branch below
+fade = np.ones((H, W), np.float32)
+x0, x1 = 1040, 1165
+ys = np.arange(H, dtype=np.float32)
+ramp = 1 - np.clip((ys - 52) / 26, 0, 1)            # 1 above y=52 ... 0 at y=78
+dark = l01c[..., :3].astype(int).sum(2) < 210
+for y in range(52, 83):
+    row = dark[y, x0:x1]
+    fade[y, x0:x1][row] = ramp[y]
+fade = cv2.GaussianBlur(fade, (0, 0), 2.5)
+a01c = soften(l01c[..., 3]).astype(np.float32)
+a01c = cv2.GaussianBlur(a01c, (0, 0), 1.2) * 0.6 + a01c * 0.4   # extra smoothing for stair-stepped edges
+l01c[..., 3] = np.clip(a01c * fade, 0, 255).astype(np.uint8)
 t02, w02 = split(load('02-trees-left'))
 t03, w03 = split(load('03-trees-right'))
 # rear trees are far away: keep them whole and still (their split-off twigs looked like loose fragments)

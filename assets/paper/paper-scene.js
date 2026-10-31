@@ -165,7 +165,7 @@
       },
       follow(el, srcPart) {
         const layer = layers.find(L => L.def.src.includes(srcPart));
-        if (layer) followers.push({ el, layer });
+        if (layer) { followers.push({ el, layer }); layer.followed = true; }
       },
       gust(strength = 1, travelMs = 2600) {
         if (reduceMotion.matches) return;
@@ -179,7 +179,8 @@
         if (reduceMotion.matches) return ready;
         layers.forEach((L, i) => {
           const d = L.def.depth || 0;
-          L.fromY = 70 + 110 * d; L.fromR = (i % 2 ? 1 : -1) * (1.5 + 2 * d);
+          // a layer that carries an outside element (beetle body + head) only slides, never tilts
+          L.fromY = 70 + 110 * d; L.fromR = L.followed ? 0 : (i % 2 ? 1 : -1) * (1.5 + 2 * d);
           L.iy = L.fromY; L.ir = L.fromR; L.io = 0;
         });
         const total = duration + stagger * layers.length;
@@ -205,7 +206,7 @@
             const e = easeInCubic(p);
             const d = L.def.depth || 0;
             L.iy = -(60 + 140 * d) * e;
-            L.ir = (i % 2 ? 1 : -1) * 3 * e;
+            L.ir = L.followed ? 0 : (i % 2 ? 1 : -1) * 3 * e;
             L.io = 1 - clamp01(p * 1.3);
           });
         });
