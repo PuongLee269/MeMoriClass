@@ -10,6 +10,12 @@
   <link rel="preload" href="assets/fonts/OoohBaby-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="assets/paper/paper-scene.css">
   <style>
+    @font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:400; font-display:swap; src:url("assets/fonts/BeVietnamPro-400-vietnamese.woff2") format("woff2"); unicode-range:U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+    @font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:400; font-display:swap; src:url("assets/fonts/BeVietnamPro-400-latin-ext.woff2") format("woff2"); unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+    @font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:400; font-display:swap; src:url("assets/fonts/BeVietnamPro-400-latin.woff2") format("woff2"); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+    @font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:500; font-display:swap; src:url("assets/fonts/BeVietnamPro-500-vietnamese.woff2") format("woff2"); unicode-range:U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+    @font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:500; font-display:swap; src:url("assets/fonts/BeVietnamPro-500-latin-ext.woff2") format("woff2"); unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+    @font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:500; font-display:swap; src:url("assets/fonts/BeVietnamPro-500-latin.woff2") format("woff2"); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
     @font-face { font-family:"Oooh Baby"; font-style:normal; font-weight:400; font-display:swap; src:url("assets/fonts/OoohBaby-vietnamese.woff2") format("woff2"); unicode-range:U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
     @font-face { font-family:"Oooh Baby"; font-style:normal; font-weight:400; font-display:swap; src:url("assets/fonts/OoohBaby-latin-ext.woff2") format("woff2"); unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
     @font-face { font-family:"Oooh Baby"; font-style:normal; font-weight:400; font-display:swap; src:url("assets/fonts/OoohBaby-latin.woff2") format("woff2"); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
@@ -129,11 +135,22 @@
     .dialogue { position:absolute; z-index:2; margin:0; padding:calc(30px * var(--art-scale)) 4px 2px 0; display:flex; flex-direction:column; justify-content:flex-end; gap:calc(12px * var(--art-scale)); overflow-y:auto; scrollbar-width:none; opacity:0; transform:translateY(10px); pointer-events:none; transition:opacity .45s ease .1s, transform .45s ease .1s; -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 14%); mask-image:linear-gradient(180deg,transparent 0,#000 14%); }
     .dialogue::-webkit-scrollbar { display:none; }
     .scene.is-chatting .dialogue { opacity:1; transform:none; pointer-events:auto; }
-    .msg { margin:0; max-width:100%; animation:msg-in .5s ease; }
-    .msg:not(:last-child) { opacity:.5; transition:opacity .6s ease; }
-    .msg-bot { font-family:"Oooh Baby","Segoe Script","Brush Script MT",cursive; font-size:calc(40px * var(--art-scale)); line-height:1.1; color:#f5e8c5; text-shadow:0 1px 5px #06110f,0 0 1px #fff3d1; }
-    .msg-bot a { margin-left:6px; font:calc(17px * var(--art-scale)) Georgia,serif; color:#f2d58e; text-underline-offset:3px; white-space:nowrap; }
-    .msg-user { align-self:flex-end; max-width:82%; padding:0 2px 3px; font:italic calc(18px * var(--art-scale))/1.35 Georgia,serif; color:#e8d8b1; border-bottom:1px solid #d9c89a88; text-shadow:0 1px 5px #0b1715; }
+    /* Fairy-tale dialogue cards: moss-glass for Bọ, parchment for the reader; text in a clean modern face */
+    .msg { position:relative; margin:0; max-width:88%; padding:calc(12px * var(--art-scale)) calc(18px * var(--art-scale)) calc(13px * var(--art-scale));
+      font:400 calc(17px * var(--art-scale))/1.55 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif; letter-spacing:.005em; border-radius:calc(18px * var(--art-scale)); animation:msg-in .5s ease; }
+    .msg:not(:last-child) { opacity:.62; transition:opacity .6s ease; }
+    .msg-bot { align-self:flex-start; color:#f6ecd0; border-top-left-radius:4px;
+      background:linear-gradient(160deg,#16352bdd,#0c211bcc 70%); border:1px solid #d9c27a8c;
+      box-shadow:0 8px 24px #04100c80, inset 0 0 0 3px #0c211b55, inset 0 0 0 4px #e7cf8a26, 0 0 18px #ffd98a14;
+      -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
+    .msg-bot::before { content:"Bọ"; display:block; margin-bottom:2px; font:400 calc(25px * var(--art-scale))/1 "Oooh Baby","Segoe Script",cursive; color:#f2d58e; text-shadow:0 0 8px #ffd98a55; }
+    /* leaf flourish in the corner + a small tail toward the beetle */
+    .msg-bot::after { content:""; position:absolute; right:calc(-9px * var(--art-scale)); bottom:calc(14px * var(--art-scale)); width:calc(16px * var(--art-scale)); height:calc(16px * var(--art-scale));
+      background:#0f2620; border-right:1px solid #d9c27a8c; border-bottom:1px solid #d9c27a8c; transform:rotate(-45deg); border-bottom-right-radius:4px; }
+    .msg-bot .flourish { position:absolute; top:calc(-11px * var(--art-scale)); right:calc(14px * var(--art-scale)); width:calc(34px * var(--art-scale)); height:calc(18px * var(--art-scale)); color:#e2c97f; }
+    .msg-bot a { display:inline-block; margin-top:6px; font-weight:500; font-size:.92em; color:#ffd98a; text-underline-offset:3px; white-space:nowrap; }
+    .msg-user { align-self:flex-end; color:#2d2416; border-bottom-right-radius:4px;
+      background:linear-gradient(170deg,#f8edcfee,#e9d7a8e6); border:1px solid #fff4d6aa; box-shadow:0 8px 22px #04100c66, inset 0 -2px 0 #c9ad6a55; font-weight:500; }
     @keyframes msg-in { from { opacity:0; transform:translateY(8px); } }
     .beetle-head.is-talking { animation:head-talk .44s ease-in-out infinite; }
     @keyframes head-talk { 0%,100% { rotate:-1deg; translate:0 0; } 50% { rotate:2.4deg; translate:0 -2px; } }
@@ -185,9 +202,8 @@
       .quiet-links a { position:static!important; top:auto!important; left:auto!important; width:auto!important; height:auto!important; padding:0; min-height:28px; min-width:0; }
       .brand-mark { left:4%!important; top:2%!important; width:120px!important; height:48px!important; }
       .dialogue { left:7%!important; top:15%!important; width:86%!important; height:37%!important; }
-      .msg-bot { font-size:27px; }
-      .msg-bot a { font-size:13px; }
-      .msg-user { font-size:14px; }
+      .msg { font-size:14.5px; padding:10px 14px 11px; border-radius:14px; max-width:92%; }
+      .msg-bot::before { font-size:21px; }
       .question-form input::placeholder { font-size:12px; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -546,6 +562,7 @@
       function botSay(text, link) {
         window.clearInterval(typeTimer);
         const row = addMessage('bot');
+        row.insertAdjacentHTML('afterbegin', '<svg class="flourish" viewBox="0 0 34 18" aria-hidden="true"><path d="M2 15c8-1 13-5 16-12M18 3c2 5 7 8 14 9M18 3c-3 1-5 3-5 6 3 0 5-2 5-6Zm0 0c3 0 6 2 7 5-3 1-6-1-7-5Z" fill="currentColor" fill-opacity=".25" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>');
         const node = document.createTextNode('');
         row.append(node);
         const done = () => {
