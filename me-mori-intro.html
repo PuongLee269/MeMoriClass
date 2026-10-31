@@ -173,7 +173,7 @@
     .music-title { max-width:46vw; padding:6px 12px; border-radius:999px; font:500 13px/1.2 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif; color:#f6ecd0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
       background:#0b1f19cc; border:1px solid #d9c27a66; opacity:0; transform:translateX(6px); transition:opacity .4s ease, transform .4s ease; pointer-events:none; }
     .music-title.is-visible { opacity:1; transform:none; }
-    .music-title::before { content:"♪ "; color:#f2d58e; }
+    .music-title::before { content:"☾ "; color:#f2d58e; }
     @media (prefers-reduced-motion: reduce) { .music.is-playing .music-bars i { animation:none; height:9px; } }
     @keyframes msg-in { from { opacity:0; transform:translateY(8px); } }
     .beetle-head.is-talking { animation:head-talk .44s ease-in-out infinite; }
@@ -287,18 +287,17 @@
     <nav class="quiet-links" aria-label="Khám phá Me.Mori">
       <a href="index.html#courses">Lớp F2</a><a href="index.html#workshops">Tác phẩm</a><a href="index.html#contact">Đăng ký</a>
     </nav>
-    <div class="music" role="group" aria-label="Nhạc nền">
+    <div class="music" role="group" aria-label="Âm thanh rừng">
       <span class="music-title" aria-live="polite"></span>
       <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i></span>
-      <button class="music-btn music-toggle" type="button" aria-pressed="false" aria-label="Bật nhạc nền">
+      <button class="music-btn music-toggle" type="button" aria-pressed="false" aria-label="Bật âm thanh rừng">
         <svg class="icon-off" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m16 9.5 5 5m0-5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
         <svg class="icon-on" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9.5h3.2L12 5.5v13l-4.8-4H4z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18 6.5a7.8 7.8 0 0 1 0 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
       </button>
-      <button class="music-btn music-next" type="button" aria-label="Chuyển bài tiếp theo">
+      <button class="music-btn music-next" type="button" aria-label="Đổi cảnh âm thanh">
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5.5 6.5v11l8-5.5zM17.5 6.5v11" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></svg>
       </button>
-      <audio class="music-audio" preload="none"></audio>
-    </div>
+          </div>
   </main>
   <script src="assets/paper/paper-scene.js"></script>
   <script>
@@ -533,65 +532,111 @@
       new ResizeObserver(placeHotspots).observe(scene);
       window.addEventListener('resize', placeHotspots, { passive: true });
 
-      // ---- Background music: tries to start on load; browsers that block it start on the first tap/key ----
+      // ---- Night-forest soundscape: a seamless ambience loop + random distant animal / beetle sounds ----
       (() => {
         const box = document.querySelector('.music');
-        const audio = box.querySelector('.music-audio');
         const toggle = box.querySelector('.music-toggle');
         const nextBtn = box.querySelector('.music-next');
         const title = box.querySelector('.music-title');
-        const EXT = audio.canPlayType('audio/ogg; codecs="vorbis"') ? 'ogg' : 'mp3'; // ogg loops without the mp3 gap
-        const tracks = [
-          { title: 'Ru Bọ', src: 'assets/music/ru-bo.' + EXT },
-          { title: 'Trăng Bên Hồ', src: 'assets/music/trang-ben-ho.' + EXT },
-          { title: 'Đom Đóm', src: 'assets/music/dom-dom.' + EXT }
-        ];
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) { box.hidden = true; return; }
+        const EXT = new Audio().canPlayType('audio/ogg; codecs="vorbis"') ? 'ogg' : 'mp3';
+        const DIR = 'assets/ambience/';
+        const scenes = [{ title: 'Rừng đêm', file: 'night-forest' }, { title: 'Bên hồ', file: 'lakeside' }];
+        const events = ['beetle-flyby-1', 'beetle-flyby-2', 'owl', 'frog-1', 'frog-2', 'night-bird', 'leaves-rustle'];
         const store = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch {} } };
-        let index = Number(store.get('memori-music-track')) || 0;
-        let wanted = store.get('memori-music') !== 'off';
-        let fadeTimer = 0, titleTimer = 0;
-        const VOLUME = 0.55;
+        let sceneIndex = Number(store.get('memori-ambience')) || 0;
+        let wanted = store.get('memori-sound') !== 'off';
+        let ctx = null, master = null, bed = null, eventTimer = 0, titleTimer = 0;
+        const buffers = new Map();
+        const VOLUME = 0.9;
+        const load = name => {
+          if (!buffers.has(name)) buffers.set(name, fetch(`${DIR}${name}.${EXT}`).then(r => r.arrayBuffer()).then(d => new Promise((ok, no) => ctx.decodeAudioData(d, ok, no))));
+          return buffers.get(name);
+        };
         function showTitle() {
-          title.textContent = tracks[index].title;
+          title.textContent = scenes[sceneIndex].title;
           title.classList.add('is-visible');
           clearTimeout(titleTimer);
           titleTimer = setTimeout(() => title.classList.remove('is-visible'), 2600);
         }
-        function fadeTo(target, ms, done) {
-          clearInterval(fadeTimer);
-          const start = audio.volume, t0 = performance.now();
-          fadeTimer = setInterval(() => {
-            const u = Math.min(1, (performance.now() - t0) / ms);
-            audio.volume = start + (target - start) * u;
-            if (u >= 1) { clearInterval(fadeTimer); done && done(); }
-          }, 40);
-        }
         function setUI(on) {
           box.classList.toggle('is-playing', on);
           toggle.setAttribute('aria-pressed', String(on));
-          toggle.setAttribute('aria-label', on ? 'Tắt nhạc nền' : 'Bật nhạc nền');
+          toggle.setAttribute('aria-label', on ? 'Tắt âm thanh rừng' : 'Bật âm thanh rừng');
         }
-        function load(i) {
-          index = (i + tracks.length) % tracks.length;
-          store.set('memori-music-track', String(index));
-          audio.src = tracks[index].src;
+        function ensureContext() {
+          if (ctx) return;
+          ctx = new AC();
+          master = ctx.createGain();
+          master.gain.value = 0;
+          master.connect(ctx.destination);
         }
-        function play() {
-          if (!audio.src) load(index);
-          audio.volume = 0;
-          return audio.play().then(() => { setUI(true); fadeTo(VOLUME, 1500); showTitle(); return true; }).catch(() => { setUI(false); return false; });
+        function fade(target, seconds) {
+          const t = ctx.currentTime;
+          master.gain.cancelScheduledValues(t);
+          master.gain.setValueAtTime(master.gain.value, t);
+          master.gain.linearRampToValueAtTime(target, t + seconds);
         }
-        function stop() { fadeTo(0, 600, () => audio.pause()); setUI(false); }
+        async function startBed() {
+          const buffer = await load(scenes[sceneIndex].file);
+          const old = bed;
+          const src = ctx.createBufferSource();
+          const g = ctx.createGain();
+          src.buffer = buffer; src.loop = true;
+          src.connect(g).connect(master);
+          g.gain.setValueAtTime(0, ctx.currentTime);
+          g.gain.linearRampToValueAtTime(1, ctx.currentTime + 2);   // crossfade between scenes
+          src.start();
+          bed = { src, g };
+          if (old) { old.g.gain.linearRampToValueAtTime(0, ctx.currentTime + 2); old.src.stop(ctx.currentTime + 2.1); }
+        }
+        function scheduleEvent() {
+          clearTimeout(eventTimer);
+          eventTimer = setTimeout(async () => {
+            if (box.classList.contains('is-playing') && !document.hidden) {
+              const name = events[Math.floor(Math.random() * events.length)];
+              try {
+                const buffer = await load(name);
+                const src = ctx.createBufferSource();
+                const g = ctx.createGain();
+                const pan = ctx.createStereoPanner ? ctx.createStereoPanner() : null;
+                src.buffer = buffer;
+                g.gain.value = 0.55 + Math.random() * 0.45;               // nearer / farther
+                if (pan) { pan.pan.value = name.startsWith('beetle') ? 0 : Math.random() * 1.6 - 0.8; src.connect(g).connect(pan).connect(master); }
+                else src.connect(g).connect(master);
+                src.start();
+              } catch {}
+            }
+            scheduleEvent();
+          }, 6000 + Math.random() * 14000);
+        }
+        async function play() {
+          ensureContext();
+          try { await ctx.resume(); } catch {}
+          if (ctx.state !== 'running') { setUI(false); return false; }
+          try { await startBed(); } catch { setUI(false); return false; }
+          setUI(true); fade(VOLUME, 2.5); showTitle(); scheduleEvent();
+          return true;
+        }
+        function stop() {
+          clearTimeout(eventTimer);
+          setUI(false);
+          if (!ctx) return;
+          fade(0, 0.8);
+          setTimeout(() => { if (!box.classList.contains('is-playing')) ctx.suspend(); }, 900);
+        }
         toggle.addEventListener('click', () => {
-          if (box.classList.contains('is-playing')) { wanted = false; store.set('memori-music', 'off'); stop(); }
-          else { wanted = true; store.set('memori-music', 'on'); play(); }
+          if (box.classList.contains('is-playing')) { wanted = false; store.set('memori-sound', 'off'); stop(); }
+          else { wanted = true; store.set('memori-sound', 'on'); play(); }
         });
         nextBtn.addEventListener('click', () => {
-          load(index + 1);
-          if (wanted) play(); else showTitle();
+          sceneIndex = (sceneIndex + 1) % scenes.length;
+          store.set('memori-ambience', String(sceneIndex));
+          if (box.classList.contains('is-playing')) { startBed(); showTitle(); }
+          else if (wanted) play(); else showTitle();
         });
-        audio.addEventListener('ended', () => { load(index + 1); play(); });
-        // autoplay: try now, otherwise on the first interaction outside the music buttons
+        // try right away; browsers that block sound start it on the first tap / key outside these buttons
         if (wanted) play().then(ok => {
           if (ok) return;
           const start = event => {
@@ -602,8 +647,9 @@
           ['pointerdown', 'keydown'].forEach(t => document.addEventListener(t, start, true));
         });
         document.addEventListener('visibilitychange', () => {
-          if (document.hidden) { if (!audio.paused) audio.pause(); }
-          else if (wanted && box.classList.contains('is-playing')) audio.play().catch(() => {});
+          if (!ctx) return;
+          if (document.hidden) ctx.suspend();
+          else if (box.classList.contains('is-playing')) ctx.resume();
         });
       })();
 
