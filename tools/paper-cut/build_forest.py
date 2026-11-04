@@ -12,6 +12,7 @@ Prints the layer list (src, x, y, w, h) as JSON.
 import sys, json, numpy as np, cv2
 from PIL import Image
 SRC, OUT = sys.argv[1].rstrip('/') + '/', sys.argv[2].rstrip('/') + '/'
+LEGACY = '--legacy-fixes' in sys.argv   # patches for defects of layer set v6 (fixed in v7 art)
 W, H = 1672, 941
 def load(n): return np.array(Image.open(SRC + n + '.png').convert('RGBA'))
 def soften(a):
@@ -43,22 +44,26 @@ def save(im, name, opaque=False):
     meta[name] = dict(x=bb[0], y=bb[1], w=bb[2] - bb[0], h=bb[3] - bb[1])
 
 l08 = load('08-overhead-leaves')
-m = np.ones((H, W), np.float32); m[:27, 1148:] = 0; m = cv2.GaussianBlur(m, (0, 0), 2)
+m = np.ones((H, W), np.float32)
+if LEGACY: m[:27, 1148:] = 0; m = cv2.GaussianBlur(m, (0, 0), 2)
 l08[..., 3] = (soften(l08[..., 3]).astype(np.float32) * m).astype(np.uint8)
 l01c = load('01c-rear-tree-right')
-# the dark leaf clump above the moon ends in a straight cut (y~75): fade only that clump, keep the branch below
-fade = np.ones((H, W), np.float32)
-x0, x1 = 1040, 1165
-ys = np.arange(H, dtype=np.float32)
-ramp = 1 - np.clip((ys - 52) / 26, 0, 1)            # 1 above y=52 ... 0 at y=78
-dark = l01c[..., :3].astype(int).sum(2) < 210
-for y in range(52, 83):
-    row = dark[y, x0:x1]
-    fade[y, x0:x1][row] = ramp[y]
-fade = cv2.GaussianBlur(fade, (0, 0), 2.5)
-a01c = soften(l01c[..., 3]).astype(np.float32)
-a01c = cv2.GaussianBlur(a01c, (0, 0), 1.2) * 0.6 + a01c * 0.4   # extra smoothing for stair-stepped edges
-l01c[..., 3] = np.clip(a01c * fade, 0, 255).astype(np.uint8)
+if LEGACY:
+    # the dark leaf clump above the moon ends in a straight cut (y~75): fade only that clump, keep the branch below
+    fade = np.ones((H, W), np.float32)
+    x0, x1 = 1040, 1165
+    ys = np.arange(H, dtype=np.float32)
+    ramp = 1 - np.clip((ys - 52) / 26, 0, 1)            # 1 above y=52 ... 0 at y=78
+    dark = l01c[..., :3].astype(int).sum(2) < 210
+    for y in range(52, 83):
+        row = dark[y, x0:x1]
+        fade[y, x0:x1][row] = ramp[y]
+    fade = cv2.GaussianBlur(fade, (0, 0), 2.5)
+    a01c = soften(l01c[..., 3]).astype(np.float32)
+    a01c = cv2.GaussianBlur(a01c, (0, 0), 1.2) * 0.6 + a01c * 0.4   # extra smoothing for stair-stepped edges
+    l01c[..., 3] = np.clip(a01c * fade, 0, 255).astype(np.uint8)
+else:
+    l01c[..., 3] = soften(l01c[..., 3])
 t02, w02 = split(load('02-trees-left'))
 t03, w03 = split(load('03-trees-right'))
 # rear trees are far away: keep them whole and still (their split-off twigs looked like loose fragments)
@@ -74,10 +79,11 @@ save(load('06-beetle-head'), '06-beetle-head')
 fg = [load(n) for n in ['09-foreground-left', '10-foreground-bottom', '11-foreground-right']]
 a_fg = np.max(np.stack([f[..., 3] for f in fg]), 0).astype(np.float32) / 255
 reach = cv2.dilate((a_fg > .08).astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (31, 31))).astype(np.float32)
-cover = np.clip(cv2.GaussianBlur(np.maximum(reach * .85, a_fg), (0, 0), 9) * 1.15, 0, 1)
+SHADE = 1.0 if LEGACY else 0.8                      # v7 art has far fewer duplicates: lighter cover
+cover = np.clip(cv2.GaussianBlur(np.maximum(reach * .85, a_fg), (0, 0), 9) * 1.15, 0, 1) * SHADE
 below = np.array(over(load('01-background'), load('01b-rear-tree-left'), l01c, t02, w02, t03, w03, load('04-lake'),
                       load('05-main-bank'), load('07-beetle-body')).convert('RGB')).astype(np.float32)
-soft = cv2.GaussianBlur(below, (0, 0), 14) * .5
+soft = cv2.GaussianBlur(below, (0, 0), 14) * (.5 if LEGACY else .62)
 shade = np.dstack([np.clip(soft, 0, 255), cover * 255]).astype(np.uint8)
 save(shade, 'fg-shade')
 save(l08, '08-overhead-leaves')
