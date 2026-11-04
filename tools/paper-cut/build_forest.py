@@ -57,7 +57,17 @@ def dof(img, sigma_map):
 # far zone behind the river: one consistent lens blur (focus is on the beetle)
 _ys, _xs = np.mgrid[0:H, 0:W].astype(np.float32)
 _far = np.clip(1 - ((_xs - 720) / 420) ** 2 - ((_ys - 650) / 95) ** 2, 0, 1) ** .6     # soft ellipse around the far bank
-SIGMA_FAR = _far * np.clip((735 - _ys) / 60, 0, 1) * 2.2 + _far * .5                     # forest/bank more, river edge less
+SIGMA_FAR = _far * 0.0     # match the forest's own focus: no extra lens blur
+# the far bright bank strip was repainted too soft; sharpen just that strip up to the forest's crispness
+_bank = (np.clip(1 - np.abs(_xs - 695) / 120, 0, 1) * np.clip(1 - np.abs(_ys - 680) / 28, 0, 1)) ** .7
+_rocks = np.clip(1 - np.abs(_xs - 715) / 360, 0, 1) ** .5 * np.clip(1 - np.abs(_ys - 680) / 48, 0, 1) ** .6
+def sharpen_bank(img):
+    f = img.astype(np.float32)
+    rgb = f[..., :3]
+    blur = cv2.GaussianBlur(rgb, (0, 0), 2.2)
+    amount = (_rocks * 1.1 + _bank * 1.4)[..., None]     # rocks a bit, the soft bank strip more
+    f[..., :3] = np.clip(rgb + (rgb - blur) * amount, 0, 255)
+    return f.astype(np.uint8)
 
 def over(*ims):
     c = Image.new('RGBA', (W, H), (0, 0, 0, 0))
@@ -96,7 +106,7 @@ else:
 t02, w02 = split(load('02-trees-left'))
 t03, w03 = split(load('03-trees-right'))
 # rear trees are far away: keep them whole and still (their split-off twigs looked like loose fragments)
-save(dof(np.array(over(load('01-background'), load('01b-rear-tree-left'), l01c)), SIGMA_FAR), 'back', opaque=True)
+save(sharpen_bank(np.array(over(load('01-background'), load('01b-rear-tree-left'), l01c))), 'back', opaque=True)
 save(over(t02, t03), 'front-trunks')
 save(w02, '02-trees-left-twigs'); save(w03, '03-trees-right-twigs')
 # lake: only the water ripples; rocks and reeds stay still on top of it
@@ -112,9 +122,9 @@ wl[..., 3] = (lake[..., 3] * water).astype(np.uint8)
 sl[..., 3] = (lake[..., 3] * (1 - water)).astype(np.uint8)
 water_full = lake.copy(); water_full[..., 3] = np.where(water > 0.02, lake[..., 3], 0)   # opaque water under the still parts
 # soften the hard top edge of the far bright bank strip (x 600-790, y~660)
-band = np.clip(1 - np.abs(_ys - 662) / 10, 0, 1) * ((_xs > 590) & (_xs < 800))
-sl[..., 3] = (sl[..., 3].astype(np.float32) * (1 - .55 * band)).astype(np.uint8)
-save(water_full, 'lake-water'); save(dof(sl, SIGMA_FAR), 'lake-still')
+band = np.clip(1 - np.abs(_ys - 664) / 14, 0, 1) * np.clip(1 - np.abs(_xs - 695) / 115, 0, 1) ** .4
+sl[..., 3] = (sl[..., 3].astype(np.float32) * (1 - .8 * band)).astype(np.uint8)
+save(water_full, 'lake-water'); save(sharpen_bank(sl), 'lake-still')
 save(over(load('05-main-bank'), load('07-beetle-body')), 'bank-beetle')
 save(load('06-beetle-head'), '06-beetle-head')
 # Foreground shade: the blurred foreground leaves (09-11) repaint plants that also exist sharp in the
