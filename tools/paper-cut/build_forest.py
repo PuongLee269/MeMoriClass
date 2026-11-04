@@ -25,6 +25,11 @@ def split(im):
     a = im[..., 3].astype(np.float32) / 255
     thick = cv2.morphologyEx((a > .5).astype(np.uint8), cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (31, 31)))
     t = cv2.GaussianBlur(cv2.dilate(thick, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9, 9))).astype(np.float32), (0, 0), 3)
+    # only branch tips high in the canopy may sway; below y~380 everything belongs to the still part,
+    # so a plant is never split into a still half and a moving half
+    ys = np.arange(H, dtype=np.float32)[:, None]
+    canopy = np.clip((420 - ys) / 80, 0, 1)            # 1 above y=340, 0 below y=420
+    t = 1 - (1 - t) * canopy
     trunk, twigs = im.copy(), im.copy()
     trunk[..., 3] = np.clip(a * t * 255, 0, 255).astype(np.uint8)
     tw = np.clip(a * (1 - t) * 255, 0, 255).astype(np.uint8); tw[tw < 14] = 0
@@ -70,7 +75,19 @@ t03, w03 = split(load('03-trees-right'))
 save(over(load('01-background'), load('01b-rear-tree-left'), l01c), 'back', opaque=True)
 save(over(t02, t03), 'front-trunks')
 save(w02, '02-trees-left-twigs'); save(w03, '03-trees-right-twigs')
-save(load('04-lake'), 'lake')
+# lake: only the water ripples; rocks and reeds stay still on top of it
+lake = load('04-lake')
+hsv = cv2.cvtColor(lake[..., :3], cv2.COLOR_RGB2HSV)
+ys = np.arange(H)[:, None]
+water = ((ys >= 705) & (hsv[..., 2] > 45) & (lake[..., 3] > 0)).astype(np.uint8)
+water = cv2.morphologyEx(water, cv2.MORPH_CLOSE, np.ones((9, 9), np.uint8))
+water = cv2.erode(water, np.ones((5, 5), np.uint8)).astype(np.float32)
+water = cv2.GaussianBlur(water, (0, 0), 3)
+wl, sl = lake.copy(), lake.copy()
+wl[..., 3] = (lake[..., 3] * water).astype(np.uint8)
+sl[..., 3] = (lake[..., 3] * (1 - water)).astype(np.uint8)
+water_full = lake.copy(); water_full[..., 3] = np.where(water > 0.02, lake[..., 3], 0)   # opaque water under the still parts
+save(water_full, 'lake-water'); save(sl, 'lake-still')
 save(over(load('05-main-bank'), load('07-beetle-body')), 'bank-beetle')
 save(load('06-beetle-head'), '06-beetle-head')
 # Foreground shade: the blurred foreground leaves (09-11) repaint plants that also exist sharp in the
@@ -78,14 +95,18 @@ save(load('06-beetle-head'), '06-beetle-head')
 # darkened, out-of-focus copy of the scene (reads as the shadow / bokeh of leaves near the lens).
 fg = [load(n) for n in ['09-foreground-left', '10-foreground-bottom', '11-foreground-right']]
 a_fg = np.max(np.stack([f[..., 3] for f in fg]), 0).astype(np.float32) / 255
-reach = cv2.dilate((a_fg > .08).astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (31, 31))).astype(np.float32)
+reach = cv2.dilate((a_fg > .25).astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (13, 13))).astype(np.float32)
 SHADE = 1.0 if LEGACY else 0.8                      # v7 art has far fewer duplicates: lighter cover
-cover = np.clip(cv2.GaussianBlur(np.maximum(reach * .85, a_fg), (0, 0), 9) * 1.15, 0, 1) * SHADE
+cover = np.clip(cv2.GaussianBlur(np.maximum(reach * .7, a_fg), (0, 0), 7), 0, 1) * SHADE
 below = np.array(over(load('01-background'), load('01b-rear-tree-left'), l01c, t02, w02, t03, w03, load('04-lake'),
                       load('05-main-bank'), load('07-beetle-body')).convert('RGB')).astype(np.float32)
 soft = cv2.GaussianBlur(below, (0, 0), 14) * (.5 if LEGACY else .62)
 shade = np.dstack([np.clip(soft, 0, 255), cover * 255]).astype(np.uint8)
 save(shade, 'fg-shade')
 save(l08, '08-overhead-leaves')
-for n in ['09-foreground-left', '10-foreground-bottom', '11-foreground-right']: save(load(n), n)
+for n in ['09-foreground-left', '10-foreground-bottom', '11-foreground-right']:
+    f = load(n)
+    a = f[..., 3].astype(np.float32)
+    f[..., 3] = np.clip(np.minimum(a, cv2.GaussianBlur(a, (0, 0), 3.5) * 1.15), 0, 255).astype(np.uint8)   # feathered rim, no hard cut
+    save(f, n)
 print(json.dumps(meta, indent=1))
