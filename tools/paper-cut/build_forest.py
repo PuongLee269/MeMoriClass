@@ -68,6 +68,18 @@ save(w02, '02-trees-left-twigs'); save(w03, '03-trees-right-twigs')
 save(load('04-lake'), 'lake')
 save(over(load('05-main-bank'), load('07-beetle-body')), 'bank-beetle')
 save(load('06-beetle-head'), '06-beetle-head')
+# Foreground shade: the blurred foreground leaves (09-11) repaint plants that also exist sharp in the
+# layers behind them, so the sharp copy shows through. Under the foreground, cover that area with a
+# darkened, out-of-focus copy of the scene (reads as the shadow / bokeh of leaves near the lens).
+fg = [load(n) for n in ['09-foreground-left', '10-foreground-bottom', '11-foreground-right']]
+a_fg = np.max(np.stack([f[..., 3] for f in fg]), 0).astype(np.float32) / 255
+reach = cv2.dilate((a_fg > .08).astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (31, 31))).astype(np.float32)
+cover = np.clip(cv2.GaussianBlur(np.maximum(reach * .85, a_fg), (0, 0), 9) * 1.15, 0, 1)
+below = np.array(over(load('01-background'), load('01b-rear-tree-left'), l01c, t02, w02, t03, w03, load('04-lake'),
+                      load('05-main-bank'), load('07-beetle-body')).convert('RGB')).astype(np.float32)
+soft = cv2.GaussianBlur(below, (0, 0), 14) * .5
+shade = np.dstack([np.clip(soft, 0, 255), cover * 255]).astype(np.uint8)
+save(shade, 'fg-shade')
 save(l08, '08-overhead-leaves')
 for n in ['09-foreground-left', '10-foreground-bottom', '11-foreground-right']: save(load(n), n)
 print(json.dumps(meta, indent=1))
