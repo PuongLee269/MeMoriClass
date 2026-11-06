@@ -182,6 +182,8 @@
       background:#0f2620; border-right:1px solid #d9c27a8c; border-bottom:1px solid #d9c27a8c; transform:rotate(-45deg); border-bottom-right-radius:4px; }
     .msg-bot .flourish { position:absolute; top:calc(-11px * var(--art-scale)); right:calc(14px * var(--art-scale)); width:calc(34px * var(--art-scale)); height:calc(18px * var(--art-scale)); color:#e2c97f; }
     .msg-bot a { display:inline-block; margin-top:6px; font-weight:500; font-size:.92em; color:#ffd98a; text-underline-offset:3px; white-space:nowrap; }
+    .msg-bot a.go-community { display:inline-block; margin-top:8px; padding:6px 14px; border:1px solid #d9c27a; border-radius:999px; color:#ffd98a; text-decoration:none; font-weight:500; transition:box-shadow .25s ease, background .25s ease; }
+    .msg-bot a.go-community:hover, .msg-bot a.go-community:focus-visible { box-shadow:0 0 14px #ffd98a66; background:#ffd98a14; }
     .msg-user { align-self:flex-end; color:#2d2416; border-bottom-right-radius:4px;
       background:linear-gradient(170deg,#f8edcfee,#e9d7a8e6); border:1px solid #fff4d6aa; box-shadow:0 8px 22px #04100c66, inset 0 -2px 0 #c9ad6a55; font-weight:500; }
     /* Music corner: moss-glass buttons with a gold ring, bottom-right */
@@ -901,7 +903,7 @@
         if (!question) { botSay('Bạn hãy nhập câu hỏi vào khung rồi gửi nhé.'); field.focus(); return; }
         const { reply, target, label } = findReply(question);
         let link = null;
-        if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; }
+        if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; if (/(^|\/)community\.html(?:$|[?#])/.test(target)) { link.classList.add('go-community'); link.textContent = '✦ ' + label; } }
         userAsked = true;
         addMessage('user').textContent = question;
         field.value = '';
