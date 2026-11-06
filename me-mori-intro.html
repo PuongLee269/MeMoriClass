@@ -903,7 +903,7 @@
         if (!question) { botSay('Bạn hãy nhập câu hỏi vào khung rồi gửi nhé.'); field.focus(); return; }
         const { reply, target, label } = findReply(question);
         let link = null;
-        if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; if (/(^|\/)community\.html(?:$|[?#])/.test(target)) { link.classList.add('go-community'); link.textContent = '✦ ' + label; } }
+        if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; if (/(^|\/)(?:community|gallery)\.html(?:$|[?#])/.test(target)) { link.classList.add('go-community'); link.textContent = '✦ ' + label; } }
         userAsked = true;
         addMessage('user').textContent = question;
         field.value = '';
