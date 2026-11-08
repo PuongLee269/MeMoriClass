@@ -25,4 +25,9 @@ Lưu ý: `gallery` đứng trước `works` nên thắng khi hòa điểm ở "t
 
 | Trang | Đường dẫn | Ghi chú | Id mục |
 |---|---|---|---|
-| `sitemap.html` | `/sitemap.html` | Bản đồ trang web. Đang làm (in progress), chưa có trong repo. | `sitemap` |
+| `sitemap.html` | `/sitemap.html` | Bản đồ trang web: 9 viên đá dẫn tới các trang (Đăng ký -> dangky.html, Lộ trình -> roadmap.html, Gallery, Cộng đồng, các mục của home-backup.html, Thử "Tôi có phù hợp không" -> index.html). Ảnh trong `assets/sitemap/`. | `sitemap` |
+| `roadmap.html` | `/roadmap.html` | Lộ trình lớp F2: 4 chapter, mỗi chapter có video YouTube nhúng (ID tạm từ playlist KMM FILM, cần thay) và kịch bản. Ảnh trong `assets/roadmap/`. | `roadmap` |
+| `dangky.html` | `/dangky.html` | Đăng ký lớp F2 (đóng dấu xác nhận). `submitRegistration()` hiện chỉ là stub demo. Ảnh trong `assets/register/`, font Mali (kèm giấy phép) trong `assets/fonts/`. | `register` |
+
+Từ khóa mới: `roadmap` (lộ trình, chapter, chương, kịch bản, video, lộ trình học); `register` trỏ tới `dangky.html` (đăng ký, lớp f2...).
+`assets/preload-pages.js` được nối vào `index.html` (defer) để tải nền ảnh nặng của 3 trang này khi rảnh, bỏ qua khi Tiết kiệm dữ liệu/2g, không tải video.

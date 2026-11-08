@@ -372,6 +372,86 @@
   </main>
   <script src="assets/paper/paper-scene.js"></script>
   <script src="assets/bo-replies.js"></script>
+
+  <script src="assets/preload-pages.js" defer></script>
+  <script>
+    window.addEventListener('load', function () {
+      if (window.MemoriPreload) MemoriPreload.prefetch([
+ "sitemap.html",
+ "roadmap.html",
+ "dangky.html",
+ "assets/sitemap/bg.webp",
+ "assets/sitemap/icon0.webp",
+ "assets/sitemap/icon1.webp",
+ "assets/sitemap/icon2.webp",
+ "assets/sitemap/icon3.webp",
+ "assets/sitemap/icon4.webp",
+ "assets/sitemap/icon5.webp",
+ "assets/sitemap/icon6.webp",
+ "assets/sitemap/leaves.webp",
+ "assets/sitemap/map.webp",
+ "assets/sitemap/mound.webp",
+ "assets/sitemap/sprites/ladybug_back.webp",
+ "assets/sitemap/sprites/ladybug_front.webp",
+ "assets/sitemap/sprites/ladybug_idle.webp",
+ "assets/sitemap/sprites/ladybug_threeQuarterLeft.webp",
+ "assets/sitemap/sprites/ladybug_turnLeft.webp",
+ "assets/sitemap/sprites/ladybug_turnRight.webp",
+ "assets/roadmap/bg.webp",
+ "assets/roadmap/ladybug_back.webp",
+ "assets/roadmap/ladybug_front.webp",
+ "assets/roadmap/ladybug_idle.webp",
+ "assets/roadmap/ladybug_threeQuarterLeft.webp",
+ "assets/roadmap/ladybug_turnLeft.webp",
+ "assets/roadmap/ladybug_turnRight.webp",
+ "assets/roadmap/leafL1.webp",
+ "assets/roadmap/leafR1.webp",
+ "assets/roadmap/moundL.webp",
+ "assets/roadmap/poster1.webp",
+ "assets/roadmap/poster2.webp",
+ "assets/roadmap/poster3.webp",
+ "assets/roadmap/poster4.webp",
+ "assets/roadmap/scroll.webp",
+ "assets/roadmap/sshadow.webp",
+ "assets/register/d/bg.webp",
+ "assets/register/d/bug.webp",
+ "assets/register/d/f_bl.webp",
+ "assets/register/d/f_br.webp",
+ "assets/register/d/f_rm.webp",
+ "assets/register/d/f_tl.webp",
+ "assets/register/d/fb_f_bl.webp",
+ "assets/register/d/fb_f_br.webp",
+ "assets/register/d/fb_f_rm.webp",
+ "assets/register/d/fb_f_tl.webp",
+ "assets/register/d/fc_f_bl_0.webp",
+ "assets/register/d/fc_f_bl_1.webp",
+ "assets/register/d/fc_f_bl_2.webp",
+ "assets/register/d/fc_f_bl_3.webp",
+ "assets/register/d/fc_f_bl_4.webp",
+ "assets/register/d/fc_f_bl_5.webp",
+ "assets/register/d/fc_f_br_0.webp",
+ "assets/register/d/fc_f_br_1.webp",
+ "assets/register/d/fc_f_rm_0.webp",
+ "assets/register/d/fc_f_rm_1.webp",
+ "assets/register/d/fc_f_tl_0.webp",
+ "assets/register/d/fc_f_tl_1.webp",
+ "assets/register/d/fc_f_tl_2.webp",
+ "assets/register/d/fc_f_tl_3.webp",
+ "assets/register/d/flies.webp",
+ "assets/register/d/paper.webp",
+ "assets/register/d/seal.webp",
+ "assets/register/d/t_A.webp",
+ "assets/register/d/t_B.webp",
+ "assets/register/d/t_C.webp",
+ "assets/register/d/t_D.webp",
+ "assets/register/d/t_E.webp",
+ "assets/register/imprint.webp",
+ "assets/register/stamp.webp",
+ "assets/fonts/BeVietnamPro-500-latin.woff2",
+ "assets/fonts/BeVietnamPro-500-vietnamese.woff2"
+]);
+    });
+  </script>
   <script>
     (() => {
       const scene = document.querySelector('.scene');
@@ -926,7 +1006,7 @@
         if (!question) { botSay('Bạn hãy nhập câu hỏi vào khung rồi gửi nhé.'); field.focus(); return; }
         const { reply, target, label } = findReply(question);
         let link = null;
-        if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; if (/(^|\/)(?:community|gallery|sitemap)\.html(?:$|[?#])/.test(target)) { link.classList.add('go-community'); link.textContent = '✦ ' + label; } }
+        if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; if (/(^|\/)(?:community|gallery|sitemap|roadmap|dangky)\.html(?:$|[?#])/.test(target)) { link.classList.add('go-community'); link.textContent = '✦ ' + label; } }
         userAsked = true;
         addMessage('user').textContent = question;
         field.value = '';
