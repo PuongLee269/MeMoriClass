@@ -1,6 +1,6 @@
 # Các trang con Bọ có thể mở
 
-Bọ (khung chat trong `me-mori-intro.html`) tra từ khóa trong `assets/bo-replies.js` (`BO_REPLIES`, `BO_FALLBACK`).
+Bọ (khung chat trong `index.html`) tra từ khóa trong `assets/bo-replies.js` (`BO_REPLIES`, `BO_FALLBACK`).
 Bộ so khớp bỏ dấu, khớp cả từ; khóa dài hơn 4 ký tự khớp cả chuỗi con. Điểm = tổng độ dài khóa khớp, điểm bằng nhau thì mục đứng trước thắng.
 Liên kết tới `community.html` và `gallery.html` được hiện thành nút viên thuốc (class `go-community`), và `PaperScene.linkTransitions` phát hiệu ứng giấy trước khi chuyển trang.
 
@@ -14,5 +14,15 @@ Lưu ý: `gallery` đứng trước `works` nên thắng khi hòa điểm ở "t
 ## Thêm một trang mới
 1. Copy `<trang>.html` vào gốc repo và ảnh vào `assets/<trang>/` (font dùng `assets/fonts/`, không gọi Google).
 2. Thêm một mục vào `BO_REPLIES` trong `assets/bo-replies.js`: `id`, `keys` (có dấu và không dấu), `reply` (1-3 câu), `link: { href: '<trang>.html', label: '...' }`. Đặt trước các mục có khóa trùng nếu muốn thắng khi hòa.
-3. Thêm tên trang vào regex `(?:community|gallery)` ở dòng tạo liên kết trong `me-mori-intro.html` để có nút viên thuốc.
+3. Thêm tên trang vào regex `(?:community|gallery|sitemap)` ở dòng tạo liên kết trong `index.html` để có nút viên thuốc.
 4. Thêm một dòng vào bảng này, rồi thử bằng vài câu hỏi mẫu.
+
+## Cấu trúc trang chủ và quy tắc liên kết
+- Trang chủ = `index.html` (trang Bọ). Trang chủ cũ (lớp, workshop, liên hệ) giữ ở `home-backup.html`; `admin.html` vẫn sửa `content.json` cho trang này và nút "Mở trang chính" trỏ tới `home-backup.html`.
+- `me-mori-intro.html` chỉ còn là trang chuyển hướng về `index.html` (cho đường dẫn cũ).
+- Liên kết tới lớp/workshop/liên hệ dùng `home-backup.html#courses`, `#workshops`, `#contact`...; không dùng `index.html#...`. Trang con quay về Bọ bằng `index.html`.
+- Nút bản đồ góc trên phải và gợi ý sau ~14 giây không thao tác đều trỏ tới `sitemap.html`.
+
+| Trang | Đường dẫn | Ghi chú | Id mục |
+|---|---|---|---|
+| `sitemap.html` | `/sitemap.html` | Bản đồ trang web. Đang làm (in progress), chưa có trong repo. | `sitemap` |
