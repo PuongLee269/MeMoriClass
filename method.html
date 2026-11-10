@@ -52,7 +52,8 @@ html,body{margin:0;height:100%;background:var(--night);color:var(--cream);font:4
 @keyframes sway{0%,22%,100%{transform:rotate(0)}30%{transform:rotate(1.1deg)}38%{transform:rotate(-1.4deg)}46%{transform:rotate(1deg)}54%{transform:rotate(-.6deg)}62%{transform:rotate(.25deg)}70%{transform:rotate(0)}}
 @keyframes rustle{0%,24%,100%{transform:rotate(0) translate(0,0)}29%{transform:rotate(.35deg) translate(.8px,-.5px)}34%{transform:rotate(-.3deg) translate(-.7px,.5px)}40%{transform:rotate(.28deg) translate(.6px,-.4px)}46%{transform:rotate(-.2deg) translate(-.4px,.3px)}54%{transform:rotate(.1deg)}62%{transform:rotate(0)}}
 .paused *{animation-play-state:paused!important}
-#dishWrap img{position:absolute;left:0;top:0;width:100%;height:auto}
+#dishWrap img{position:absolute;left:0;top:0;width:100%;height:100%}
+#table img{height:100%}
 #dishBright{opacity:0;will-change:opacity}
 #fx{pointer-events:none}
 .pshadow{border-radius:50%;background:radial-gradient(ellipse,#000a 0,#0006 45%,#0000 72%)}
@@ -86,7 +87,7 @@ body.reading #head{opacity:0}
 .pill svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 #back{position:absolute;left:max(14px,env(safe-area-inset-left,0px));bottom:max(14px,env(safe-area-inset-bottom,0px))}
 #tools{position:absolute;right:max(14px,env(safe-area-inset-right,0px));bottom:max(14px,env(safe-area-inset-bottom,0px));display:flex;gap:10px}
-#snd{width:44px;padding:0}
+#snd,.ibtn{width:44px;padding:0}
 #hint{position:absolute;left:50%;bottom:calc(max(14px,env(safe-area-inset-bottom,0px)) + 62px);transform:translate(-50%,6px);max-width:min(520px,calc(100vw - 32px));text-align:center;font:400 16px/1.4 var(--body);color:#f4e9c6;text-shadow:0 1px 8px #000,0 0 4px #000;opacity:0;transition:opacity 1.2s ease,transform 1.2s ease;pointer-events:none}
 #hint.on{opacity:.9;transform:translate(-50%,0)}
 #wrong{position:absolute;left:50%;top:calc(var(--wy,50%));transform:translate(-50%,8px);max-width:min(420px,calc(100vw - 32px));text-align:center;font:500 16px/1.4 var(--body);color:#ffe2b4;text-shadow:0 1px 8px #000,0 0 4px #000;opacity:0;transition:opacity .35s ease,transform .35s ease;pointer-events:none}
@@ -133,7 +134,7 @@ body.reading #head{opacity:0}
   .panel{padding:22px 20px 20px}
   .panel .ptext{font-size:16.5px}
 }
-@media (max-height:520px) and (min-aspect-ratio:21/10){#head p{display:none}#head h1{font-size:40px}#tools{right:auto;left:calc(max(14px,env(safe-area-inset-left,0px)) + 156px)}.panel{padding:16px 20px 16px!important}.panel h2{font-size:32px!important;margin-bottom:4px!important}.panel .ptext{font-size:16px!important;line-height:1.5!important}.pvid{margin-top:8px!important}}
+@media (max-height:520px) and (min-aspect-ratio:21/10){#head p{display:none}#head h1{font-size:40px}#tools{right:auto;left:calc(max(14px,env(safe-area-inset-left,0px)) + 54px)}.panel{padding:16px 20px 16px!important}.panel h2{font-size:32px!important;margin-bottom:4px!important}.panel .ptext{font-size:16px!important;line-height:1.5!important}.pvid{margin-top:8px!important}}
 @media (prefers-reduced-motion:reduce){
   #lantern,#leaves,#lglow,.glint,.fly,.ld-flies i{animation:none!important}
   .fly{opacity:.35}
@@ -160,16 +161,16 @@ body.reading #head{opacity:0}
   </section>
   <p id="hint"></p>
   <p id="wrong" role="status"></p>
-  <a class="pill" id="back" href="index.html">← <span id="backTxt">Về trang Bọ</span></a>
+  <a class="pill ibtn" id="back" href="index.html" aria-label="Về trang Bọ"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg></a>
   <div id="tools">
-    <button class="pill" id="reset" type="button">↻ <span id="resetTxt">Xếp lại</span></button>
+    <button class="pill ibtn" id="reset" type="button" aria-label="Xếp lại"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.6-5.9M20 4v4.6h-4.6"/></svg></button>
     <button class="pill" id="snd" type="button" aria-pressed="false" aria-label="Tắt âm thanh"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z" fill="currentColor" stroke="none"/><g id="sndOn"><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/></g><g id="sndOff" hidden><path d="M16 9.5l5 5M21 9.5l-5 5"/></g></svg></button>
   </div>
   <div id="sr" aria-live="polite" role="status"></div>
 </div>
 <div id="loader" role="status" aria-live="polite"><div class="ld-in"><div class="ld-logo">Me.Mori<small>CLASS</small></div><div class="ld-flies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div><p class="ld-text" id="ldText">Bọ đang dọn bàn đá…</p><div class="ld-track" aria-hidden="true"><span id="ldBar"></span></div></div></div>
 <script src="assets/map-btn.js" defer data-corner="tr"></script>
-<script src="assets/bo-widget.js" defer data-corner="tl"></script>
+<script src="assets/bo-widget.js?v=r523b9b7" defer data-corner="tl" data-panel="right" data-sheet-max-m="38"></script>
 <script>
 /* ===================================================================
    TRANG "PHƯƠNG PHÁP" - bàn đá thí nghiệm
@@ -209,7 +210,7 @@ var DEFAULT_CONTENT={
    "id": "m-spiral",
    "symbol": "spiral",
    "title": "Ôn tập ngắt quãng",
-   "text": "Thay vì học dồn một lần, bạn quay lại cùng một nội dung sau 1 ngày, 3 ngày rồi 1 tuần. Mỗi lần nhớ lại, trí nhớ được củng cố thêm một vòng xoắn. Cách này giúp kiến thức ở lại lâu hơn mà không tốn thêm nhiều thời gian. (Nội dung mẫu)",
+   "text": "Thay vì học dồn một lần, bạn quay lại cùng một nội dung sau 1 ngày, 3 ngày rồi 1 tuần. Mỗi lần nhớ lại, trí nhớ được củng cố thêm một vòng xoắn. Cách này giúp kiến thức ở lại lâu hơn mà không tốn thêm nhiều thời gian.",
    "imageUrl": "",
    "videoUrl": ""
   },
@@ -217,7 +218,7 @@ var DEFAULT_CONTENT={
    "id": "m-eye",
    "symbol": "eye",
    "title": "Học bằng quan sát",
-   "text": "Người học được mời nhìn thật kỹ một vật, một hình ảnh hay một thao tác mẫu trước khi nói hoặc làm. Giáo viên đặt câu hỏi gợi mở như: bạn thấy gì, điều gì đang thay đổi. Quan sát tốt giúp các em tự rút ra quy luật thay vì ghi nhớ máy móc. (Nội dung mẫu)",
+   "text": "Người học được mời nhìn thật kỹ một vật, một hình ảnh hay một thao tác mẫu trước khi nói hoặc làm. Giáo viên đặt câu hỏi gợi mở như: bạn thấy gì, điều gì đang thay đổi. Quan sát tốt giúp các em tự rút ra quy luật thay vì ghi nhớ máy móc.",
    "imageUrl": "",
    "videoUrl": ""
   },
@@ -225,7 +226,7 @@ var DEFAULT_CONTENT={
    "id": "m-mountain",
    "symbol": "mountain",
    "title": "Chia nhỏ mục tiêu",
-   "text": "Một ngọn núi lớn được leo từng chặng ngắn. Giáo viên chia bài học thành các bước nhỏ, mỗi bước có một dấu mốc hoàn thành rõ ràng. Cảm giác tiến bộ sau mỗi chặng giúp người học giữ được động lực đến cuối bài. (Nội dung mẫu)",
+   "text": "Một ngọn núi lớn được leo từng chặng ngắn. Giáo viên chia bài học thành các bước nhỏ, mỗi bước có một dấu mốc hoàn thành rõ ràng. Cảm giác tiến bộ sau mỗi chặng giúp người học giữ được động lực đến cuối bài.",
    "imageUrl": "",
    "videoUrl": ""
   }
@@ -370,18 +371,25 @@ var S={stage:1,held:null,dish:[],dishSym:null,panelOpen:false,busy:0,interacted:
 var el={};
 var IMG_PATHS=['bg','branch','leaves','lantern','table','dish','dish-dim'];
 function layout(){
-  var vw=innerWidth,vh=innerHeight,land=vw/vh>=1.05,s,W,H,cx,o={vw:vw,vh:vh,land:land};
-  if(land){s=Math.min(vw/1400,vh/900);W=vw/s;H=vh/s;cx=W/2;o.compact=vh<520;if(o.compact)cx=W*.4;
-    o.c=120;o.tw=1240;o.surfCY=H*.585;o.surfDX=0;o.dw=600;o.dishDX=185;o.dishDY=-30;o.pileX=cx-345;o.pileY=o.surfCY+52;o.bw=Math.max(430,Math.min(540,W*.34));o.spacing=.8;
+  var vw=innerWidth,vh=innerHeight,land=vw/vh>=1.05,s,W,H,cx,o={vw:vw,vh:vh,land:land},sY=1,du,dv,dRx,sq,pu,pv;
+  /* Toạ độ mặt đá trong ảnh bàn (1400x705): mặt phẳng trên là hình elip tâm (700,283), bán kính ~650x237. Đĩa nằm trọn trong elip này (lề ~15%), cả bố cục dựa vào đó. */
+  if(land){s=Math.min(vw/1400,vh/900);W=vw/s;H=vh/s;cx=W/2;o.compact=vh<520;if(o.compact)cx=W*.36;
+    o.c=120;o.tw=1240;o.surfCY=H*.56;o.spacing=.8;o.bw=Math.max(430,Math.min(540,W*.34));
+    du=985;dv=285;dRx=280;sq=.75;pu=360;pv=322;
   }else{s=Math.min(vw/660,vh/1180);W=vw/s;H=vh/s;cx=W/2;
-    o.c=112;o.tw=800;o.surfCY=H*.535;o.dw=590;o.dishDX=0;o.dishDY=0;o.pileX=cx;o.pileY=H*.82;o.bw=Math.min(260,W*.42);o.spacing=.88;}
-  o.s=s;o.W=W;o.H=H;o.cx=cx;
-  o.th=o.tw*705/1400;o.tx=cx-o.tw/2;o.ty=o.surfCY-.44*o.th;
-  o.dh=o.dw*600/900;o.dcx=cx+o.dishDX;o.dcy=o.surfCY+o.dishDY;o.dx=o.dcx-o.dw/2;o.dy=o.dcy-.425*o.dh;
+    o.tw=Math.min(W*1.09,760);sY=clamp(H/W*.68,1,1.5);o.c=Math.min(124,W*.19);o.spacing=.88;o.bw=Math.min(260,W*.42);
+    var kk0=o.tw/1400;o.surfCY=Math.max(H*.36,236+283*kk0*sY);
+    du=700;dv=283;dRx=410;sq=clamp(.5*sY+.25,.75,1);
+  }
+  o.s=s;o.W=W;o.H=H;o.cx=cx;o.k=o.tw/1400;o.kY=o.k*sY;
+  o.th=705*o.kY;o.tx=cx-o.tw/2;o.ty=o.surfCY-283*o.kY;
+  o.dw=dRx*o.k/.477;o.dh=o.dw*(2/3)*sq;
+  o.dcx=cx+(du-700)*o.k;o.dcy=o.ty+dv*o.kY-.075*o.dh;o.dx=o.dcx-o.dw/2;o.dy=o.dcy-.425*o.dh;
   o.rxD=o.dw*.40;o.ryD=o.dh*.34;
+  if(land){o.pileX=cx+(pu-700)*o.k;o.pileY=o.ty+pv*o.kY}
+  else{var sb=o.ty+o.th,bt=H-(14+44+10)/s;o.pileX=cx;o.pileY=(sb+bt)/2+o.c*.1}
   /* ô đá trong đống: 3 hàng 4-3-2 */
   var c=o.c,sp=o.spacing*c,rows=[[-1.5,-.5,.5,1.5],[-1,0,1],[-.5,.5]],ys=[.62*c,0,-.62*c],jit=[[-.04,.05,-.03,.06],[.05,-.04,.03],[-.05,.04]],rot=[[-3,2,-2,4],[3,-3,2],[-4,3]],slots=[],cov=[];
-  var start=[0,4,7];
   rows.forEach(function(r,ri){r.forEach(function(x,i){slots.push({x:o.pileX+x*sp+jit[ri][i]*c*2,y:o.pileY+ys[ri]+jit[ri][i]*c,rot:rot[ri][i],row:ri,nx:x})})});
   slots.forEach(function(a,i){a.covers=[];slots.forEach(function(b,j){if(b.row===a.row+1&&Math.abs(b.nx-a.nx)<=.55)a.covers.push(j)})});
   o.slots=slots;
@@ -389,13 +397,13 @@ function layout(){
   return o;
 }
 function inField(x,y){
-  var a=((x-L.cx)/(L.tw*.52)),b=((y-(L.surfCY+L.th*.05))/(L.th*.5));if(a*a+b*b<=1)return true;
+  var a=((x-L.cx)/(L.k*640)),b=((y-(L.ty+290*L.kY))/(L.kY*250));if(a*a+b*b<=1)return true;
   if(!L.land&&y>L.pileY-L.c*2&&y<L.H-20&&x>10&&x<L.W-10)return true;
   if(L.land){var px=L.pileX;if(Math.abs(x-px)<L.c*2.6&&Math.abs(y-L.pileY)<L.c*2)return true}
   return false;
 }
 function dishD(x,y){var a=(x-L.dcx)/L.rxD,b=(y-L.dcy)/L.ryD;return Math.sqrt(a*a+b*b)}
-function snapR(){return L.land?1.5:1.75}
+function snapR(){return L.land?1.3:1.75}
 
 /* ---------------- dựng DOM sân khấu ---------------- */
 function mkImg(src,cls,id){var i=new Image();i.src=src;i.alt='';i.decoding='async';i.draggable=false;if(cls)i.className=cls;if(id)i.id=id;return i}
@@ -408,6 +416,7 @@ function build(){
   el.lantern=d('lantern','layer');el.lantern.appendChild(mkImg('assets/method/lantern.webp'));
   el.table=d('table','layer');el.table.appendChild(mkImg('assets/method/table.webp'));
   el.pshadow=d('pshadow','pshadow');
+  el.dshadow=d('dshadow','pshadow');
   el.dishWrap=d('dishWrap');el.dishWrap.appendChild(mkImg('assets/method/dish-dim.webp'));el.dishBright=mkImg('assets/method/dish.webp','','dishBright');el.dishWrap.appendChild(el.dishBright);
   el.fx=document.createElement('canvas');el.fx.id='fx';scene.appendChild(el.fx);el.fxc=el.fx.getContext('2d');
   el.dishHit=document.createElement('button');el.dishHit.id='dishHit';el.dishHit.type='button';el.dishHit.setAttribute('aria-label','Đĩa thí nghiệm, bấm để đóng phần chữ');el.dishHit.tabIndex=-1;scene.appendChild(el.dishHit);
@@ -441,6 +450,7 @@ function applyLayout(){
   var lcx=-14*k+168*k+lw*.5,lcy=-10+291*k+lh*.55,lg=lw*2.7;box(el.lglow,lcx-lg/2,lcy-lg/2,lg,lg);
   box(el.table,o.tx,o.ty,o.tw,o.th);
   box(el.dishWrap,o.dx,o.dy,o.dw,o.dh);
+  box(el.dshadow,o.dcx-o.dw*.5,o.dcy+.3*o.dh,o.dw,o.dh*.3);
   box(el.dishHit,o.dcx-o.rxD*1.1,o.dcy-o.ryD*1.2,o.rxD*2.2,o.ryD*2.4);
   var pw=o.c*(L.land?4.1:4.3);box(el.pshadow,o.pileX-pw/2,o.pileY+o.c*.3,pw,o.c*1.05);
   /* canvas fx quanh đĩa */
@@ -729,15 +739,18 @@ function closePanel(fromUser){
 }
 function placeHint(){var h=$('hint');h.style.left=(L.dcx*L.s)+'px';h.style.bottom='auto';h.style.top=Math.max(70,L.dy*L.s-(L.land?44:84))+'px'}
 function placePanel(){
-  var p=$('panel'),o=L,vw=o.vw,vh=o.vh;
-  var top=o.land?(vh<520?10:72):76,dishC=o.dcy*o.s;
-  var w=Math.min(620,vw-24);if(o.land&&vw>900)w=Math.min(640,Math.max(520,vw*.42));
-  if(o.compact){w=Math.min(vw*.46,420);top=62}
-  p.style.width=w+'px';
-  var cxs=o.dcx*o.s;if(o.land)cxs=clamp(cxs,w/2+12,vw-w/2-12);else cxs=vw/2;if(o.compact)cxs=vw-12-w/2;
-  p.style.left=cxs+'px';p.style.top=top+'px';
-  var maxb=o.land?(vh<520?vh:Math.max(dishC-10,260)):(o.dy*o.s+o.dh*o.s*.16);
-  p.style.maxHeight=Math.max(150,Math.min(vh-top-10,maxb-top))+'px';
+  /* Bảng chữ luôn nằm ngoài đĩa: ngang (máy tính) ở bên trái đĩa, ngang thấp ở bên phải, dọc (điện thoại) dưới tấm đá. */
+  var p=$('panel'),o=L,vw=o.vw,vh=o.vh,sc=o.s,w,left,top,maxH;
+  var dL=(o.dcx-.49*o.dw)*sc,dR=(o.dcx+.49*o.dw)*sc,dB=(o.dcy+.54*o.dh)*sc;
+  if(o.land&&o.compact){
+    w=clamp(vw-dR-24,230,420);left=vw-12-w/2;top=64;maxH=vh-74;
+  }else if(o.land){
+    w=clamp(dL-30,300,560);left=clamp(Math.max(14,(o.tx+40*o.k)*sc)+w/2,w/2+12,dL-16-w/2);top=84;maxH=Math.min(vh-84-78,520);
+  }else{
+    w=Math.min(620,vw-24);left=vw/2;top=Math.max(76,dB+14);maxH=vh-72-top;
+    if(maxH<230){top=Math.max(76,vh-72-230);maxH=230}
+  }
+  p.style.width=w+'px';p.style.left=left+'px';p.style.top=top+'px';p.style.maxHeight=Math.max(140,maxH)+'px';
 }
 
 /* ---------------- bàn phím ---------------- */
@@ -818,7 +831,7 @@ function ambience(){
 /* ---------------- khởi động + loader ---------------- */
 function applyContent(){
   document.title=C.page.title;$('pageTitle').textContent=C.page.title;$('pageSub').textContent=C.page.subtitle;$('hint').textContent=C.page.hint;
-  $('backTxt').textContent=C.page.backLabel;$('back').href=C.page.backHref;$('resetTxt').textContent=C.page.resetLabel;$('pclose').setAttribute('aria-label',C.page.closeLabel);$('ldText').textContent=C.page.loaderText;
+  $('back').setAttribute('aria-label',C.page.backLabel);$('back').href=C.page.backHref;$('reset').setAttribute('aria-label',C.page.resetLabel);$('pclose').setAttribute('aria-label',C.page.closeLabel);$('ldText').textContent=C.page.loaderText;
   $('scene').setAttribute('aria-describedby','sr');$('scene').title='';
   $('hint').setAttribute('data-kb',C.page.keyboardHelp);
 }

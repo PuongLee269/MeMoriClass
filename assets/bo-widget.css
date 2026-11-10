@@ -71,12 +71,27 @@
 .bow-send { flex:none; height:44px; min-width:64px; padding:0 16px; border:0; border-radius:999px; background:linear-gradient(170deg,#f8edcf,#e5cf98); color:#2d2416; font:500 15px/1 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .bow-send:active { transform:scale(.96); } .bow-send:focus-visible { outline:2px solid #f4e7c4; outline-offset:2px; }
 
+/* tuỳ chọn: mờ khi cuộn trang (data-scroll-fade) */
+.bow.is-ready .bow-bo { transition:opacity .6s ease; }
+.bow.is-scrolling:not(.is-open) .bow-bo { opacity:.35; transition-duration:.18s; }
+
+/* tuỳ chọn data-panel="right": khung chat sát mép phải (máy tính, kể cả điện thoại nằm ngang) */
+@media (min-width:641px) {
+  .bow[data-panel="right"] .bow-panel { position:fixed; left:auto; right:max(8px, env(safe-area-inset-right, 0px)); top:auto; bottom:max(12px, env(safe-area-inset-bottom, 0px)); width:clamp(250px, 19vw, 320px); max-height:min(440px, calc(100dvh - 96px)); transform-origin:100% 100%; }
+  .bow[data-panel="right"] .bow-log { min-height:80px; }
+}
+
 /* điện thoại: bottom sheet */
 @media (max-width:640px) {
   .bow { --bow-size:64px; }
   .bow-panel { position:fixed; left:0; right:0; bottom:var(--bow-sheet-b, 0px); top:auto; width:auto; max-height:min(76dvh, 560px); border-radius:20px 20px 0 0; padding-bottom:env(safe-area-inset-bottom, 0px); transform:translateY(24px); transform-origin:50% 100%; }
   .bow[data-corner] .bow-panel { left:0; right:0; top:auto; bottom:var(--bow-sheet-b, 0px); }
   .bow.is-open .bow-bo { opacity:0; pointer-events:none; }
+  .bow[data-panel="right"] .bow-panel, .bow[data-panel="right"][data-corner] .bow-panel { top:max(0px, env(safe-area-inset-top, 0px)); bottom:auto; max-height:max(190px, var(--bow-sheet-max, 38dvh)); border-radius:0 0 20px 20px; padding-bottom:0; transform:translateY(-24px); transform-origin:50% 0; }
+  .bow[data-panel="right"].is-open .bow-panel { transform:none; }
+  .bow[data-panel="right"] .bow-head::before { display:none; }
+  .bow[data-panel="right"] .bow-head { padding-top:4px; }
+  .bow[data-panel="right"] .bow-log { min-height:60px; }
   .bow-head::before { content:""; position:absolute; left:50%; top:6px; width:38px; height:4px; margin-left:-19px; border-radius:2px; background:#ffffff33; }
 }
 @media (prefers-reduced-motion: reduce) { .bow-idle, .bow-spark, .bow-msg, .bow-fly img { animation:none !important; } .bow-panel, .bow-bo { transition:none; } .bow.is-hop .bow-art { animation:none; } }

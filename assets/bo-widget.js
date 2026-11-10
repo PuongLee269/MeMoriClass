@@ -1,6 +1,8 @@
 /* Bọ nhỏ ở góc mọi trang con: bấm vào là mở khung chat (cùng bộ so khớp với trang Bọ).
    Cách dùng (trước </body>): <script src="assets/bo-widget.js" defer data-corner="bl"></script>
    data-corner: bl|br|tl|tr (mặc định bl); data-corner-m: góc riêng trên điện thoại (<=640px); data-ox / data-oy (và data-ox-m / data-oy-m cho điện thoại): dịch thêm (px, dương = vào trong/lên trên) để tránh điều khiển của trang.
+   data-panel="right": trên máy tính khung chat gắn sát mép PHẢI màn hình (hẹp hơn) để không che bàn/đá; trên điện thoại (<=640px) khung là tấm trượt gắn ở ĐẦU màn hình, thấp (data-sheet-max-m, % chiều cao, mặc định 38) để vẫn kéo được vật ở nửa dưới.
+   data-size / data-size-m: cỡ Bọ (px) trên máy tính / điện thoại. data-scroll-fade="1": Bọ mờ còn 35% khi đang cuộn trang, trở lại khi dừng (mặc định tắt).
    Nhẹ: lúc tải trang chỉ có nút + ảnh Bọ nhỏ. bo-matcher.js, content-loader.js, bo.json, bo-replies.json CHỈ tải khi mở chat lần đầu. */
 (function () {
   'use strict';
@@ -56,6 +58,11 @@
     root.style.setProperty('--bow-ox', (parseInt((ph && DS.oxM) || DS.ox, 10) || 0) + 'px');
     root.style.setProperty('--bow-oy', (parseInt((ph && DS.oyM) || DS.oy, 10) || 0) + 'px');
     root.dataset.face = /r$/.test(c) ? 'l' : 'r';       /* quay mặt vào phía trong trang */
+    var sz = parseInt((ph && DS.sizeM) || DS.size, 10);
+    if (sz >= 36 && sz <= 120) root.style.setProperty('--bow-size', sz + 'px'); else root.style.removeProperty('--bow-size');
+    if (DS.panel === 'right') root.dataset.panel = 'right';
+    var sm = parseInt(DS.sheetMaxM, 10);
+    if (sm >= 20 && sm <= 76) root.style.setProperty('--bow-sheet-max', sm + 'dvh');
   }
 
   function build() {
@@ -84,7 +91,7 @@
     panel.append(head, log, form);
     root.append(btn, panel);
     document.body.appendChild(root);
-    var css = document.createElement('link'); css.rel = 'stylesheet'; css.href = BASE + 'bo-widget.css';
+    var css = document.createElement('link'); css.rel = 'stylesheet'; css.href = BASE + 'bo-widget.css' + ((script.src.match(/\?v=[\w.]+/) || [''])[0]);
     css.onload = function () { root.classList.add('is-ready'); };
     css.onerror = function () { root.classList.add('is-ready'); };
     document.head.appendChild(css);
@@ -98,6 +105,10 @@
     btn.addEventListener('pointerenter', warm); btn.addEventListener('focus', warm);
     closeBtn.addEventListener('click', function () { close(true); });
     form.addEventListener('submit', onSubmit);
+    if (DS.scrollFade === '1' || DS.scrollFade === 'true') {
+      var idleT = 0, onScroll = function () { root.classList.add('is-scrolling'); window.clearTimeout(idleT); idleT = window.setTimeout(function () { root.classList.remove('is-scrolling'); }, 900); };
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
     var onMq = function () { setCorner(); };
     if (PHONE) { if (PHONE.addEventListener) PHONE.addEventListener('change', onMq); }
     if (window.visualViewport) {
