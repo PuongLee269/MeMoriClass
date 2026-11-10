@@ -1,0 +1,81 @@
+{
+  "pageTitle": "Gallery Me.Mori",
+  "hint": "Kéo qua 3 viên đá để đổi ảnh",
+  "photos": [
+    {
+      "id": "sample",
+      "src": "assets/gallery/photo.webp",
+      "alt": "Căn nhà nhỏ bên hồ dưới hai vầng trăng",
+      "at": [
+        405,
+        62
+      ]
+    }
+  ],
+  "assignments": [
+    {
+      "gems": [
+        0,
+        1,
+        2
+      ],
+      "photo": "sample"
+    },
+    {
+      "gems": [
+        3,
+        4,
+        5
+      ],
+      "photo": "sample"
+    },
+    {
+      "gems": [
+        6,
+        7,
+        8
+      ],
+      "photo": "sample"
+    },
+    {
+      "gems": [
+        0,
+        3,
+        6
+      ],
+      "photo": "sample"
+    },
+    {
+      "gems": [
+        1,
+        4,
+        7
+      ],
+      "photo": "sample"
+    },
+    {
+      "gems": [
+        2,
+        5,
+        8
+      ],
+      "photo": "sample"
+    },
+    {
+      "gems": [
+        0,
+        4,
+        8
+      ],
+      "photo": "sample"
+    },
+    {
+      "gems": [
+        2,
+        4,
+        6
+      ],
+      "photo": "sample"
+    }
+  ]
+}

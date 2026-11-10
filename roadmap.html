@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Lộ trình Me.Mori</title>
+<script src="assets/content-loader.js"></script>
+<script>MemoriContent.prefetch("roadmap");MemoriContent.prefetch("site");</script>
+
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preload" href="assets/fonts/OoohBaby-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/BeVietnamPro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -44,12 +47,10 @@ body{font-family:var(--sans);color:var(--cream);-webkit-tap-highlight-color:tran
 .fade{transition:opacity .7s ease}
 /* ---- khung video theo tỉ lệ clip + viền năng lượng (canvas) ---- */
 #pz{position:absolute;left:0;top:0;width:0;height:0}
-#amblight{position:absolute;pointer-events:none;background:radial-gradient(closest-side,rgba(255,168,80,.2),rgba(255,140,60,.11) 46%,rgba(255,120,50,.04) 78%,rgba(255,120,50,0) 100%);opacity:.95;transition:opacity 1.2s ease}
-#app.playing #amblight{opacity:.7}
-#pw{position:absolute;left:0;top:0;--rad:14px;--bs:44px;--bps:72px;--spn:36px;--ccfs:16px;--bpad:8px;--prog:22px;--barh:66px;--shh:100px;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+#pw{position:absolute;left:0;top:0;--bs:44px;--bps:72px;--spn:36px;--ccfs:16px;--bpad:8px;--prog:22px;--barh:66px;--shh:100px;transition:transform .9s cubic-bezier(.2,.7,.2,1)}
 #app.intro #pw{transform:scale(.965)}
 #app #pw.on{transform:none!important}
-#vwrap{isolation:isolate;position:absolute;inset:0;overflow:hidden;border-radius:var(--rad);background:#0a0605}
+#vwrap{isolation:isolate;position:absolute;inset:0;overflow:hidden;background:#000}
 #vwrap .emb{position:absolute;left:0;top:0;width:100%;height:100%;border:0;background:#000;opacity:0;transition:opacity .35s ease;z-index:99999999}
 #vwrap .emb.show{opacity:1}
 #app.embedded:not(.nativeui) #vwrap .emb{pointer-events:none}
@@ -60,7 +61,6 @@ body{font-family:var(--sans);color:var(--cream);-webkit-tap-highlight-color:tran
 #pz.swi{transition:opacity .3s ease!important}
 #shade{z-index:100000000;position:absolute;left:0;right:0;bottom:0;height:var(--shh);pointer-events:none;background:linear-gradient(180deg,rgba(8,4,2,0),rgba(8,4,2,.2) 40%,rgba(8,4,2,.5));transition:opacity .3s ease}
 #app.idleui #shade{opacity:0}
-#ec,#ecs{position:absolute;pointer-events:none;mix-blend-mode:screen}
 #pfs{position:absolute;inset:0;pointer-events:none}
 #pfs #pui>*{pointer-events:auto}#pfs #cc,#pfs #spin,#pfs #msg{pointer-events:none}
 #fx{position:absolute;pointer-events:none;mix-blend-mode:screen}
@@ -176,7 +176,7 @@ input[type=range]:focus-visible{outline:2px solid #ffd98f;outline-offset:2px;bor
 /* ---- toàn màn hình: chỉ phần tử #pfs (video + điều khiển) ---- */
 /* ---- toàn màn hình: chỉ phần tử #pfs (video + điều khiển) ---- */
 #pfs.fs{position:fixed;inset:0;z-index:2147483000;background:#000;pointer-events:auto;width:100%;height:100%}
-#pfs.fs #playerG,#pfs.fs #ec,#pfs.fs #ecs,#pfs.fs #amblight{display:none!important}
+#pfs.fs #playerG{display:none!important}
 #pfs.fs #pz{left:0!important;top:0!important}
 #pfs.fs #pw{left:0!important;top:0!important;width:100%!important;height:100%!important;transform:none!important;opacity:1!important}
 #pfs.fs #vwrap{border-radius:0}
@@ -219,16 +219,15 @@ input[type=range]:focus-visible{outline:2px solid #ffd98f;outline-offset:2px;bor
     <div class="loader-track" aria-hidden="true"><span></span></div>
   </div>
 </div>
-<a id="rmback" href="index.html">← Về trang Bọ</a>
+<a id="rmback" href="index.html" data-site-back>← Về trang Bọ</a>
 <div id="app" class="intro">
   <div class="g" id="bgG"><div class="gi" id="bgGI"><img class="l" id="bgImg" alt="" decoding="sync"></div></div>
   <div id="glints"></div>
   <div id="pfs">
   <div class="g" id="playerG"></div>
-  <div id="pz" class="fade"><div id="amblight"></div>
+  <div id="pz" class="fade">
    <div id="pw">
     <div id="vwrap" aria-hidden="true"><div id="shade"></div></div>
-    <canvas id="ecs" aria-hidden="true"></canvas><canvas id="ec" aria-hidden="true"></canvas>
     <div id="pui">
     <div id="vclick"></div>
     <div id="cc" aria-hidden="true"></div>
@@ -272,6 +271,8 @@ input[type=range]:focus-visible{outline:2px solid #ffd98f;outline-offset:2px;bor
 </div>
 
 <script>
+(async()=>{
+/* Nội dung sửa được từ trang admin: assets/content/roadmap.json + site.json (xem docs/ADMIN.md). Thiếu/hỏng thì dùng mặc định dưới đây. */
 /* ================= CẤU HÌNH (dễ sửa) =================
    VIDEO = IFRAME NHÚNG (YouTube / Vimeo). Mỗi chương: CONFIG.chapters[i].video = {provider:'youtube'|'vimeo', id:'...', aspect:16/9, ui:'custom'|'native', start:0}
    - ID dưới đây là CHỖ GIỮ CHỖ (YOUTUBE_ID_... / VIMEO_ID_...): thay bằng ID thật. Khi còn là chỗ giữ chỗ, bấm phát sẽ hiện thông báo thay vì nạp iframe lỗi.
@@ -280,7 +281,7 @@ input[type=range]:focus-visible{outline:2px solid #ffd98f;outline-offset:2px;bor
      ui:'native' = dùng nút điều khiển của nhà cung cấp, trang chỉ giữ khung + viền năng lượng (Vimeo mặc định, vì tham số controls=0 của Vimeo chỉ có ở gói trả phí).
    - Chỉ có ảnh bìa (poster) + nút phát lúc đầu (facade); iframe CHỈ được tạo khi bấm phát lần đầu của chương đó => trang tải nhanh, không có yêu cầu mạng tới YouTube/Vimeo khi rê chuột/chọn chương.
    - LƯU Ý: sandbox của Artifact có thể chặn iframe nhúng (CSP frame-src); nếu bị chặn, khi bấm phát sẽ hiện thông báo sau ~15 giây. Poster hiện là ảnh tạm (khung hình từ kho portfolio của Mori): thay bằng poster thật. */
-const CONFIG={
+const CONFIG_DEFAULT={
  hosts:{youtube:'https://www.youtube-nocookie.com',vimeo:'https://player.vimeo.com'},
  chapters:[
  {id:'c1',num:'Chapter 01',title:'Khởi hành',poster:'assets/roadmap/poster1.webp',
@@ -304,6 +305,15 @@ const CONFIG={
    vo:'Khi đêm sắp tàn, một ánh sáng dịu dàng trả lời những câu hỏi của chú bọ, không bằng lời, mà bằng cảm giác bình yên lan khắp khu rừng…',
    cues:[{t:0,text:'Khi đêm sắp tàn, một ánh sáng dịu dàng lên tiếng.'},{t:7,text:'Không bằng lời, mà bằng cảm giác bình yên.'},{t:14,text:'Lan khắp khu rừng, lan vào lòng chú bọ nhỏ.'}]}}
  ]};
+const RC=await MemoriContent.load('roadmap',{pageTitle:document.title,loaderText:(document.querySelector('.loader-text')||{}).textContent||'',chapters:CONFIG_DEFAULT.chapters}),SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);
+MemoriContent.applySite(SITE,'#rmback');document.title=RC.pageTitle||document.title;MemoriContent.setText('.loader-text',RC.loaderText);
+const fixChapter=(d)=>{const c=RC.chapters.find(x=>x&&x.id===d.id)||d,v=c.video||{},dv=d.video,U=MemoriContent.url,prov=v.provider==='vimeo'?'vimeo':'youtube';
+ const idOk=prov==='vimeo'?MemoriContent.vimeoId(String(v.id)):MemoriContent.youtubeId(String(v.id));
+ const cues=((c.script||{}).cues||[]).filter(q=>q&&typeof q.text==='string'&&q.text&&isFinite(q.t)&&q.t>=0).map(q=>({t:+q.t,text:q.text}));
+ return {id:d.id,num:c.num||d.num,title:c.title||d.title,poster:U(c.poster,d.poster),
+  video:Object.assign({},dv,{provider:idOk?prov:dv.provider,id:idOk||dv.id,title:typeof v.title==='string'?v.title:dv.title,aspect:(v.aspect>=.3&&v.aspect<=3)?v.aspect:dv.aspect,ui:(v.ui==='native'||v.ui==='custom')?v.ui:dv.ui,start:(v.start>0&&v.start<86400)?Math.floor(v.start):0}),
+  script:{scene:(c.script||{}).scene||d.script.scene,vo:(c.script||{}).vo||d.script.vo,cues}}};
+const CONFIG={hosts:CONFIG_DEFAULT.hosts,chapters:CONFIG_DEFAULT.chapters.map(fixChapter)};
 const CHAPTERS=CONFIG.chapters;
 let SELECTED=1; // chương 02 được chọn ban đầu (chỉ số 0..3)
 
@@ -469,7 +479,7 @@ function bg(extra){const s=Math.max(VW/CW,VH/CH)*(extra||1);setG(G.bgG,(VW-CW*s)
 function applyUI(){fxSize();if(RM)setTimeout(fxDraw,0);
   const Sg=G.scrollG,C=G.chapG;
   // ---- khung video: theo tỉ lệ clip, nằm trong hộp tối đa
-  ecSize();setWrapTarget(true);
+  setWrapTarget(true);
   // ---- scroll text
   let tr;
   if(!PORT){tr=[566,573,399,150]}else{tr=[505,560,642,172]}
@@ -515,10 +525,7 @@ function setWrapTarget(snap){const t=wrapTarget(),pz=$('pz');
   pz.classList.remove('swi');pz.classList.add('swp');
   swT=setTimeout(()=>{swT=null;Object.assign(PW,PTg);paintWrap();pz.classList.remove('swp');pz.classList.add('swi');setTimeout(()=>pz.classList.remove('swi'),340)},180)}
 function paintWrap(){const st=$('pw').style;st.left=PW.x+'px';st.top=PW.y+'px';st.width=PW.w+'px';st.height=PW.h+'px';
-  st.setProperty('--rad',Math.max(8,14*BOX.k)+'px');
-  const a=$('amblight').style,aw=PW.w*1.7,ah=PW.h*1.7;a.left=(PW.x+PW.w/2-aw/2)+'px';a.top=(PW.y+PW.h/2-ah/2)+'px';a.width=aw+'px';a.height=ah+'px';
-  const e=$('ec').style,e2=$('ecs').style;e.left=e2.left=(BOX.cx-BOX.w/2-BOX.M-PW.x)+'px';e.top=e2.top=(BOX.cy-BOX.h/2-BOX.M-PW.y)+'px';
-  ctlLayout(PW.w,PW.h);EC.dirty=1}
+  ctlLayout(PW.w,PW.h)}
 // điều khiển co theo kích thước khung: bỏ dần thanh âm lượng, thời gian, cài đặt, phụ đề (nút tắt tiếng bỏ cuối cùng)
 function ctlLayout(W,H){const pw=$('pw'),fs=isFs(),cl=pw.classList,st=pw.style;
   let bs,bps,ccf,bpad=8,prog=22,hide={vol:0,time:0,set:0,cc:0,mute:0};
@@ -537,111 +544,7 @@ function ctlLayout(W,H){const pw=$('pw'),fs=isFs(),cl=pw.classList,st=pw.style;
 const _fsStub=0;
 function wrapTick(){
   if(PM.on){if(PM.t0==null)PM.t0=now;const f=clamp((now-PM.t0)/PM.dur),e=f<.5?4*f*f*f:1-Math.pow(-2*f+2,3)/2;
-    PW.x=PS.x+(PTg.x-PS.x)*e;PW.y=PS.y+(PTg.y-PS.y)*e;PW.w=PS.w+(PTg.w-PS.w)*e;PW.h=PS.h+(PTg.h-PS.h)*e;if(f>=1){PM.on=false;PW.x=PTg.x;PW.y=PTg.y;PW.w=PTg.w;PW.h=PTg.h}paintWrap()}
-  ecTick()}
-
-/* ================= VIỀN NĂNG LƯỢNG (Canvas 2D, vẽ từ kích thước khung mỗi khung hình) =================
-   hổ phách / vàng / kem / đỏ than hồng — cùng tông hang động; không xanh, không tím. */
-const PT={x:0,y:0,nx:0,ny:0};
-const ECN=22,ECI=10;
-function ecWeights(n){const I=j=>Math.pow(1-(j+.5)/n,2),w=new Float32Array(n);for(let i=0;i<n;i++)w[i]=I(i)-(i+1<n?I(i+1):0);return w}
-function ecSprite(sz,stops){const c=document.createElement('canvas');c.width=c.height=sz;const x=c.getContext('2d'),g=x.createRadialGradient(sz/2,sz/2,0,sz/2,sz/2,sz/2);stops.forEach(([o,col])=>g.addColorStop(o,col));x.fillStyle=g;x.fillRect(0,0,sz,sz);return c}
-const EC={cv:$('ec'),cs:$('ecs'),cx:null,sx2:null,cache:{},dpr:1,cw:0,ch:0,M:48,gx:0,gy:0,gw:0,gh:0,gr:0,L:0,key:[-1,-1,-1,-1,-1],ns:0,
-  sx:new Float32Array(520),sy:new Float32Array(520),snx:new Float32Array(520),sny:new Float32Array(520),
-  wO:ecWeights(ECN),wI:ecWeights(ECI),gA:null,gR:null,gRim:null,
-  sprHead:ecSprite(64,[[0,'rgba(255,246,214,1)'],[.22,'rgba(255,214,140,.75)'],[.5,'rgba(255,160,70,.22)'],[1,'rgba(255,130,50,0)']]),
-  sprEmb:ecSprite(32,[[0,'rgba(255,238,196,1)'],[.3,'rgba(255,190,100,.55)'],[1,'rgba(255,140,50,0)']]),
-  comets:[{u:.08,dir:1,per:11,al:1,tail:.15,w:2.4},{u:.58,dir:-1,per:15,al:.8,tail:.11,w:2},{u:.84,dir:1,per:9.5,al:.55,tail:.09,w:1.7}],
-  emb:Array.from({length:20},()=>({x:0,y:0,vx:0,vy:0,age:-Math.random()*4,life:4,sz:1.5,sw:0,on:false})),
-  pulse:-1,boost:0,calm:1,speed:1,played:0,t:0,last:0,dirty:1,lvl:1};
-function rrp(c,x,y,w,h,r){c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
-function ecSize(){const E=EC;E.M=BOX.M;E.dpr=Math.min(2,Math.max(1,devicePixelRatio||1));E.cw=Math.ceil(BOX.w+2*E.M);E.ch=Math.ceil(BOX.h+2*E.M);
-  const cv=E.cv;cv.width=Math.round(E.cw*E.dpr);cv.height=Math.round(E.ch*E.dpr);cv.style.width=E.cw+'px';cv.style.height=E.ch+'px';E.cx=cv.getContext('2d');
-  const cs=E.cs;cs.width=cv.width;cs.height=cv.height;cs.style.width=cv.style.width;cs.style.height=cv.style.height;E.sx2=cs.getContext('2d');E.cache={};E.key[0]=-1;E.dirty=1}
-function ecArc(cx,cy,r,a){PT.nx=Math.cos(a);PT.ny=Math.sin(a);PT.x=cx+r*PT.nx;PT.y=cy+r*PT.ny}
-function ecPt(s){const E=EC,L=E.L,gx=E.gx,gy=E.gy,gw=E.gw,gh=E.gh,r=E.gr,a=gw-2*r,b=gh-2*r,q=Math.PI*r/2;s=((s%L)+L)%L;
-  if(s<a){PT.x=gx+r+s;PT.y=gy;PT.nx=0;PT.ny=-1;return}s-=a;
-  if(s<q){ecArc(gx+gw-r,gy+r,r,-Math.PI/2+s/r);return}s-=q;
-  if(s<b){PT.x=gx+gw;PT.y=gy+r+s;PT.nx=1;PT.ny=0;return}s-=b;
-  if(s<q){ecArc(gx+gw-r,gy+gh-r,r,s/r);return}s-=q;
-  if(s<a){PT.x=gx+gw-r-s;PT.y=gy+gh;PT.nx=0;PT.ny=1;return}s-=a;
-  if(s<q){ecArc(gx+r,gy+gh-r,r,Math.PI/2+s/r);return}s-=q;
-  if(s<b){PT.x=gx;PT.y=gy+gh-r-s;PT.nx=-1;PT.ny=0;return}s-=b;
-  ecArc(gx+r,gy+r,r,Math.PI+s/r)}
-function ecGeom(){const E=EC,gx=PW.x-(BOX.cx-BOX.w/2)+E.M,gy=PW.y-(BOX.cy-BOX.h/2)+E.M,k=E.key;
-  if(k[0]===gx&&k[1]===gy&&k[2]===PW.w&&k[3]===PW.h&&k[4]===BOX.k)return;
-  k[0]=gx;k[1]=gy;k[2]=PW.w;k[3]=PW.h;k[4]=BOX.k;E.gx=gx;E.gy=gy;E.gw=PW.w;E.gh=PW.h;E.gr=Math.max(8,14*BOX.k);
-  const r=E.gr;E.L=2*(E.gw-2*r)+2*(E.gh-2*r)+2*Math.PI*r;E.ns=Math.min(520,Math.ceil(E.L/6));
-  for(let i=0;i<E.ns;i++){ecPt(i*E.L/E.ns);E.sx[i]=PT.x;E.sy[i]=PT.y;E.snx[i]=PT.nx;E.sny[i]=PT.ny}
-  const c=E.cx;let g=c.createLinearGradient(0,gy,0,gy+E.gh);g.addColorStop(0,'#ff9d3a');g.addColorStop(1,'#d0662a');E.gA=g;
-  g=c.createLinearGradient(0,gy,0,gy+E.gh);g.addColorStop(0,'#d6452b');g.addColorStop(1,'#9c2c1c');E.gR=g;
-  g=c.createLinearGradient(gx,gy,gx+E.gw,gy+E.gh);g.addColorStop(0,'#ffd98a');g.addColorStop(.5,'#fff0cc');g.addColorStop(1,'#ffcf80');E.gRim=g;ecStatic()}
-function ecPick(){const E=EC;let best=0;for(let t=0;t<6;t++){const i=(Math.random()*E.ns)|0,ny=E.sny[i],nx=E.snx[i];best=i;const w=ny<-.5?1:(ny>.5?.3:(Math.abs(nx)>.5?.55:1));if(Math.random()<w)break}return best}
-function ecPulse(){if(!RM){EC.pulse=0}}
-function ecComet(c,u,dir,tail,wd,al,k){const E=EC,L=E.L,s0=u*L,n=16,tl=tail*L;ecPt(s0);let px=PT.x,py=PT.y;const hx=px,hy=py;
-  c.lineCap='round';c.strokeStyle='#ffe2a0';
-  for(let i=1;i<=n;i++){const f=i/n;ecPt(s0-dir*f*tl);const a=al*Math.pow(1-f,1.6),w=wd*k*(1-.82*f);
-    c.globalAlpha=a*.22;c.lineWidth=w*3.4;c.strokeStyle='#ff9d3a';c.beginPath();c.moveTo(px,py);c.lineTo(PT.x,PT.y);c.stroke();
-    c.globalAlpha=a*.85;c.lineWidth=w;c.strokeStyle='#ffe2a0';c.beginPath();c.moveTo(px,py);c.lineTo(PT.x,PT.y);c.stroke();px=PT.x;py=PT.y}
-  const hs=15*k*(.8+.2*al);c.globalAlpha=Math.min(1,al*.9);c.drawImage(E.sprHead,hx-hs,hy-hs,hs*2,hs*2);
-  const tw=.55+.45*Math.sin(E.t*2.1+u*30),sp=hs*.9*tw;c.globalAlpha=al*.45*tw;c.lineWidth=.8;c.strokeStyle='#fff3d6';c.beginPath();c.moveTo(hx-sp,hy);c.lineTo(hx+sp,hy);c.moveTo(hx,hy-sp);c.lineTo(hx,hy+sp);c.stroke()}
-function ecStaticDraw(c,gx,gy,gw,gh,r){const E=EC,dpr=E.dpr,M=E.M,k=Math.max(.5,BOX.k),lvl=1.2;
-  let g=c.createLinearGradient(0,gy,0,gy+gh);g.addColorStop(0,'#ff9d3a');g.addColorStop(1,'#d0662a');const gA=g;
-  g=c.createLinearGradient(0,gy,0,gy+gh);g.addColorStop(0,'#d6452b');g.addColorStop(1,'#9c2c1c');const gR=g;
-  c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,E.cw,E.ch);c.lineJoin='round';
-  c.save();c.beginPath();c.rect(0,0,E.cw,E.ch);rrp(c,gx,gy,gw,gh,r);c.clip('evenodd');c.globalCompositeOperation='lighter';
-  const Ro=M-6;
-  c.strokeStyle=gR;for(let i=0;i<ECN;i++){c.globalAlpha=E.wO[i]*.15*lvl;c.lineWidth=2*Ro*(i+1)/ECN;c.beginPath();rrp(c,gx,gy,gw,gh,r);c.stroke()}
-  c.strokeStyle=gA;for(let i=0;i<ECN;i++){c.globalAlpha=E.wO[i]*.2*lvl;c.lineWidth=2*Ro*.55*(i+1)/ECN;c.beginPath();rrp(c,gx,gy,gw,gh,r);c.stroke()}
-  c.restore();
-  c.save();c.beginPath();rrp(c,gx,gy,gw,gh,r);c.clip();c.globalCompositeOperation='lighter';const Ri=clamp(18*k,9,18);
-  c.strokeStyle='#ffb04a';for(let i=0;i<ECI;i++){c.globalAlpha=E.wI[i]*.26*lvl;c.lineWidth=2*Ri*(i+1)/ECI;c.beginPath();rrp(c,gx,gy,gw,gh,r);c.stroke()}
-  c.restore();c.globalAlpha=1;c.globalCompositeOperation='source-over'}
-const ecKey=(gx,gy,gw,gh,r)=>[gx,gy,gw,gh,r,EC.cw,EC.ch,EC.dpr,EC.M].map(x=>(+x).toFixed(1)).join();
-function ecStaticMk(gx,gy,gw,gh,r){const E=EC,k=ecKey(gx,gy,gw,gh,r);if(E.cache[k])return E.cache[k];const cv=document.createElement('canvas');cv.width=E.cv.width;cv.height=E.cv.height;ecStaticDraw(cv.getContext('2d'),gx,gy,gw,gh,r);return E.cache[k]=cv}
-function ecStatic(){const E=EC,c=E.sx2;if(!c)return;const cv=ecStaticMk(E.gx,E.gy,E.gw,E.gh,E.gr);c.setTransform(1,0,0,1,0,0);c.clearRect(0,0,E.cs.width,E.cs.height);c.drawImage(cv,0,0)}
-function ecWarm(){const E=EC;if(!E.sx2||RM)return;CHAPTERS.forEach((ch,i)=>{const ar=getAR(i);let w=BOX.w,h=w/ar;if(h>BOX.h){h=BOX.h;w=h*ar}const x=BOX.cx-w/2,y=BOX.cy-h/2;ecStaticMk(x-(BOX.cx-BOX.w/2)+E.M,y-(BOX.cy-BOX.h/2)+E.M,w,h,Math.max(8,14*BOX.k))})}
-function ecDraw(still){const E=EC,c=E.cx;if(!c||!PW.ok)return;ecGeom();
-  const dpr=E.dpr,k=Math.max(.5,BOX.k),gx=E.gx,gy=E.gy,gw=E.gw,gh=E.gh,r=E.gr,T=still?0:E.t;
-  c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,E.cw,E.ch);c.lineJoin='round';
-  const br=still?1:.9+.1*Math.sin(2*Math.PI*T/6.2),br2=still?1:.85+.15*Math.sin(2*Math.PI*T/4.3+1.3),lvl=E.calm*(1+E.boost)*br;
-  E.cs.style.opacity=clamp(lvl/1.2).toFixed(3);   // nhịp thở của quầng: chỉ đổi opacity (GPU), không vẽ lại
-  c.globalCompositeOperation='lighter';
-  // (f) sợi năng lượng mảnh quanh mép
-  if(E.ns>0){c.lineWidth=.9;c.strokeStyle='#ffd98a';const amp=2.2*k,lf=.045;
-    for(let s=0;s<4;s++){const off=(s-1.5)*1.7*k,ph=s*1.9;c.globalAlpha=(.12+.05*s%3*.4+.06*Math.sin(T*.7+ph))*E.calm*(still?1:br2);c.beginPath();
-      for(let i=0;i<E.ns;i++){const u=i*E.L/E.ns*lf,nz=Math.sin(u+T*(.6+.17*s)+ph)*.55+Math.sin(u*2.3-T*.9+ph*2)*.3+Math.sin(u*.7+T*.35)*.15,d=off+amp*nz;
-        const x=E.sx[i]+E.snx[i]*d,y=E.sy[i]+E.sny[i]*d;if(i===0)c.moveTo(x,y);else c.lineTo(x,y)}
-      c.closePath();c.stroke()}}
-  // (a) viền sáng mảnh
-  c.strokeStyle=E.gRim;const lw=clamp(1.7*k,1.2,2);
-  c.globalAlpha=.1*lvl;c.lineWidth=lw*3.2;c.beginPath();rrp(c,gx+.5,gy+.5,gw-1,gh-1,r);c.stroke();
-  c.globalAlpha=(.5+.1*br2)*Math.min(1.1,E.calm);c.lineWidth=lw;c.beginPath();rrp(c,gx+lw/2,gy+lw/2,gw-lw,gh-lw,r-lw/2);c.stroke();
-  if(!still){
-    // (d) sao băng chạy dọc chu vi
-    for(let i=0;i<3;i++){const m=E.comets[i];ecComet(c,m.u,m.dir,m.tail,m.w,m.al*E.calm,k)}
-    if(E.pulse>=0){const u=(gw/2/E.L)+E.pulse,f=Math.sin(Math.PI*Math.min(1,E.pulse*1.0));ecComet(c,u,1,.2,3.2,f,k)}
-    // (e) đom đóm than hồng
-    for(let i=0;i<E.emb.length;i++){const p=E.emb[i];if(!p.on)continue;const u=p.age/p.life;if(u>=1)continue;
-      const al=Math.pow(Math.sin(Math.PI*u),1.3)*.8*E.calm,ed=Math.min(p.x,p.y,E.cw-p.x,E.ch-p.y),ef=clamp((ed-3)/10);if(al*ef<.01)continue;
-      const sz=p.sz*k*2.6;c.globalAlpha=al*ef;c.drawImage(E.sprEmb,p.x-sz,p.y-sz,sz*2,sz*2)}}
-  c.globalAlpha=1;c.globalCompositeOperation='source-over'}
-function ecTick(){const E=EC;
-  if(RM){if(E.dirty){E.dirty=0;ecDraw(true)}return}
-  if(isFs())return;
-  const dt=clamp(now-E.t,0,.1);
-  if(!PM.on&&now-E.last<1/30)return;
-  E.last=now;E.t=now;ecGeom();
-  const playing=app.classList.contains('playing');E.calm+=((playing?.75:(E.played?1:1.1))-E.calm)*.06;E.speed+=((playing?.8:1)-E.speed)*.06;
-  for(let i=0;i<3;i++){const m=E.comets[i];m.u=(m.u+m.dir*dt*E.speed/m.per+1)%1}
-  if(E.pulse>=0){E.pulse+=dt/.9;E.boost=.35*Math.sin(Math.PI*Math.min(1,E.pulse));if(E.pulse>=1){E.pulse=-1;E.boost=0}}
-  const k=Math.max(.5,BOX.k);
-  for(let i=0;i<E.emb.length;i++){const p=E.emb[i];p.age+=dt;
-    if(!p.on){if(p.age>=0){const j=ecPick();p.on=true;p.age=0;p.life=3+Math.random()*3;p.sz=1+Math.random()*1.5;p.sw=Math.random()*6.28;const sp=(E.M-14)/p.life,o=sp*(.35+Math.random()*.35),up=sp*(.12+Math.random()*.3);
-        p.x=E.sx[j];p.y=E.sy[j];p.vx=E.snx[j]*o;p.vy=E.sny[j]*o-up}continue}
-    if(p.age>=p.life){p.on=false;p.age=-Math.random()*2.2;continue}
-    p.x+=(p.vx+Math.sin(E.t*.8+p.sw)*2*k)*dt;p.y+=p.vy*dt}
-  ecDraw(false)}
+    PW.x=PS.x+(PTg.x-PS.x)*e;PW.y=PS.y+(PTg.y-PS.y)*e;PW.w=PS.w+(PTg.w-PS.w)*e;PW.h=PS.h+(PTg.h-PS.h)*e;if(f>=1){PM.on=false;PW.x=PTg.x;PW.y=PTg.y;PW.w=PTg.w;PW.h=PTg.h}paintWrap()}}
 
 /* ---- tia sáng + bụi vàng trên đỉnh trang (canvas nhỏ, 30 fps) ---- */
 const fxC=document.createElement('canvas');fxC.id='fx';{const c=fxC;c.style.cssText='left:640px;top:0;width:560px;height:270px';$('bgGI').appendChild(c)}
@@ -730,7 +633,7 @@ function plRelease(now_){clearTimeout(PL.to);const f=PL.ifr;
   Object.assign(PL,{ci:-1,ifr:null,loaded:false,q:[],t:0,d:0,buf:0,paused:true,ended:false,started:false});
   app.classList.remove('embedded','buffering')}
 function plPlaying(){PL.paused=false;PL.ended=false;if(!PL.started){PL.started=true;clearTimeout(PL.to);PL.ifr&&PL.ifr.classList.add('show')}
-  EC.played=1;app.classList.remove('buffering');hideMsg();setAriaPlay();clearAuto();bumpUI()}
+  app.classList.remove('buffering');hideMsg();setAriaPlay();clearAuto();bumpUI()}
 function plPaused(){PL.paused=true;setAriaPlay();showUI()}
 function plEnded(){PL.paused=true;PL.ended=true;setAriaPlay();upd();showUI();onEnded()}
 function ytState(s){if(s===1)plPlaying();else if(s===2){if(PL.started)plPaused();app.classList.remove('buffering')}else if(s===0)plEnded();else if(s===3&&PL.started&&!PL.paused)app.classList.add('buffering')}
@@ -920,14 +823,18 @@ function loadGate(){
 function boot(){
   layout();SELECTED=SELECTED;select(SELECTED,{force:true});paintChapters();moveRing();
   requestAnimationFrame(frame);
-  loadGate().then(()=>{window.__loaderDone=performance.now();if(RM){app.classList.remove('intro');app.classList.add('ready');READY=true;idle(warmFit);idle(ecWarm);return}intro();setTimeout(()=>{app.classList.add('ready');READY=true;idle(warmFit);idle(ecWarm)},3300)});
+  loadGate().then(()=>{window.__loaderDone=performance.now();if(RM){app.classList.remove('intro');app.classList.add('ready');READY=true;idle(warmFit);return}intro();setTimeout(()=>{app.classList.add('ready');READY=true;idle(warmFit)},3300)});
 }
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(layout,60)});
 if(window.visualViewport)visualViewport.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(layout,60)});
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{FT={};fitText()});
 boot();
 // Với test: window.__rm = { select, V } (chỉ đọc)
-window.__rm={select,get PL(){return PL},CHAPTERS,get EC(){return EC},get PW(){return PW},get BOX(){return BOX},get state(){return{SELECTED,chapIdx,PORT,UI,PW,BOX,LADY:{cur:LADY.cur,watch:LADY.watch}}}};
+window.__rm={select,get PL(){return PL},CHAPTERS,get PW(){return PW},get BOX(){return BOX},get state(){return{SELECTED,chapIdx,PORT,UI,PW,BOX,LADY:{cur:LADY.cur,watch:LADY.watch}}}};
+})();
 </script>
 
 <!-- build9: Drive layers, iframe-embed facade, flicker fixes -->
+
+<script src="assets/map-btn.js" defer></script>
+<script src="assets/bo-widget.js" defer data-corner="bl" data-oy-m="150"></script>

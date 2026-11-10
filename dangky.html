@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Đăng ký lớp F2</title>
+<script src="assets/content-loader.js"></script>
+<script>MemoriContent.prefetch("dangky");MemoriContent.prefetch("site");</script>
 <style>
 <style>
 @font-face{font-family:"Be Vietnam Pro";font-weight:400;font-display:swap;src:url("assets/fonts/BeVietnamPro-400-vietnamese.woff2") format("woff2");unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
@@ -165,7 +167,7 @@ body.mopen{cursor:auto}body.mopen *{cursor:auto!important}body.mopen button,body
  <img id="under" alt="" aria-hidden="true">
  <div id="view"><div id="art" aria-hidden="true"></div><div id="ui"></div></div>
  <div id="stamp" aria-hidden="true"><img alt=""><span class="cta">Nhấn để đóng dấu</span></div>
- <a id="back" href="index.html">← Về trang Bọ</a>
+ <a id="back" href="index.html" data-site-back>← Về trang Bọ</a>
  <div class="sr" id="live" aria-live="polite"></div>
  <div class="sr" id="a11y"></div>
  <div class="loader" role="status" aria-live="polite">
@@ -178,12 +180,13 @@ body.mopen{cursor:auto}body.mopen *{cursor:auto!important}body.mopen button,body
  </div>
 </div>
 <script>
-(()=>{
+(async()=>{
 'use strict';
 /* ===== NỘI DUNG (CHỮ MẪU / PLACEHOLDER) =====
    Chữ nhìn thấy trên tờ giấy là ẢNH LỚP CHỮ do người dùng cung cấp. Bản chữ dưới đây chỉ cho trình đọc màn hình
    và phần động (con số, dòng đếm, gợi ý). Số liệu chỉ là DEMO, ứng dụng đăng ký sẽ đẩy số thật qua MemoriRegister.setEnrolled. */
-const CONFIG={
+const CONFIG_DEFAULT={
+ pageTitle:'Đăng ký lớp F2',loaderText:'Bọ đang trải tờ giấy đăng ký…',
  srTitle:'Đăng ký lớp F2',
  srText:'Học phí ưu đãi 1.500.000đ, giá gốc 2.400.000đ. Số lượng có hạn.',
  enrolledLabel:'Số người đã đăng ký',seatWord:'chỗ',
@@ -199,8 +202,14 @@ const CONFIG={
   errReq:'Vui lòng nhập thông tin này.',errPhone:'Số điện thoại chưa đúng (ví dụ 0912 345 678).',errEmail:'Email chưa đúng (ví dụ ban@email.com).',errSend:'Chưa gửi được. Bạn thử lại sau ít phút nhé.',
   thanksTitle:'Cảm ơn bạn!',thanksText:'Bọ đã nhận thông tin đăng ký lớp F2 của bạn và sẽ liên hệ sớm. (Bản demo, chưa gửi đi đâu.)'},
  fullLabel:'Đã hết chỗ',
- demo:{enrolled:12,capacity:20}
+ seats:{enrolled:12,capacity:20}
 };
+/* Nội dung sửa được từ trang admin (assets/content/dangky.json + site.json). Chữ tiêu đề/giá/ghi chú nằm trong ẢNH nên không sửa ở đây. */
+const CC=await MemoriContent.load('dangky',CONFIG_DEFAULT),SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);
+const CONFIG=CC;{const D=CONFIG_DEFAULT.form;CC.form.fields=D.fields.map(d=>{const c=CC.form.fields.find(x=>x&&x.id===d.id)||d;return Object.assign({},d,{label:c.label||d.label,ph:typeof c.ph==='string'?c.ph:d.ph})});
+ CC.seats.enrolled=Math.max(0,Math.floor(CC.seats.enrolled));CC.seats.capacity=Math.max(1,Math.floor(CC.seats.capacity))}
+const E=MemoriContent.esc;
+MemoriContent.applySite(SITE,'#back');document.title=CC.pageTitle||document.title;MemoriContent.setText('.loader-text',CC.loaderText);MemoriContent.setText('#stamp .cta',CC.ctaDesk);
 const META={"t_A":[150,42,1422,417],"t_B":[169,402,790,565],"t_D":[778,293,1512,594],"t_C":[172,555,942,712],"t_E":[218,700,886,895],"bug":[191,130,454,418],"seal":[923,415,1376,815],"flies":[43,4,1623,854],"paper":[131,54,1598,941],
  "mt_A":[72,459,882,741],"mt_B":[25,729,469,854],"mt_D":[457,686,929,949],"mt_C":[110,851,667,1004],"mt_E":[96,996,653,1184],"m_bug":[87,411,375,739],"m_seal":[143,491,789,1139],"m_flies":[13,274,883,1438],"m_paper":[12,519,941,1374]};
 const FOLIAGE={"f_tl":{"base":"fb_f_tl.webp","box":[0,0,523,231],"clusters":[{"f":"fc_f_tl_0.webp","x":427,"y":0,"w":90,"h":69,"ox":81,"oy":62,"near":true},{"f":"fc_f_tl_1.webp","x":215,"y":0,"w":160,"h":91,"ox":15,"oy":0,"near":true},{"f":"fc_f_tl_2.webp","x":46,"y":0,"w":181,"h":156,"ox":104,"oy":0,"near":true},{"f":"fc_f_tl_3.webp","x":0,"y":58,"w":129,"h":165,"ox":66,"oy":6,"near":true}]},"f_rm":{"base":"fb_f_rm.webp","box":[1475,458,196,211],"clusters":[{"f":"fc_f_rm_0.webp","x":1510,"y":464,"w":138,"h":66,"ox":113,"oy":7,"near":true},{"f":"fc_f_rm_1.webp","x":1482,"y":546,"w":148,"h":115,"ox":113,"oy":6,"near":true}]},"f_br":{"base":"fb_f_br.webp","box":[1360,670,311,271],"clusters":[{"f":"fc_f_br_0.webp","x":1569,"y":677,"w":102,"h":101,"ox":101,"oy":6,"near":true},{"f":"fc_f_br_1.webp","x":1385,"y":753,"w":205,"h":161,"ox":195,"oy":19,"near":true}]},"f_bl":{"base":"fb_f_bl.webp","box":[0,673,318,268],"clusters":[{"f":"fc_f_bl_0.webp","x":110,"y":679,"w":112,"h":90,"ox":13,"oy":6,"near":true},{"f":"fc_f_bl_1.webp","x":0,"y":688,"w":122,"h":84,"ox":114,"oy":6,"near":true},{"f":"fc_f_bl_2.webp","x":47,"y":712,"w":104,"h":151,"ox":93,"oy":35,"near":true},{"f":"fc_f_bl_3.webp","x":0,"y":789,"w":203,"h":127,"ox":146,"oy":6,"near":true},{"f":"fc_f_bl_4.webp","x":155,"y":834,"w":127,"h":107,"ox":7,"oy":41,"near":true},{"f":"fc_f_bl_5.webp","x":226,"y":876,"w":85,"h":65,"ox":6,"oy":54,"near":true}]},"m_f_tl":{"base":"fb_m_f_tl.webp","box":[0,0,566,390],"clusters":[{"f":"fc_m_f_tl_0.webp","x":494,"y":0,"w":72,"h":65,"ox":20,"oy":0,"near":true},{"f":"fc_m_f_tl_1.webp","x":210,"y":0,"w":125,"h":120,"ox":25,"oy":0,"near":true},{"f":"fc_m_f_tl_2.webp","x":412,"y":0,"w":72,"h":90,"ox":16,"oy":0,"near":true},{"f":"fc_m_f_tl_3.webp","x":323,"y":0,"w":101,"h":90,"ox":50,"oy":0,"near":true},{"f":"fc_m_f_tl_4.webp","x":93,"y":0,"w":157,"h":143,"ox":43,"oy":6,"near":true},{"f":"fc_m_f_tl_5.webp","x":326,"y":93,"w":115,"h":97,"ox":10,"oy":16,"near":true},{"f":"fc_m_f_tl_6.webp","x":4,"y":85,"w":113,"h":108,"ox":94,"oy":6,"near":true},{"f":"fc_m_f_tl_7.webp","x":265,"y":95,"w":101,"h":150,"ox":55,"oy":10,"near":true},{"f":"fc_m_f_tl_8.webp","x":168,"y":108,"w":110,"h":133,"ox":100,"oy":6,"near":true},{"f":"fc_m_f_tl_9.webp","x":104,"y":131,"w":118,"h":118,"ox":42,"oy":6,"near":true},{"f":"fc_m_f_tl_10.webp","x":77,"y":195,"w":102,"h":131,"ox":32,"oy":6,"near":true},{"f":"fc_m_f_tl_11.webp","x":0,"y":227,"w":109,"h":163,"ox":82,"oy":6,"near":true}]},"m_f_bt":{"base":"fb_m_f_bt.webp","box":[0,1227,941,445],"clusters":[{"f":"fc_m_f_bt_0.webp","x":0,"y":1227,"w":75,"h":119,"ox":0,"oy":6,"near":true},{"f":"fc_m_f_bt_1.webp","x":748,"y":1277,"w":193,"h":86,"ox":145,"oy":17,"near":true},{"f":"fc_m_f_bt_2.webp","x":0,"y":1307,"w":90,"h":96,"ox":70,"oy":7,"near":true},{"f":"fc_m_f_bt_3.webp","x":132,"y":1353,"w":108,"h":84,"ox":66,"oy":22,"near":true},{"f":"fc_m_f_bt_4.webp","x":800,"y":1348,"w":141,"h":119,"ox":84,"oy":6,"near":true},{"f":"fc_m_f_bt_5.webp","x":0,"y":1364,"w":63,"h":87,"ox":13,"oy":6,"near":true},{"f":"fc_m_f_bt_6.webp","x":50,"y":1371,"w":104,"h":88,"ox":81,"oy":11,"near":true},{"f":"fc_m_f_bt_7.webp","x":42,"y":1421,"w":94,"h":114,"ox":21,"oy":6,"near":true},{"f":"fc_m_f_bt_8.webp","x":689,"y":1406,"w":134,"h":136,"ox":123,"oy":22,"near":true},{"f":"fc_m_f_bt_9.webp","x":0,"y":1438,"w":68,"h":144,"ox":8,"oy":7,"near":true},{"f":"fc_m_f_bt_10.webp","x":95,"y":1422,"w":126,"h":188,"ox":56,"oy":7,"near":true},{"f":"fc_m_f_bt_11.webp","x":770,"y":1451,"w":171,"h":117,"ox":133,"oy":6,"near":true},{"f":"fc_m_f_bt_12.webp","x":192,"y":1465,"w":150,"h":92,"ox":10,"oy":57,"near":true},{"f":"fc_m_f_bt_13.webp","x":600,"y":1456,"w":163,"h":121,"ox":19,"oy":44,"near":true},{"f":"fc_m_f_bt_14.webp","x":422,"y":1493,"w":241,"h":170,"ox":202,"oy":38,"near":true},{"f":"fc_m_f_bt_15.webp","x":107,"y":1542,"w":327,"h":130,"ox":78,"oy":20,"near":true},{"f":"fc_m_f_bt_16.webp","x":662,"y":1528,"w":131,"h":91,"ox":96,"oy":7,"near":true},{"f":"fc_m_f_bt_17.webp","x":569,"y":1599,"w":121,"h":73,"ox":78,"oy":6,"near":true}]}};
@@ -222,7 +231,7 @@ const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const rnd=(a,b)=>a+Math.random()*(b-a);
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 const view=$('#view'),art=$('#art'),ui=$('#ui'),stamp=$('#stamp'),stampImg=stamp.firstChild,under=$('#under');
-$('#a11y').innerHTML='<h1>'+CONFIG.srTitle+'</h1><p>'+CONFIG.srText+'</p>';
+$('#a11y').innerHTML='<h1>'+E(CONFIG.srTitle)+'</h1><p>'+E(CONFIG.srText)+'</p>';
 const rootEl=$('#root');const VW=()=>rootEl.clientWidth||innerWidth,VH=()=>rootEl.clientHeight||innerHeight;
 const small=Math.max(VW(),VH())<=1000;
 let mode=null,M=null,imgs=[],FOL=[],zone=null,glow=null,imp=null,K=1,TX=0,TY=0;
@@ -263,7 +272,7 @@ function build(m){
  const cnt=document.createElement('p');cnt.id='cnt';cnt.className='rv';cnt.style.cssText='left:'+(c.x-c.w/2)+'px;top:'+(c.y-c.h/2)+'px;width:'+c.w+'px;height:'+c.h+'px;--cs:'+c.fs+'px;transform:rotate('+c.rot+'deg);--d:3.9s';
  cnt.innerHTML='<span class="rem roll" id="rRem"></span><span class="sl"></span><span class="cap roll" id="rCap"></span>';cnt.setAttribute('aria-hidden','true');ui.appendChild(cnt);
  const cap=document.createElement('p');cap.className='cap2 rv';cap.style.cssText='left:'+M.cap.x+'px;top:'+M.cap.y+'px;--cf:'+M.cap.fs+'px;--d:4.3s;width:'+(P?560:640)+'px';
- cap.innerHTML='<span id="enr" class="sr"></span><span class="hint" id="hint">'+CONFIG.hint+'</span>';ui.appendChild(cap);
+ cap.innerHTML='<span id="enr" class="sr"></span><span class="hint" id="hint">'+E(CONFIG.hint)+'</span>';ui.appendChild(cap);
  zone=document.createElement('button');zone.id='zone';zone.type='button';zone.setAttribute('aria-label','Đóng dấu để gửi đăng ký');
  const z=M.zone;zone.style.cssText='left:'+(M.seal[0]-z/2)+'px;top:'+(M.seal[1]-z/2)+'px;width:'+z+'px;height:'+z+'px;transform:rotate('+M.zrot+'deg)';ui.appendChild(zone);
  const gb=M.ghost,g=document.createElement('img');g.className='gh';g.alt='';g.src='assets/register/imprint.webp';g.draggable=false;
@@ -295,7 +304,7 @@ function setEnrolled(n,capacity){
  n=Math.min(Math.max(0,Math.floor(+n||0)),CAP);EN=n;
  const rem=CAP-n;
  if($('#rRem')){roll($('#rRem'),rem);roll($('#rCap'),CAP);
-  $('#enr').innerHTML=CONFIG.enrolledLabel+': <b>'+n+' / '+CAP+'</b> '+CONFIG.seatWord+(rem<=0?' · '+CONFIG.fullLabel:'')+'<br>'}
+  $('#enr').innerHTML=E(CONFIG.enrolledLabel)+': <b>'+n+' / '+CAP+'</b> '+E(CONFIG.seatWord)+(rem<=0?' · '+E(CONFIG.fullLabel):'')+'<br>'}
  $('#live').textContent=CONFIG.enrolledLabel+': '+n+' / '+CAP+' '+CONFIG.seatWord;
 }
 /* ===== API cho ứng dụng đăng ký sau này ===== */
@@ -383,10 +392,10 @@ function stampBack(){if(fine&&mouse){parked=false;place(true);setTimeout(()=>pla
 /* ===== form đăng ký riêng (mở sau khi đóng dấu) ===== */
 const FM=CONFIG.form;
 const mdl=document.createElement('div');mdl.className='mdl';mdl.setAttribute('role','dialog');mdl.setAttribute('aria-modal','true');mdl.setAttribute('aria-labelledby','mTitle');mdl.setAttribute('aria-hidden','true');
-mdl.innerHTML='<div class="mcard"><button type="button" class="mx" aria-label="'+FM.close+'">×</button><h2 id="mTitle">'+FM.title+'</h2><p class="lead">'+FM.lead+'</p><form class="mf" novalidate>'+
- FM.fields.map(f=>'<div><label for="m-'+f.id+'">'+f.label+(f.req?' *':'')+'</label><input id="m-'+f.id+'" name="'+f.id+'" type="'+f.type+'" placeholder="'+f.ph+'" autocomplete="'+f.ac+'"'+(f.value?' value="'+f.value+'"':'')+(f.req?' required aria-required="true"':'')+' aria-describedby="e-'+f.id+'"><span class="err" id="e-'+f.id+'" aria-live="polite"></span></div>').join('')+
- '<p class="gerr" id="gerr" aria-live="polite"></p><button type="submit" class="go">'+FM.submit+'</button></form>'+
- '<div class="thx" role="status"><h2>'+FM.thanksTitle+'</h2><p>'+FM.thanksText+'</p><button type="button" class="tclose">'+FM.close+'</button></div></div>';
+mdl.innerHTML='<div class="mcard"><button type="button" class="mx" aria-label="'+E(FM.close)+'">×</button><h2 id="mTitle">'+E(FM.title)+'</h2><p class="lead">'+E(FM.lead)+'</p><form class="mf" novalidate>'+
+ FM.fields.map(f=>'<div><label for="m-'+f.id+'">'+E(f.label)+(f.req?' *':'')+'</label><input id="m-'+f.id+'" name="'+f.id+'" type="'+f.type+'" placeholder="'+E(f.ph)+'" autocomplete="'+f.ac+'"'+(f.value?' value="'+E(f.value)+'"':'')+(f.req?' required aria-required="true"':'')+' aria-describedby="e-'+f.id+'"><span class="err" id="e-'+f.id+'" aria-live="polite"></span></div>').join('')+
+ '<p class="gerr" id="gerr" aria-live="polite"></p><button type="submit" class="go">'+E(FM.submit)+'</button></form>'+
+ '<div class="thx" role="status"><h2>'+E(FM.thanksTitle)+'</h2><p>'+E(FM.thanksText)+'</p><button type="button" class="tclose">'+E(FM.close)+'</button></div></div>';
 $('#root').appendChild(mdl);
 let lastFocus=null;
 const mcard=mdl.querySelector('.mcard'),mform=mdl.querySelector('form');
@@ -450,7 +459,10 @@ Promise.race([Promise.all([...imgs.map(dec),dec(stampImg),fonts]),wait(15000)]).
  ready=true;place();
  await wait(RM?0:550);
  document.body.classList.add('go');gustLoop();setTimeout(armIdle,RM?0:3000);
- setTimeout(()=>setEnrolled(CONFIG.demo.enrolled,CONFIG.demo.capacity),RM?0:3600);
+ setTimeout(()=>setEnrolled(CONFIG.seats.enrolled,CONFIG.seats.capacity),RM?0:3600);
 });
 })();
 </script>
+
+<script src="assets/map-btn.js" defer></script>
+<script src="assets/bo-widget.js" defer data-corner="bl"></script>

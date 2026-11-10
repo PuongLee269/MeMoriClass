@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050816">
 <title>Gallery Me.Mori</title>
+<script src="assets/content-loader.js"></script>
+<script>MemoriContent.prefetch("gallery");MemoriContent.prefetch("site");</script>
 <link rel="preload" href="assets/fonts/BeVietnamPro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/BeVietnamPro-400-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/BeVietnamPro-500-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -39,24 +41,32 @@ body{font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans
 </style>
 </head>
 <body>
-<a class="back" href="index.html">← Về trang Bọ</a>
+<a class="back" href="index.html" data-site-back>← Về trang Bọ</a>
 <div id="stage"><canvas id="cv"></canvas></div>
 <div class="hint" id="hint">Kéo qua 3 viên đá để đổi ảnh</div>
 <div class="sr" id="live" aria-live="polite" role="status"></div>
 <script>
+(async()=>{
 /* ===== DỮ LIỆU DỄ SỬA ===== */
 // Ảnh: id, src (đường dẫn), alt (mô tả). Ảnh mới nên là khung 833x413; at = vị trí góc trên trái trong canvas 1672x941 (mặc định [416,73]).
-const PHOTOS = [
+const PHOTOS0 = [
   {id:'sample', src:'assets/gallery/photo.webp', alt:'Căn nhà nhỏ bên hồ dưới hai vầng trăng', at:[405,62]},
   // {id:'anh2', src:'assets/gallery/anh2.webp', alt:'Mô tả ảnh 2'},
 ];
 // Bộ 3 viên đá -> ảnh. Chỉ số viên đá 0..8 theo hàng: 0 đỏ,1 xanh dương,2 cam | 3 xanh lá,4 tím,5 vàng chanh (peridot) | 6 lam,7 hồng,8 trắng.
 // Thứ tự kéo không quan trọng. Bộ chưa khai báo sẽ chạy hiệu ứng máy chiếu hỏng.
-const ASSIGNMENTS = [
+const ASSIGNMENTS0 = [
   {gems:[0,1,2], photo:'sample'}, {gems:[3,4,5], photo:'sample'}, {gems:[6,7,8], photo:'sample'},
   {gems:[0,3,6], photo:'sample'}, {gems:[1,4,7], photo:'sample'}, {gems:[2,5,8], photo:'sample'},
   {gems:[0,4,8], photo:'sample'}, {gems:[2,4,6], photo:'sample'},
 ];
+/* Nội dung sửa được từ trang admin (assets/content/gallery.json + site.json): danh sách ảnh, bộ 3 đá -> ảnh, chữ gợi ý. */
+const GC=await MemoriContent.load('gallery',{pageTitle:document.title,hint:'Kéo qua 3 viên đá để đổi ảnh',photos:PHOTOS0,assignments:ASSIGNMENTS0},{replace:['photos']}),SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);
+MemoriContent.applySite(SITE,'.back');document.title=GC.pageTitle||document.title;MemoriContent.setText('#hint',GC.hint);
+const PHOTOS=(()=>{const seen={},out=[];for(const p of GC.photos){if(!p||typeof p.id!=='string'||!/^[a-z0-9_-]{1,32}$/i.test(p.id)||seen[p.id])continue;const src=MemoriContent.url(p.src,'');if(!src)continue;seen[p.id]=1;
+  const at=Array.isArray(p.at)&&p.at.length===2&&p.at.every(n=>typeof n==='number'&&isFinite(n)&&Math.abs(n)<5000)?p.at:undefined;out.push({id:p.id,src,alt:typeof p.alt==='string'?p.alt:'',at})}
+  return out.length?out:PHOTOS0})();
+const ASSIGNMENTS=ASSIGNMENTS0.map((d,i)=>{const c=GC.assignments[i];const ok=c&&PHOTOS.some(p=>p.id===c.photo);return{gems:d.gems,photo:ok?c.photo:(PHOTOS.some(p=>p.id===d.photo)?d.photo:PHOTOS[0].id)}});
 // Bọ rùa: các tư thế (sprite 288x308, chân ở y=292). cx = trọng tâm thân theo x (đo bằng alpha) để đổi tư thế không làm thân bị nhảy.
 // Tư thế available:false CHƯA có sprite: người dùng sẽ đưa file tên assets/gallery/ladybug_<tên tư thế>.webp (blink, lookScreen, happy, surprised, walk_1..4);
 // khi có file chỉ cần đổi available:true (và thêm cx). Tư thế không có sẵn không bị yêu cầu tải (không có lỗi 404).
@@ -506,7 +516,10 @@ function begin(){resize();requestAnimationFrame(frame)}
 new ResizeObserver(()=>{resize()}).observe(stage);addEventListener('resize',resize);
 document.addEventListener('visibilitychange',()=>{last=0});
 begin();
+})();
 </script>
 
+<script src="assets/map-btn.js" defer></script>
+<script src="assets/bo-widget.js" defer data-corner="bl"></script>
 </body>
 </html>

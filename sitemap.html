@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Site Map Me.Mori</title>
+<script src="assets/content-loader.js"></script>
+<script>MemoriContent.prefetch("sitemap");MemoriContent.prefetch("site");</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
 @font-face{font-family:'Oooh Baby';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/OoohBaby-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
@@ -75,29 +77,35 @@ img{-webkit-user-drag:none}
 <div id="root">
  <img id="bg" src="assets/sitemap/bg.webp" alt="" draggable="false">
  <div id="vig"></div>
- <h1 class="sr">Bản đồ trang web Me.Mori Class</h1>
- <a id="back" href="index.html">← Về trang Bọ</a>
+ <h1 class="sr" id="srt">Bản đồ trang web Me.Mori Class</h1>
+ <a id="back" href="index.html" data-site-back>← Về trang Bọ</a>
  <div id="stage">
   <div id="mapw"><img class="pass" src="assets/sitemap/map.webp" alt="" draggable="false"></div>
  </div>
 </div>
 
 <script>
-(()=>{
+(async()=>{
 const DW=1670,DH=942;
 const POLYS=[{"pts":[[1133,72],[1115,56],[1086,44],[1074,32],[1021,9],[955,14],[917,8],[852,21],[792,14],[756,14],[736,18],[698,34],[700,57],[691,88],[684,163],[660,202],[651,228],[657,232],[691,238],[735,241],[793,259],[876,257],[887,263],[903,264],[945,281],[1005,280],[1010,263],[1041,198],[1060,179],[1078,167],[1092,151],[1108,118],[1129,88]]},{"pts":[[697,37],[690,36],[670,44],[631,52],[497,52],[467,56],[407,81],[379,87],[347,118],[336,125],[290,146],[238,164],[214,185],[201,207],[171,237],[156,269],[152,307],[134,359],[135,377],[144,409],[151,409],[167,402],[223,366],[261,358],[288,343],[327,336],[352,327],[362,327],[386,309],[411,299],[437,295],[488,294],[531,283],[551,274],[583,253],[603,248],[648,228],[667,187],[683,163],[690,88],[699,57]]},{"pts":[[1135,76],[1087,159],[1042,198],[1011,263],[1007,282],[1021,291],[1065,310],[1098,335],[1148,359],[1175,386],[1193,394],[1215,412],[1257,459],[1329,457],[1375,462],[1410,473],[1481,475],[1538,481],[1537,419],[1531,380],[1510,350],[1501,309],[1494,291],[1458,253],[1453,243],[1448,215],[1432,181],[1408,162],[1386,138],[1336,118],[1304,96],[1252,83],[1223,82],[1195,76]]},{"pts":[[886,263],[876,258],[793,260],[735,242],[691,239],[645,230],[603,249],[583,254],[551,275],[531,284],[488,295],[437,296],[405,302],[370,320],[366,324],[366,331],[382,346],[418,370],[446,412],[477,433],[500,459],[509,488],[511,521],[519,547],[522,587],[592,582],[602,578],[667,572],[743,558],[762,551],[799,527],[821,520],[848,464],[875,425],[876,409],[867,361],[867,332],[886,271]]},{"pts":[[888,265],[868,332],[868,361],[876,401],[876,425],[849,464],[831,504],[823,515],[823,522],[838,537],[850,555],[892,590],[915,618],[929,677],[950,714],[960,721],[977,763],[981,782],[990,782],[1012,767],[1071,699],[1109,642],[1155,610],[1210,557],[1227,533],[1256,465],[1256,459],[1215,413],[1193,395],[1175,387],[1148,360],[1098,336],[1065,311],[1021,292],[1005,281],[951,283],[931,278],[900,264]]},{"pts":[[362,328],[352,328],[327,337],[288,344],[261,359],[223,367],[167,403],[147,411],[148,421],[169,455],[181,513],[180,538],[174,563],[159,599],[143,623],[141,653],[134,672],[135,693],[151,731],[158,731],[190,708],[239,683],[325,660],[387,631],[452,622],[488,603],[521,592],[518,547],[510,521],[507,483],[499,459],[477,434],[445,412],[418,371],[382,347]]},{"pts":[[1536,482],[1481,476],[1410,474],[1375,463],[1329,458],[1258,460],[1228,533],[1211,557],[1155,611],[1110,642],[1072,699],[1023,757],[996,780],[982,783],[974,789],[972,797],[982,800],[1000,821],[1009,841],[1036,861],[1092,880],[1138,882],[1205,899],[1237,898],[1307,885],[1353,861],[1403,842],[1435,813],[1474,791],[1502,751],[1511,716],[1529,680],[1534,651],[1525,624],[1510,596],[1506,560],[1509,548],[1529,514]]},{"pts":[[523,589],[523,597],[552,640],[587,669],[608,701],[625,718],[664,747],[708,772],[712,780],[721,785],[736,804],[767,832],[771,843],[785,841],[807,831],[834,826],[863,815],[908,811],[939,800],[965,797],[979,785],[977,766],[959,721],[949,714],[928,677],[914,618],[892,591],[849,555],[837,537],[821,521],[799,528],[762,552],[743,559],[667,573]]},{"pts":[[769,846],[766,832],[735,804],[721,786],[711,780],[708,773],[664,748],[625,719],[607,701],[586,669],[551,640],[521,596],[503,598],[452,623],[387,632],[325,661],[239,684],[190,709],[158,732],[158,739],[204,786],[222,824],[260,854],[287,895],[326,922],[341,927],[374,930],[423,922],[445,922],[497,932],[563,928],[612,916],[673,907],[716,895],[739,882],[755,859]]}];
 // pt: toạ độ thiết kế 1670x942. icon: [file, cx, cy, w, h]. lbl: [x,y,rot,size,lines]
-const D=[
+const D0=[
  {id:1,name:'Đăng ký',href:'dangky.html',tip:'Đăng ký tham gia lớp',ic:2,lb:[395,238,-12,62,['Đăng ký']]},
  {id:0,name:'Khám phá tác phẩm',href:'home-backup.html#workshops',tip:'Xem workshop và tác phẩm',ic:-1,lb:[880,150,-7,58,['khám phá','tác phẩm']],pk:.82},
  {id:2,name:'Thư viện Ảnh F1',href:'gallery.html',tip:'Mở Gallery lớp F1',ic:6,lb:[1262,225,12,58,['Thư viện','Ảnh F1']]},
  {id:5,name:'Lớp F1',href:'home-backup.html#courses',tip:'Thông tin lớp F1',ic:0,lb:[335,425,-8,58,['Lớp F1']]},
- {id:3,name:'Giới thiệu',href:'home-backup.html',tip:'Giới thiệu Me.Mori Class',ic:3,lb:[655,335,5,60,['Giới thiệu']]},
+ {id:3,name:'Giới thiệu',href:'gioithieu.html',tip:'Giới thiệu Me.Mori Class',ic:3,lb:[655,335,5,60,['Giới thiệu']]},
  {id:4,name:'Lộ trình Lớp F2',href:'roadmap.html',tip:'Xem lộ trình lớp F2',ic:5,lb:[1040,410,6,58,['Lộ trình','Lớp F2']]},
  {id:8,name:'Cộng đồng',href:'community.html',tip:'Vào không gian Cộng đồng',ic:1,lb:[470,735,8,60,['Cộng đồng']]},
- {id:7,name:'Phương pháp',href:'home-backup.html#method',tip:'Phương pháp học',ic:4,lb:[725,640,-6,50,['phương pháp']],pl:['phương','pháp']},
+ {id:7,name:'Phương pháp',href:'method.html',tip:'Phương pháp học',ic:4,lb:[725,640,-6,50,['phương pháp']],pl:['phương','pháp']},
  {id:6,name:'Thử “Tôi có phù hợp không”',href:'index.html',tip:'Hỏi Bọ xem bạn có hợp không',ic:-1,lb:[1378,650,-4,54,['Thử','“Tôi có','phù hợp','không”']]}
 ];
+/* Nội dung sửa được từ trang admin (assets/content/sitemap.json + site.json): tên, gợi ý, đường dẫn, dòng chữ của 9 viên đá. Toạ độ/hình giữ trong trang. */
+const SC=await MemoriContent.load('sitemap',{pageTitle:document.title,srTitle:'Bản đồ trang web Me.Mori Class',stones:D0.map(d=>({id:d.id,name:d.name,href:d.href,tip:d.tip,lines:d.lb[4],portraitLines:d.pl||[]}))}),SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);
+MemoriContent.applySite(SITE,'#back');document.title=SC.pageTitle||document.title;MemoriContent.setText('#srt',SC.srTitle);
+const D=D0.map(d=>{const c=SC.stones.find(x=>x&&x.id===d.id)||{};const ln=a=>Array.isArray(a)?a.filter(t=>typeof t==='string'&&t.trim()).slice(0,6).map(t=>t.slice(0,40)):[];
+ const lines=ln(c.lines),pl=ln(c.portraitLines);
+ return Object.assign({},d,{name:c.name||d.name,tip:c.tip||d.tip,href:MemoriContent.url(c.href,d.href,{hash:true})||d.href,lb:[d.lb[0],d.lb[1],d.lb[2],d.lb[3],lines.length?lines:d.lb[4]],pl:pl.length?pl:(d.pl&&!lines.length?d.pl:undefined)})});
 const ICONS=[{"cx":309.5,"cy":531.0,"w":187,"h":196},{"cx":358.0,"cy":817.5,"w":246,"h":151},{"cx":494.5,"cy":146.5,"w":139,"h":113},{"cx":661.0,"cy":457.5,"w":200,"h":181},{"cx":785.0,"cy":713.5,"w":196,"h":153},{"cx":1028.0,"cy":550.5,"w":284,"h":133},{"cx":1457.5,"cy":310.0,"w":185,"h":162}];
 const POSE={idle:146.2,front:145.2,turnRight:139.5,threeQuarterLeft:140.9,turnLeft:142.6,back:143.8};
 const LADY_RULES={sectors:['turnRight','idle','back','threeQuarterLeft','turnLeft','threeQuarterLeft','front','idle'],
@@ -119,7 +127,8 @@ for(const d of D){
  a.innerHTML='<span class="hit"><span class="lit"><img alt="" draggable="false" src="assets/sitemap/map.webp"></span></span>'+
   '<svg class="ring" aria-hidden="true"><polygon></polygon></svg>'+
   (d.ic>=0?'<span class="ico"><img alt="" draggable="false" src="assets/sitemap/icon'+d.ic+'.webp"></span>':'')+
-  '<span class="lbl" aria-hidden="true"><span class="tx"></span><span class="tip">'+d.tip+'</span></span>';
+  '<span class="lbl" aria-hidden="true"><span class="tx"></span><span class="tip"></span></span>';
+ a.querySelector('.tip').textContent=d.tip;
  d.a=a;d.hit=a.querySelector('.hit');d.lit=a.querySelector('.lit');d.poly_el=a.querySelector('polygon');d.ico=a.querySelector('.ico');d.lbl=a.querySelector('.lbl');
  d.lbl.style.setProperty('--r',d.lb[2]+'deg');
  d.tx=a.querySelector('.tx');a.querySelector('.lit img').onerror=()=>{a.querySelector('.lit').style.display='none'};
@@ -179,7 +188,7 @@ function layout(){
   d.hit.style.clipPath='polygon('+pts.map(p=>p[0].toFixed(1)+'px '+p[1].toFixed(1)+'px').join(',')+')';
   css(d.lit,{width:DW*K+'px',height:DH*K+'px',transformOrigin:'0 0',transform:port?'translate('+DH*K+'px,0) rotate(90deg)':'none'});
   d.poly_el.style.strokeWidth=Math.max(2,3*K)+'px';
-  const lines=(port&&d.pl)||d.lb[4];d.tx.innerHTML=lines.map(t=>'<span style="display:block">'+t+'</span>').join('');const lfs=d.lb[3]*K*(port?(d.pk||1):1),Lh=lines.length*lfs*.98;
+  const lines=(port&&d.pl)||d.lb[4];d.tx.textContent='';lines.forEach(t=>{const sp=document.createElement('span');sp.style.display='block';sp.textContent=t;d.tx.appendChild(sp)});const lfs=d.lb[3]*K*(port?(d.pk||1):1),Lh=lines.length*lfs*.98;
   let lp=T(d.lb[0],d.lb[1]),ip=null;
   if(d.ico){const c=ICONS[d.ic];ip=T(c.cx,c.cy)}
   if(port){ // dọc: chữ ở trên, biểu tượng ở dưới, cả khối quanh trọng tâm vùng
@@ -266,3 +275,4 @@ start();
 // sau khi vào xong, bố cục không bị animation giữ lại
 })();
 </script>
+<script src="assets/bo-widget.js" defer data-corner="bl"></script>

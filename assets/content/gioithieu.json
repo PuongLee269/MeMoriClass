@@ -1,0 +1,21 @@
+{
+  "pageTitle": "Giới thiệu Me.Mori",
+  "copy": {
+    "title": "Giới thiệu",
+    "sub": "Me.Mori là một lớp học nhỏ giữa rừng đêm, nơi mỗi người học cách lắng nghe chính mình. Xem video để biết Bọ và các bạn đã bắt đầu như thế nào.",
+    "posterTitle": "Giới thiệu Me.Mori",
+    "posterSub": "Bấm để xem video",
+    "loading": "Bọ đang trải tấm nền rừng…"
+  },
+  "video": {
+    "provider": "youtube",
+    "id": "qHEqQn2xOlM",
+    "title": "KMM FILM STUDIO | ĐỪNG CHỨNG KIẾN HÃY LÊN TIẾNG",
+    "aspect": 1.7777777777777777,
+    "start": 0,
+    "poster": "assets/gioithieu/poster.webp"
+  },
+  "nextPage": "sitemap.html",
+  "nextText": "Đang chuyển về bản đồ",
+  "toastText": "Chuyển về trang bản đồ…"
+}

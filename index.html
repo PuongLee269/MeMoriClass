@@ -65,7 +65,7 @@
       pointer-events: none;
       background: linear-gradient(90deg, #07131130, transparent 62%), linear-gradient(0deg, #07131120, transparent 28%);
     }
-    .brand-mark, .question-form, .quiet-links { position:absolute; z-index:2; }
+    .brand-mark, .question-form { position:absolute; z-index:2; }
     .brand-mark { left:2.7%; top:2.8%; width:12%; height:9%; pointer-events:none; }
     .brand-mark:not([data-compact="true"]) { transform:translate(calc(28px * var(--art-scale)),calc(30px * var(--art-scale))); }
     .brand-label { display:flex; flex-direction:column; align-items:flex-start; gap:0; font-family:"Oooh Baby","Segoe Script","Brush Script MT",cursive; font-size:calc(46px * var(--art-scale)); font-weight:400; line-height:.78; color:#f8ebcb; white-space:nowrap; }
@@ -73,7 +73,7 @@
     .brand-mark[data-compact="true"] { left:10px!important; top:16px!important; right:auto!important; width:110px!important; height:42px!important; }
     .brand-mark[data-compact="true"] .brand-label { font-size:34px; line-height:.78; padding-left:10px; }
     .brand-mark[data-compact="true"] .brand-label small { font-size:7px; margin-left:30%; }
-    .send:focus-visible, .quiet-links a:focus-visible {
+    .send:focus-visible {
       outline: 2px solid var(--cream); outline-offset: 4px;
     }
 
@@ -192,19 +192,6 @@
     .msg-bot a.go-community:hover, .msg-bot a.go-community:focus-visible { box-shadow:0 0 14px #ffd98a66; background:#ffd98a14; }
     .msg-user { align-self:flex-end; color:#2d2416; border-bottom-right-radius:4px;
       background:linear-gradient(170deg,#f8edcfee,#e9d7a8e6); border:1px solid #fff4d6aa; box-shadow:0 8px 22px #04100c66, inset 0 -2px 0 #c9ad6a55; font-weight:500; }
-    /* Map button: top-right, same moss-glass look as the music buttons */
-    .map-btn { position:absolute; z-index:6; right:calc(max(16px, env(safe-area-inset-right, 0px)) + 4px); top:calc(max(16px, env(safe-area-inset-top, 0px)) + 4px); display:grid; place-items:center; width:44px; height:44px; padding:0; border-radius:50%; color:#f2d58e; text-decoration:none;
-      background:radial-gradient(circle at 35% 30%,#1d4335e6,#0b1f19e6); border:1px solid #d9c27a99; box-shadow:0 6px 18px #04100c80, inset 0 0 0 3px #0b1f1955, inset 0 0 0 4px #e7cf8a22;
-      transition:transform .2s ease, box-shadow .2s ease, color .2s ease; -webkit-backdrop-filter:blur(4px); backdrop-filter:blur(4px); }
-    .map-btn svg { width:22px; height:22px; }
-    .map-btn:hover, .map-btn:focus-visible { transform:translateY(2px); color:#fff2c8; box-shadow:0 8px 22px #04100c90, 0 0 14px #ffd98a40, inset 0 0 0 3px #0b1f1955, inset 0 0 0 4px #e7cf8a33; }
-    .map-btn:active { transform:scale(.94); }
-    .map-btn:focus-visible { outline:2px solid #f4e7c4; outline-offset:3px; }
-    .map-tip { position:absolute; right:0; top:calc(100% + 8px); padding:0 2px; white-space:nowrap; font:500 13px/1.2 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif; color:#f6ecd0; text-shadow:0 1px 4px #07120f, 0 0 10px #07120f; opacity:0; transform:translateY(-3px); transition:opacity .2s ease, transform .2s ease; pointer-events:none; }
-    .map-btn:hover .map-tip, .map-btn:focus-visible .map-tip { opacity:1; transform:none; }
-    .map-btn.is-hinting { animation:map-pulse 2.4s ease-in-out 3; }
-    @keyframes map-pulse { 0%,100% { box-shadow:0 6px 18px #04100c80, inset 0 0 0 3px #0b1f1955, inset 0 0 0 4px #e7cf8a22; } 50% { box-shadow:0 6px 18px #04100c80, 0 0 18px 3px #ffd98a66, inset 0 0 0 3px #0b1f1955, inset 0 0 0 4px #e7cf8a44; } }
-    @media (prefers-reduced-motion: reduce) { .map-btn.is-hinting { animation:none; } }
     /* Music corner: moss-glass buttons with a gold ring, bottom-right */
     .music { position:absolute; z-index:6; right:calc(max(16px, env(safe-area-inset-right, 0px)) + 4px); bottom:calc(max(16px, env(safe-area-inset-bottom, 0px)) + 4px); display:flex; align-items:center; gap:8px; }
     .music-btn { display:grid; place-items:center; width:44px; height:44px; padding:0; border-radius:50%; cursor:pointer; color:#f2d58e;
@@ -228,26 +215,33 @@
     .music-title::before { content:"☾ "; color:#f2d58e; }
     @media (prefers-reduced-motion: reduce) { .music.is-playing .music-bars i { animation:none; height:9px; } }
     @keyframes msg-in { from { opacity:0; transform:translateY(8px); } }
-    .beetle-head.is-talking { animation:head-talk .44s ease-in-out infinite; }
-    @keyframes head-talk { 0%,100% { rotate:-1deg; translate:0 0; } 50% { rotate:2.4deg; translate:0 -2px; } }
-    .beetle-head { position:absolute; z-index:2; overflow:visible; pointer-events:none; transform-origin:43.4% 88.75%; animation:head-wobble 6.8s ease-in-out infinite; }
-    .beetle-head-svg { display:block; width:100%; height:100%; overflow:visible; }
-    .beetle-blink .lid { fill:#cf7852; stroke:#8f4c34; stroke-width:1.5; transform-box:fill-box; transform-origin:center; transform:scaleY(0); opacity:0; animation:beetle-blink 6.3s ease-in-out infinite; }
-    .beetle-blink .lid-right { animation-delay:.025s; }
-    .beetle-blink .lid-line { fill:none; stroke:#76412f; stroke-width:1.6; stroke-linecap:round; transform-box:fill-box; transform-origin:center; transform:scaleY(0); opacity:0; animation:beetle-blink 6.3s ease-in-out infinite; }
-    .beetle-blink .lid-line-right { animation-delay:.025s; }
-    .beetle-head.is-hover-blinking .beetle-blink .lid,
-    .beetle-head.is-hover-blinking .beetle-blink .lid-line { animation:beetle-blink-now .24s ease-in-out both; }
-    .quiet-links { left:0; top:0; width:0; height:0; display:block; color:transparent; font-size:calc(18px * var(--art-scale)); }
-    .quiet-links a { position:absolute; display:flex; align-items:center; padding-left:10px; color:#bdc492; text-decoration:none; border-radius:2px; white-space:nowrap; text-shadow:0 1px 4px #07120f; }
-    .quiet-links a:focus-visible { color: var(--cream); }
+    /* Bọ: idle sprite planted on the moss, flight sprite sheet (6 frames x 110 ms) for arrival / take-off. Feet stay on the ground: only scale from the feet, never translate. */
+    .beetle-head { position:absolute; z-index:2; pointer-events:none; }
+    .bo-shadow { position:absolute; left:16%; right:8%; bottom:-1%; height:9%; border-radius:50%; background:radial-gradient(ellipse at center,#05110d99 0%,#05110d4d 48%,#05110d00 74%); transition:opacity .3s ease; }
+    .beetle-head.is-flying .bo-shadow { opacity:0; }
+    .bo-art { position:absolute; inset:0; transform-origin:50% 94%; }
+    .bo-idle { display:block; width:100%; height:100%; transform-origin:50% 94%; animation:bo-breathe 4.6s ease-in-out infinite; }
+    .beetle-head.is-flying .bo-idle { visibility:hidden; }
+    .beetle-head.is-talking .bo-idle { animation:bo-talk .44s ease-in-out infinite; }
+    .bo-fly { position:absolute; left:50%; bottom:-3%; width:161%; aspect-ratio:408 / 280; overflow:hidden; translate:-50% 0; display:none; }
+    .bo-fly.on { display:block; }
+    .bo-fly.flip { scale:-1 1; }
+    .bo-fly img { display:block; max-width:none; width:600%; height:100%; animation:bo-wing .66s steps(6) infinite; }
+    @keyframes bo-wing { to { transform:translateX(-100%); } }
+    @keyframes bo-breathe { 0%,100% { transform:scale(1,1); } 50% { transform:scale(1.004,1.014); } }
+    @keyframes bo-talk { 0%,100% { transform:scale(1,1); } 50% { transform:scale(1.012,.988); } }
+    @media (prefers-reduced-motion: reduce) { .bo-idle, .beetle-head.is-talking .bo-idle { animation:none; } }
+    .msg-bot a.map-card { display:flex; align-items:center; gap:12px; width:max-content; max-width:100%; min-height:56px; margin-top:10px; padding:2px 6px 2px 0; border:0; border-radius:0; background:none; box-shadow:none; color:#ffd98a; text-decoration:none; font-weight:500; font-size:1em; white-space:normal; animation:card-in .7s ease both; -webkit-tap-highlight-color:transparent; }
+    .map-card img { flex:none; display:block; width:calc(88px * max(var(--art-scale), .5)); min-width:64px; max-width:96px; height:auto; filter:drop-shadow(0 2px 4px #04100ccc); transition:transform .25s ease, filter .25s ease; }
+    .map-card:hover img, .map-card:active img { transform:scale(1.06); filter:drop-shadow(0 2px 4px #04100ccc) drop-shadow(0 0 8px #ffd98a88); }
+    .msg-bot a.map-card:hover span, .msg-bot a.map-card:focus-visible span { text-decoration:underline; text-underline-offset:4px; }
+    .msg-bot a.map-card:focus:not(:focus-visible) { outline:none; }
+    .msg-bot a.map-card:focus-visible { outline:2px solid #f4e7c4; outline-offset:3px; border-radius:6px; }
+    @keyframes card-in { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
     @keyframes glow { from { opacity: .08; } 45% { opacity: .72; } to { opacity: .16; } }
     @keyframes wander { from { translate: -3px 2px; } to { translate: 4px -5px; } }
     @keyframes water { from { transform: translate3d(-1.5%,0,0) scaleY(.94); opacity: .55; } to { transform: translate3d(1.5%,2px,0) scaleY(1.04); opacity: .96; } }
-    @keyframes beetle-blink { 0%,88%,100% { transform:scaleY(0); opacity:0; } 89.2%,91% { transform:scaleY(1); opacity:1; } 92.2% { transform:scaleY(0); opacity:0; } }
-    @keyframes beetle-blink-now { 0%,100% { transform:scaleY(0); opacity:0; } 28%,68% { transform:scaleY(1); opacity:1; } }
-    @keyframes head-wobble { 0%,100% { rotate:-1.1deg; } 50% { rotate:1.2deg; } }
     @media (max-width: 700px) {
       .scene { min-height: 100svh; }
       .artwork { inset: 0; width: 100%; height: 100%; object-position: 58% center; transform: scale(1.02); animation-duration: 55s; }
@@ -256,7 +250,6 @@
       .question-form input { margin-top:0; font-size:14px; }
       .question-form input::placeholder { font-size:14px; }
       .send { width:34px; height:34px; }
-      .quiet-links a { min-height: 28px; min-width: 32px; }
       .brand-mark { left: 2%; top: 2%; width: 18%; height: 8%; }
       .water-glimmer { left: 7%; top: 76%; width: 60%; height: 12%; }
     }
@@ -277,8 +270,6 @@
       .question-form::after { display:none; }
       .question-form input { font-size:16px!important; margin-top:0; }
       .question-form input::placeholder { font-size:15px!important; }
-      .quiet-links { left:7%!important; top:auto!important; bottom:calc(max(16px, env(safe-area-inset-bottom, 0px)) + 8px)!important; width:auto!important; height:auto!important; display:flex; gap:clamp(14px,5vw,28px); font-size:13px; }
-      .quiet-links a { position:static!important; top:auto!important; left:auto!important; width:auto!important; height:auto!important; padding:0; min-height:28px; min-width:0; }
       .brand-mark { left:4%!important; top:2%!important; width:120px!important; height:48px!important; }
       .dialogue { left:6%!important; top:12%!important; width:88%!important; height:38%!important; }
       .msg { font-size:14.5px; padding:10px 14px 11px; border-radius:14px; max-width:92%; }
@@ -342,7 +333,7 @@
       <i class="firefly" style="--x:81%;--y:77%;--size:3px;--duration:5.8s;--delay:-2.5s"></i>
     </div>
     <div class="water-glimmer" aria-hidden="true"></div>
-    <div class="beetle-head" aria-hidden="true"><svg class="beetle-head-svg" viewBox="0 0 175 160" preserveAspectRatio="none"><image href="assets/paper/forest3/06-beetle-head.webp" x="8" y="9" width="155" height="139" preserveAspectRatio="none"/><g class="beetle-blink"><ellipse class="lid lid-left" cx="37" cy="99" rx="8" ry="10"/><path class="lid-line" d="M29 100 Q37 95 45 100"/><ellipse class="lid lid-right" cx="91" cy="110" rx="9" ry="10"/><path class="lid-line lid-line-right" d="M82 111 Q91 105 100 111"/></g></svg></div>
+    <div class="beetle-head" aria-hidden="true"><i class="bo-shadow"></i><div class="bo-art"><img class="bo-idle" src="assets/bo/bo-idle.webp" width="480" height="479" alt="" decoding="async"><div class="bo-fly"><img width="2448" height="280" alt="" decoding="async"></div></div></div>
 
     <div class="brand-mark" aria-label="Me.Mori Class"><span class="brand-label"><span>Me.Mori</span><small>CLASS</small></span></div>
     <form class="question-form" aria-label="Hỏi Me.Mori" lang="vi">
@@ -351,13 +342,6 @@
       <button class="send" type="submit" aria-label="Gửi câu hỏi"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.2 11.6 20.5 3.8l-5.3 16.4-3.5-6.4-8.5-2.2Zm8.5 2.2 5.2-5.1" stroke="currentColor" stroke-width="1.55" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="sr-only">Gửi câu hỏi</span></button>
     </form>
     <div class="dialogue" role="log" aria-live="polite" aria-label="Hội thoại với Bọ" aria-busy="false"></div>
-    <nav class="quiet-links" aria-label="Khám phá Me.Mori">
-      <a href="home-backup.html#courses">Lớp F2</a><a href="home-backup.html#workshops">Tác phẩm</a><a href="home-backup.html#contact">Đăng ký</a>
-    </nav>
-    <a class="map-btn" href="sitemap.html" aria-label="Xem bản đồ trang web">
-      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 6.5 9 4.5l6 2 5.5-2v13l-5.5 2-6-2-5.5 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 4.5v13m6-11v13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity=".55"/><path d="M12 8.2a2.3 2.3 0 0 1 2.3 2.3c0 1.7-2.3 3.9-2.3 3.9s-2.3-2.2-2.3-3.9A2.3 2.3 0 0 1 12 8.2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="12" cy="10.4" r=".7" fill="currentColor"/></svg>
-      <span class="map-tip" aria-hidden="true">Bản đồ trang</span>
-    </a>
     <div class="music" role="group" aria-label="Âm thanh rừng">
       <span class="music-title" aria-live="polite"></span>
       <span class="music-bars" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -371,7 +355,11 @@
           </div>
   </main>
   <script src="assets/paper/paper-scene.js"></script>
+  <script src="assets/content-loader.js"></script>
+  <script>MemoriContent.prefetch("bo");MemoriContent.prefetch("bo-replies",8000);</script>
+  <script src="assets/bo-matcher.js"></script>
   <script src="assets/bo-replies.js"></script>
+  <script src="assets/map-btn.js" defer></script>
 
   <script src="assets/preload-pages.js" defer></script>
   <script>
@@ -461,11 +449,10 @@
       const dialogue = document.querySelector('.dialogue');
       const windLayer = document.querySelector('.wind-layer');
       const beetleHead = document.querySelector('.beetle-head');
-      const quietLinks = [...document.querySelectorAll('.quiet-links a')];
       const brand = document.querySelector('.brand-mark');
       const heroTitle = document.querySelector('.hero-title');
       const heroQuestion = document.querySelector('.hero-question');
-      const glowTargets = [...document.querySelectorAll('.hero-copy .copy-base,.quiet-links a')];
+      const glowTargets = [...document.querySelectorAll('.hero-copy .copy-base')];
       glowTargets.forEach(target => {
         const text = target.textContent;
         target.setAttribute('aria-label', text.trim());
@@ -477,12 +464,7 @@
           word.textContent = token;
           return word;
         });
-        if (target.matches('.quiet-links a')) {
-          const run = document.createElement('span');
-          run.className = 'glow-run';
-          run.append(...pieces);
-          target.replaceChildren(run);
-        } else target.replaceChildren(...pieces);
+        target.replaceChildren(...pieces);
       });
       const sharpCopy = [
         [heroTitle, 428, 250, 540, 80],
@@ -493,12 +475,9 @@
       // This keeps the actual controls aligned when the browser crops the artwork on narrow screens.
       const hotspots = [
         [brand, 52, 24, 205, 82],
-        [document.querySelector('.beetle-head'), 1145, 460, 175, 160],
+        [beetleHead, 1138, 454, 214, 213],
         [form, 418, 500, 625, 66],
-        [dialogue, 418, 186, 660, 302],
-        [quietLinks[0], 420, 566, 112, 50],
-        [quietLinks[1], 560, 566, 139, 50],
-        [quietLinks[2], 716, 566, 122, 50]
+        [dialogue, 418, 186, 660, 302]
       ];
       function placeHotspots() {
         if (!artwork.naturalWidth || !artwork.naturalHeight) return;
@@ -665,23 +644,81 @@
           { src:'assets/paper/forest3/03-trees-right-twigs.webp', x:1334, y:0, w:239, h:416, ox:1560, oy:520, depth:0.25, sway:{ amp:0.45, period:6.6, bend:0.5, gust:1.1 } },
           { src:'assets/paper/forest3/lake-water.webp', x:205, y:701, w:845, h:176, depth:.2, className:'lake-ripple' },
           { src:'assets/paper/forest3/lake-still.webp', x:70, y:351, w:1151, h:526, depth:.2 },
-          { src:'assets/paper/forest3/bank-beetle.webp', x:0, y:17, w:1672, h:924, depth:0.5 },
+          { src:'assets/bo/bank-clean.webp', x:0, y:17, w:1672, h:924, depth:0.5 },
           { src:'assets/paper/forest3/fg-shade.webp', x:0, y:310, w:1672, h:631, depth:.5 },
           { src:'assets/paper/forest3/08-overhead-leaves.webp', x:495, y:0, w:704, h:211, ox:850, oy:-40, depth:0.45, shadow:true, sway:{ amp:0.45, period:8, bend:0.55 } },
           { src:'assets/paper/forest3/09-foreground-left.webp', x:0, y:332, w:585, h:609, ox:150, oy:980, depth:1, sway:{ amp:0.5, period:7.5, bend:0.7 } },
           { src:'assets/paper/forest3/10-foreground-bottom.webp', x:580, y:729, w:697, h:212, ox:930, oy:990, depth:0.9, sway:{ amp:0.45, period:5.6, bend:0.75 } },
           { src:'assets/paper/forest3/11-foreground-right.webp', x:1217, y:728, w:455, h:213, ox:1500, oy:990, depth:0.9, sway:{ amp:0.5, period:6.4, bend:0.7 } }
         ],
-        preload: ['assets/paper/forest3/06-beetle-head.webp'],
         onProgress: p => { loadBar.style.transform = `scaleX(${p})`; loaderBar.style.transform = `scaleX(${Math.max(.04, p)})`; },
         glows: [[317,297],[337,541],[342,617],[927,602],[831,662],[1255,393],[1417,589],[1527,278],[1574,757],[1473,815]]
       }) : null;
       if (paper) {
         paper.ready.then(() => { paperReady = true; }).catch(() => { paperFailed = true; });
-        paper.follow(document.querySelector('.beetle-head'), 'bank-beetle'); // head moves with its body
+        paper.follow(document.querySelector('.beetle-head'), 'bank-clean'); // Bọ moves with the bank he stands on
         PaperScene.linkTransitions(paper);
       } else {
         loadBar.remove();
+      }
+
+      // ---- Bọ: idle sprite + flight sprite sheet (assets/bo). Flies in and lands on load, takes off before leaving for another page. ----
+      const bo = (() => {
+        const art = beetleHead.querySelector('.bo-art'), idle = beetleHead.querySelector('.bo-idle');
+        const fly = beetleHead.querySelector('.bo-fly'), flyImg = fly.querySelector('img');
+        const decoded = img => (img.decode ? img.decode() : Promise.resolve()).catch(() => {});
+        const idleReady = new Promise(resolve => {
+          if (idle.complete && idle.naturalWidth) decoded(idle).then(resolve);
+          else { idle.addEventListener('load', () => decoded(idle).then(resolve), { once: true }); idle.addEventListener('error', resolve, { once: true }); }
+        });
+        let flyOK = false;
+        const flyReady = new Promise(resolve => {
+          flyImg.addEventListener('load', () => decoded(flyImg).then(() => { flyOK = true; resolve(); }), { once: true });
+          flyImg.addEventListener('error', resolve, { once: true });
+        });
+        flyImg.src = 'assets/bo/bo-fly.webp';
+        const show = on => { fly.classList.toggle('on', on); beetleHead.classList.toggle('is-flying', on); };
+        function reset() { art.getAnimations().forEach(a => a.cancel()); show(false); }
+        // Flies in from the right (flipped to face left), then lands on the idle pose. Resolves when he has landed.
+        function arrive() {
+          if (!flyOK || reduceMotion.matches || !art.animate) return Promise.resolve();
+          const r = beetleHead.getBoundingClientRect();
+          const dx = innerWidth - r.left + 60, dy = -Math.min(innerHeight * .45, 380);
+          fly.classList.add('flip'); show(true);
+          const move = art.animate([
+            { transform: `translate(${dx}px,${dy}px) scale(.82)`, offset: 0 },
+            { transform: `translate(${dx * .3}px,${dy * .35}px) scale(.95)`, offset: .6 },
+            { transform: 'translate(0,-14px) scale(1)', offset: .9 },
+            { transform: 'translate(0,0) scale(1)', offset: 1 }
+          ], { duration: 1500, delay: 500, easing: 'cubic-bezier(.3,.5,.4,1)', fill: 'both' });
+          return move.finished.then(() => {
+            show(false); fly.classList.remove('flip'); move.cancel();
+            idle.animate([{ transform: 'scale(1.035,.95)' }, { transform: 'scale(1,1)' }], { duration: 300, easing: 'ease-out' });
+          }).catch(() => { reset(); });
+        }
+        // Short flight up and away while the paper scene lifts off.
+        function leave() {
+          if (!flyOK || reduceMotion.matches || !art.animate) return;
+          reset(); fly.classList.remove('flip'); show(true);
+          art.animate([
+            { transform: 'translate(0,0) scale(1)', opacity: 1, offset: 0 },
+            { transform: 'translate(40px,-34px) scale(1.04)', opacity: 1, offset: .2 },
+            { transform: `translate(${innerWidth * .5}px,${-innerHeight * .55}px) scale(.7)`, opacity: 0, offset: 1 }
+          ], { duration: 1000, easing: 'ease-in', fill: 'forwards' });
+        }
+        return { ready: Promise.all([idleReady, flyReady]), arrive, leave, reset };
+      })();
+      let boSettled = true;   // the greeting waits until Bọ has landed
+      if (paper) {
+        document.addEventListener('click', event => {
+          const link = event.target.closest && event.target.closest('a[href]');
+          if (!link || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          if (link.target && link.target !== '_self') return;
+          const url = new URL(link.href, location.href);
+          if (url.origin !== location.origin || (url.pathname === location.pathname && url.hash)) return;
+          bo.leave();
+        }, true);
+        window.addEventListener('pageshow', event => { if (event.persisted) bo.reset(); });
       }
 
       // ---- Start: wait for fonts, the still image and every paper layer (max 12 s), then lift the loading screen ----
@@ -690,13 +727,16 @@
       const layersReady = paper ? paper.ready.catch(() => {}) : Promise.resolve();
       const timeout = new Promise(r => setTimeout(r, 12000));
       const minShow = new Promise(r => setTimeout(r, 1200));   // never just flash the loading screen
-      Promise.all([minShow, Promise.race([Promise.all([stillReady, fontsReady, layersReady]), timeout])]).then(() => {
+      Promise.all([minShow, Promise.race([Promise.all([stillReady, fontsReady, layersReady, bo.ready]), timeout])]).then(() => {
         placeHotspots();
         loader.classList.add('is-done');
         loadBar.classList.add('is-done');
         if (paper && paperReady) {
           paper.reveal(0);
+          boSettled = false;
+          const landed = bo.arrive();   // hides the idle pose until the flight is over
           scene.classList.add('has-paper');
+          landed.then(() => { boSettled = true; }, () => { boSettled = true; });
           paper.enter({ duration: 1000, stagger: 70 });
         } else if (paper && !paperFailed) {
           // slow network: show the still now, swap in the moving layers when they arrive
@@ -863,25 +903,6 @@
         });
       })();
 
-      let pointerOverBeetle = false;
-      let hoverBlinkTimeout = 0;
-      scene.addEventListener('pointermove', event => {
-        if (event.pointerType === 'touch' || !finePointer.matches) return;
-        const rect = beetleHead.getBoundingClientRect();
-        const overBeetle = event.clientX >= rect.left && event.clientX <= rect.right && event.clientY >= rect.top && event.clientY <= rect.bottom;
-        if (overBeetle && !pointerOverBeetle) {
-          beetleHead.classList.add('is-hover-blinking');
-          window.clearTimeout(hoverBlinkTimeout);
-          hoverBlinkTimeout = window.setTimeout(() => beetleHead.classList.remove('is-hover-blinking'), 280);
-        }
-        pointerOverBeetle = overBeetle;
-      }, { passive: true });
-      scene.addEventListener('pointerleave', () => {
-        pointerOverBeetle = false;
-        beetleHead.classList.remove('is-hover-blinking');
-        window.clearTimeout(hoverBlinkTimeout);
-      });
-
       let pointerFrame = 0;
       const finePointer = matchMedia('(hover:hover) and (pointer:fine)');
       function clearGlow() {
@@ -968,11 +989,28 @@
         scene.classList.add('is-chatting');
         if (chatStarted) return;
         chatStarted = true;
-        window.setTimeout(() => botSay('Mình nghe đây. Bạn muốn hỏi gì nào?'), reduceMotion.matches ? 0 : 380);
+        window.setTimeout(() => botSay(BO_TEXT.openLine), reduceMotion.matches ? 0 : 380);
       }
+      // First message (replaces the old headline): greeting, then the map card. The input stays usable throughout.
+      let greeted = false;
+      function makeMapCard() {
+        const card = document.createElement('a');
+        card.href = 'sitemap.html'; card.className = 'map-card';
+        const cardImg = document.createElement('img'); cardImg.src = 'assets/sitemap/map-card.webp'; cardImg.width = 320; cardImg.height = 196; cardImg.alt = '';
+        const cardLabel = document.createElement('span'); cardLabel.textContent = BO_TEXT.mapCardLabel;
+        card.append(cardImg, cardLabel);
+        return card;
+      }
+      function greet() {
+        if (greeted || chatStarted || userAsked) return;
+        greeted = chatStarted = true;
+        scene.classList.add('is-chatting');
+        window.setTimeout(() => botSay(BO_TEXT.greeting, makeMapCard()), reduceMotion.matches ? 0 : 500);
+      }
+      const greetWait = setInterval(() => { if (!document.querySelector('.loader') && boSettled) { clearInterval(greetWait); BO_READY.then(greet); } }, 300);
       // Leaving the box without asking anything brings the headline back.
       function closeIdleChat() {
-        if (userAsked || form.contains(document.activeElement) || field.value.trim()) return;
+        if (greeted || userAsked || form.contains(document.activeElement) || field.value.trim()) return;
         window.clearInterval(typeTimer);
         window.clearTimeout(replyTimer);
         scene.classList.remove('is-chatting');
@@ -985,64 +1023,33 @@
       field.addEventListener('keydown', event => { if (event.key === 'Escape') field.blur(); });
 
       // Keyword answers (assets/bo-replies.js). Accents are ignored, longer matching phrases win.
-      const plain = text => text.toLocaleLowerCase('vi').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
-      const replyBook = (typeof BO_REPLIES !== 'undefined' ? BO_REPLIES : []).map(entry => ({ ...entry, plainKeys: entry.keys.map(plain) }));
+      // Matcher dùng chung: assets/bo-matcher.js (chỉ mục ngược, cùng luật điểm với bản cũ).
+      let replyIndex = BoMatcher.build(typeof BO_REPLIES !== 'undefined' ? BO_REPLIES : []);
+      document.addEventListener('bo:content', () => {
+        replyIndex = BoMatcher.build(typeof BO_REPLIES !== 'undefined' ? BO_REPLIES : []);
+        if (BO_TEXT.placeholder) field.placeholder = BO_TEXT.placeholder;
+        if (BO_TEXT.pageTitle) document.title = BO_TEXT.pageTitle;
+      });
       function findReply(question) {
-        const q = ` ${plain(question)} `;
-        let best = null, bestScore = 0;
-        for (const entry of replyBook) {
-          let score = 0;
-          for (const key of entry.plainKeys) if (key && q.includes(` ${key} `) || (key.length > 4 && q.includes(key))) score += key.length;
-          if (score > bestScore) { best = entry; bestScore = score; }
-        }
-        if (!best) return { reply: (typeof BO_FALLBACK !== 'undefined' && BO_FALLBACK) || 'Bọ chưa hiểu lắm, bạn hỏi lại giúp mình nhé.', target: null };
-        return { reply: best.reply, target: best.link && best.link.href, label: best.link && best.link.label };
+        const r = replyIndex.reply(question, (typeof BO_FALLBACK !== 'undefined' && BO_FALLBACK) || '');
+        return { reply: r.reply, target: r.target, label: r.label, card: r.card };
       }
 
       form.addEventListener('submit', event => {
         event.preventDefault();
         const question = field.value.trim();
         openChat();
-        if (!question) { botSay('Bạn hãy nhập câu hỏi vào khung rồi gửi nhé.'); field.focus(); return; }
-        const { reply, target, label } = findReply(question);
+        if (!question) { botSay(BO_TEXT.emptyPrompt); field.focus(); return; }
+        const { reply, target, label, card } = findReply(question);
         let link = null;
-        if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; if (/(^|\/)(?:community|gallery|sitemap|roadmap|dangky)\.html(?:$|[?#])/.test(target)) { link.classList.add('go-community'); link.textContent = '✦ ' + label; } }
+        if (card) link = makeMapCard();
+        else if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; if (BoMatcher.isPagePill(target)) { link.classList.add('go-community'); link.textContent = '✦ ' + label; } }
         userAsked = true;
         addMessage('user').textContent = question;
         field.value = '';
         window.clearTimeout(replyTimer);
         replyTimer = window.setTimeout(() => botSay(reply, link), reduceMotion.matches ? 0 : 650);
       });
-
-      // ---- Idle hint: after ~14 s of nothing, Bọ suggests the site map once ----
-      const IDLE_MS = 14000;
-      const mapBtn = document.querySelector('.map-btn');
-      let idleTimer = 0, hintDone = false;
-      function showMapHint() {
-        idleTimer = 0;
-        if (hintDone || userAsked || chatStarted || form.contains(document.activeElement) || field.value.trim() || document.hidden || document.querySelector('.loader')) return;
-        hintDone = true;
-        openChat();
-        window.setTimeout(() => {
-          if (userAsked) return;
-          const link = document.createElement('a');
-          link.href = 'sitemap.html'; link.className = 'go-community'; link.textContent = '✦ Xem bản đồ trang';
-          botSay('Bạn chưa biết bắt đầu từ đâu à? Mình có một tấm bản đồ chỉ đường cho cả trang đấy.', link);
-          mapBtn.classList.add('is-hinting');
-          mapBtn.addEventListener('animationend', () => mapBtn.classList.remove('is-hinting'), { once: true });
-        }, reduceMotion.matches ? 0 : 900);
-      }
-      function armIdle() {
-        window.clearTimeout(idleTimer);
-        idleTimer = hintDone ? 0 : window.setTimeout(showMapHint, IDLE_MS);
-      }
-      function cancelIdle() { hintDone = true; window.clearTimeout(idleTimer); idleTimer = 0; }
-      ['pointermove', 'keydown', 'touchstart', 'pointerdown', 'wheel'].forEach(t => window.addEventListener(t, event => { if (!hintDone) armIdle(); }, { passive: true }));
-      form.addEventListener('focusin', cancelIdle);
-      mapBtn.addEventListener('click', cancelIdle);
-      document.addEventListener('visibilitychange', () => { if (document.hidden) window.clearTimeout(idleTimer); else if (!hintDone) armIdle(); });
-      window.addEventListener('pagehide', () => window.clearTimeout(idleTimer));
-      const startIdle = setInterval(() => { if (!document.querySelector('.loader')) { clearInterval(startIdle); armIdle(); } }, 400);
     })();
   </script>
 </body>

@@ -1,0 +1,134 @@
+{
+  "pageTitle": "Lộ trình Me.Mori",
+  "loaderText": "Bọ đang thắp đèn cho lộ trình…",
+  "chapters": [
+    {
+      "id": "c1",
+      "num": "Chapter 01",
+      "title": "Khởi hành",
+      "poster": "assets/roadmap/poster1.webp",
+      "video": {
+        "provider": "youtube",
+        "id": "qHEqQn2xOlM",
+        "title": "KMM FILM STUDIO | ĐỪNG CHỨNG KIẾN HÃY LÊN TIẾNG",
+        "aspect": 1.7777777777777777,
+        "ui": "custom"
+      },
+      "script": {
+        "scene": "Cảnh 1: Chú bọ rời tổ (00:00 – 00:40)",
+        "vo": "Trời vừa hửng sáng, chú bọ nhỏ khoác lên mình chiếc áo đỏ và bước ra khỏi chiếc tổ quen thuộc. Phía trước là con đường mà chưa ai chỉ cho chú…",
+        "cues": [
+          {
+            "t": 0,
+            "text": "Trời vừa hửng sáng, chú bọ nhỏ bước ra khỏi chiếc tổ quen thuộc."
+          },
+          {
+            "t": 10,
+            "text": "Phía trước là con đường mà chưa ai chỉ cho chú."
+          },
+          {
+            "t": 22,
+            "text": "Nhưng chú vẫn đi, từng bước thật khẽ."
+          }
+        ]
+      }
+    },
+    {
+      "id": "c2",
+      "num": "Chapter 02",
+      "title": "Bên suối",
+      "poster": "assets/roadmap/poster2.webp",
+      "video": {
+        "provider": "youtube",
+        "id": "t861TZCuC_A",
+        "title": "KMM FILM STUDIO | UCAN - Bạn có thể!",
+        "aspect": 1.7777777777777777,
+        "ui": "custom"
+      },
+      "script": {
+        "scene": "Cảnh 3: Con bọ bên suối (02:00 – 03:30)",
+        "vo": "Giữa khu rừng tĩnh lặng, chú bọ nhỏ dừng chân bên suối. Ánh trăng soi xuống mặt nước, mang theo những câu hỏi mà chú vẫn luôn giữ trong lòng…",
+        "cues": [
+          {
+            "t": 0,
+            "text": "Giữa khu rừng tĩnh lặng, chú bọ nhỏ dừng chân bên suối."
+          },
+          {
+            "t": 8,
+            "text": "Ánh trăng soi xuống mặt nước,"
+          },
+          {
+            "t": 14,
+            "text": "mang theo những câu hỏi mà chú vẫn luôn giữ trong lòng…"
+          },
+          {
+            "t": 30,
+            "text": "Dòng nước vẫn chảy, chẳng vội vàng."
+          }
+        ]
+      }
+    },
+    {
+      "id": "c3",
+      "num": "Chapter 03",
+      "title": "Những dấu vết",
+      "poster": "assets/roadmap/poster3.webp",
+      "video": {
+        "provider": "youtube",
+        "id": "-si_3gkTv5o",
+        "title": "KMM FILM STUDIO |",
+        "aspect": 1.7777777777777777,
+        "ui": "custom"
+      },
+      "script": {
+        "scene": "Cảnh 5: Dấu chân trên đất ẩm (04:10 – 05:40)",
+        "vo": "Bên kia bờ, những dấu chân nhỏ in trên lớp đất ẩm. Chú bọ cúi xuống lần theo, và nhận ra có ai đó đã đi qua đây từ rất lâu trước…",
+        "cues": [
+          {
+            "t": 0,
+            "text": "Bên kia bờ, những dấu chân nhỏ in trên lớp đất ẩm."
+          },
+          {
+            "t": 12,
+            "text": "Chú bọ cúi xuống, lần theo từng dấu vết."
+          },
+          {
+            "t": 26,
+            "text": "Có ai đó đã đi qua đây từ rất lâu trước…"
+          }
+        ]
+      }
+    },
+    {
+      "id": "c4",
+      "num": "Chapter 04",
+      "title": "Lời hồi đáp",
+      "poster": "assets/roadmap/poster4.webp",
+      "video": {
+        "provider": "youtube",
+        "id": "hxE_3eXLBa0",
+        "title": "Trailer phim Kẻ Mộng Mơ",
+        "aspect": 1.7777777777777777,
+        "ui": "custom"
+      },
+      "script": {
+        "scene": "Cảnh 8: Lời đáp của ánh sáng (07:00 – 08:24)",
+        "vo": "Khi đêm sắp tàn, một ánh sáng dịu dàng trả lời những câu hỏi của chú bọ, không bằng lời, mà bằng cảm giác bình yên lan khắp khu rừng…",
+        "cues": [
+          {
+            "t": 0,
+            "text": "Khi đêm sắp tàn, một ánh sáng dịu dàng lên tiếng."
+          },
+          {
+            "t": 7,
+            "text": "Không bằng lời, mà bằng cảm giác bình yên."
+          },
+          {
+            "t": 14,
+            "text": "Lan khắp khu rừng, lan vào lòng chú bọ nhỏ."
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "page": {
+    "title": "Phương pháp",
+    "subtitle": "",
+    "hint": "",
+    "backLabel": "Về trang Bọ",
+    "backHref": "index.html",
+    "loaderText": "Bọ đang dọn bàn đá…",
+    "closeLabel": "Đóng",
+    "videoLabel": "Xem video",
+    "resetLabel": "Xếp lại",
+    "wrongText": "",
+    "keyboardHelp": "Dùng phím Tab để chọn khối đá, Enter để nhấc, mũi tên để đưa tới đĩa, Enter để thả, Esc để hủy."
+  },
+  "symbols": {
+    "spiral": {
+      "label": "Xoắn ốc"
+    },
+    "eye": {
+      "label": "Con mắt"
+    },
+    "mountain": {
+      "label": "Ngọn núi"
+    }
+  },
+  "methods": [
+    {
+      "id": "m-spiral",
+      "symbol": "spiral",
+      "title": "Ôn tập ngắt quãng",
+      "text": "Thay vì học dồn một lần, bạn quay lại cùng một nội dung sau 1 ngày, 3 ngày rồi 1 tuần. Mỗi lần nhớ lại, trí nhớ được củng cố thêm một vòng xoắn. Cách này giúp kiến thức ở lại lâu hơn mà không tốn thêm nhiều thời gian. (Nội dung mẫu)",
+      "imageUrl": "",
+      "videoUrl": ""
+    },
+    {
+      "id": "m-eye",
+      "symbol": "eye",
+      "title": "Học bằng quan sát",
+      "text": "Người học được mời nhìn thật kỹ một vật, một hình ảnh hay một thao tác mẫu trước khi nói hoặc làm. Giáo viên đặt câu hỏi gợi mở như: bạn thấy gì, điều gì đang thay đổi. Quan sát tốt giúp các em tự rút ra quy luật thay vì ghi nhớ máy móc. (Nội dung mẫu)",
+      "imageUrl": "",
+      "videoUrl": ""
+    },
+    {
+      "id": "m-mountain",
+      "symbol": "mountain",
+      "title": "Chia nhỏ mục tiêu",
+      "text": "Một ngọn núi lớn được leo từng chặng ngắn. Giáo viên chia bài học thành các bước nhỏ, mỗi bước có một dấu mốc hoàn thành rõ ràng. Cảm giác tiến bộ sau mỗi chặng giúp người học giữ được động lực đến cuối bài. (Nội dung mẫu)",
+      "imageUrl": "",
+      "videoUrl": ""
+    }
+  ],
+  "rules": {
+    "required": 3,
+    "mixedDropReturns": true,
+    "allowParkOnTable": true,
+    "returnAfterReveal": true,
+    "wrongShake": true,
+    "cubeSymbols": {
+      "spiral-A": "spiral",
+      "spiral-B": "spiral",
+      "spiral-C": "spiral",
+      "eye-A": "eye",
+      "eye-B": "eye",
+      "eye-C": "eye",
+      "mountain-A": "mountain",
+      "mountain-B": "mountain",
+      "mountain-C": "mountain"
+    }
+  },
+  "pileOrder": [
+    "mountain-A",
+    "eye-B",
+    "spiral-C",
+    "mountain-B",
+    "eye-A",
+    "spiral-A",
+    "mountain-C",
+    "spiral-B",
+    "eye-C"
+  ],
+  "ghostHint": {
+    "enabled": false,
+    "delay": 6
+  },
+  "sound": {
+    "enabled": true,
+    "volume": 0.6,
+    "events": {
+      "pick": true,
+      "drop": true,
+      "snap": true,
+      "glow": true,
+      "wrong": true,
+      "reveal": true,
+      "whoosh": true
+    }
+  }
+}

@@ -1,0 +1,19 @@
+/* Nut ban do goc man hinh (dung chung). Chen boi assets/map-btn.js. */
+.map-btn { position:fixed; z-index:9000; right:calc(max(16px, env(safe-area-inset-right, 0px)) + 4px); top:calc(max(16px, env(safe-area-inset-top, 0px)) + 4px); display:grid; place-items:center; width:64px; height:44px; padding:0; text-decoration:none; -webkit-tap-highlight-color:transparent; }
+.map-btn[data-corner="br"] { top:auto; bottom:calc(max(16px, env(safe-area-inset-bottom, 0px)) + 4px); }
+.map-btn[data-corner="tl"] { right:auto; left:calc(max(16px, env(safe-area-inset-left, 0px)) + 4px); }
+.map-btn[data-corner="bl"] { top:auto; right:auto; bottom:calc(max(16px, env(safe-area-inset-bottom, 0px)) + 4px); left:calc(max(16px, env(safe-area-inset-left, 0px)) + 4px); }
+.map-art { position:relative; display:block; width:64px; height:42px; transition:transform .2s ease, filter .25s ease; filter:drop-shadow(0 3px 5px #04100ccc); }
+.map-art img { display:block; width:100%; height:100%; object-fit:contain; }
+.map-star { position:absolute; width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%; background:radial-gradient(circle,#fff6cc 0,#ffd98aaa 35%,#ffd98a00 70%); opacity:0; animation:map-glint 4.8s ease-in-out infinite; pointer-events:none; }
+.map-star:nth-child(2) { left:59.1%; top:34.9%; animation-delay:.4s; } .map-star:nth-child(3) { left:27%; top:49%; animation-delay:1.9s; }
+.map-star:nth-child(4) { left:22.2%; top:62.9%; animation-delay:3.1s; } .map-star:nth-child(5) { left:72.7%; top:70.9%; animation-delay:4.2s; animation-duration:5.6s; }
+@keyframes map-glint { 0%,70%,100% { opacity:0; transform:scale(.6); } 85% { opacity:.55; transform:scale(1); } }
+.map-btn:hover .map-art, .map-btn:focus-visible .map-art, .map-btn:active .map-art { transform:translateY(1px) scale(1.06); filter:drop-shadow(0 3px 5px #04100ccc) drop-shadow(0 0 8px #ffd98a99); }
+.map-btn:active .map-art { transform:scale(.95); }
+.map-btn:focus-visible { outline:2px solid #f4e7c4; outline-offset:2px; border-radius:8px; }
+.map-tip { position:absolute; right:0; top:calc(100% + 8px); padding:0 2px; white-space:nowrap; font:500 13px/1.2 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif; color:#f6ecd0; text-shadow:0 1px 4px #07120f, 0 0 10px #07120f; opacity:0; transform:translateY(-3px); transition:opacity .2s ease, transform .2s ease; pointer-events:none; }
+.map-btn[data-corner="br"] .map-tip, .map-btn[data-corner="bl"] .map-tip { top:auto; bottom:calc(100% + 8px); }
+.map-btn[data-corner="tl"] .map-tip, .map-btn[data-corner="bl"] .map-tip { right:auto; left:0; }
+.map-btn:hover .map-tip, .map-btn:focus-visible .map-tip { opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce) { .map-star { animation:none; } }

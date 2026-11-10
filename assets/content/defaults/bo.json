@@ -1,0 +1,14 @@
+{
+  "pageTitle": "Mình là Bọ — Me.Mori Class",
+  "greeting": "Chào bạn, chào mừng bạn đến với Mori Class. Bạn có muốn tham quan một vòng không?",
+  "mapCardLabel": "Tham quan bản đồ",
+  "openLine": "Mình nghe đây. Bạn muốn hỏi gì nào?",
+  "emptyPrompt": "Bạn hãy nhập câu hỏi vào khung rồi gửi nhé.",
+  "placeholder": "Hỏi Me.Mori…",
+  "fallback": "Bọ chưa hiểu ý bạn lắm. Thử hỏi Bọ nhé: \"Có những workshop nào?\", \"Học được gì?\" hoặc \"Đăng ký thế nào?\" hoặc \"Bản đồ trang đâu?\"",
+  "widgetLabel": "Trò chuyện với Bọ",
+  "widgetTitle": "Bọ",
+  "widgetGreeting": "Mình là Bọ đây. Bạn muốn hỏi về lớp, lộ trình hay cách đăng ký nào?",
+  "widgetSend": "Gửi",
+  "widgetClose": "Đóng khung chat"
+}

@@ -1,0 +1,82 @@
+/* Bọ nhỏ ở góc mọi trang con + khung chat gọn. Nạp bởi assets/bo-widget.js. Không viền vàng; chữ thật bằng code. */
+@font-face{font-family:'Be Vietnam Pro';font-weight:400;font-display:swap;src:url(fonts/BeVietnamPro-400-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0309,U+0323,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Be Vietnam Pro';font-weight:400;font-display:swap;src:url(fonts/BeVietnamPro-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Be Vietnam Pro';font-weight:500;font-display:swap;src:url(fonts/BeVietnamPro-500-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0309,U+0323,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Be Vietnam Pro';font-weight:500;font-display:swap;src:url(fonts/BeVietnamPro-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Oooh Baby';font-weight:400;font-display:swap;src:url(fonts/OoohBaby-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0309,U+0323,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Oooh Baby';font-weight:400;font-display:swap;src:url(fonts/OoohBaby-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+.bow { --bow-size:68px; --bow-gx:max(12px, env(safe-area-inset-left, 0px)); --bow-gy:max(12px, env(safe-area-inset-bottom, 0px)); --bow-ox:0px; --bow-oy:0px;
+  position:fixed; z-index:9100; bottom:calc(var(--bow-gy) + var(--bow-oy)); left:calc(var(--bow-gx) + var(--bow-ox)); width:calc(var(--bow-size) + 8px); height:calc(var(--bow-size) + 8px);
+  font-family:"Be Vietnam Pro","Segoe UI",system-ui,sans-serif; -webkit-text-size-adjust:100%; }
+.bow[data-corner="br"], .bow[data-corner="tr"] { left:auto; right:calc(max(12px, env(safe-area-inset-right, 0px)) + var(--bow-ox)); }
+.bow[data-corner="tl"], .bow[data-corner="tr"] { bottom:auto; top:calc(max(12px, env(safe-area-inset-top, 0px)) + var(--bow-oy)); }
+.bow *, .bow *::before, .bow *::after { box-sizing:border-box; }
+.bow-bo { position:absolute; inset:0; display:block; padding:0; margin:0; border:0; background:none; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:manipulation; opacity:0; transition:opacity .6s ease; }
+.bow.is-ready .bow-bo { opacity:1; }
+.bow-bo:focus-visible { outline:2px solid #f4e7c4; outline-offset:2px; border-radius:14px; }
+.bow-shadow { position:absolute; left:14%; right:10%; bottom:2px; height:9px; border-radius:50%; background:radial-gradient(ellipse at center,#05110d99 0%,#05110d4d 48%,#05110d00 74%); transition:opacity .25s ease; pointer-events:none; }
+.bow-art { position:absolute; left:4px; bottom:6px; width:var(--bow-size); height:var(--bow-size); transform-origin:50% 94%; pointer-events:none; }
+.bow[data-face="r"] .bow-art { transform:scaleX(-1); }
+.bow-idle { display:block; width:100%; height:100%; transform-origin:50% 94%; animation:bow-breathe 4.6s ease-in-out infinite; filter:drop-shadow(0 2px 3px #04100c66); }
+.bow-fly { position:absolute; left:50%; bottom:-3%; width:161%; aspect-ratio:408 / 280; overflow:hidden; translate:-50% 0; display:none; }
+.bow-fly img { display:block; max-width:none; width:600%; height:100%; animation:bow-wing .55s steps(6) infinite; }
+.bow-fly { scale:-1 1; }                       /* hình bay quay mặt sang phải; bản nghỉ quay mặt sang trái */
+.bow[data-face="r"] .bow-fly { scale:1 1; }
+.bow.is-hop .bow-idle { visibility:hidden; }
+.bow.is-hop .bow-fly { display:block; }
+.bow.is-hop .bow-shadow { opacity:.35; }
+.bow.is-hop .bow-art { animation:bow-hop .55s cubic-bezier(.3,.7,.4,1); }
+.bow[data-face="r"].is-hop .bow-art { animation-name:bow-hop-r; }
+@keyframes bow-hop { 0%,100% { transform:translateY(0); } 45% { transform:translateY(-16px); } }
+@keyframes bow-hop-r { 0%,100% { transform:scaleX(-1) translateY(0); } 45% { transform:scaleX(-1) translateY(-16px); } }
+@keyframes bow-wing { to { transform:translateX(-100%); } }
+@keyframes bow-breathe { 0%,100% { transform:scale(1,1); } 50% { transform:scale(1.005,1.016); } }
+/* lấp lánh rất nhẹ, thưa */
+.bow-spark { position:absolute; right:14px; top:8px; width:14px; height:14px; border-radius:50%; pointer-events:none; opacity:0;
+  background:radial-gradient(circle,#fff6cc 0,#ffd98aaa 35%,#ffd98a00 70%); animation:bow-glint 6.4s ease-in-out 2.2s infinite; }
+.bow[data-face="r"] .bow-spark { right:auto; left:14px; }
+@keyframes bow-glint { 0%,72%,100% { opacity:0; transform:scale(.6); } 86% { opacity:.55; transform:scale(1); } }
+.bow-bo:hover .bow-art, .bow-bo:focus-visible .bow-art { filter:drop-shadow(0 0 8px #ffd98a66); }
+
+/* khung chat */
+.bow-panel { position:absolute; bottom:calc(var(--bow-size) + 14px); left:0; width:min(372px, calc(100vw - 24px)); max-height:min(520px, calc(100dvh - var(--bow-size) - 70px)); display:flex; flex-direction:column;
+  color:#f6ecd0; border-radius:20px; overflow:hidden; background:linear-gradient(165deg,#173a2f,#0d231c 72%); box-shadow:0 18px 48px #04100ccc, 0 2px 10px #04100c99; opacity:0; transform:translateY(10px) scale(.98); transform-origin:0 100%; transition:opacity .22s ease, transform .22s ease; touch-action:pan-y; }
+.bow[data-corner="br"] .bow-panel, .bow[data-corner="tr"] .bow-panel { left:auto; right:0; transform-origin:100% 100%; }
+.bow[data-corner="tl"] .bow-panel, .bow[data-corner="tr"] .bow-panel { bottom:auto; top:calc(var(--bow-size) + 14px); transform-origin:0 0; }
+.bow[data-corner="tr"] .bow-panel { transform-origin:100% 0; }
+.bow-panel[hidden] { display:none; }
+.bow.is-open .bow-panel { opacity:1; transform:none; }
+.bow-head { flex:none; display:flex; align-items:center; justify-content:space-between; padding:10px 8px 4px 18px; }
+.bow-title { margin:0; font:400 28px/1 "Oooh Baby","Segoe Script",cursive; color:#f2d58e; text-shadow:0 0 8px #ffd98a44; outline:none; }
+.bow-x { width:44px; height:44px; display:grid; place-items:center; padding:0; border:0; border-radius:50%; background:none; color:#e9dfc0; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.bow-x:hover { background:#ffffff14; } .bow-x:focus-visible { outline:2px solid #f4e7c4; outline-offset:-2px; }
+.bow-x svg { width:18px; height:18px; }
+.bow-log { flex:1 1 auto; min-height:120px; overflow-y:auto; overscroll-behavior:contain; padding:4px 16px 8px; display:flex; flex-direction:column; gap:10px; scrollbar-width:thin; scrollbar-color:#e7cf8a44 transparent; }
+.bow-msg { margin:0; max-width:90%; padding:9px 14px 10px; font:400 15px/1.5 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif; border-radius:16px; animation:bow-in .35s ease; overflow-wrap:anywhere; }
+.bow-bot { align-self:flex-start; border-top-left-radius:4px; background:#ffffff12; color:#f6ecd0; }
+.bow-user { align-self:flex-end; border-bottom-right-radius:4px; background:linear-gradient(170deg,#f8edcf,#e9d7a8); color:#2d2416; font-weight:500; }
+@keyframes bow-in { from { opacity:0; transform:translateY(6px); } }
+.bow-bot a { display:inline-block; margin-top:6px; font-weight:500; color:#ffd98a; text-underline-offset:3px; }
+.bow-bot a.go-community { margin-top:8px; padding:6px 14px; min-height:32px; border-radius:999px; background:#ffd98a1f; text-decoration:none; transition:background .2s ease, box-shadow .2s ease; }
+.bow-bot a.go-community:hover, .bow-bot a.go-community:focus-visible { background:#ffd98a33; box-shadow:0 0 12px #ffd98a44; outline:none; }
+.bow-bot a.map-card { display:flex; align-items:center; gap:10px; width:max-content; max-width:100%; min-height:48px; margin-top:8px; padding:0; background:none; text-decoration:none; }
+.bow-bot a.map-card img { display:block; width:84px; height:auto; filter:drop-shadow(0 2px 4px #04100ccc); transition:transform .25s ease; }
+.bow-bot a.map-card:hover img, .bow-bot a.map-card:focus-visible img { transform:scale(1.05); }
+.bow-bot a.map-card:focus-visible { outline:2px solid #f4e7c4; outline-offset:2px; border-radius:8px; }
+.bow-form { flex:none; display:flex; gap:8px; padding:8px 12px 12px; }
+.bow-in { flex:1 1 auto; min-width:0; height:44px; padding:0 16px; border:0; border-radius:999px; background:#0a1a15; color:#f6ecd0; font:400 16px/1 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif; box-shadow:inset 0 0 0 1px #ffffff1f; }
+.bow-in::placeholder { color:#c7bd9c99; }
+.bow-in:focus { outline:none; box-shadow:inset 0 0 0 2px #ffffff55; }
+.bow-send { flex:none; height:44px; min-width:64px; padding:0 16px; border:0; border-radius:999px; background:linear-gradient(170deg,#f8edcf,#e5cf98); color:#2d2416; font:500 15px/1 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+.bow-send:active { transform:scale(.96); } .bow-send:focus-visible { outline:2px solid #f4e7c4; outline-offset:2px; }
+
+/* điện thoại: bottom sheet */
+@media (max-width:640px) {
+  .bow { --bow-size:64px; }
+  .bow-panel { position:fixed; left:0; right:0; bottom:var(--bow-sheet-b, 0px); top:auto; width:auto; max-height:min(76dvh, 560px); border-radius:20px 20px 0 0; padding-bottom:env(safe-area-inset-bottom, 0px); transform:translateY(24px); transform-origin:50% 100%; }
+  .bow[data-corner] .bow-panel { left:0; right:0; top:auto; bottom:var(--bow-sheet-b, 0px); }
+  .bow.is-open .bow-bo { opacity:0; pointer-events:none; }
+  .bow-head::before { content:""; position:absolute; left:50%; top:6px; width:38px; height:4px; margin-left:-19px; border-radius:2px; background:#ffffff33; }
+}
+@media (prefers-reduced-motion: reduce) { .bow-idle, .bow-spark, .bow-msg, .bow-fly img { animation:none !important; } .bow-panel, .bow-bo { transition:none; } .bow.is-hop .bow-art { animation:none; } }

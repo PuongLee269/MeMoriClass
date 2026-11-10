@@ -1,0 +1,105 @@
+{
+  "pageTitle": "Site Map Me.Mori",
+  "srTitle": "Bản đồ trang web Me.Mori Class",
+  "stones": [
+    {
+      "id": 1,
+      "name": "Đăng ký",
+      "href": "dangky.html",
+      "tip": "Đăng ký tham gia lớp",
+      "lines": [
+        "Đăng ký"
+      ],
+      "portraitLines": []
+    },
+    {
+      "id": 0,
+      "name": "Khám phá tác phẩm",
+      "href": "home-backup.html#workshops",
+      "tip": "Xem workshop và tác phẩm",
+      "lines": [
+        "khám phá",
+        "tác phẩm"
+      ],
+      "portraitLines": []
+    },
+    {
+      "id": 2,
+      "name": "Thư viện Ảnh F1",
+      "href": "gallery.html",
+      "tip": "Mở Gallery lớp F1",
+      "lines": [
+        "Thư viện",
+        "Ảnh F1"
+      ],
+      "portraitLines": []
+    },
+    {
+      "id": 5,
+      "name": "Lớp F1",
+      "href": "home-backup.html#courses",
+      "tip": "Thông tin lớp F1",
+      "lines": [
+        "Lớp F1"
+      ],
+      "portraitLines": []
+    },
+    {
+      "id": 3,
+      "name": "Giới thiệu",
+      "href": "gioithieu.html",
+      "tip": "Giới thiệu Me.Mori Class",
+      "lines": [
+        "Giới thiệu"
+      ],
+      "portraitLines": []
+    },
+    {
+      "id": 4,
+      "name": "Lộ trình Lớp F2",
+      "href": "roadmap.html",
+      "tip": "Xem lộ trình lớp F2",
+      "lines": [
+        "Lộ trình",
+        "Lớp F2"
+      ],
+      "portraitLines": []
+    },
+    {
+      "id": 8,
+      "name": "Cộng đồng",
+      "href": "community.html",
+      "tip": "Vào không gian Cộng đồng",
+      "lines": [
+        "Cộng đồng"
+      ],
+      "portraitLines": []
+    },
+    {
+      "id": 7,
+      "name": "Phương pháp",
+      "href": "method.html",
+      "tip": "Phương pháp học",
+      "lines": [
+        "phương pháp"
+      ],
+      "portraitLines": [
+        "phương",
+        "pháp"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Thử “Tôi có phù hợp không”",
+      "href": "index.html",
+      "tip": "Hỏi Bọ xem bạn có hợp không",
+      "lines": [
+        "Thử",
+        "“Tôi có",
+        "phù hợp",
+        "không”"
+      ],
+      "portraitLines": []
+    }
+  ]
+}

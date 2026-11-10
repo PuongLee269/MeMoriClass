@@ -1,0 +1,60 @@
+{
+  "pageTitle": "Cộng Đồng Me.Mori",
+  "srTitle": "Cộng đồng Me.Mori",
+  "replayLabel": "↻ Phát lại",
+  "poem": [
+    "Giữa muôn vàn vì sao, ta tìm thấy nhau.",
+    "Sợi dây nhân duyên nối những tâm hồn,",
+    "để sự kết nối còn mãi với thời gian."
+  ],
+  "members": [
+    {
+      "id": "m1",
+      "name": "Linh Nguyễn",
+      "place": "Hà Nội",
+      "avatar": "assets/community/avatar.webp",
+      "href": "https://example.com/1",
+      "caption": "Người kể chuyện (nội dung mẫu)"
+    },
+    {
+      "id": "m2",
+      "name": "Minh Trần",
+      "place": "Đà Lạt",
+      "avatar": "assets/community/avatar.webp",
+      "href": "https://example.com/2",
+      "caption": "Người làm vườn (nội dung mẫu)"
+    },
+    {
+      "id": "m3",
+      "name": "An Phạm",
+      "place": "Huế",
+      "avatar": "assets/community/avatar.webp",
+      "href": "https://example.com/3",
+      "caption": "Bạn đồng hành (nội dung mẫu)"
+    },
+    {
+      "id": "m4",
+      "name": "Mai Lê",
+      "place": "Đà Nẵng",
+      "avatar": "assets/community/avatar.webp",
+      "href": "https://example.com/4",
+      "caption": "Người sáng tạo (nội dung mẫu)"
+    },
+    {
+      "id": "m5",
+      "name": "Khoa Vũ",
+      "place": "TP. Hồ Chí Minh",
+      "avatar": "assets/community/avatar.webp",
+      "href": "https://example.com/5",
+      "caption": "Người khám phá (nội dung mẫu)"
+    },
+    {
+      "id": "m6",
+      "name": "Vy Đỗ",
+      "place": "Cần Thơ",
+      "avatar": "assets/community/avatar.webp",
+      "href": "https://example.com/6",
+      "caption": "Người giữ ký ức (nội dung mẫu)"
+    }
+  ]
+}

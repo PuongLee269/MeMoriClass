@@ -1,521 +1,1156 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel | ME.MORI Class</title>
-  <style>
-    :root {
-      --bg: #0f1115;
-      --panel: #171a21;
-      --panel-2: #20242d;
-      --text: #f6f1e8;
-      --muted: #aeb4c0;
-      --line: rgba(255, 255, 255, 0.12);
-      --accent: #efc45b;
-      --danger: #d85d5d;
-      font-family: "Segoe UI", Arial, sans-serif;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' https://api.github.com; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>ME.MORI Quản trị</title>
+<style>
+@font-face{font-family:'Oooh Baby';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/OoohBaby-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Oooh Baby';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/OoohBaby-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/BeVietnamPro-400-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/BeVietnamPro-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/BeVietnamPro-500-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/BeVietnamPro-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+:root{color-scheme:dark;--bg:#07120f;--bg2:#0d1f1a;--panel:#112821;--panel2:#173329;--line:#2b4a3e;--ink:#f1e6c8;--mute:#a9b9ad;--gold:#ffd98a;--gold2:#e9b95c;--bad:#ff8d7a;--ok:#9fe0a8;
+ --script:"Oooh Baby","Segoe Script",cursive;--sans:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+ --gl:max(16px,env(safe-area-inset-left,0px));--gr:max(16px,env(safe-area-inset-right,0px))}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:radial-gradient(ellipse at 50% -10%,#16382d 0,#0a1814 55%,#06100d 100%) fixed;color:var(--ink);font:400 16px/1.5 var(--sans);min-height:100vh}
+[hidden]{display:none!important}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--gold)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); line-height: 1.5; }
-    
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      border-bottom: 1px solid var(--line);
-      background: rgba(15, 17, 21, 0.95);
-      backdrop-filter: blur(16px);
-      padding: 15px 20px;
-    }
+/* nút */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 16px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--ink);cursor:pointer;font-weight:500;text-decoration:none;white-space:nowrap}
+.btn:hover{border-color:var(--gold2)}
+.btn.pri{background:linear-gradient(#f3cf7e,#d9a947);color:#251a05;border-color:#f3cf7e}
+.btn.pri:disabled{opacity:.5;cursor:default}
+.btn.sm{min-height:36px;padding:0 12px;font-size:14px}
+.btn.ghost{background:transparent}
+.btn.danger{color:#ffc4b8}
+.btn:disabled{opacity:.45;cursor:default}
 
-    .topbar-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      gap: 20px;
-    }
+/* đăng nhập */
+#login{max-width:620px;margin:0 auto;padding:28px var(--gr) 60px var(--gl)}
+#login h1{font:400 clamp(40px,9vw,58px)/1.05 var(--script);margin:10px 0 4px;color:#f8ebcb;text-shadow:0 0 18px #ffd98a40}
+#login .lead{color:var(--mute);margin:0 0 20px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 16px}
+.card h2,.card h3{margin:0 0 10px;font-size:18px;font-weight:500}
+.fld{margin:0 0 14px}
+.fld>label,.lbl{display:block;font-size:14px;color:var(--mute);margin:0 0 5px;font-weight:500}
+.rq{color:var(--gold)}
+input[type=text],input[type=password],input[type=number],input[type=url],select,textarea{width:100%;min-height:44px;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#0a1713;color:var(--ink)}
+textarea{resize:vertical;line-height:1.45}
+input:focus,select:focus,textarea:focus{border-color:var(--gold2);outline:none;box-shadow:0 0 0 2px #ffd98a33}
+.help{font-size:13px;color:var(--mute);margin-top:4px}
+.err{font-size:13px;color:var(--bad);margin-top:4px;min-height:0}
+.err:empty{display:none}
+.fld.bad input,.fld.bad textarea,.fld.bad select{border-color:var(--bad)}
+details.how{margin:0 0 16px}
+details.how summary{cursor:pointer;color:var(--gold);font-weight:500;min-height:36px;display:flex;align-items:center}
+details.how ol{padding-left:20px;margin:8px 0}
+details.how li{margin:6px 0}
+code{font:13px ui-monospace,Menlo,Consolas,monospace;background:#0a1713;border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>.fld{flex:1 1 140px}
+.note{font-size:14px;color:var(--mute);border-left:3px solid var(--gold2);padding:6px 12px;margin:10px 0;background:#ffd98a0d;border-radius:0 8px 8px 0}
+.msg{margin:10px 0;padding:10px 14px;border-radius:10px;font-size:15px}
+.msg.bad{background:#3a1713;border:1px solid #7a2e24;color:#ffd1c8}
+.msg.ok{background:#12301d;border:1px solid #2f6b43;color:#d5f5dc}
+.msg ul{margin:6px 0 0;padding-left:20px}
 
-    h1 { font-size: 20px; font-weight: 700; letter-spacing: 0.05em; }
-    .sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
-    .actions { display: flex; gap: 10px; }
+/* khung chính */
+#app{display:none}
+body.in #app{display:block}
+body.in #login{display:none}
+header.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px var(--gr) 10px var(--gl);background:#08140fee;backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.top h1{font:400 30px/1 var(--script);margin:0 auto 0 0;color:#f8ebcb}
+header.top h1 small{font:400 12px/1 var(--sans);color:var(--mute);display:block;margin-top:2px}
+#dirty{font-size:14px;color:var(--mute)}
+#dirty.on{color:var(--gold)}
+#dirty.on::before{content:"● "}
+.shell{display:grid;grid-template-columns:230px minmax(0,1fr);gap:18px;max-width:1180px;margin:0 auto;padding:16px var(--gr) 90px var(--gl)}
+nav.tabs{position:sticky;top:78px;align-self:start;display:flex;flex-direction:column;gap:4px}
+nav.tabs .grp{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin:12px 6px 2px}
+nav.tabs button{display:flex;justify-content:space-between;align-items:center;min-height:42px;padding:0 12px;border:1px solid transparent;border-radius:10px;background:transparent;color:var(--ink);cursor:pointer;text-align:left}
+nav.tabs button:hover{background:var(--panel)}
+nav.tabs button[aria-selected=true]{background:var(--panel2);border-color:var(--gold2)}
+nav.tabs .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);display:none}
+nav.tabs button.dirty .dot{display:block}
+.pane h2{font:400 34px/1.1 var(--script);margin:0 0 4px;color:#f8ebcb}
+.pane .meta{color:var(--mute);font-size:14px;margin:0 0 10px;word-break:break-all}
+.pane .bar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px}
+details.sec{background:var(--panel);border:1px solid var(--line);border-radius:14px;margin:0 0 14px}
+details.sec>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:50px;padding:6px 16px;font-weight:500;font-size:17px}
+details.sec>summary::-webkit-details-marker{display:none}
+details.sec>summary::after{content:"▾";color:var(--gold);transition:transform .2s}
+details.sec[open]>summary::after{transform:rotate(180deg)}
+.sec .body{padding:2px 16px 14px}
+.sec .hint{font-size:14px;color:var(--mute);margin:0 0 12px}
+fieldset.grp{border:1px solid var(--line);border-radius:12px;margin:0 0 14px;padding:10px 12px 2px;min-width:0}
+fieldset.grp>legend{padding:0 6px;color:var(--gold);font-size:14px;font-weight:500}
+.list{margin:0 0 14px}
+.list>.lt{font-size:14px;color:var(--mute);font-weight:500;margin:0 0 6px}
+details.item{background:#0b1c16;border:1px solid var(--line);border-radius:12px;margin:0 0 10px}
+details.item>summary{cursor:pointer;display:flex;align-items:center;gap:8px;min-height:46px;padding:4px 10px;list-style:none}
+details.item>summary::-webkit-details-marker{display:none}
+details.item>summary .tt{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+details.item>summary .no{color:var(--gold);font-size:13px;min-width:22px}
+details.item>.ib{padding:6px 12px 2px;border-top:1px solid var(--line)}
+.ibtn{min-width:40px;min-height:40px;padding:0;border:1px solid var(--line);border-radius:8px;background:var(--panel2);cursor:pointer;color:var(--ink)}
+.ibtn:disabled{opacity:.3;cursor:default}
+.imgrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.imgrow input[type=text]{flex:1 1 200px}
+.thumb{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line);background:#06100d}
+.vidst{font-size:13px;color:var(--ok);margin-top:4px}
+.pile{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.pile .pl{grid-column:1/-1;font-size:13px;color:var(--mute)}
+.pile select{min-height:40px;padding:4px 6px;font-size:14px}
+.chk{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
+.chk input{width:22px;height:22px;accent-color:#e9b95c}
+.skel{color:var(--mute);padding:30px 0;text-align:center}
 
-    button, .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 40px;
-      padding: 0 16px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: var(--panel-2);
-      color: var(--text);
-      font: inherit;
-      font-weight: 700;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    button.primary { background: var(--accent); color: #161412; border-color: var(--accent); }
-    button.danger { color: #ffd6d6; }
+/* hộp lưu + toast */
+#savebox{position:fixed;inset:0;z-index:60;background:#000a;display:flex;align-items:center;justify-content:center;padding:16px}
+#savebox .card{width:min(520px,100%);max-height:90vh;overflow:auto;margin:0}
+#savebox li{margin:4px 0;list-style:none}
+#savebox ul{padding:0;margin:8px 0}
+.st-ok{color:var(--ok)}.st-bad{color:var(--bad)}.st-wait{color:var(--mute)}
+#toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);z-index:70;max-width:min(92vw,520px);padding:12px 16px;border-radius:12px;background:#1d3a2e;border:1px solid var(--gold2);color:var(--ink);opacity:0;pointer-events:none;transition:.25s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
 
-    main { max-width: 1200px; margin: 30px auto 60px; padding: 0 20px; }
-    .layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 24px; }
-
-    .tabs {
-      position: sticky;
-      top: 100px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--panel);
-    }
-    .tab { justify-content: flex-start; width: 100%; background: transparent; color: var(--muted); border: 0; }
-    .tab.active { background: var(--panel-2); color: var(--text); }
-
-    .section { display: none; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); overflow: hidden; }
-    .section.active { display: block; }
-    .section-head { padding: 20px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.02); }
-    .section-head h2 { font-size: 18px; }
-    .section-head p { font-size: 13px; color: var(--muted); margin-top: 4px; }
-
-    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding: 20px; }
-    .field { display: grid; gap: 6px; }
-    .field.full { grid-column: 1 / -1; }
-    .field-group { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 14px; border: 1px dashed var(--line); border-radius: 8px; margin-bottom: 5px; }
-    .field-group h4 { grid-column: 1 / -1; font-size: 14px; color: var(--accent); }
-    
-    label { color: var(--muted); font-size: 13px; font-weight: 600; }
-    input, select, textarea {
-      width: 100%; min-height: 42px; padding: 10px 14px;
-      border: 1px solid var(--line); border-radius: 8px;
-      background: #0f1115; color: var(--text); font: inherit; outline: none;
-    }
-    textarea { min-height: 100px; resize: vertical; }
-    input:focus, textarea:focus, select:focus { border-color: var(--accent); }
-
-    .toast {
-      position: fixed; right: 20px; bottom: 20px; z-index: 100; max-width: 360px; padding: 14px 18px;
-      border: 1px solid var(--accent); border-radius: 8px; background: #1f1a10; color: #fff;
-      opacity: 0; transform: translateY(10px); transition: all 0.2s ease; pointer-events: none;
-    }
-    .toast.show { opacity: 1; transform: translateY(0); }
-
-    /* LOGIN GATE */
-    #loginGate { position: fixed; inset: 0; background: #0f1115; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
-  </style>
+@media (max-width:860px){
+ .shell{grid-template-columns:minmax(0,1fr);padding-top:8px}
+ nav.tabs{position:static;flex-direction:row;overflow-x:auto;gap:6px;padding:4px 0 8px;margin:0 calc(-1*var(--gl)) 0 calc(-1*var(--gr));padding-left:var(--gl);padding-right:var(--gr);scrollbar-width:thin}
+ nav.tabs .grp{display:none}
+ nav.tabs button{flex:0 0 auto;border-color:var(--line);white-space:nowrap;gap:8px}
+ header.top h1{font-size:26px}
+ .pile{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
 </head>
 <body>
 
-  <div id="loginGate">
-    <h2 style="font-size: 24px; letter-spacing: 0.05em;">ME.MORI Class Admin</h2>
-    <p style="color: var(--muted); font-size: 14px;">Vui lòng nhập mật khẩu quản trị viên để tiếp tục</p>
-    <input type="password" id="gatePass" placeholder="Nhập mật khẩu" style="max-width: 280px; text-align: center;">
-    <button onclick="validateGate()" class="primary" style="padding: 0 40px;">Đăng nhập</button>
-    <p id="gateError" style="color: var(--danger); font-size: 13px; display: none;">Mật khẩu không chính xác!</p>
-  </div>
+<!-- ============ ĐĂNG NHẬP ============ -->
+<main id="login">
+  <h1>ME.MORI Quản trị</h1>
+  <p class="lead">Sửa chữ, link video và ảnh của các trang. Bấm <b>Lưu</b> là web tự cập nhật sau khoảng 1 phút.</p>
 
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div>
-        <h1>ME.MORI Admin Panel</h1>
-        <p class="sub">Đồng bộ nội dung trực tiếp lên hệ thống tệp đám mây GitHub.</p>
-      </div>
-      <div class="actions">
-        <button class="primary" id="saveBtn" type="button">Lưu lên GitHub</button>
-        <a class="btn" href="home-backup.html" target="_blank">Mở trang chính</a>
-        <button class="danger" id="resetBtn" type="button">Mặc định gốc</button>
-      </div>
+  <details class="how card" id="how" open>
+    <summary>Cách tạo token GitHub (làm một lần, mất khoảng 2 phút)</summary>
+    <ol>
+      <li>Đăng nhập GitHub bằng tài khoản chủ kho mã, mở <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">github.com/settings/personal-access-tokens/new</a> (Settings → Developer settings → Personal access tokens → <b>Fine-grained tokens</b> → Generate new token).</li>
+      <li><b>Token name</b>: ví dụ <code>memori-admin</code>. <b>Expiration</b>: chọn 30 hoặc 90 ngày (đừng chọn “No expiration”).</li>
+      <li><b>Repository access</b>: chọn <b>Only select repositories</b> rồi chọn <b>duy nhất</b> kho <code>MemoriClass</code>.</li>
+      <li><b>Permissions → Repository permissions → Contents</b>: chọn <b>Read and write</b>. Không cần cấp quyền nào khác (Metadata: Read-only tự có).</li>
+      <li>Bấm <b>Generate token</b>, sao chép chuỗi bắt đầu bằng <code>github_pat_</code> và dán vào ô bên dưới. GitHub chỉ hiện chuỗi này một lần.</li>
+    </ol>
+    <p class="help">Token chỉ lưu trong trình duyệt này (localStorage) và chỉ được gửi tới <code>api.github.com</code>. Bấm <b>Đăng xuất</b> là xóa. Nếu nghi lộ token: vào GitHub → Settings → Fine-grained tokens → Revoke.</p>
+  </details>
+
+  <form class="card" id="loginForm" autocomplete="off">
+    <div class="fld"><label for="inTok">GitHub token (github_pat_…)</label>
+      <input id="inTok" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="github_pat_..." required></div>
+    <div class="row">
+      <div class="fld"><label for="inOwner">Chủ kho (owner)</label><input id="inOwner" type="text" value="PuongLee269" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+      <div class="fld"><label for="inRepo">Kho (repo)</label><input id="inRepo" type="text" value="MemoriClass" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+      <div class="fld"><label for="inBranch">Nhánh</label><input id="inBranch" type="text" value="main" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
     </div>
+    <div class="msg bad" id="loginErr" hidden role="alert"></div>
+    <button class="btn pri" id="loginBtn" type="submit">Đăng nhập</button>
+  </form>
+  <p class="help">Trang này công khai nhưng không chứa bí mật nào và không thể thay đổi gì nếu thiếu token hợp lệ.</p>
+</main>
+
+<!-- ============ QUẢN TRỊ ============ -->
+<div id="app">
+  <header class="top">
+    <h1>ME.MORI Quản trị <small id="repoLbl"></small></h1>
+    <span id="dirty" aria-live="polite">Chưa có thay đổi</span>
+    <button class="btn pri" id="saveBtn" type="button" disabled>Lưu</button>
+    <a class="btn ghost" href="index.html" target="_blank" rel="noopener">Mở trang chủ</a>
+    <button class="btn ghost" id="outBtn" type="button">Đăng xuất</button>
   </header>
+  <div class="shell">
+    <nav class="tabs" id="tabs" aria-label="Chọn trang cần sửa" role="tablist"></nav>
+    <section id="panes"></section>
+  </div>
+</div>
 
-  <main>
-    <div class="layout">
-      <nav class="tabs" aria-label="Menu quản lý">
-        <button class="tab active" type="button" data-tab="config">Cấu hình chung</button>
-        <button class="tab" type="button" data-tab="hero">Khu vực Hero</button>
-        <button class="tab" type="button" data-tab="intro">Giới thiệu & Đặc điểm</button>
-        <button class="tab" type="button" data-tab="courses">Danh sách Lớp học</button>
-        <button class="tab" type="button" data-tab="method">Phương pháp & CTA</button>
-        <button class="tab" type="button" data-tab="footer">Chân trang (Footer)</button>
-      </nav>
+<div id="savebox" hidden role="dialog" aria-modal="true" aria-labelledby="sbTitle"><div class="card">
+  <h2 id="sbTitle">Đang lưu…</h2><ul id="sbList"></ul><div id="sbRes"></div>
+  <button class="btn" id="sbClose" type="button" hidden>Đóng</button>
+</div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<datalist id="pagesDL"></datalist>
 
-      <form id="settingsForm">
-        <section class="section active" data-section="config">
-          <div class="section-head"><h2>Cấu hình chung</h2><p>Tên định danh website và mô tả SEO cơ bản.</p></div>
-          <div class="grid">
-            <div class="field"><label>Tiêu đề Website (Thẻ Title)</label><input name="site_title" /></div>
-            <div class="field"><label>Tên thương hiệu (Brand)</label><input name="site_brand" /></div>
-            <div class="field full"><label>Mô tả Website (SEO Description)</label><textarea name="site_description"></textarea></div>
-          </div>
-        </section>
+<script src="assets/content-loader.js"></script>
+<script>
+(function () {
+'use strict';
+/* ===================== Tiện ích ===================== */
+var MC = window.MemoriContent;
+var API = 'https://api.github.com';
+var LS_CFG = 'memori.admin.v1';        /* { token, owner, repo, branch } - token CHỈ ở đây */
+var LS_REPO = 'memori.admin.repo';     /* owner/repo/branch (không bí mật) để điền sẵn */
+var $ = function (s, r) { return (r || document).querySelector(s); };
+var uid = 0;
+function el(tag, attrs) {
+  var e = document.createElement(tag), i, k, v, c;
+  attrs = attrs || {};
+  for (k in attrs) {
+    v = attrs[k];
+    if (v === null || v === undefined || v === false) continue;
+    if (k === 'class') e.className = v;
+    else if (k === 'text') e.textContent = v;
+    else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), v);
+    else e.setAttribute(k, v === true ? '' : v);
+  }
+  for (i = 2; i < arguments.length; i++) {
+    c = arguments[i];
+    if (Array.isArray(c)) c.forEach(function (x) { if (x) e.append(x.nodeType ? x : document.createTextNode(String(x))); });
+    else if (c !== null && c !== undefined && c !== false) e.append(c.nodeType ? c : document.createTextNode(String(c)));
+  }
+  return e;
+}
+function clone(x) { return x === undefined ? undefined : JSON.parse(JSON.stringify(x)); }
+function isO(x) { return x !== null && typeof x === 'object' && !Array.isArray(x); }
+var toastT = 0;
+function toast(msg) { var t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove('show'); }, 4200); }
+function u8ToB64(u) { var s = '', i; for (i = 0; i < u.length; i += 0x8000) s += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000)); return btoa(s); }
+function strToB64(s) { return u8ToB64(new TextEncoder().encode(s)); }
+function b64ToStr(b) { var bin = atob(String(b).replace(/\s/g, '')), u = new Uint8Array(bin.length), i; for (i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); return new TextDecoder().decode(u); }
 
-        <section class="section" data-section="hero">
-          <div class="section-head"><h2>Khu vực mở đầu (Hero Section)</h2><p>Điều chỉnh tiêu đề lớn, văn bản nút bấm và hình ảnh chính đầu trang.</p></div>
-          <div class="grid">
-            <div class="field"><label>Eyebrow (Dòng chữ nhỏ trên tiêu đề)</label><input name="hero_eyebrow" /></div>
-            <div class="field"><label>Tiêu đề chính - Đoạn đầu</label><input name="hero_titleStart" /></div>
-            <div class="field"><label>Tiêu đề chính - Chữ nghệ thuật (In nghiêng)</label><input name="hero_titleScript" /></div>
-            <div class="field"><label>Tiêu đề chính - Đoạn cuối</label><input name="hero_titleEnd" /></div>
-            <div class="field full"><label>Mô tả chi tiết Hero</label><textarea name="hero_text"></textarea></div>
-            
-            <div class="field-group">
-              <h4>Nút hành động chính (Primary Button)</h4>
-              <div class="field"><label>Tên nút bấm</label><input name="hero_primary_label" /></div>
-              <div class="field"><label>Đường dẫn link (Href)</label><input name="hero_primary_href" /></div>
-            </div>
-            
-            <div class="field-group">
-              <h4>Nút hành động phụ (Secondary Button)</h4>
-              <div class="field"><label>Tên nút bấm</label><input name="hero_secondary_label" /></div>
-              <div class="field"><label>Đường dẫn link (Href)</label><input name="hero_secondary_href" /></div>
-            </div>
-
-            <div class="field-group">
-              <h4>Hệ thống Media của Hero</h4>
-              <div class="field"><label>Loại Media</label><select name="hero_mediaType"><option value="image">Hình ảnh (Image)</option><option value="video">Video tệp (.mp4)</option></select></div>
-              <div class="field"><label>Đường dẫn link ảnh/video</label><input name="hero_mediaUrl" /></div>
-              <div class="field full"><label>Mô tả thay thế cho ảnh (Alt text)</label><input name="hero_mediaAlt" /></div>
-            </div>
-            <div class="field full"><label>Nội dung khung ghi chú (Hero Note Card)</label><textarea name="hero_note"></textarea></div>
-          </div>
-        </section>
-
-        <section class="section" data-section="intro">
-          <div class="section-head"><h2>Giới thiệu & Đặc điểm</h2><p>Chỉnh sửa khối văn bản tổng quan và 3 thẻ tính năng cốt lõi.</p></div>
-          <div class="grid">
-            <div class="field full"><label>Tiêu đề phần Giới thiệu</label><input name="intro_title" /></div>
-            <div class="field full"><label>Nội dung mô tả Giới thiệu</label><textarea name="intro_text"></textarea></div>
-            
-            <div class="field-group">
-              <h4>Thẻ tính năng 01</h4>
-              <div class="field"><label>Mã icon FontAwesome</label><input name="feature0_icon" placeholder="fa-film" /></div>
-              <div class="field"><label>Tiêu đề tính năng</label><input name="feature0_title" /></div>
-              <div class="field full"><label>Mô tả tính năng</label><textarea name="feature0_text"></textarea></div>
-            </div>
-            <div class="field-group">
-              <h4>Thẻ tính năng 02</h4>
-              <div class="field"><label>Mã icon FontAwesome</label><input name="feature1_icon" placeholder="fa-camera" /></div>
-              <div class="field"><label>Tiêu đề tính năng</label><input name="feature1_title" /></div>
-              <div class="field full"><label>Mô tả tính năng</label><textarea name="feature1_text"></textarea></div>
-            </div>
-            <div class="field-group">
-              <h4>Thẻ tính năng 03</h4>
-              <div class="field"><label>Mã icon FontAwesome</label><input name="feature2_icon" placeholder="fa-users" /></div>
-              <div class="field"><label>Tiêu đề tính năng</label><input name="feature2_title" /></div>
-              <div class="field full"><label>Mô tả tính năng</label><textarea name="feature2_text"></textarea></div>
-            </div>
-          </div>
-        </section>
-
-        <section class="section" data-section="courses">
-          <div class="section-head"><h2>Danh sách các lớp học (3 lớp)</h2><p>Tùy biến tiêu đề danh mục và thông tin ảnh/chữ của từng lớp.</p></div>
-          <div class="grid">
-            <div class="field"><label>Tiêu đề Section - Chữ thường</label><input name="cs_title" /></div>
-            <div class="field"><label>Tiêu đề Section - Nghệ thuật (Nghiêng)</label><input name="cs_titleScript" /></div>
-            <div class="field full"><label>Mô tả danh mục lớp học</label><textarea name="cs_text"></textarea></div>
-            
-            <div class="field-group">
-              <h4>Thông tin lớp học 01</h4>
-              <div class="field"><label>Tên khóa học</label><input name="course0_title" /></div>
-              <div class="field"><label>Đường dẫn hình ảnh minh họa</label><input name="course0_mediaUrl" /></div>
-              <div class="field full"><label>Mô tả ngắn gọn nội dung lớp học</label><textarea name="course0_text"></textarea></div>
-            </div>
-            <div class="field-group">
-              <h4>Thông tin lớp học 02</h4>
-              <div class="field"><label>Tên khóa học</label><input name="course1_title" /></div>
-              <div class="field"><label>Đường dẫn hình ảnh minh họa</label><input name="course1_mediaUrl" /></div>
-              <div class="field full"><label>Mô tả ngắn gọn nội dung lớp học</label><textarea name="course1_text"></textarea></div>
-            </div>
-            <div class="field-group">
-              <h4>Thông tin lớp học 03</h4>
-              <div class="field"><label>Tên khóa học</label><input name="course2_title" /></div>
-              <div class="field"><label>Đường dẫn hình ảnh minh họa</label><input name="course2_mediaUrl" /></div>
-              <div class="field full"><label>Mô tả ngắn gọn nội dung lớp học</label><textarea name="course2_text"></textarea></div>
-            </div>
-          </div>
-        </section>
-
-        <section class="section" data-section="method">
-          <div class="section-head"><h2>Lộ trình các bước học tập & CTA</h2><p>Quản lý nội dung 3 bước thực hành và bảng đăng ký nhanh cuối trang.</p></div>
-          <div class="grid">
-            <div class="field"><label>Dòng chữ nhỏ Eyebrow</label><input name="method_eyebrow" /></div>
-            <div class="field"><label>Tiêu đề lớn Phương pháp</label><input name="method_title" /></div>
-            <div class="field full"><label>Mô tả chi tiết phương pháp</label><textarea name="method_text"></textarea></div>
-            
-            <div class="field-group">
-              <h4>Bước 1</h4>
-              <div class="field"><label>Tiêu đề bước</label><input name="step0_title" /></div>
-              <div class="field"><label>Nội dung chi tiết</label><input name="step0_text" /></div>
-            </div>
-            <div class="field-group">
-              <h4>Bước 2</h4>
-              <div class="field"><label>Tiêu đề bước</label><input name="step1_title" /></div>
-              <div class="field"><label>Nội dung chi tiết</label><input name="step1_text" /></div>
-            </div>
-            <div class="field-group">
-              <h4>Bước 3</h4>
-              <div class="field"><label>Tiêu đề bước</label><input name="step2_title" /></div>
-              <div class="field"><label>Nội dung chi tiết</label><input name="step2_text" /></div>
-            </div>
-
-            <div class="field-group">
-              <h4>Khối kêu gọi đăng ký (CTA Block)</h4>
-              <div class="field full"><label>Tiêu đề lời kêu gọi lớn</label><input name="cta_title" /></div>
-              <div class="field"><label>Tên hiển thị nút bấm</label><input name="cta_label" /></div>
-              <div class="field"><label>Link hành động nút bấm (Ví dụ link Google Form hoặc mailto:)</label><input name="cta_href" /></div>
-            </div>
-          </div>
-        </section>
-
-        <section class="section" data-section="footer">
-          <div class="section-head"><h2>Chân trang (Footer)</h2><p>Sửa đổi mô tả chân trang và hệ thống nội dung 3 cột thông tin danh mục.</p></div>
-          <div class="grid">
-            <div class="field full"><label>Mô tả giới thiệu chân trang</label><textarea name="footer_intro"></textarea></div>
-            
-            <div class="field-group">
-              <h4>Cột nội dung 01</h4>
-              <div class="field"><label>Tiêu đề cột</label><input name="fcol0_title" /></div>
-              <div class="field"><label>Danh sách mục (Mỗi mục nằm trên 1 dòng)</label><textarea name="fcol0_items" placeholder="Mục 1&#13;Mục 2&#13;Mục 3"></textarea></div>
-            </div>
-
-            <div class="field-group">
-              <h4>Cột nội dung 02</h4>
-              <div class="field"><label>Tiêu đề cột</label><input name="fcol1_title" /></div>
-              <div class="field"><label>Danh sách mục (Mỗi mục nằm trên 1 dòng)</label><textarea name="fcol1_items" placeholder="Mục 1&#13;Mục 2&#13;Mục 3"></textarea></div>
-            </div>
-
-            <div class="field-group">
-              <h4>Cột nội dung 03</h4>
-              <div class="field"><label>Tiêu đề cột</label><input name="fcol2_title" /></div>
-              <div class="field"><label>Danh sách mục (Mỗi mục nằm trên 1 dòng)</label><textarea name="fcol2_items" placeholder="Mục 1&#13;Mục 2&#13;Mục 3"></textarea></div>
-            </div>
-          </div>
-        </section>
-      </form>
-    </div>
-  </main>
-
-  <div class="toast" id="toast"></div>
-
-  <script>
-    // ==========================================
-    // ĐIỀN CẤU HÌNH KHO GITHUB CỦA BẠN VÀO ĐÂY
-    // ==========================================
-    const GH_OWNER = "PuongLee269"; 
-    const GH_REPO = "MeMoriClass";     
-    const GH_PATH = "content.json";               
-    
-    const TOKEN_KEY = "memori_github_token";
-    const BACKUP_KEY = "memori_local_backup_v2";
-
-    // Chuỗi băm SHA-256 bảo mật của mật khẩu "mori2026"
-    const PASSWORD_HASH = "49e524ec5e8b490549c26ab2a09460129e17f366314641333e837136d97c6681";
-
-    const form = document.getElementById("settingsForm");
-    const toast = document.getElementById("toast");
-
-    // Khởi tạo đối tượng dữ liệu mặc định gốc y hệt fallbackContent trong home-backup.html
-    const defaults = {
-      site: { title: "ME.MORI Class", description: "ME.MORI Class...", brand: "ME.MORI" },
-      nav: [{ label: "Workshop", href: "#workshops" }, { label: "Phương pháp", href: "#method" }, { label: "Liên hệ", href: "#contact" }],
-      navCourses: { label: "Khóa học", href: "#courses" }, navCta: { label: "Đăng ký", href: "#contact" },
-      hero: { eyebrow: "ME.MORI Class", titleStart: "Học nghệ thuật", titleScript: "kể chuyện", titleEnd: "bằng hình ảnh", text: "Workshop dành cho creator...", primary: { label: "Xem workshop", href: "#courses" }, secondary: { label: "Cách học", href: "#method" }, mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400&auto=format&fit=crop", mediaAlt: "Nhóm học viên...", note: "Thực hành theo dự án thật..." },
-      intro: { title: "Không gian học tập cho người làm hình ảnh hiện đại", text: "ME.MORI Class kết hợp..." },
-      features: [{ icon: "fa-film", title: "Tư duy cinematic", text: "Hiểu nhịp dựng..." }, { icon: "fa-camera", title: "Thực hành thật", text: "Làm bài tập..." }, { icon: "fa-users", title: "Cộng đồng creator", text: "Kết nối..." }],
-      coursesSection: { title: "Workshop", titleScript: "nổi bật", text: "Các lớp được thiết kế..." },
-      courses: [{ title: "Storytelling cho video ngắn", text: "Xây cấu trúc...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }, { title: "Tư duy hình ảnh cinematic", text: "Rèn bố cục...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }, { title: "Quay dựng cho creator", text: "Biến footage...", mediaType: "image", mediaUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1400&auto=format&fit=crop", mediaAlt: "" }],
-      method: { eyebrow: "Phương pháp", title: "Bắt đầu đơn giản, học bằng dự án thật", text: "Mỗi buổi học tập trung..." },
-      steps: [{ title: "Đăng ký workshop", text: "Chọn chủ đề..." }, { title: "Thực hành tại lớp", text: "Làm bài tập..." }, { title: "Hoàn thiện sản phẩm", text: "Nhận feedback..." }],
-      cta: { title: "Sẵn sàng cho hành trình kể chuyện bằng hình ảnh?", label: "Liên hệ đăng ký", href: "mailto:hello@memori.class" },
-      footer: { intro: "Không gian học tập dành cho người yêu điện ảnh...", columns: [{ title: "Khóa học", items: ["Video ngắn", "Tư duy cinematic", "Quay dựng creator"] }, { title: "Cộng đồng", items: ["Workshop", "Feedback nhóm", "Dự án học viên"] }, { title: "Liên hệ", items: ["Instagram", "Facebook", "hello@memori.class"] }] }
-    };
-
-    // KIỂM TRA MẬT KHẨU CỬA VÀO
-    async function hashString(str) {
-      const utf8 = new TextEncoder().encode(str);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
-      return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    async function validateGate() {
-      const input = document.getElementById("gatePass").value;
-      if (await hashString(input) === PASSWORD_HASH) {
-        document.getElementById("loginGate").style.display = "none";
-        sessionStorage.setItem("memori_auth", "true");
-      } else {
-        const err = document.getElementById("gateError");
-        err.style.display = "block";
-      }
-    }
-    if (sessionStorage.getItem("memori_auth") === "true") document.getElementById("loginGate").style.display = "none";
-    document.getElementById("gatePass").addEventListener("keypress", (e) => { if (e.key === "Enter") validateGate(); });
-
-    function showToast(msg) {
-      toast.textContent = msg; toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 3000);
-    }
-
-    // ĐỌC DỮ LIỆU TỪ FORM VÀ ĐÓNG GÓI THÀNH ĐỐI TƯỢNG JSON CHUẨN
-    function makeJsonFromForm() {
-      const f = (name) => form.elements[name].value.trim();
-      return {
-        site: { title: f("site_title"), description: f("site_description"), brand: f("site_brand") },
-        nav: defaults.nav, // Giữ nguyên mảng cấu trúc cây nav
-        navCourses: { label: defaults.navCourses.label, href: defaults.navCourses.href },
-        navCta: { label: defaults.navCta.label, href: defaults.navCta.href },
-        hero: {
-          eyebrow: f("hero_eyebrow"), titleStart: f("hero_titleStart"), titleScript: f("hero_titleScript"), titleEnd: f("hero_titleEnd"), text: f("hero_text"),
-          primary: { label: f("hero_primary_label"), href: f("hero_primary_href") },
-          secondary: { label: f("hero_secondary_label"), href: f("hero_secondary_href") },
-          mediaType: f("hero_mediaType"), mediaUrl: f("hero_mediaUrl"), mediaAlt: f("hero_mediaAlt"), note: f("hero_note")
-        },
-        intro: { title: f("intro_title"), text: f("intro_text") },
-        features: [
-          { icon: f("feature0_icon"), title: f("feature0_title"), text: f("feature0_text") },
-          { icon: f("feature1_icon"), title: f("feature1_title"), text: f("feature1_text") },
-          { icon: f("feature2_icon"), title: f("feature2_title"), text: f("feature2_text") }
-        ],
-        coursesSection: { title: f("cs_title"), titleScript: f("cs_titleScript"), text: f("cs_text") },
-        courses: [
-          { title: f("course0_title"), text: f("course0_text"), mediaType: "image", mediaUrl: f("course0_mediaUrl"), mediaAlt: "" },
-          { title: f("course1_title"), text: f("course1_text"), mediaType: "image", mediaUrl: f("course1_mediaUrl"), mediaAlt: "" },
-          { title: f("course2_title"), text: f("course2_text"), mediaType: "image", mediaUrl: f("course2_mediaUrl"), mediaAlt: "" }
-        ],
-        method: { eyebrow: f("method_eyebrow"), title: f("method_title"), text: f("method_text") },
-        steps: [
-          { title: f("step0_title"), text: f("step0_text") },
-          { title: f("step1_title"), text: f("step1_text") },
-          { title: f("step2_title"), text: f("step2_text") }
-        ],
-        cta: { title: f("cta_title"), label: f("cta_label"), href: f("cta_href") },
-        footer: {
-          intro: f("footer_intro"),
-          columns: [
-            { title: f("fcol0_title"), items: f("fcol0_items").split("\n").filter(Boolean) },
-            { title: f("fcol1_title"), items: f("fcol1_items").split("\n").filter(Boolean) },
-            { title: f("fcol2_title"), items: f("fcol2_items").split("\n").filter(Boolean) }
-          ]
-        }
-      };
-    }
-
-    // ĐỔ DỮ LIỆU TỪ ĐỐI TƯỢNG JSON VÀO CÁC Ô INPUT CỦA FORM
-    function fillFormFields(data) {
-      const s = (name, val) => { if(form.elements[name]) form.elements[name].value = val || ""; };
-      s("site_title", data.site?.title); s("site_brand", data.site?.brand); s("site_description", data.site?.description);
-      s("hero_eyebrow", data.hero?.eyebrow); s("hero_titleStart", data.hero?.titleStart); s("hero_titleScript", data.hero?.titleScript); s("hero_titleEnd", data.hero?.titleEnd); s("hero_text", data.hero?.text);
-      s("hero_primary_label", data.hero?.primary?.label); s("hero_primary_href", data.hero?.primary?.href);
-      s("hero_secondary_label", data.hero?.secondary?.label); s("hero_secondary_href", data.hero?.secondary?.href);
-      s("hero_mediaType", data.hero?.mediaType); s("hero_mediaUrl", data.hero?.mediaUrl); s("hero_mediaAlt", data.hero?.mediaAlt); s("hero_note", data.hero?.note);
-      s("intro_title", data.intro?.title); s("intro_text", data.intro?.text);
-      
-      if(data.features?.[0]) { s("feature0_icon", data.features[0].icon); s("feature0_title", data.features[0].title); s("feature0_text", data.features[0].text); }
-      if(data.features?.[1]) { s("feature1_icon", data.features[1].icon); s("feature1_title", data.features[1].title); s("feature1_text", data.features[1].text); }
-      if(data.features?.[2]) { s("feature2_icon", data.features[2].icon); s("feature2_title", data.features[2].title); s("feature2_text", data.features[2].text); }
-      
-      s("cs_title", data.coursesSection?.title); s("cs_titleScript", data.coursesSection?.titleScript); s("cs_text", data.coursesSection?.text);
-      if(data.courses?.[0]) { s("course0_title", data.courses[0].title); s("course0_mediaUrl", data.courses[0].mediaUrl); s("course0_text", data.courses[0].text); }
-      if(data.courses?.[1]) { s("course1_title", data.courses[1].title); s("course1_mediaUrl", data.courses[1].mediaUrl); s("course1_text", data.courses[1].text); }
-      if(data.courses?.[2]) { s("course2_title", data.courses[2].title); s("course2_mediaUrl", data.courses[2].mediaUrl); s("course2_text", data.courses[2].text); }
-      
-      s("method_eyebrow", data.method?.eyebrow); s("method_title", data.method?.title); s("method_text", data.method?.text);
-      if(data.steps?.[0]) { s("step0_title", data.steps[0].title); s("step0_text", data.steps[0].text); }
-      if(data.steps?.[1]) { s("step1_title", data.steps[1].title); s("step1_text", data.steps[1].text); }
-      if(data.steps?.[2]) { s("step2_title", data.steps[2].title); s("step2_text", data.steps[2].text); }
-      
-      s("cta_title", data.cta?.title); s("cta_label", data.cta?.label); s("cta_href", data.cta?.href);
-      s("footer_intro", data.footer?.intro);
-      if(data.footer?.columns?.[0]) { s("fcol0_title", data.footer.columns[0].title); s("fcol0_items", data.footer.columns[0].items.join("\n")); }
-      if(data.footer?.columns?.[1]) { s("fcol1_title", data.footer.columns[1].title); s("fcol1_items", data.footer.columns[1].items.join("\n")); }
-      if(data.footer?.columns?.[2]) { s("fcol2_title", data.footer.columns[2].title); s("fcol2_items", data.footer.columns[2].items.join("\n")); }
-    }
-
-    // TẢI DỮ LIỆU ĐÁM MÂY (HOẶC KÉO CỨU HỘ TỪ BỘ NHỚ LỚP LOCAL CŨ)
-    async function loadData() {
-      try {
-        const response = await fetch(`./${GH_PATH}?t=${Date.now()}`);
-        if (response.ok) {
-          const cloudData = await response.json();
-          fillFormFields({ ...defaults, ...cloudData });
-          return;
-        }
-      } catch (e) { console.log("Chưa thấy tệp cloud, tìm dữ liệu dự phòng cục bộ..."); }
-
-      const localBackup = localStorage.getItem(BACKUP_KEY);
-      if (localBackup) {
-        showToast("⚡ Đã cứu lại dữ liệu chỉnh sửa cũ từ máy cá nhân!");
-        fillFormFields({ ...defaults, ...JSON.parse(localBackup) });
-      } else {
-        fillFormFields(defaults);
-      }
-    }
-
-    // ĐẨY FILE JSON CHỨA TOÀN BỘ NỘI DUNG LÊN GITHUB REPO
-    async function sendToGitHub(jsonData) {
-      let token = localStorage.getItem(TOKEN_KEY);
-      if (!token) {
-        token = prompt("Nhập GitHub Personal Access Token của chủ web để ghi tệp:");
-        if (!token) return showToast("Hủy lưu. Cần có Token để cập nhật dữ liệu!");
-        localStorage.setItem(TOKEN_KEY, token.trim());
-      }
-
-      showToast("Đang kết nối API đám mây GitHub...");
-      localStorage.setItem(BACKUP_KEY, JSON.stringify(jsonData)); // Tạo một bản local phòng hờ
-
-      const url = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_PATH}`;
-      const base64Content = btoa(unescape(encodeURIComponent(JSON.stringify(jsonData, null, 2))));
-
-      try {
-        let sha = null;
-        const resGet = await fetch(url, { headers: { "Authorization": `token ${token}` } });
-        if (resGet.ok) {
-          const info = await resGet.json();
-          sha = info.sha;
-        }
-
-        const resPut = await fetch(url, {
-          method: "PUT",
-          headers: { "Authorization": `token ${token}`, "Content-Type": "application/json" },
-          body: JSON.stringify({ message: "⚡ Update content.json từ Admin Panel", content: base64Content, sha: sha })
-        });
-
-        if (resPut.ok) {
-          showToast("🚀 Đồng bộ thành công! Chờ GitHub Pages cập nhật giao diện (khoảng 30 giây).");
-        } else {
-          if (resPut.status === 401 || resPut.status === 403) {
-            localStorage.removeItem(TOKEN_KEY);
-            showToast("Token hết hạn hoặc sai quyền. Vui lòng bấm lưu để thử lại.");
-          } else {
-            showToast("Lỗi đồng bộ hệ thống.");
-          }
-        }
-      } catch (err) { showToast("Mất kết nối mạng tới API GitHub."); }
-    }
-
-    // HỆ THỐNG ĐIỀU HƯỚNG TABS
-    document.querySelectorAll(".tab").forEach((tab) => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-        document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-        tab.classList.add("active");
-        document.querySelector(`[data-section="${tab.dataset.tab}"]`).classList.add("active");
+/* ===================== Phiên & GitHub API ===================== */
+var cfg = null;
+function readCfg() { try { var c = JSON.parse(localStorage.getItem(LS_CFG) || 'null'); return c && c.token ? c : null; } catch (e) { return null; } }
+function writeCfg(c) { try { localStorage.setItem(LS_CFG, JSON.stringify(c)); try { localStorage.setItem(LS_REPO, JSON.stringify({ owner: c.owner, repo: c.repo, branch: c.branch })); } catch (e) {} return true; } catch (e) { return false; } }
+function wipeSession() {
+  cfg = null;
+  try { localStorage.removeItem(LS_CFG); } catch (e) {}
+  try { Object.keys(localStorage).forEach(function (k) { if (k.indexOf('memori.preview.') === 0) localStorage.removeItem(k); }); } catch (e) {}
+}
+function GhErr(status, msg, data) { this.status = status; this.message = msg; this.data = data; }
+GhErr.prototype = Object.create(Error.prototype);
+function explain(status, data) {
+  var m = data && data.message ? String(data.message) : '';
+  if (status === 401) return 'Token không đúng hoặc đã hết hạn. Hãy đăng xuất rồi tạo/dán token mới.';
+  if (status === 403) return /rate limit/i.test(m) ? 'GitHub đang giới hạn số lần gọi. Chờ vài phút rồi thử lại.' : 'Token không đủ quyền. Cần quyền “Contents: Read and write” cho đúng kho này.';
+  if (status === 404) return 'Không tìm thấy kho/nhánh/file, hoặc token chưa được cấp quyền cho kho này. Kiểm tra lại tên chủ kho, kho, nhánh và phạm vi của token.';
+  if (status === 409) return 'Xung đột: file vừa được sửa ở nơi khác.';
+  if (status === 422) return 'GitHub từ chối (file đã thay đổi hoặc dữ liệu không hợp lệ).';
+  return 'GitHub báo lỗi (mã ' + status + ').';
+}
+function gh(method, path, body) {
+  /* Token chỉ gắn vào header của yêu cầu tới API cố định api.github.com, không bao giờ vào URL hay log. */
+  var h = { 'Accept': 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28', 'Authorization': 'Bearer ' + cfg.token };
+  if (body) h['Content-Type'] = 'application/json';
+  return fetch(API + path, { method: method, cache: 'no-store', credentials: 'omit', referrerPolicy: 'no-referrer', headers: h, body: body ? JSON.stringify(body) : undefined })
+    .catch(function () { throw new GhErr(0, 'Không kết nối được tới GitHub. Kiểm tra mạng rồi thử lại.'); })
+    .then(function (res) {
+      return res.json().catch(function () { return null; }).then(function (data) {
+        if (!res.ok) throw new GhErr(res.status, explain(res.status, data), data);
+        return data;
       });
     });
+}
+function repoBase() { return '/repos/' + cfg.owner + '/' + cfg.repo; }
+function contentsPath(p) { return repoBase() + '/contents/' + p.split('/').map(encodeURIComponent).join('/'); }
+function getFile(path) {
+  return gh('GET', contentsPath(path) + '?ref=' + encodeURIComponent(cfg.branch)).then(function (d) {
+    if (!d || typeof d.sha !== 'string' || typeof d.content !== 'string') throw new GhErr(0, 'GitHub trả về dữ liệu lạ cho ' + path + '.');
+    return { sha: d.sha, text: b64ToStr(d.content) };
+  }, function (e) { if (e.status === 404) return null; throw e; });
+}
+function putFile(path, b64, sha, message) {
+  var body = { message: message, content: b64, branch: cfg.branch };
+  if (sha) body.sha = sha;
+  return gh('PUT', contentsPath(path), body);
+}
 
-    document.getElementById("saveBtn").addEventListener("click", () => sendToGitHub(makeJsonFromForm()));
-    document.getElementById("resetBtn").addEventListener("click", async () => {
-      if(!confirm("Xóa toàn bộ nội dung đã sửa để đồng bộ tệp mặc định gốc lên GitHub?")) return;
-      await sendToGitHub(defaults);
-      fillFormFields(defaults);
+/* ===================== Lược đồ (schema) ===================== */
+var S = {
+  text: function (label, o) { return Object.assign({ k: 'text', label: label }, o); },
+  area: function (label, o) { return Object.assign({ k: 'area', label: label, rows: 3 }, o); },
+  url: function (label, o) { return Object.assign({ k: 'url', label: label }, o); },
+  img: function (label, o) { return Object.assign({ k: 'img', label: label }, o); },
+  vid: function (label, o) { return Object.assign({ k: 'vid', label: label }, o); },
+  vidurl: function (label, o) { return Object.assign({ k: 'vidurl', label: label }, o); },
+  num: function (label, o) { return Object.assign({ k: 'num', label: label }, o); },
+  bool: function (label, o) { return Object.assign({ k: 'bool', label: label }, o); },
+  sel: function (label, options, o) { return Object.assign({ k: 'sel', label: label, options: options }, o); },
+  lines: function (label, o) { return Object.assign({ k: 'lines', label: label, rows: 4 }, o); },
+  pile: function (label, o) { return Object.assign({ k: 'pile', label: label }, o); },
+  grp: function (label, fields, o) { return Object.assign({ k: 'grp', label: label, fields: fields }, o); },
+  list: function (label, item, o) { return Object.assign({ k: 'list', label: label, item: item }, o); }
+};
+var PAGES = ['index.html', 'gioithieu.html', 'sitemap.html', 'roadmap.html', 'dangky.html', 'method.html', 'community.html', 'gallery.html', 'home-backup.html', 'home-backup.html#courses', 'home-backup.html#workshops', 'home-backup.html#method', 'home-backup.html#contact'];
+var ASPECTS = [{ v: 16 / 9, l: 'Ngang 16:9' }, { v: 4 / 3, l: 'Ngang 4:3' }, { v: 1, l: 'Vuông 1:1' }, { v: 9 / 16, l: 'Dọc 9:16' }];
+var GEM = ['đỏ', 'xanh dương', 'cam', 'xanh lá', 'tím', 'vàng chanh', 'lam', 'hồng', 'trắng'];
+var SYM = [{ v: 'spiral', l: 'Xoắn ốc' }, { v: 'eye', l: 'Con mắt' }, { v: 'mountain', l: 'Ngọn núi' }];
+var CUBES = []; ['spiral', 'eye', 'mountain'].forEach(function (s, i) { ['A', 'B', 'C'].forEach(function (v) { CUBES.push({ v: s + '-' + v, l: SYM[i].l + ' ' + v }); }); });
+var PILE_ROWS = ['Hàng đáy', 'Hàng đáy', 'Hàng đáy', 'Hàng đáy', 'Hàng giữa', 'Hàng giữa', 'Hàng giữa', 'Hàng trên', 'Hàng trên'];
+var T = function (l, o) { return S.text(l, o); };
+
+var DOCS = [
+  { id: 'site', group: 'Chung', tab: 'Cả web (dùng chung)', file: 'assets/content/site.json', page: 'index.html',
+    note: 'Cài đặt dùng chung cho nhiều trang. Nút “Về trang Bọ” áp dụng cho Lộ trình, Đăng ký, Bản đồ, Cộng đồng, Gallery.',
+    sections: [
+      { title: 'Nút quay về & âm thanh', fields: {
+        backLabel: T('Chữ nút “Về trang Bọ”', { req: 1, max: 40 }),
+        backHref: S.url('Đường dẫn nút quay về', { req: 1, hash: 1, pages: 1 }),
+        soundDefault: S.bool('Bật âm thanh mặc định khi người xem chưa chọn', { help: 'Hiện áp dụng cho trang Phương pháp; người xem vẫn tự tắt/mở được.' }),
+        backgroundMusicUrl: S.url('Link nhạc nền (để dành)', { help: 'Chưa trang nào phát nhạc nền; ô này lưu sẵn đường dẫn cho module nhạc nền làm sau (https://… hoặc assets/…).' })
+      } }
+    ] },
+
+  { id: 'bo', group: 'Trang Bọ', tab: 'Bọ: lời chào & chữ', file: 'assets/content/bo.json', page: 'index.html', preview: ['bo', 'bo-replies'],
+    sections: [
+      { title: 'Chữ của Bọ', fields: {
+        pageTitle: T('Tiêu đề trang (tab trình duyệt)', { req: 1, max: 80 }),
+        greeting: S.area('Câu chào đầu tiên của Bọ', { req: 1, max: 300 }),
+        mapCardLabel: T('Chữ trên thẻ bản đồ (dưới câu chào)', { req: 1, max: 40 }),
+        openLine: T('Câu Bọ nói khi người dùng bấm vào ô chat', { req: 1, max: 200 }),
+        emptyPrompt: T('Câu nhắc khi gửi ô chat trống', { req: 1, max: 200 }),
+        placeholder: T('Chữ mờ trong ô chat (cả trang Bọ và Bọ nhỏ ở các trang con)', { req: 1, max: 60 }),
+        fallback: S.area('Câu trả lời khi Bọ không hiểu (dùng chung)', { req: 1, max: 500 })
+      } },
+      { title: 'Bọ nhỏ ở góc các trang con', fields: {
+        widgetLabel: T('Tên nút Bọ cho người dùng đọc màn hình', { req: 1, max: 60 }),
+        widgetTitle: T('Tiêu đề khung chat nhỏ', { req: 1, max: 30 }),
+        widgetGreeting: S.area('Câu chào trong khung chat nhỏ (hiện khi mở lần đầu)', { req: 1, max: 300 }),
+        widgetSend: T('Chữ nút Gửi', { req: 1, max: 16 }),
+        widgetClose: T('Tên nút đóng khung chat (đọc màn hình)', { req: 1, max: 40 })
+      } }
+    ] },
+
+  { id: 'bo-replies', group: 'Trang Bọ', tab: 'Bọ: trả lời theo từ khóa', file: 'assets/content/bo-replies.json', page: 'index.html', preview: ['bo-replies', 'bo'],
+    note: 'Bọ so khớp từ khóa không phân biệt dấu; từ khóa dài thắng. Khi điểm bằng nhau, mục đứng trên thắng. Gõ cả bản có dấu và không dấu cho chắc.',
+    sections: [
+      { title: 'Danh sách trả lời', fields: {
+        replies: S.list('Các mục trả lời', S.grp('', {
+          id: T('Mã mục (chữ thường, số, gạch dưới)', { req: 1, max: 40, re: /^[a-z0-9_]+$/, reMsg: 'Chỉ dùng chữ thường không dấu, số và dấu _.' }),
+          keys: S.lines('Từ khóa (mỗi dòng một từ khóa)', { req: 1, rows: 4, max: 80 }),
+          reply: S.area('Câu Bọ trả lời', { req: 1, max: 600 }),
+          exact: S.bool('Chỉ khớp khi CẢ câu đúng bằng từ khóa (dùng cho “có / ok / đi”)'),
+          card: S.bool('Hiện thẻ bản đồ kèm câu trả lời'),
+          link: S.grp('Nút liên kết kèm theo (để trống nếu không cần)', {
+            href: S.url('Đường dẫn', { hash: 1, pages: 1 }),
+            label: T('Chữ trên nút', { max: 40 })
+          })
+        }), { itemName: 'Mục', itemTitle: function (it) { return (it.id || '(chưa đặt mã)') + ' — ' + ((it.keys || [])[0] || ''); }, add: function () { return { id: 'moi_' + Date.now().toString(36).slice(-4), keys: [], reply: '', link: { href: '', label: '' } }; }, collapse: 1, max: 5000, min: 1 })
+      } }
+    ],
+    prep: function (d) { (d.replies || []).forEach(function (r) { if (!isO(r.link)) r.link = { href: '', label: '' }; }); },
+    normalize: function (d) {
+      (d.replies || []).forEach(function (r) {
+        if (!r.exact) delete r.exact; if (!r.card) delete r.card;
+        if (!r.link || !String(r.link.href || '').trim()) delete r.link;
+      });
+    },
+    validate: function (d) {
+      var errs = [], seen = {};
+      (d.replies || []).forEach(function (r, i) {
+        if (seen[r.id]) errs.push('Mã mục trùng: “' + r.id + '”.'); seen[r.id] = 1;
+        if (r.link && (!!String(r.link.href || '').trim() !== !!String(r.link.label || '').trim())) errs.push('Mục “' + r.id + '”: nút liên kết cần điền đủ cả đường dẫn và chữ, hoặc để trống cả hai.');
+      });
+      return errs;
+    } },
+
+  { id: 'sitemap', group: 'Các trang', tab: 'Bản đồ trang', file: 'assets/content/sitemap.json', page: 'sitemap.html', preview: ['sitemap', 'site'],
+    note: 'Chín viên đá có vị trí và hình cố định; ở đây sửa tên, gợi ý, đường dẫn và dòng chữ viết trên đá.',
+    sections: [
+      { title: 'Chung', fields: { pageTitle: T('Tiêu đề trang (tab)', { req: 1, max: 80 }), srTitle: T('Tiêu đề đọc cho trình đọc màn hình', { req: 1, max: 100 }) } },
+      { title: 'Chín viên đá', fields: {
+        stones: S.list('Viên đá', S.grp('', {
+          name: T('Tên (đọc cho trình đọc màn hình)', { req: 1, max: 60 }),
+          tip: T('Gợi ý khi rê chuột / chạm', { req: 1, max: 60 }),
+          href: S.url('Dẫn tới trang', { req: 1, hash: 1, pages: 1 }),
+          lines: S.lines('Chữ viết trên đá (mỗi dòng một dòng chữ)', { req: 1, rows: 3, max: 30 }),
+          portraitLines: S.lines('Chữ trên điện thoại dọc (tuỳ chọn, để trống = như trên)', { rows: 2, max: 30 })
+        }), { fixed: 1, itemTitle: function (it) { return it.name; }, collapse: 1 })
+      } }
+    ] },
+
+  { id: 'roadmap', group: 'Các trang', tab: 'Lộ trình (4 chương)', file: 'assets/content/roadmap.json', page: 'roadmap.html', preview: ['roadmap', 'site'],
+    note: 'Mỗi chương có video YouTube/Vimeo, ảnh bìa và kịch bản. Video chỉ nạp khi người xem bấm phát.',
+    sections: [
+      { title: 'Chung', fields: { pageTitle: T('Tiêu đề trang (tab)', { req: 1, max: 80 }), loaderText: T('Chữ ở màn hình tải', { req: 1, max: 80 }) } },
+      { title: 'Bốn chương', fields: {
+        chapters: S.list('Chương', S.grp('', {
+          num: T('Nhãn chương (vd. Chapter 01)', { req: 1, max: 30 }),
+          title: T('Tên chương', { req: 1, max: 40 }),
+          poster: S.img('Ảnh bìa video (poster)', { req: 1 }),
+          video: S.vid('Video (dán link YouTube hoặc Vimeo)', { req: 1, aspect: 1 }),
+          script: S.grp('Kịch bản', {
+            scene: T('Dòng cảnh (vd. Cảnh 1: …)', { req: 1, max: 120 }),
+            vo: S.area('Lời kể (VO)', { req: 1, rows: 5, max: 700 }),
+            cues: S.list('Phụ đề theo thời gian', S.grp('', {
+              t: S.num('Giây bắt đầu', { min: 0, max: 86400, req: 1 }),
+              text: T('Dòng phụ đề', { req: 1, max: 200 })
+            }), { itemName: 'Dòng', itemTitle: function (it) { return (it.t === undefined ? '' : it.t + 's — ') + (it.text || ''); }, add: function () { return { t: 0, text: '' }; }, max: 60 })
+          })
+        }), { fixed: 1, itemTitle: function (it) { return (it.num || '') + ' — ' + (it.title || ''); }, collapse: 1 })
+      } }
+    ] },
+
+  { id: 'dangky', group: 'Các trang', tab: 'Đăng ký lớp F2', file: 'assets/content/dangky.json', page: 'dangky.html', preview: ['dangky', 'site'],
+    note: 'KHÔNG sửa được ở đây: tiêu đề lớn “Đăng ký lớp F2”, giá 1.500.000đ / 2.400.000đ, dòng “Số lượng có hạn”, hình con dấu và tờ giấy: những phần này nằm trong ẢNH. Ở đây chỉ sửa số chỗ, chữ gợi ý, chữ trong form và lời cảm ơn. Dòng đọc cho trình đọc màn hình (srText) nên khớp với giá trong ảnh.',
+    sections: [
+      { title: 'Chung', fields: {
+        pageTitle: T('Tiêu đề trang (tab)', { req: 1, max: 80 }), loaderText: T('Chữ ở màn hình tải', { req: 1, max: 80 }),
+        srTitle: T('Tiêu đề cho trình đọc màn hình', { req: 1, max: 100 }),
+        srText: S.area('Mô tả giá/ưu đãi cho trình đọc màn hình', { req: 1, max: 300, help: 'Người xem thường không thấy dòng này; hãy giữ khớp với chữ trong ảnh.' })
+      } },
+      { title: 'Số chỗ', fields: {
+        seats: S.grp('Số liệu hiển thị', { enrolled: S.num('Số người đã đăng ký', { int: 1, min: 0, max: 100000, req: 1 }), capacity: S.num('Tổng số chỗ', { int: 1, min: 1, max: 100000, req: 1 }) }),
+        enrolledLabel: T('Nhãn “Số người đã đăng ký”', { req: 1, max: 60 }), seatWord: T('Từ “chỗ”', { req: 1, max: 20 }), fullLabel: T('Chữ khi hết chỗ', { req: 1, max: 40 })
+      } },
+      { title: 'Chữ gợi ý & vùng đóng dấu', fields: {
+        zoneLabelDesk: T('Nhãn vùng đóng dấu (máy tính)', { req: 1, max: 60 }), zoneLabelTouch: T('Nhãn vùng đóng dấu (điện thoại)', { req: 1, max: 60 }),
+        ctaDesk: T('Chữ bong bóng cạnh con dấu', { req: 1, max: 40 }), hint: T('Dòng gợi ý (để trống nếu không dùng)', { max: 100 }), hintDone: T('Dòng hiện sau khi gửi xong', { req: 1, max: 100 })
+      } },
+      { title: 'Form đăng ký & lời cảm ơn', fields: {
+        form: S.grp('Form', {
+          title: T('Tiêu đề form', { req: 1, max: 60 }), lead: S.area('Câu dẫn', { req: 1, rows: 2, max: 200 }),
+          fields: S.list('Các ô nhập', S.grp('', { label: T('Nhãn ô', { req: 1, max: 40 }), ph: T('Chữ mờ gợi ý', { max: 60 }) }), { fixed: 1, itemTitle: function (it) { return it.label; } }),
+          submit: T('Chữ nút gửi', { req: 1, max: 30 }), sending: T('Chữ khi đang gửi', { req: 1, max: 30 }), close: T('Chữ nút đóng', { req: 1, max: 20 }),
+          errReq: T('Lỗi: ô bắt buộc', { req: 1, max: 100 }), errPhone: T('Lỗi: số điện thoại sai', { req: 1, max: 120 }), errEmail: T('Lỗi: email sai', { req: 1, max: 120 }), errSend: T('Lỗi: gửi không được', { req: 1, max: 120 }),
+          thanksTitle: T('Tiêu đề cảm ơn', { req: 1, max: 60 }), thanksText: S.area('Lời cảm ơn', { req: 1, rows: 3, max: 300 })
+        })
+      } }
+    ],
+    validate: function (d) { return d.seats && d.seats.enrolled > d.seats.capacity ? ['Số người đã đăng ký không được lớn hơn tổng số chỗ.'] : []; } },
+
+  { id: 'method', group: 'Các trang', tab: 'Phương pháp (bàn đá)', file: 'assets/content/method.json', page: 'method.html', preview: ['method', 'site'],
+    note: 'Ba khối đá cùng ký hiệu mở ra một phương pháp. Mỗi ký hiệu chỉ gắn cho một phương pháp. Video chỉ nhận YouTube.',
+    sections: [
+      { title: 'Chữ trên trang', fields: { page: S.grp('', {
+        title: T('Tiêu đề trang', { req: 1, max: 40 }), subtitle: T('Dòng phụ dưới tiêu đề (mặc định để TRỐNG: không hướng dẫn người chơi)', { max: 120, help: 'Để trống = không hiện.' }), hint: T('Dòng gợi ý (mặc định để TRỐNG; chỉ hiện sau thời gian chờ ở mục “Gợi ý tự động”)', { max: 100, help: 'Để trống = không hiện.' }),
+        backLabel: T('Chữ nút quay về', { max: 40 }), backHref: S.url('Đường dẫn nút quay về', { hash: 1, pages: 1 }), loaderText: T('Chữ màn hình tải', { max: 60 }),
+        closeLabel: T('Nhãn nút đóng bảng', { max: 20 }), videoLabel: T('Chữ nút “Xem video”', { max: 20 }), resetLabel: T('Chữ nút “Xếp lại”', { max: 20 }),
+        wrongText: T('Câu hiện khi thả sai khối (mặc định để TRỐNG)', { max: 80, help: 'Để trống = không hiện chữ; người chơi chỉ thấy đĩa rung và khối nảy về.' }), keyboardHelp: S.area('Hướng dẫn bàn phím (đọc bởi trình đọc màn hình)', { max: 200, rows: 2 })
+      }) } },
+      { title: 'Ba phương pháp', fields: { methods: S.list('Phương pháp', S.grp('', {
+        symbol: S.sel('Ký hiệu trên khối đá', SYM, { req: 1 }),
+        title: T('Tên phương pháp', { req: 1, max: 40 }),
+        text: S.area('Mô tả (2–3 câu)', { req: 1, rows: 5, max: 450 }),
+        imageUrl: S.img('Ảnh bìa (tuỳ chọn)'),
+        videoUrl: S.vidurl('Link video YouTube (tuỳ chọn)')
+      }), { fixed: 1, itemTitle: function (it) { return it.title + ' — ' + ((SYM.filter(function (s) { return s.v === it.symbol; })[0] || {}).l || ''); } }) } },
+      { title: 'Luật chơi', hint: 'Cách gom khối đá. Hình khắc trên mỗi khối là ảnh cố định; ở đây chỉ đổi luật “khối nào thuộc ký hiệu nào”.', fields: { rules: S.grp('', {
+        required: S.num('Số khối cùng ký hiệu cần để mở phương pháp (2 hoặc 3; đĩa có 3 chỗ)', { int: 1, min: 2, max: 3, req: 1 }),
+        mixedDropReturns: S.bool('Thả khối khác ký hiệu vào đĩa thì khối nảy về chỗ cũ', { help: 'Tắt: đĩa nhận mọi khối (tối đa 3); mở khi đủ số khối cùng ký hiệu.' }),
+        allowParkOnTable: S.bool('Cho phép để khối tạm trên mặt bàn'),
+        returnAfterReveal: S.bool('Sau khi mở phương pháp, các khối trở về đống đá', { help: 'Tắt: các khối nằm lại trên đĩa.' }),
+        wrongShake: S.bool('Đĩa rung khi thả sai'),
+        cubeSymbols: S.grp('Từng khối thuộc ký hiệu nào', (function () { var o = {}; CUBES.forEach(function (c) { o[c.v] = S.sel('Khối ' + c.l, SYM, { req: 1 }); }); return o; })())
+      }) } },
+      { title: 'Gợi ý tự động (mặc định TẮT)', fields: { ghostHint: S.grp('', { enabled: S.bool('Bật gợi ý: bàn tay ma kéo thử một khối khi người chơi chưa chạm', { help: 'Mặc định tắt: người chơi tự khám phá.' }), delay: S.num('Chờ bao nhiêu giây không thao tác thì gợi ý', { min: 1, max: 120, req: 1 }) }) } },
+      { title: 'Tên ba ký hiệu', fields: { symbols: S.grp('', {
+        spiral: S.grp('Xoắn ốc', { label: T('Tên', { req: 1, max: 30 }) }), eye: S.grp('Con mắt', { label: T('Tên', { req: 1, max: 30 }) }), mountain: S.grp('Ngọn núi', { label: T('Tên', { req: 1, max: 30 }) })
+      }) } },
+      { title: 'Đống đá lúc đầu', fields: { pileOrder: S.pile('Thứ tự 9 khối (từ dưới lên)') } },
+      { title: 'Âm thanh', fields: { sound: S.grp('', { enabled: S.bool('Bật âm thanh mặc định'), volume: S.num('Âm lượng (0 đến 1)', { min: 0, max: 1, step: 0.05, req: 1 }), events: S.grp('Âm thanh theo từng sự kiện', { pick: S.bool('Nhấc khối'), drop: S.bool('Đặt khối xuống'), snap: S.bool('Khối vào đĩa'), glow: S.bool('Đĩa sáng dần'), wrong: S.bool('Thả sai'), reveal: S.bool('Mở phương pháp'), whoosh: S.bool('Khối bay về đống') }) }) } }
+    ],
+    validate: function (d) {
+      var errs = [], seen = {};
+      (d.methods || []).forEach(function (m) { if (seen[m.symbol]) errs.push('Hai phương pháp đang dùng cùng một ký hiệu. Mỗi ký hiệu chỉ dùng một lần.'); seen[m.symbol] = 1; });
+      var R = d.rules || {}, cnt = {}, lab = function (v) { return (SYM.filter(function (x) { return x.v === v; })[0] || {}).l || v; };
+      Object.keys(R.cubeSymbols || {}).forEach(function (k) { var sy = R.cubeSymbols[k]; cnt[sy] = (cnt[sy] || 0) + 1; });
+      (d.methods || []).forEach(function (m) { if ((cnt[m.symbol] || 0) < R.required) errs.push('Phương pháp “' + m.title + '” dùng ký hiệu ' + lab(m.symbol) + ' nhưng chỉ có ' + (cnt[m.symbol] || 0) + ' khối mang ký hiệu này, cần ít nhất ' + R.required + ' khối: sẽ không bao giờ mở được.'); });
+      var p = d.pileOrder || [], u = {}; p.forEach(function (x) { u[x] = 1; });
+      if (Object.keys(u).length !== 9) errs.push('Đống đá: mỗi trong 9 khối phải xuất hiện đúng một lần.');
+      return errs.filter(function (x, i, a) { return a.indexOf(x) === i; });
+    },
+    advise: function (d) {
+      var w = [], R = d.rules || {}, cnt = {}, used = {};
+      Object.keys(R.cubeSymbols || {}).forEach(function (k) { var sy = R.cubeSymbols[k]; cnt[sy] = (cnt[sy] || 0) + 1; });
+      (d.methods || []).forEach(function (m) { used[m.symbol] = 1; });
+      SYM.forEach(function (s) {
+        var n = cnt[s.v] || 0;
+        if (n && !used[s.v]) w.push('Ký hiệu ' + s.l + ' có ' + n + ' khối nhưng chưa có phương pháp nào gắn với nó: gom xong sẽ không hiện gì.');
+        if (n && R.required && n % R.required) w.push('Ký hiệu ' + s.l + ' có ' + n + ' khối, không chia hết cho ' + R.required + ' (số khối cần để gom): sẽ còn khối dư.');
+      });
+      return w;
+    } },
+
+  { id: 'gioithieu', group: 'Các trang', tab: 'Giới thiệu', file: 'assets/content/gioithieu.json', page: null,
+    note: 'Trang Giới thiệu chưa được đưa vào web. Nội dung dưới đây được chuẩn bị sẵn và sẽ dùng khi trang được thêm. Sửa/lưu thoải mái.',
+    sections: [
+      { title: 'Chữ', fields: { pageTitle: T('Tiêu đề trang (tab)', { req: 1, max: 80 }), copy: S.grp('', {
+        title: T('Tiêu đề lớn', { req: 1, max: 40 }), sub: S.area('Mô tả', { req: 1, max: 400 }), posterTitle: T('Chữ trên ảnh bìa video', { max: 60 }), posterSub: T('Chữ phụ trên ảnh bìa', { max: 60 }), loading: T('Chữ màn hình tải', { max: 80 })
+      }) } },
+      { title: 'Video giới thiệu', fields: { video: S.grp('', {
+        '_': S.vid('Video (dán link YouTube hoặc Vimeo)', { self: 1, req: 1, aspect: 1 }),
+        poster: S.img('Ảnh bìa video (poster)', { req: 1 }),
+        start: S.num('Bắt đầu từ giây thứ', { int: 1, min: 0, max: 86400, req: 1 })
+      }) } },
+      { title: 'Sau khi xem xong', fields: { nextPage: S.url('Tự chuyển sang trang', { req: 1, hash: 1, pages: 1 }), nextText: T('Chữ đếm ngược', { max: 60 }), toastText: T('Chữ thông báo chuyển trang', { max: 60 }) } }
+    ] },
+
+  { id: 'community', group: 'Các trang', tab: 'Cộng đồng', file: 'assets/content/community.json', page: 'community.html', preview: ['community', 'site'],
+    note: 'Sáu thành viên gắn với sáu quả cầu cố định (không thêm/bớt). Ảnh đại diện nên vuông/ngang vừa, nhẹ.',
+    sections: [
+      { title: 'Chung', fields: { pageTitle: T('Tiêu đề trang (tab)', { req: 1, max: 80 }), srTitle: T('Tiêu đề cho trình đọc màn hình', { req: 1, max: 100 }), replayLabel: T('Chữ nút phát lại', { req: 1, max: 20 }) } },
+      { title: 'Bài thơ cuối trang', fields: { poem: S.lines('Mỗi dòng một câu (tối đa 8 dòng)', { req: 1, rows: 4, max: 120, maxLines: 8 }) } },
+      { title: 'Sáu thành viên', fields: { members: S.list('Thành viên', S.grp('', {
+        name: T('Tên', { req: 1, max: 40 }), place: T('Nơi ở', { max: 40 }), caption: T('Dòng giới thiệu ngắn', { max: 80 }),
+        avatar: S.img('Ảnh đại diện', { req: 1 }), href: S.url('Link hồ sơ (https://…)', { req: 1, https: 1 })
+      }), { fixed: 1, itemTitle: function (it) { return it.name; }, collapse: 1 }) } }
+    ] },
+
+  { id: 'gallery', group: 'Các trang', tab: 'Gallery ảnh', file: 'assets/content/gallery.json', page: 'gallery.html', preview: ['gallery', 'site'],
+    note: 'Ảnh mới nên có khung ngang khoảng 833×413. Kéo qua ba viên đá để đổi ảnh; mỗi bộ ba đá gắn với một ảnh.',
+    sections: [
+      { title: 'Chung', fields: { pageTitle: T('Tiêu đề trang (tab)', { req: 1, max: 80 }), hint: T('Dòng gợi ý dưới khay đá', { req: 1, max: 80 }) } },
+      { title: 'Danh sách ảnh', fields: { photos: S.list('Ảnh', S.grp('', {
+        id: T('Mã ảnh (chữ thường, số, gạch ngang)', { req: 1, max: 32, re: /^[a-z0-9_-]+$/, reMsg: 'Chỉ dùng chữ thường không dấu, số, - và _.' }),
+        src: S.img('Ảnh (link hoặc tải lên)', { req: 1 }), alt: T('Mô tả ảnh (cho người khiếm thị)', { max: 160 })
+      }), { itemName: 'Ảnh', itemTitle: function (it) { return (it.id || '') + ' — ' + (it.alt || ''); }, add: function () { return { id: 'anh' + Date.now().toString(36).slice(-4), src: '', alt: '' }; }, min: 1, max: 12, collapse: 1 }) } },
+      { title: 'Bộ ba viên đá → ảnh', fields: { assignments: S.list('Bộ đá', S.grp('', {
+        photo: S.sel('Ảnh hiện ra', function (doc) { return (doc.data.photos || []).map(function (p) { return { v: p.id, l: p.id + (p.alt ? ' — ' + p.alt : '') }; }); }, { req: 1 })
+      }), { fixed: 1, itemTitle: function (it) { return 'Đá ' + (it.gems || []).map(function (g) { return GEM[g]; }).join(' + '); } }) } }
+    ],
+    validate: function (d) {
+      var errs = [], ids = {}, ph = d.photos || [];
+      ph.forEach(function (p) { if (ids[p.id]) errs.push('Mã ảnh trùng: “' + p.id + '”.'); ids[p.id] = 1; });
+      (d.assignments || []).forEach(function (a) { if (!ids[a.photo]) errs.push('Có bộ đá đang trỏ tới ảnh không còn tồn tại (“' + a.photo + '”). Hãy chọn lại.'); });
+      return errs;
+    } },
+
+  { id: 'home-backup', group: 'Các trang', tab: 'Trang chủ cũ (lớp, workshop)', file: 'content.json', page: 'home-backup.html', defaultsName: 'home-backup',
+    note: 'Nội dung trang home-backup.html (trang chủ cũ: workshop, phương pháp, liên hệ). Trước đây chỉnh bằng trang quản trị cũ; giờ gộp vào đây.',
+    sections: [
+      { title: 'Cấu hình chung', fields: { site: S.grp('', { title: T('Tiêu đề web (thẻ title)', { req: 1, max: 80 }), brand: T('Tên thương hiệu', { req: 1, max: 40 }), description: S.area('Mô tả (SEO)', { max: 300 }) }) } },
+      { title: 'Thanh điều hướng', fields: {
+        nav: S.list('Liên kết trên thanh', S.grp('', { label: T('Chữ', { req: 1, max: 30 }), href: S.url('Đường dẫn', { req: 1, hash: 1, mailto: 1 }) }), { itemName: 'Liên kết', itemTitle: function (it) { return it.label; }, add: function () { return { label: '', href: '#' }; }, max: 8 }),
+        navCourses: S.grp('Nút “Khóa học”', { label: T('Chữ', { req: 1, max: 30 }), href: S.url('Đường dẫn', { req: 1, hash: 1 }) }),
+        navCta: S.grp('Nút “Đăng ký”', { label: T('Chữ', { req: 1, max: 30 }), href: S.url('Đường dẫn', { req: 1, hash: 1, mailto: 1 }) })
+      } },
+      { title: 'Khu vực Hero (đầu trang)', fields: { hero: S.grp('', {
+        eyebrow: T('Dòng nhỏ trên tiêu đề', { max: 60 }), titleStart: T('Tiêu đề: đoạn đầu', { max: 60 }), titleScript: T('Tiêu đề: chữ nghệ thuật', { max: 40 }), titleEnd: T('Tiêu đề: đoạn cuối', { max: 60 }),
+        text: S.area('Mô tả', { max: 500 }),
+        primary: S.grp('Nút chính', { label: T('Chữ', { max: 30 }), href: S.url('Đường dẫn', { hash: 1, mailto: 1 }) }),
+        secondary: S.grp('Nút phụ', { label: T('Chữ', { max: 30 }), href: S.url('Đường dẫn', { hash: 1, mailto: 1 }) }),
+        mediaType: S.sel('Loại media', [{ v: 'image', l: 'Hình ảnh' }, { v: 'video', l: 'Video tệp (.mp4)' }]),
+        mediaUrl: S.img('Link ảnh/video (hoặc tải ảnh lên)', { req: 1 }), mediaAlt: T('Mô tả thay thế cho ảnh', { max: 160 }),
+        note: S.area('Khung ghi chú', { max: 300 })
+      }) } },
+      { title: 'Giới thiệu & đặc điểm', fields: {
+        intro: S.grp('', { title: T('Tiêu đề', { max: 120 }), text: S.area('Nội dung', { max: 600 }) }),
+        features: S.list('Ba đặc điểm', S.grp('', { icon: T('Biểu tượng (vd. fa-film)', { max: 40 }), title: T('Tiêu đề', { max: 60 }), text: S.area('Nội dung', { rows: 2, max: 300 }) }), { fixed: 1, itemTitle: function (it) { return it.title; } })
+      } },
+      { title: 'Danh sách lớp học', fields: {
+        coursesSection: S.grp('', { title: T('Tiêu đề', { max: 60 }), titleScript: T('Chữ nghệ thuật', { max: 40 }), text: S.area('Mô tả', { max: 400 }) }),
+        courses: S.list('Ba lớp', S.grp('', { title: T('Tên lớp', { max: 80 }), text: S.area('Mô tả', { rows: 3, max: 400 }), mediaUrl: S.img('Ảnh', { req: 1 }), mediaAlt: T('Mô tả ảnh', { max: 160 }) }), { fixed: 1, itemTitle: function (it) { return it.title; }, collapse: 1 })
+      } },
+      { title: 'Phương pháp & các bước', fields: {
+        method: S.grp('', { eyebrow: T('Dòng nhỏ', { max: 40 }), title: T('Tiêu đề', { max: 120 }), text: S.area('Nội dung', { max: 500 }) }),
+        steps: S.list('Ba bước', S.grp('', { title: T('Tiêu đề', { max: 60 }), text: S.area('Nội dung', { rows: 2, max: 300 }) }), { fixed: 1, itemTitle: function (it) { return it.title; } })
+      } },
+      { title: 'Kêu gọi hành động & chân trang', fields: {
+        cta: S.grp('Khung kêu gọi', { title: T('Tiêu đề', { max: 160 }), label: T('Chữ nút', { max: 40 }), href: S.url('Đường dẫn (có thể mailto:)', { hash: 1, mailto: 1 }) }),
+        footer: S.grp('Chân trang', { intro: S.area('Giới thiệu ngắn', { max: 300 }), columns: S.list('Ba cột', S.grp('', { title: T('Tiêu đề cột', { max: 40 }), items: S.lines('Các mục (mỗi dòng một mục)', { rows: 3, max: 80 }) }), { fixed: 1, itemTitle: function (it) { return it.title; } }) })
+      } }
+    ] }
+];
+DOCS.forEach(function (d) { d.name = d.file.replace(/^.*\//, '').replace(/\.json$/, ''); d.defName = d.defaultsName || d.name; });
+
+/* ===================== Dữ liệu từng tài liệu ===================== */
+function fill(d, def) {
+  if (def === undefined) return d;
+  if (d === undefined || d === null) return clone(def);
+  if (Array.isArray(def)) {
+    if (!Array.isArray(d)) return clone(def);
+    d.forEach(function (it, i) {
+      var dd = isO(it) && it.id !== undefined ? def.filter(function (x) { return isO(x) && x.id === it.id; })[0] : def[i];
+      if (dd !== undefined) d[i] = fill(it, dd);
     });
+    return d;
+  }
+  if (isO(def)) {
+    if (!isO(d)) return clone(def);
+    Object.keys(def).forEach(function (k) { d[k] = fill(d[k], def[k]); });
+    return d;
+  }
+  return typeof d === typeof def ? d : def;
+}
+function outData(doc) { var d = clone(doc.data); if (doc.normalize) doc.normalize(d); return d; }
+function outText(doc) { return JSON.stringify(outData(doc), null, 2) + '\n'; }
 
-    loadData();
-  </script>
+var state = { cur: null, uploaded: {} };
+
+function loadDoc(doc) {
+  if (doc.loading) return doc.loading;
+  doc.loading = Promise.all([
+    getFile(doc.file),
+    fetch('assets/content/defaults/' + doc.defName + '.json?v=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+  ]).then(function (r) {
+    var f = r[0], defs = r[1], data = null, warn = '';
+    doc.defaults = defs;
+    doc.sha = f ? f.sha : null;
+    doc.remoteText = f ? f.text : null;
+    if (f) { try { data = JSON.parse(f.text); } catch (e) { warn = 'File trên GitHub không phải JSON hợp lệ; đang dùng bản mặc định.'; } }
+    else warn = 'File này chưa có trên GitHub; đang dùng bản mặc định, bấm Lưu để tạo.';
+    if (!isO(data)) data = defs ? clone(defs) : {};
+    if (defs) data = fill(data, defs);
+    if (doc.prep) doc.prep(data);
+    doc.data = data;
+    doc.warn = warn;
+    doc.orig = outText(doc);
+    doc.dirty = false;
+    doc.isNew = !f;
+    buildPane(doc);
+    doc.loaded = true;
+  }, function (e) { doc.loading = null; throw e; });
+  return doc.loading;
+}
+
+/* ===================== Kiểm tra từng loại ô ===================== */
+function urlOk(v, node) {
+  if (node.https) return /^https:\/\//i.test(v) && !!MC.url(v, '');
+  return !!MC.url(v, '', { mailto: node.mailto, hash: node.hash });
+}
+var URL_MSG = 'Chỉ nhận https://… hoặc đường dẫn trong web (vd. assets/uploads/anh.webp, roadmap.html#neo).';
+
+/* ===================== Dựng form ===================== */
+function showAdvise(doc) {
+  if (!doc.advise || !doc.adv) return;
+  var w = doc.advise(outData(doc));
+  doc.adv.textContent = w.length ? 'Lưu ý: ' + w.join(' ') : '';
+  doc.adv.hidden = !w.length;
+}
+function touch(doc) {
+  showAdvise(doc);
+  var d = outText(doc) !== doc.orig;
+  if (d !== doc.dirty) doc.dirty = d;
+  refreshDirty();
+}
+function field(node, obj, key, doc, ctx) {
+  if (node.k === 'grp') return group(node, obj, key, doc, ctx);
+  if (node.k === 'list') return listField(node, obj, key, doc, ctx);
+  var id = 'f' + (++uid), wrap = el('div', { class: 'fld k-' + node.k }), err = el('div', { class: 'err', role: 'alert' }), msgFn = function () { return ''; }, body;
+  var label = el('label', { for: id }, node.label, node.req ? el('b', { class: 'rq', text: ' *' }) : null);
+  function run() { var m = msgFn(); err.textContent = m; wrap.classList.toggle('bad', !!m); return m; }
+  function set(v) { obj[key] = v; run(); touch(doc); }
+  var inp, k = node.k, cur = obj[key];
+
+  if (k === 'text' || k === 'area') {
+    inp = k === 'area' ? el('textarea', { id: id, rows: node.rows || 3 }) : el('input', { id: id, type: 'text', autocomplete: 'off' });
+    inp.value = cur == null ? '' : String(cur);
+    inp.addEventListener('input', function () { set(inp.value); });
+    msgFn = function () {
+      var v = obj[key] == null ? '' : String(obj[key]);
+      if (node.req && !v.trim()) return 'Không được để trống.';
+      var mx = node.max || (k === 'area' ? 1200 : 200);
+      if (v.length > mx) return 'Tối đa ' + mx + ' ký tự (đang ' + v.length + ').';
+      if (node.re && v && !node.re.test(v)) return node.reMsg || 'Định dạng chưa đúng.';
+      return '';
+    };
+    body = inp;
+  } else if (k === 'url' || k === 'img') {
+    inp = el('input', { id: id, type: 'text', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', inputmode: 'url' });
+    inp.value = cur == null ? '' : String(cur);
+    if (node.pages) inp.setAttribute('list', 'pagesDL');
+    inp.addEventListener('input', function () { set(inp.value.trim()); if (thumb) updThumb(); });
+    msgFn = function () {
+      var v = String(obj[key] || '').trim();
+      if (!v) return node.req ? 'Không được để trống.' : '';
+      return urlOk(v, node) ? '' : URL_MSG;
+    };
+    var thumb = null, file = null, up = null, st = null;
+    function updThumb() {
+      var v = String(obj[key] || '').trim();
+      if (!v || !urlOk(v, node)) { thumb.hidden = true; return; }
+      thumb.src = state.uploaded[v] || v; thumb.hidden = false;
+    }
+    if (k === 'img') {
+      thumb = el('img', { class: 'thumb', alt: '', hidden: true, onerror: function () { thumb.hidden = true; } });
+      file = el('input', { type: 'file', accept: 'image/*', class: 'sr', tabindex: '-1', 'aria-label': 'Chọn ảnh để tải lên' });
+      st = el('div', { class: 'help' });
+      up = el('button', { type: 'button', class: 'btn sm', text: 'Tải ảnh lên', onclick: function () { file.click(); } });
+      file.addEventListener('change', function () {
+        var f = file.files && file.files[0]; file.value = '';
+        if (!f) return;
+        up.disabled = true; st.textContent = 'Đang xử lý ảnh…';
+        uploadImage(f, function (m) { st.textContent = m; }).then(function (path) {
+          inp.value = path; set(path); updThumb(); st.textContent = 'Đã tải lên ' + path + '. Ảnh đã nằm trên GitHub; bấm Lưu để áp dụng vào trang.';
+        }, function (e) { st.textContent = ''; err.textContent = e.message || 'Tải ảnh lên không được.'; wrap.classList.add('bad'); })
+          .then(function () { up.disabled = false; });
+      });
+      updThumb();
+      body = el('div', {}, el('div', { class: 'imgrow' }, thumb, inp, up, file), st);
+    } else body = inp;
+  } else if (k === 'num') {
+    inp = el('input', { id: id, type: 'number', inputmode: 'decimal', step: node.step || (node.int ? 1 : 'any') });
+    inp.value = cur == null ? '' : String(cur);
+    inp.addEventListener('input', function () { set(inp.value === '' ? null : Number(inp.value)); });
+    msgFn = function () {
+      var v = obj[key];
+      if (v === null || v === undefined || (typeof v === 'number' && !isFinite(v))) return node.req ? 'Hãy nhập một số.' : '';
+      if (typeof v !== 'number') return 'Hãy nhập một số.';
+      if (node.int && Math.floor(v) !== v) return 'Hãy nhập số nguyên.';
+      if (node.min !== undefined && v < node.min) return 'Nhỏ nhất là ' + node.min + '.';
+      if (node.max !== undefined && v > node.max) return 'Lớn nhất là ' + node.max + '.';
+      return '';
+    };
+    body = inp;
+  } else if (k === 'bool') {
+    inp = el('input', { id: id, type: 'checkbox' });
+    inp.checked = !!cur;
+    inp.addEventListener('change', function () { set(inp.checked); });
+    wrap.append(el('label', { class: 'chk', for: id }, inp, node.label), node.help ? el('div', { class: 'help', text: node.help }) : '');
+    ctx.vals.push(function () { return ''; });
+    return wrap;
+  } else if (k === 'sel') {
+    inp = el('select', { id: id });
+    var fill1 = function () {
+      var opts = typeof node.options === 'function' ? node.options(doc) : node.options, val = obj[key];
+      inp.textContent = '';
+      var found = false;
+      opts.forEach(function (o) { if (o.v === val) found = true; inp.append(el('option', { value: o.v, text: o.l })); });
+      if (!found && val !== undefined && val !== '') inp.append(el('option', { value: val, text: String(val) + ' (không còn)' }));
+      inp.value = val === undefined ? '' : val;
+    };
+    fill1();
+    if (typeof node.options === 'function') { inp.addEventListener('focus', fill1); inp.addEventListener('pointerdown', fill1); }
+    inp.addEventListener('change', function () { set(inp.value); });
+    msgFn = function () { var opts = typeof node.options === 'function' ? node.options(doc) : node.options; return opts.some(function (o) { return o.v === obj[key]; }) ? '' : 'Hãy chọn một giá trị trong danh sách.'; };
+    body = inp;
+  } else if (k === 'lines') {
+    inp = el('textarea', { id: id, rows: node.rows || 4 });
+    inp.value = Array.isArray(cur) ? cur.join('\n') : '';
+    inp.addEventListener('input', function () { set(inp.value.split('\n').map(function (s) { return s.trim(); }).filter(Boolean)); });
+    msgFn = function () {
+      var a = obj[key] || [];
+      if (node.req && !a.length) return 'Cần ít nhất một dòng.';
+      if (node.maxLines && a.length > node.maxLines) return 'Tối đa ' + node.maxLines + ' dòng.';
+      for (var i = 0; i < a.length; i++) if (a[i].length > (node.max || 120)) return 'Dòng ' + (i + 1) + ' dài quá ' + (node.max || 120) + ' ký tự.';
+      return '';
+    };
+    body = inp;
+    wrap.append(label, body, el('div', { class: 'help', text: 'Mỗi dòng một mục.' }), err);
+    ctx.vals.push(function () { return wrap.isConnected && run() ? node.label + ': ' + err.textContent : ''; });
+    return wrap;
+  } else if (k === 'vidurl') {
+    inp = el('input', { id: id, type: 'text', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', inputmode: 'url', placeholder: 'https://www.youtube.com/watch?v=…' });
+    inp.value = cur || '';
+    var vs = el('div', { class: 'vidst' });
+    var upd = function () { var y = MC.youtubeId(inp.value); vs.textContent = y ? 'Đã nhận video YouTube, ID ' + y : ''; };
+    inp.addEventListener('input', function () { set(inp.value.trim()); upd(); });
+    upd();
+    msgFn = function () { var v = String(obj[key] || '').trim(); return !v || MC.youtubeId(v) ? '' : 'Chỉ nhận link YouTube (youtube.com/watch?v=…, youtu.be/…, shorts/…).'; };
+    body = el('div', {}, inp, vs);
+  } else if (k === 'vid') {
+    var t = node.self ? obj : obj[key];
+    if (!isO(t)) { t = {}; if (!node.self) obj[key] = t; }
+    inp = el('input', { id: id, type: 'text', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', inputmode: 'url', placeholder: 'https://youtu.be/… hoặc https://vimeo.com/…' });
+    inp.value = t.id ? (t.provider === 'vimeo' ? 'https://vimeo.com/' + t.id : 'https://youtu.be/' + t.id) : '';
+    var vst = el('div', { class: 'vidst' });
+    var cur2 = function () { return MC.parseVideo(inp.value); };
+    var upd2 = function () { var p = cur2(); vst.textContent = p ? 'Đã nhận: ' + (p.provider === 'vimeo' ? 'Vimeo' : 'YouTube') + ', ID ' + p.id : ''; };
+    inp.addEventListener('input', function () {
+      var p = cur2();
+      if (p) { t.provider = p.provider; t.id = p.id; if ('ui' in t || node.aspect) t.ui = p.provider === 'vimeo' ? 'native' : 'custom'; }
+      upd2(); run(); touch(doc);
+    });
+    upd2();
+    msgFn = function () { if (!inp.value.trim()) return node.req ? 'Hãy dán link hoặc ID video.' : ''; return cur2() ? '' : 'Link/ID không hợp lệ. Dán link YouTube hoặc Vimeo.'; };
+    var title = el('input', { type: 'text', autocomplete: 'off', 'aria-label': 'Tên video', placeholder: 'Tên video (đọc cho trình đọc màn hình)' });
+    title.value = t.title || ''; title.addEventListener('input', function () { t.title = title.value; touch(doc); });
+    var extra = [el('div', { class: 'help', text: 'Tên video (tuỳ chọn):' }), title];
+    if (node.aspect) {
+      var as = el('select', { 'aria-label': 'Tỉ lệ khung hình' });
+      var ov = typeof t.aspect === 'number' ? t.aspect : 16 / 9, hit = false;
+      ASPECTS.forEach(function (a) { if (Math.abs(a.v - ov) < 1e-6) hit = true; as.append(el('option', { value: String(a.v), text: a.l })); });
+      if (!hit) as.append(el('option', { value: String(ov), text: 'Giữ nguyên (' + Math.round(ov * 100) / 100 + ')' }));
+      as.value = String(ov);
+      as.addEventListener('change', function () { t.aspect = Number(as.value); touch(doc); });
+      extra.push(el('div', { class: 'help', text: 'Tỉ lệ khung hình:' }), as);
+    }
+    body = el('div', {}, inp, vst, extra);
+  } else if (k === 'pile') {
+    var sels = [];
+    var arr = Array.isArray(obj[key]) ? obj[key] : (obj[key] = CUBES.map(function (c) { return c.v; }));
+    var g = el('div', { class: 'pile' });
+    arr.forEach(function (v, i) {
+      var s = el('select', { 'aria-label': PILE_ROWS[i] + ' ' + ((i < 4 ? i : i < 7 ? i - 4 : i - 7) + 1) });
+      CUBES.forEach(function (c) { s.append(el('option', { value: c.v, text: c.l })); });
+      s.value = v; sels.push(s);
+      s.addEventListener('change', function () { arr[i] = s.value; run(); touch(doc); });
+      g.append(el('div', {}, el('div', { class: 'pl', text: PILE_ROWS[i] + ' ' + ((i < 4 ? i : i < 7 ? i - 4 : i - 7) + 1) }), s));
+    });
+    msgFn = function () { var u = {}; arr.forEach(function (x) { u[x] = 1; }); return arr.length === 9 && Object.keys(u).length === 9 ? '' : 'Mỗi trong 9 khối phải xuất hiện đúng một lần (hiện có khối bị trùng).'; };
+    body = g;
+    wrap.append(label, body, el('div', { class: 'help', text: 'Hàng đáy 4 khối, hàng giữa 3 khối, hàng trên cùng 2 khối. Khối hàng trên che khối bên dưới.' }), err);
+    ctx.vals.push(function () { return wrap.isConnected && run() ? node.label + ': ' + err.textContent : ''; });
+    return wrap;
+  }
+  wrap.append(label, body, node.help ? el('div', { class: 'help', text: node.help }) : '', err);
+  ctx.vals.push(function () { return wrap.isConnected && run() ? node.label + ': ' + err.textContent : ''; });
+  return wrap;
+}
+function fields(map, obj, doc, ctx) {
+  var f = document.createDocumentFragment();
+  Object.keys(map).forEach(function (k) { f.append(field(map[k], obj, k, doc, ctx)); });
+  return f;
+}
+function group(node, obj, key, doc, ctx) {
+  var t = key == null ? obj : (isO(obj[key]) ? obj[key] : (obj[key] = {}));
+  var fs = el('fieldset', { class: 'grp' });
+  if (node.label) fs.append(el('legend', { text: node.label }));
+  fs.append(fields(node.fields, t, doc, ctx));
+  return fs;
+}
+function listField(node, obj, key, doc, ctx) {
+  var arr = Array.isArray(obj[key]) ? obj[key] : (obj[key] = []);
+  var box = el('div', { class: 'list' }), items = el('div', {});
+  var addBtn = null;
+  function titles() {
+    Array.prototype.forEach.call(items.children, function (c, i) { var tt = c.querySelector('.tt'); if (tt && arr[i]) tt.textContent = node.itemTitle ? node.itemTitle(arr[i], i) : (node.itemName || 'Mục') + ' ' + (i + 1); });
+  }
+  function draw(openIdx) {
+    items.textContent = '';
+    arr.forEach(function (item, i) {
+      var d = el('details', { class: 'item' });
+      if (!node.collapse || i === openIdx) d.open = true;
+      var sum = el('summary', {}, el('span', { class: 'no', text: String(i + 1) }), el('span', { class: 'tt' }));
+      if (!node.fixed) {
+        var btn = function (txt, lab, dis, fn) { return el('button', { type: 'button', class: 'ibtn', 'aria-label': lab, text: txt, disabled: dis, onclick: function (e) { e.preventDefault(); e.stopPropagation(); fn(); } }); };
+        sum.append(
+          btn('↑', 'Chuyển lên', i === 0, function () { arr.splice(i - 1, 0, arr.splice(i, 1)[0]); draw(i - 1); touch(doc); }),
+          btn('↓', 'Chuyển xuống', i === arr.length - 1, function () { arr.splice(i + 1, 0, arr.splice(i, 1)[0]); draw(i + 1); touch(doc); }),
+          btn('✕', 'Xóa mục này', arr.length <= (node.min || 0), function () { if (confirm('Xóa mục này?')) { arr.splice(i, 1); draw(); touch(doc); } }));
+      }
+      d.append(sum);
+      var ib = el('div', { class: 'ib' });
+      ib.append(fields(node.item.fields, item, doc, ctx));
+      d.append(ib);
+      items.append(d);
+    });
+    titles();
+    if (addBtn) addBtn.disabled = arr.length >= (node.max || 999);
+  }
+  items.addEventListener('input', titles); items.addEventListener('change', titles);
+  box.append(node.label ? el('div', { class: 'lt', text: node.label + (node.fixed ? '' : ' (' + (node.min ? 'tối thiểu ' + node.min : 'có thể thêm, xóa, đổi thứ tự') + ')') }) : '', items);
+  if (!node.fixed) {
+    addBtn = el('button', { type: 'button', class: 'btn sm', text: '+ Thêm ' + (node.itemName || 'mục').toLowerCase(), onclick: function () {
+      arr.push(node.add ? node.add() : {}); draw(arr.length - 1); touch(doc);
+      var last = items.lastElementChild; if (last) { last.open = true; last.scrollIntoView({ block: 'nearest' }); }
+    } });
+    box.append(addBtn);
+  }
+  draw();
+  return box;
+}
+
+/* Thử câu hỏi (tab trả lời của Bọ): dùng assets/bo-matcher.js trên dữ liệu ĐANG SỬA (chưa cần lưu). */
+function boTester(doc) {
+  var box = el('div', { class: 'sec', id: 'boTester', style: 'padding:12px 14px;margin:10px 0' });
+  var inp = el('input', { type: 'text', id: 'boTestQ', placeholder: 'Gõ thử một câu hỏi, ví dụ: học phí bao nhiêu', maxlength: '200', style: 'flex:1;min-width:0;font-size:16px;padding:8px 10px' });
+  var go = el('button', { type: 'button', class: 'btn sm', id: 'boTestGo', text: 'Thử câu hỏi' });
+  var dupBtn = el('button', { type: 'button', class: 'btn sm ghost', id: 'boDupGo', text: 'Kiểm tra từ khóa trùng' });
+  var out = el('div', { id: 'boTestOut', role: 'status', style: 'margin-top:10px;font-size:14px;line-height:1.5' });
+  box.append(el('strong', { text: 'Thử câu hỏi' }), el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap;margin-top:8px' }, [inp, go, dupBtn]), out);
+  function ready() {
+    return new Promise(function (res) {
+      if (window.BoMatcher) return res(true);
+      var sc = document.createElement('script'); sc.src = 'assets/bo-matcher.js'; sc.onload = function () { res(true); }; sc.onerror = function () { res(false); }; document.head.appendChild(sc);
+    });
+  }
+  function list() { var d = outData(doc); return BoMatcher.clean(d.replies || [], null, 5000); }
+  function line(label, text) { var p = el('div'); p.append(el('b', { text: label + ' ' }), document.createTextNode(text)); return p; }
+  function run() {
+    var q = inp.value.trim(); out.textContent = '';
+    if (!q) { out.textContent = 'Hãy gõ một câu hỏi.'; return; }
+    ready().then(function (ok) {
+      if (!ok) { out.textContent = 'Không nạp được bộ so khớp (assets/bo-matcher.js).'; return; }
+      var es = list(), idx = BoMatcher.build(es), m = idx.find(q, true);
+      if (!m) { out.append(line('Không mục nào khớp.', 'Bọ sẽ trả lời câu “không hiểu” (tab “Bọ: lời chào & chữ”).')); return; }
+      out.append(line('Mục khớp:', m.entry.id + '  ·  điểm ' + m.score + (m.entry.exact ? '  ·  (exact)' : '')));
+      out.append(line('Từ khóa khớp:', m.keys.join(', ')));
+      out.append(line('Bọ trả lời:', m.entry.reply));
+      if (m.entry.link) out.append(line('Nút liên kết:', m.entry.link.label + ' → ' + m.entry.link.href));
+      if (m.entry.card) out.append(line('Kèm thẻ bản đồ:', 'có'));
+      if (m.ranking.length > 1) out.append(line('Các mục khác cũng khớp:', m.ranking.slice(1).map(function (r) { return es[r.index].id + ' (' + r.score + ')'; }).join(', ')));
+      out.append(line('Số mục / thời gian dựng chỉ mục:', es.length + ' mục, ' + idx.buildMs.toFixed(1) + ' ms'));
+    });
+  }
+  function dup() {
+    out.textContent = '';
+    ready().then(function (ok) {
+      if (!ok) { out.textContent = 'Không nạp được bộ so khớp.'; return; }
+      var r = BoMatcher.duplicates(list());
+      if (!r.identical.length) out.append(line('Không có hai mục nào trùng hệt bộ từ khóa.', ''));
+      r.identical.forEach(function (ids) { var d = line('Cảnh báo:', 'các mục ' + ids.join(', ') + ' có bộ từ khóa GIỐNG HỆT nhau (mục đứng trên luôn thắng, mục dưới không bao giờ được dùng).'); d.style.color = 'var(--bad, #c0392b)'; out.append(d); });
+      if (r.shared.length) out.append(line('Từ khóa nằm ở nhiều mục (' + r.shared.length + '):', r.shared.slice(0, 12).map(function (x) { return '“' + x.key + '” (' + x.ids.join(', ') + ')'; }).join('; ') + (r.shared.length > 12 ? '…' : '')));
+    });
+  }
+  go.addEventListener('click', run); dupBtn.addEventListener('click', dup);
+  inp.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); run(); } });
+  return box;
+}
+
+function buildPane(doc) {
+  var pane = doc.pane;
+  pane.textContent = '';
+  doc.ctx = { vals: [] };
+  pane.append(el('h2', { text: doc.tab }), el('p', { class: 'meta', text: doc.file + (cfg ? '  ·  nhánh ' + cfg.branch : '') }));
+  if (doc.note) pane.append(el('div', { class: 'note', text: doc.note }));
+  if (doc.warn) pane.append(el('div', { class: 'msg bad', text: doc.warn }));
+  doc.adv = el('div', { class: 'note', hidden: true, role: 'status' }); pane.append(doc.adv); showAdvise(doc);
+  if (doc.id === 'bo-replies') pane.append(boTester(doc));
+  var bar = el('div', { class: 'bar' });
+  if (doc.preview && doc.page) bar.append(el('button', { type: 'button', class: 'btn sm', text: 'Xem thử (chưa lưu)', onclick: function () { previewDoc(doc); } }));
+  if (doc.page) bar.append(el('a', { class: 'btn sm ghost', href: doc.page, target: '_blank', rel: 'noopener', text: 'Mở trang đang chạy' }));
+  pane.append(bar);
+  doc.sections.forEach(function (sec) {
+    var d = el('details', { class: 'sec' }), body = el('div', { class: 'body' });
+    d.open = true;
+    d.append(el('summary', { text: sec.title }), body);
+    if (sec.hint) body.append(el('p', { class: 'hint', text: sec.hint }));
+    body.append(fields(sec.fields, doc.data, doc, doc.ctx));
+    if (doc.defaults) body.append(el('button', { type: 'button', class: 'btn sm danger', text: 'Khôi phục mặc định mục này', onclick: function () {
+      if (!confirm('Khôi phục mặc định cho mục “' + sec.title + '”? Các chỉnh sửa chưa lưu của mục này sẽ mất.')) return;
+      Object.keys(sec.fields).forEach(function (k) { if (doc.defaults[k] !== undefined) doc.data[k] = clone(doc.defaults[k]); });
+      if (doc.prep) doc.prep(doc.data);
+      buildPane(doc); touch(doc); toast('Đã khôi phục mặc định mục “' + sec.title + '”. Bấm Lưu để áp dụng.');
+    } }));
+    pane.append(d);
+  });
+}
+
+/* ===================== Xem thử ===================== */
+function previewDoc(doc) {
+  var bad = docErrors(doc);
+  if (bad.length) { toast('Còn lỗi trong form, sửa xong mới xem thử được.'); return; }
+  var names = doc.preview;
+  try {
+    localStorage.setItem('memori.preview.' + doc.name, JSON.stringify(outData(doc)));
+    names.forEach(function (n) { /* các file liên quan nếu đã mở/sửa cũng được đưa vào xem thử */
+      var o = DOCS.filter(function (x) { return x.name === n; })[0];
+      if (o && o.loaded && o !== doc && o.dirty) localStorage.setItem('memori.preview.' + n, JSON.stringify(outData(o)));
+    });
+  } catch (e) { toast('Trình duyệt chặn lưu tạm nên không xem thử được.'); return; }
+  window.open(doc.page + '?mcpreview=1', '_blank', 'noopener');
+}
+
+/* ===================== Tải ảnh lên ===================== */
+function slug(s) { s = String(s).replace(/\.[^.]+$/, '').normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 30); return s || 'anh'; }
+function uploadImage(file, say) {
+  if (!cfg) return Promise.reject(new Error('Chưa đăng nhập.'));
+  if (!/^image\//.test(file.type)) return Promise.reject(new Error('Chỉ nhận file ảnh (JPG, PNG, WebP…).'));
+  if (file.size > 25 * 1024 * 1024) return Promise.reject(new Error('Ảnh lớn quá (tối đa 25 MB).'));
+  var MAXD = 1600;
+  return (window.createImageBitmap ? createImageBitmap(file, { imageOrientation: 'from-image' }).catch(function () { return createImageBitmap(file); }) : Promise.reject(new Error('Trình duyệt này chưa hỗ trợ xử lý ảnh.')))
+    .then(function (bmp) {
+      var sc = Math.min(1, MAXD / Math.max(bmp.width, bmp.height)), w = Math.max(1, Math.round(bmp.width * sc)), h = Math.max(1, Math.round(bmp.height * sc));
+      var cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+      cv.getContext('2d').drawImage(bmp, 0, 0, w, h);
+      if (bmp.close) bmp.close();
+      return new Promise(function (res, rej) {
+        cv.toBlob(function (b) { if (!b) return rej(new Error('Không chuyển được ảnh sang WebP.')); if (b.size > 1.6 * 1024 * 1024) cv.toBlob(function (b2) { res(b2 || b); }, 'image/webp', 0.7); else res(b); }, 'image/webp', 0.85);
+      });
+    })
+    .then(function (blob) { return blob.arrayBuffer().then(function (buf) { return { blob: blob, u8: new Uint8Array(buf) }; }); })
+    .then(function (r) {
+      var ext = r.blob.type === 'image/webp' ? 'webp' : 'png', tries = 0;
+      function attempt() {
+        var name = slug(file.name) + '-' + Date.now().toString(36) + (tries ? tries : ''), path = 'assets/uploads/' + name + '.' + ext;
+        say('Đang tải lên GitHub (' + Math.round(r.u8.length / 1024) + ' KB)…');
+        return putFile(path, u8ToB64(r.u8), null, 'admin: tải ảnh ' + name + '.' + ext).then(function () {
+          state.uploaded[path] = URL.createObjectURL(r.blob); return path;
+        }, function (e) { if ((e.status === 422 || e.status === 409) && tries < 2) { tries++; return attempt(); } throw e; });
+      }
+      return attempt();
+    });
+}
+
+/* ===================== Kiểm tra & lưu ===================== */
+function docErrors(doc) {
+  var errs = [];
+  (doc.ctx ? doc.ctx.vals : []).forEach(function (f) { var m = f(); if (m) errs.push(m); });
+  if (doc.validate) doc.validate(outData(doc)).forEach(function (m) { errs.push(m); });
+  return errs;
+}
+function dirtyDocs() { return DOCS.filter(function (d) { return d.loaded && d.dirty; }); }
+function refreshDirty() {
+  var n = dirtyDocs().length, e = $('#dirty');
+  e.textContent = n ? 'Chưa lưu: ' + n + ' file' : 'Chưa có thay đổi';
+  e.classList.toggle('on', !!n);
+  $('#saveBtn').disabled = !n;
+  DOCS.forEach(function (d) { if (d.tabBtn) d.tabBtn.classList.toggle('dirty', !!(d.loaded && d.dirty)); });
+}
+window.addEventListener('beforeunload', function (e) { if (dirtyDocs().length) { e.preventDefault(); e.returnValue = ''; } });
+
+function conflictAsk(doc, why) {
+  return confirm('File “' + doc.file + '” ' + why + '.\n\nOK = ghi đè bằng bản của bạn.\nHủy = bỏ bản của bạn, tải lại bản mới trên GitHub.') ? 'overwrite' : 'reload';
+}
+function saveOne(doc, row) {
+  var text = outText(doc), tries = 0;
+  function step() {
+    return getFile(doc.file).then(function (remote) {
+      var sha = remote ? remote.sha : null;
+      var changed = remote && doc.remoteText !== null && remote.text !== doc.remoteText;
+      if (changed && !doc.confirmedSha) {
+        if (conflictAsk(doc, 'đã được ai đó sửa trên GitHub từ lúc bạn mở') === 'reload') return { skipped: true, remote: remote };
+      }
+      doc.confirmedSha = null;
+      return putFile(doc.file, strToB64(text), sha, 'admin: cập nhật ' + doc.tab).then(function (res) {
+        doc.sha = res && res.content ? res.content.sha : sha; doc.remoteText = text; doc.orig = text; doc.dirty = false;
+        return { ok: true };
+      }, function (e) {
+        if ((e.status === 409 || e.status === 422) && tries < 2) {
+          tries++;
+          if (conflictAsk(doc, 'vừa thay đổi trong lúc đang lưu') === 'reload') return getFile(doc.file).then(function (r) { return { skipped: true, remote: r }; });
+          doc.confirmedSha = 1; return step();
+        }
+        throw e;
+      });
+    });
+  }
+  return step();
+}
+function reloadFromRemote(doc, remote) {
+  doc.loading = null; doc.loaded = false;
+  return loadDoc(doc).then(function () { if (state.cur === doc) showPane(doc); refreshDirty(); });
+}
+var saving = false;
+function saveAll() {
+  if (saving) return;
+  var list = dirtyDocs();
+  if (!list.length) { toast('Chưa có thay đổi nào để lưu.'); return; }
+  var all = [];
+  Array.prototype.forEach.call(document.querySelectorAll('.msg.top-err'), function (x) { x.remove(); });
+  list.forEach(function (d) { docErrors(d).forEach(function (m) { all.push({ doc: d, m: m }); }); });
+  if (all.length) {
+    showPane(all[0].doc);
+    var host = $('#pane-' + all[0].doc.id);
+    var old = host.querySelector('.msg.top-err'); if (old) old.remove();
+    var ul = el('ul', {}, all.slice(0, 8).map(function (x) { return el('li', { text: x.doc.tab + ' › ' + x.m }); }));
+    var box = el('div', { class: 'msg bad top-err', role: 'alert' }, 'Chưa lưu vì còn ' + all.length + ' lỗi cần sửa:', ul);
+    host.insertBefore(box, host.children[2] || null);
+    var first = host.querySelector('.fld.bad'); if (first) first.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    toast('Còn lỗi trong form, xem khung đỏ.');
+    return;
+  }
+  saving = true;
+  var sb = $('#savebox'), ul2 = $('#sbList'), res = $('#sbRes'), close = $('#sbClose');
+  $('#sbTitle').textContent = 'Đang lưu lên GitHub…'; ul2.textContent = ''; res.textContent = ''; close.hidden = true; sb.hidden = false;
+  var rows = list.map(function (d) { var li = el('li', { class: 'st-wait', text: '… ' + d.file }); ul2.append(li); return li; });
+  var okDocs = [], fails = 0, stop = false;
+  var chain = Promise.resolve();
+  list.forEach(function (d, i) {
+    chain = chain.then(function () {
+      if (stop) { rows[i].textContent = '– ' + d.file + ' (bỏ qua)'; return; }
+      rows[i].textContent = '↻ Đang lưu ' + d.file + '…';
+      return saveOne(d).then(function (r) {
+        if (r.skipped) { rows[i].className = 'st-wait'; rows[i].textContent = '↺ ' + d.file + ': đã tải lại bản mới từ GitHub (bản của bạn bị bỏ)'; return reloadFromRemote(d, r.remote); }
+        rows[i].className = 'st-ok'; rows[i].textContent = '✓ ' + d.file; okDocs.push(d);
+      }, function (e) {
+        fails++; rows[i].className = 'st-bad'; rows[i].textContent = '✗ ' + d.file + ': ' + (e.message || 'lỗi không rõ');
+        if (e.status === 401 || e.status === 403 || e.status === 0) stop = true;
+      });
+    });
+  });
+  chain.then(function () {
+    saving = false; refreshDirty(); close.hidden = false; close.focus();
+    if (okDocs.length && !fails) {
+      $('#sbTitle').textContent = 'Đã lưu';
+      res.append(el('div', { class: 'msg ok', text: 'Đã lưu, web cập nhật sau ~1 phút.' }));
+    } else if (okDocs.length) { $('#sbTitle').textContent = 'Lưu một phần'; res.append(el('div', { class: 'msg bad', text: 'Một số file chưa lưu được. Phần đã lưu sẽ lên web sau ~1 phút.' })); }
+    else { $('#sbTitle').textContent = 'Chưa lưu được'; res.append(el('div', { class: 'msg bad', text: 'Không file nào được lưu. Xem lý do ở trên; các chỉnh sửa của bạn vẫn còn trong form.' })); }
+    var seen = {};
+    okDocs.forEach(function (d) { if (d.page && !seen[d.page]) { seen[d.page] = 1; res.append(el('a', { class: 'btn sm', href: d.page, target: '_blank', rel: 'noopener', text: 'Mở ' + d.page }), ' '); } });
+  });
+}
+$('#sbClose').addEventListener('click', function () { $('#savebox').hidden = true; });
+
+/* ===================== Tab, phiên ===================== */
+function showPane(doc) {
+  state.cur = doc;
+  DOCS.forEach(function (d) { var on = d === doc; if (d.pane) d.pane.hidden = !on; if (d.tabBtn) d.tabBtn.setAttribute('aria-selected', on ? 'true' : 'false'); });
+  if (!doc.loaded) {
+    doc.pane.textContent = '';
+    var wait = el('div', { class: 'skel', text: 'Đang tải ' + doc.file + ' từ GitHub…' });
+    doc.pane.append(wait);
+    loadDoc(doc).then(function () { if (state.cur === doc) refreshDirty(); }, function (e) {
+      doc.pane.textContent = '';
+      doc.pane.append(el('div', { class: 'msg bad', role: 'alert', text: 'Không tải được ' + doc.file + ': ' + (e.message || 'lỗi không rõ') }), el('button', { class: 'btn', type: 'button', text: 'Thử lại', onclick: function () { showPane(doc); } }));
+    });
+  }
+}
+function buildShell() {
+  var tabs = $('#tabs'), panes = $('#panes'), lastGroup = '';
+  tabs.textContent = ''; panes.textContent = '';
+  var dl = $('#pagesDL'); dl.textContent = ''; PAGES.forEach(function (p) { dl.append(el('option', { value: p })); });
+  DOCS.forEach(function (doc) {
+    doc.loaded = false; doc.loading = null; doc.dirty = false; doc.ctx = null;
+    if (doc.group !== lastGroup) { tabs.append(el('div', { class: 'grp', text: doc.group })); lastGroup = doc.group; }
+    doc.tabBtn = el('button', { type: 'button', role: 'tab', 'aria-selected': 'false', onclick: function () { showPane(doc); } }, el('span', { text: doc.tab }), el('i', { class: 'dot' }));
+    tabs.append(doc.tabBtn);
+    doc.pane = el('div', { class: 'pane', id: 'pane-' + doc.id, hidden: true, role: 'tabpanel' });
+    panes.append(doc.pane);
+  });
+  $('#repoLbl').textContent = cfg.owner + '/' + cfg.repo + ' · ' + cfg.branch;
+  refreshDirty();
+  showPane(DOCS[0]);
+}
+function enter() { document.body.classList.add('in'); buildShell(); }
+function logout() {
+  if (dirtyDocs().length && !confirm('Còn thay đổi chưa lưu. Đăng xuất sẽ mất chúng. Tiếp tục?')) return;
+  wipeSession();
+  document.body.classList.remove('in');
+  $('#inTok').value = '';
+  DOCS.forEach(function (d) { d.loaded = false; d.dirty = false; });
+  refreshDirty();
+}
+$('#outBtn').addEventListener('click', logout);
+$('#saveBtn').addEventListener('click', saveAll);
+
+/* ===================== Đăng nhập ===================== */
+function loginErr(m) { var e = $('#loginErr'); e.textContent = m || ''; e.hidden = !m; }
+$('#loginForm').addEventListener('submit', function (ev) {
+  ev.preventDefault(); loginErr('');
+  var token = $('#inTok').value.trim(), owner = $('#inOwner').value.trim(), repo = $('#inRepo').value.trim(), branch = $('#inBranch').value.trim() || 'main';
+  if (!/^[A-Za-z0-9_.-]{1,100}$/.test(owner) || !/^[A-Za-z0-9_.-]{1,100}$/.test(repo)) return loginErr('Tên chủ kho hoặc tên kho chưa đúng (chỉ chữ, số, - _ .).');
+  if (!/^[A-Za-z0-9_./-]{1,100}$/.test(branch) || branch.indexOf('..') >= 0) return loginErr('Tên nhánh chưa đúng.');
+  if (token.length < 20 || /\s/.test(token)) return loginErr('Token có vẻ chưa đúng. Hãy dán nguyên chuỗi github_pat_… (không có dấu cách).');
+  var btn = $('#loginBtn'); btn.disabled = true; btn.textContent = 'Đang kiểm tra…';
+  cfg = { token: token, owner: owner, repo: repo, branch: branch };
+  gh('GET', repoBase()).then(function (r) {
+    if (r && r.permissions && r.permissions.push === false) throw new GhErr(403, 'Token chỉ có quyền đọc. Cần “Contents: Read and write”.');
+    return gh('GET', repoBase() + '/branches/' + branch.split('/').map(encodeURIComponent).join('/')).catch(function (e) { if (e.status === 404) throw new GhErr(404, 'Không có nhánh “' + branch + '” trong kho này.'); throw e; });
+  }).then(function () {
+    var ok = writeCfg(cfg);
+    $('#inTok').value = '';
+    enter();
+    if (!ok) toast('Trình duyệt không cho lưu token: bạn sẽ phải đăng nhập lại khi tải lại trang.');
+  }).catch(function (e) { cfg = null; loginErr(e.message || 'Đăng nhập không được.'); })
+    .then(function () { btn.disabled = false; btn.textContent = 'Đăng nhập'; });
+});
+(function init() {
+  try { var r = JSON.parse(localStorage.getItem(LS_REPO) || 'null'); if (r) { if (r.owner) $('#inOwner').value = r.owner; if (r.repo) $('#inRepo').value = r.repo; if (r.branch) $('#inBranch').value = r.branch; } } catch (e) {}
+  var c = readCfg();
+  if (c && /^[A-Za-z0-9_.-]+$/.test(c.owner) && /^[A-Za-z0-9_.-]+$/.test(c.repo) && /^[A-Za-z0-9_./-]+$/.test(c.branch)) {
+    cfg = c;
+    /* Kiểm tra lại token đã lưu trước khi vào (đã hết hạn thì quay về màn đăng nhập). */
+    gh('GET', repoBase()).then(enter, function (e) {
+      if (e.status === 401 || e.status === 403 || e.status === 404) { wipeSession(); loginErr(e.message); }
+      else enter();
+    });
+  }
+})();
+})();
+
+</script>
 </body>
 </html>

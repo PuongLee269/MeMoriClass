@@ -1,0 +1,65 @@
+{
+  "pageTitle": "Đăng ký lớp F2",
+  "loaderText": "Bọ đang trải tờ giấy đăng ký…",
+  "srTitle": "Đăng ký lớp F2",
+  "srText": "Học phí ưu đãi 1.500.000đ, giá gốc 2.400.000đ. Số lượng có hạn.",
+  "enrolledLabel": "Số người đã đăng ký",
+  "seatWord": "chỗ",
+  "hint": "",
+  "zoneLabelDesk": "Đóng dấu tại đây để đăng ký",
+  "zoneLabelTouch": "Chạm vào đây để đóng dấu",
+  "ctaDesk": "Nhấn để đóng dấu",
+  "hintDone": "Đã gửi đăng ký. Cảm ơn bạn!",
+  "form": {
+    "title": "Đăng ký lớp F2",
+    "lead": "Để lại thông tin, Bọ sẽ liên hệ giữ chỗ cho bạn.",
+    "fields": [
+      {
+        "id": "ten",
+        "label": "Họ tên",
+        "ph": "Nguyễn Văn A",
+        "type": "text",
+        "ac": "name",
+        "req": 1
+      },
+      {
+        "id": "sdt",
+        "label": "Số điện thoại",
+        "ph": "09xx xxx xxx",
+        "type": "tel",
+        "ac": "tel",
+        "req": 1
+      },
+      {
+        "id": "email",
+        "label": "Email",
+        "ph": "ban@email.com",
+        "type": "email",
+        "ac": "email",
+        "req": 1
+      },
+      {
+        "id": "lop",
+        "label": "Lớp",
+        "ph": "F2",
+        "type": "text",
+        "ac": "off",
+        "value": "F2"
+      }
+    ],
+    "submit": "Gửi đăng ký",
+    "sending": "Đang gửi…",
+    "close": "Đóng",
+    "errReq": "Vui lòng nhập thông tin này.",
+    "errPhone": "Số điện thoại chưa đúng (ví dụ 0912 345 678).",
+    "errEmail": "Email chưa đúng (ví dụ ban@email.com).",
+    "errSend": "Chưa gửi được. Bạn thử lại sau ít phút nhé.",
+    "thanksTitle": "Cảm ơn bạn!",
+    "thanksText": "Bọ đã nhận thông tin đăng ký lớp F2 của bạn và sẽ liên hệ sớm. (Bản demo, chưa gửi đi đâu.)"
+  },
+  "fullLabel": "Đã hết chỗ",
+  "seats": {
+    "enrolled": 12,
+    "capacity": 20
+  }
+}
