@@ -5,6 +5,7 @@ compatibility_date = "2026-11-11"
 [vars]
 AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
 LIMITER = "12"            # câu hỏi/phút/IP
+AI_DAILY_PER_IP = "50"    # lần gọi AI/ngày UTC cho mỗi IP
 DAILY_CAP = "2000"        # tổng số lần gọi AI/ngày cho toàn Worker
 ALLOWED_ORIGINS = "https://moriclass.com,https://www.moriclass.com"
 # DEV = "1"               # chỉ khi thử cục bộ: cho phép http://localhost

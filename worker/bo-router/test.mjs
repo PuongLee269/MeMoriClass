@@ -90,3 +90,33 @@ test('Durable Object: đặt alarm và alarm() xóa dữ liệu', async () => {
   await new RateLimit({ storage: { deleteAll: async () => { cleared = true; data.clear(); } } }).alarm();
   assert.ok(cleared);
 });
+
+import { countWords, capWords } from './words.js';
+test('câu hỏi: 49 từ nhận, 50 từ bị từ chối {id:null} 200 và không gọi AI', async () => {
+  const w = n => Array.from({ length: n }, (_, i) => 'từ' + i).join(' ');
+  const a = makeEnv(); const r49 = await worker.fetch(post({ question: w(49) }), a.env);
+  assert.equal(r49.status, 200); assert.equal(await only(r49), 'price'); assert.equal(a.calls.length, 1);
+  const b = makeEnv(); const r50 = await worker.fetch(post({ question: w(50) }), b.env);
+  assert.equal(r50.status, 200); assert.equal(await only(r50), null); assert.equal(b.calls.length, 0);
+});
+test('mỗi IP tối đa 50 lần/ngày: lần 51 -> 429 {id:null}; IP khác vẫn được; AI_DAILY_PER_IP chỉnh được', async () => {
+  const { env } = makeEnv({ LIMITER: '1000', DAILY_CAP: '100000' });
+  let last;
+  for (let i = 0; i < 50; i++) { last = await worker.fetch(post({ question: 'a' }), env); assert.equal(last.status, 200, 'lần ' + (i + 1)); }
+  const r = await worker.fetch(post({ question: 'a' }), env); assert.equal(r.status, 429); assert.equal(await only(r), null);
+  assert.equal((await worker.fetch(post({ question: 'a' }, { 'cf-connecting-ip': '9.9.9.9' }), env)).status, 200);
+  const small = makeEnv({ LIMITER: '1000', AI_DAILY_PER_IP: '2' }).env;
+  const s = []; for (let i = 0; i < 3; i++) s.push((await worker.fetch(post({ question: 'a' }), small)).status);
+  assert.deepEqual(s, [200, 200, 429]);
+});
+test('max_tokens nhỏ (<=16)', async () => {
+  const { env, calls } = makeEnv(); await worker.fetch(post({ question: 'a' }), env); assert.ok(calls[0].max_tokens <= 16);
+});
+test('capWords: cắt tối đa 29 từ, không tính URL', () => {
+  const long = Array.from({ length: 40 }, (_, i) => 'w' + i).join(' ');
+  assert.equal(countWords(capWords(long)), 29);
+  assert.equal(countWords('xem https://a.b/c/d ngay'), 2);
+  const withUrl = capWords(Array.from({ length: 29 }, (_, i) => 'w' + i).join(' ') + ' https://x.y/z');
+  assert.ok(withUrl.endsWith('https://x.y/z')); assert.equal(countWords(withUrl), 29);
+  assert.equal(capWords('một hai ba', 2), 'một hai');
+});

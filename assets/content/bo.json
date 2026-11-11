@@ -14,7 +14,9 @@
   "ai": {
     "enabled": false,
     "endpoint": "",
-    "maxPerSession": 3,
+    "maxPerDay": 50,
+    "maxQuestionWords": 49,
+    "maxAnswerWords": 29,
     "timeoutMs": 4500
   }
 }
