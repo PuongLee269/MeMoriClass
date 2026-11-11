@@ -28,3 +28,5 @@ Mọi worker phải đọc file này trước khi làm và tuân theo. Mỗi m�
 17. Chỉ đăng bản hoàn chỉnh đúng một lần; không đăng bản trung gian (trừ khi được bảo).
 18. Không đụng vào repo ngoài phần được giao. Không ghi đè lịch sử git. Push chỉ khi được bảo rõ.
 19. Báo cáo số token ước lượng; điều phối sẽ đối chiếu với số hệ thống ghi nhận (worker thường tự báo thấp khoảng một nửa).
+20. Báo cáo cuối cho điều phối: TỐI ĐA 10–12 dòng tiếng Việt. Chi tiết dài ghi vào file và nêu đường dẫn đầy đủ.
+21. Trang KHÔNG có chữ hướng dẫn người dùng (gợi ý kéo/chạm/rê chuột, phụ đề hướng dẫn); chỉ giữ chữ nội dung. Nhãn aria vẫn giữ, không hiển thị. Cho phép chỉ báo bằng hình (con trỏ, ánh sáng), không bằng chữ.
