@@ -2,8 +2,8 @@
   "version": 1,
   "page": {
     "title": "Lớp F1",
-    "subtitle": "Kéo cuốn sách sang trái hoặc phải để đổi hình",
-    "hint": "Kéo cuốn sách sang trái hoặc phải",
+    "subtitle": "",
+    "hint": "",
     "backLabel": "← Về trang Bọ",
     "backHref": "index.html",
     "loaderText": "Bọ đang mở cuốn sách…",

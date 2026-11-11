@@ -2,8 +2,8 @@
   "version": 1,
   "page": {
     "title": "Lớp F1",
-    "subtitle": "Kéo cuốn sách sang trái hoặc phải để đổi hình",
-    "hint": "Kéo cuốn sách sang trái hoặc phải",
+    "subtitle": "",
+    "hint": "",
     "backLabel": "← Về trang Bọ",
     "backHref": "index.html",
     "loaderText": "Bọ đang mở cuốn sách…",
@@ -101,5 +101,14 @@
       "idle": []
     }
   },
-  "showArrows": true
+  "showArrows": true,
+  "mobile": {
+    "enabled": true,
+    "aspect": 0.9,
+    "book": {
+      "cx": 425.5,
+      "bottom": 1378,
+      "baseWidth": 351
+    }
+  }
 }
