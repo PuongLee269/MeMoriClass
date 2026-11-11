@@ -37,9 +37,10 @@ Script tự nạp CSS, chèn nút (ảnh `assets/sitemap/map-thumb.webp`, `aria-
 | `roadmap.html` | `/roadmap.html` | Lộ trình lớp F2: 4 chapter, mỗi chapter có video YouTube nhúng (ID tạm từ playlist KMM FILM, cần thay) và kịch bản. Ảnh trong `assets/roadmap/`. | `roadmap` |
 | `dangky.html` | `/dangky.html` | Đăng ký lớp F2 (đóng dấu xác nhận). `submitRegistration()` hiện chỉ là stub demo. Ảnh trong `assets/register/`, font Mali (kèm giấy phép) trong `assets/fonts/`. | `register` |
 | `lopf1.html` | `/lopf1.html` | Cuốn sách ba ô trên bục: kéo trái/phải (hoặc phím mũi tên, con lăn, nút mũi tên) để đổi hình; ô giữa có thể là video YouTube (bấm Phát). Ảnh trong `assets/lopf1/` (+ `bookfx/` khung hình lật sách), nội dung ở `assets/content/lopf1.json` (admin tab "Lớp F1"), tài liệu giao việc ở `docs/lopf1/`. Viên đá "Lớp F1" trên bản đồ trỏ tới trang này. | `lopf1` (từ khóa: lớp f1, sách ảnh, cuốn sách) |
+| `khampha.html` | `/khampha.html` | Thành phố trên mây: 5 nơi (lò gốm, studio ảnh, homestay, sân khấu, lớp học) sáng đèn khi rê chuột hoặc chạm; chạm lần hai mở đường dẫn nếu có. Không có chữ hướng dẫn. Ảnh trong `assets/khampha/` (bản điện thoại `*_m`), nội dung ở `assets/content/khampha.json`, lược đồ ở `docs/khampha/SCHEMA.md`. Viên đá "Khám phá tác phẩm" trên Site Map trỏ tới trang này. | `khampha` |
 
 Từ khóa mới: `roadmap` (lộ trình, chapter, chương, kịch bản, video, lộ trình học); `register` trỏ tới `dangky.html` (đăng ký, lớp f2...).
-`assets/preload-pages.js` được nối vào `index.html` (defer) để tải nền ảnh nặng của roadmap, dangky và lopf1 khi rảnh, bỏ qua khi Tiết kiệm dữ liệu/2g, không tải video.
+`assets/preload-pages.js` được nối vào `index.html` (defer) để tải nền ảnh nặng của roadmap, dangky, lopf1 và khampha khi rảnh, bỏ qua khi Tiết kiệm dữ liệu/2g, không tải video.
 
 
 ## Nội dung sửa được bằng admin (JSON)

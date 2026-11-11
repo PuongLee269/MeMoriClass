@@ -43,7 +43,7 @@
     { id: 'w_hello', keys: ['xin chào', 'chào', 'hello', 'hi', 'bọ ơi'], reply: 'Chào bạn, Bọ đây! Bạn muốn tìm hiểu gì ở ME.MORI Class?' }
   ];
 
-  var PILL = /(^|\/)(?:community|gallery|sitemap|roadmap|dangky|method|gioithieu|lopf1)\.html(?:$|[?#])/;   /* giống BoMatcher.PILL_RE */
+  var PILL = /(^|\/)(?:community|gallery|sitemap|roadmap|dangky|method|gioithieu|lopf1|khampha)\.html(?:$|[?#])/;   /* giống BoMatcher.PILL_RE */
   var SAFE = /^(?:https:\/\/[^\s<>"']+|[\w.%-]+(?:\/[\w.%-]+)*(?:\?[\w=&.%-]*)?(?:#[\w-]*)?)$/;
   var MODE = DS.mode === 'attach' ? 'attach' : (DS.mode === 'hit' ? 'hit' : 'floating');
   var hits = [], anchor = null, raf = 0, DEBUG = /[?&]bodebug\b/.test(location.search);

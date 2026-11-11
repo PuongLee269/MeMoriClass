@@ -30,6 +30,7 @@ Trang `admin.html` cho chủ web sửa chữ, link video và ảnh của các tr
 | Phương pháp | `method.json` | chữ trang, 3 phương pháp (ký hiệu, tên, mô tả, ảnh, video YouTube), luật chơi, thứ tự đống đá, gợi ý tự động (mặc định tắt), âm thanh theo sự kiện. Chi tiết: `docs/METHOD_SCHEMA.md` |
 | Giới thiệu | `gioithieu.json` | tiêu đề, mô tả, video, ảnh bìa, trang chuyển tiếp. Trang chưa có trong web, dữ liệu để sẵn |
 | Lớp F1 | `lopf1.json` | chữ trang, danh sách hình/video (ảnh tải lên hoặc link, video YouTube dán link/ID, chú thích, alt), bật/tắt mũi tên trái/phải, thiết lập kéo (ngưỡng, hút, vuốt nhanh, quán tính, lặp, con lăn). Chỉ YouTube, chưa hỗ trợ Vimeo. Chi tiết: `docs/lopf1/SCHEMA.md` |
+| Khám phá tác phẩm | `khampha.json` | 5 nơi (Lò gốm, Studio ảnh, Homestay, Sân khấu, Lớp học): tên, mô tả, đường dẫn, cách mở; thiết lập chung (cách mở mặc định, hiện tên nơi). Vị trí và ảnh sáng cố định. Chi tiết: `docs/khampha/SCHEMA.md` |
 | Cộng đồng | `community.json` | bài thơ, 6 thành viên (tên, nơi ở, giới thiệu, ảnh, link), chữ nút |
 | Gallery | `gallery.json` | danh sách ảnh (thêm/xóa), ảnh nào hiện ra cho từng bộ 3 viên đá, dòng gợi ý |
 | Trang chủ cũ | `content.json` | nội dung `home-backup.html` (trước đây sửa ở admin cũ) |

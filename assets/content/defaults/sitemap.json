@@ -15,8 +15,8 @@
     {
       "id": 0,
       "name": "Khám phá tác phẩm",
-      "href": "home-backup.html#workshops",
-      "tip": "Xem workshop và tác phẩm",
+      "href": "khampha.html",
+      "tip": "Khám phá tác phẩm",
       "lines": [
         "khám phá",
         "tác phẩm"

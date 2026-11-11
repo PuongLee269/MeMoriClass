@@ -395,6 +395,29 @@
       }
     },
     {
+      "id": "khampha",
+      "keys": [
+        "khám phá",
+        "kham pha",
+        "khám phá tác phẩm",
+        "kham pha tac pham",
+        "lò gốm",
+        "lo gom",
+        "sân khấu",
+        "san khau",
+        "homestay",
+        "studio",
+        "thành phố mây",
+        "thanh pho may",
+        "ngôi nhà mặt trời"
+      ],
+      "reply": "Bọ có một thành phố nhỏ trên mây: lò gốm, studio ảnh, ngôi nhà mặt trời, sân khấu và lớp học. Bạn chạm vào từng nơi để đèn sáng lên. Bọ dẫn bạn đi nhé!",
+      "link": {
+        "href": "khampha.html",
+        "label": "Khám phá tác phẩm"
+      }
+    },
+    {
       "id": "lopf1",
       "keys": [
         "lớp f1",
