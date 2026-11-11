@@ -4,7 +4,11 @@ compatibility_date = "2026-11-11"
 
 [vars]
 AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
-LIMITER = "12"
+LIMITER = "12"            # câu hỏi/phút/IP
+DAILY_CAP = "2000"        # tổng số lần gọi AI/ngày cho toàn Worker
+ALLOWED_ORIGINS = "https://moriclass.com,https://www.moriclass.com"
+# DEV = "1"               # chỉ khi thử cục bộ: cho phép http://localhost
+# AI_JSON = "1"           # bật response_format json_schema nếu model hỗ trợ
 
 [ai]
 binding = "AI"

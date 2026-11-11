@@ -360,6 +360,7 @@
   <script src="assets/bo-idle.js"></script>
   <script>MemoriContent.prefetch("bo");MemoriContent.prefetch("bo-replies",8000);</script>
   <script src="assets/bo-matcher.js"></script>
+  <script src="assets/bo-ai.js"></script>
   <script src="assets/bo-replies.js"></script>
   <script src="assets/map-btn.js" defer></script>
 
@@ -1053,16 +1054,25 @@
         const question = field.value.trim();
         openChat();
         if (!question) { botSay(BO_TEXT.emptyPrompt); field.focus(); return; }
-        const { reply, target, label, card } = findReply(question);
-        let link = null;
-        if (card) link = makeMapCard();
-        else if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; if (BoMatcher.isPagePill(target)) { link.classList.add('go-community'); link.textContent = '✦ ' + label; } }
         userAsked = true;
         addMessage('user').textContent = question;
         field.value = '';
         window.clearTimeout(replyTimer);
-        replyTimer = window.setTimeout(() => botSay(reply, link), reduceMotion.matches ? 0 : 650);
+        answer(question);
       });
+      async function answer(question) {
+        let { reply, target, label, card } = findReply(question);
+        if (!replyIndex.find(question) && typeof BoAI !== 'undefined') {
+          BoAI.configure(typeof BO_AI !== 'undefined' ? BO_AI : null, MemoriContent.url);
+          const id = await BoAI.route(question, k => BO_REPLIES.some(e => e.id === k));
+          const hit = id && BO_REPLIES.find(e => e.id === id);
+          if (hit) ({ reply, target, label, card } = { reply: hit.reply, target: hit.link && hit.link.href, label: hit.link && hit.link.label, card: !!hit.card });
+        }
+        let link = null;
+        if (card) link = makeMapCard();
+        else if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; if (BoMatcher.isPagePill(target)) { link.classList.add('go-community'); link.textContent = '✦ ' + label; } }
+        replyTimer = window.setTimeout(() => botSay(reply, link), reduceMotion.matches ? 0 : 650);
+      }
     })();
   </script>
 <script src="assets/bo-widget.js?v=r526kp" defer data-mode="hit" data-target=".beetle-head .bo-idle" data-inset="0.1,0.12,0.1,0.03" data-activate="#question"></script>

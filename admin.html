@@ -328,7 +328,11 @@ var DOCS = [
         widgetGreeting: S.area('Câu chào trong khung chat nhỏ (hiện khi mở lần đầu)', { req: 1, max: 300 }),
         widgetSend: T('Chữ nút Gửi', { req: 1, max: 16 }),
         widgetClose: T('Tên nút đóng khung chat (đọc màn hình)', { req: 1, max: 40 })
-      } }
+      } },
+      { title: 'AI chọn nhóm trả lời (mặc định TẮT)', fields: { ai: S.grp('', {
+        enabled: S.bool('Bật AI khi từ khóa không khớp (đang tắt nếu không tích)', { help: 'AI chỉ chọn một nhóm câu trả lời có sẵn, không tự viết nội dung. Chỉ bật sau khi đã triển khai Worker.' }),
+        endpoint: S.url('Địa chỉ Worker (https://…)', { https: 1, help: 'Địa chỉ Worker trong thư mục worker/bo-router. Để trống thì AI không chạy dù đã tích.' })
+      }) } }
     ] },
 
   { id: 'bo-replies', group: 'Trang Bọ', tab: 'Bọ: trả lời theo từ khóa', file: 'assets/content/bo-replies.json', page: 'index.html', preview: ['bo-replies', 'bo'],

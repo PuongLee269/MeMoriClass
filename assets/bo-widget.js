@@ -16,7 +16,6 @@
   var SITE = BASE.replace(/assets\/$/, '');
   var DS = script.dataset;
   var KEY = 'memori.bo.thread';
-  var AI_LIMIT_KEY = 'memori.bo.ai-count';
   var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
   var PHONE = window.matchMedia && matchMedia('(max-width:640px)');
 
@@ -32,7 +31,6 @@
     mapCardLabel: 'Tham quan bản đồ',
     fallback: 'Bọ chưa hiểu ý bạn lắm. Thử hỏi Bọ nhé: "Có những workshop nào?", "Học được gì?" hoặc "Đăng ký thế nào?" hoặc "Bản đồ trang đâu?"'
   };
-  var AI = { enabled: false, endpoint: '', maxPerSession: 3, timeoutMs: 4500 };
   var repliesById = Object.create(null);
   /* Thư viện nhỏ dự phòng khi không tải được bo-replies.json. */
   var DEFAULT_REPLIES = [
@@ -192,18 +190,14 @@
     loadP = (async function () {
       if (!window.BoMatcher) await loadScript(BASE + 'bo-matcher.js');
       if (!window.MemoriContent) await loadScript(BASE + 'content-loader.js');
+      if (!window.BoAI) { try { await loadScript(BASE + 'bo-ai.js'); } catch (e) {} }
       var C = window.MemoriContent, list = null;
       if (C) {
         try {
           var res = await Promise.all([C.prefetch('bo', 4000), C.prefetch('bo-replies', 10000)]);
           var t = res[0];
           if (t && typeof t === 'object') Object.keys(TEXT).forEach(function (k) { if (typeof t[k] === 'string' && t[k].trim()) TEXT[k] = C.clean(t[k], 600); });
-          if (t && t.ai && typeof t.ai === 'object') {
-            AI.enabled = t.ai.enabled === true;
-            AI.endpoint = typeof t.ai.endpoint === 'string' ? C.url(t.ai.endpoint, '', {}) : '';
-            AI.maxPerSession = Math.max(0, Math.min(10, Number.isFinite(Number(t.ai.maxPerSession)) ? Number(t.ai.maxPerSession) : 3));
-            AI.timeoutMs = Math.max(1000, Math.min(8000, Number(t.ai.timeoutMs) || 4500));
-          }
+          if (t && window.BoAI) BoAI.configure(t.ai, C.url);
           if (res[1] && Array.isArray(res[1].replies)) list = res[1].replies;
         } catch (e) {}
       }
@@ -258,34 +252,14 @@
     window.clearTimeout(replyTimer);
     ensureEngine().then(async function (eng) {
       var match = eng && eng.find(q), r = match ? eng.reply(q, TEXT.fallback) : null;
-      if (!r && AI.enabled && AI.endpoint) {
-        var id = await routeWithAI(q);
+      if (!r && window.BoAI && BoAI.active()) {
+        var id = await BoAI.route(q, function (k) { return Object.prototype.hasOwnProperty.call(repliesById, k); });
         var entry = id && repliesById[id];
         if (entry) r = { reply: entry.reply, target: entry.link && entry.link.href, label: entry.link && entry.link.label, card: !!entry.card };
       }
       r = r || { reply: TEXT.fallback, target: null, label: null, card: false };
       replyTimer = window.setTimeout(function () { botSay(r.reply, r.target, r.label, r.card); }, (RM && RM.matches) ? 0 : 450);
     });
-  }
-
-  async function routeWithAI(question) {
-    var used = 0;
-    try { used = Number(sessionStorage.getItem(AI_LIMIT_KEY)) || 0; } catch (e) { return null; }
-    if (used >= AI.maxPerSession) return null;
-    try { sessionStorage.setItem(AI_LIMIT_KEY, String(used + 1)); } catch (e) { return null; }
-    var controller = typeof AbortController === 'function' ? new AbortController() : null;
-    var timer = controller ? window.setTimeout(function () { controller.abort(); }, AI.timeoutMs) : 0;
-    try {
-      var response = await fetch(AI.endpoint, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: question.slice(0, 200) }),
-        signal: controller ? controller.signal : undefined, credentials: 'omit', referrerPolicy: 'no-referrer'
-      });
-      if (!response.ok) return null;
-      var data = await response.json();
-      return data && typeof data.id === 'string' && Object.prototype.hasOwnProperty.call(repliesById, data.id) ? data.id : null;
-    } catch (e) { return null; }
-    finally { if (timer) window.clearTimeout(timer); }
   }
 
   /* ---- vị trí khung chat gần Bọ của trang (chế độ attach) ---- */
