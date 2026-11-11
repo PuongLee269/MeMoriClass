@@ -16,3 +16,13 @@ Tài liệu gốc: thư mục Drive "Lớp F1" (ảnh tham chiếu 00_original_r
 
 ## Quy tắc chung khi xuất
 PNG hoặc WebP trong suốt, canvas 1672x941 giữ nguyên cho mọi lớp, mép mờ mềm, cạnh không bị cắt thẳng, không có chữ/UI vẽ liền, màu viền không có halo trắng/đen. Tên file theo tiền tố 01_, 02_ như cũ.
+
+## Mobile (F1_Mobile_5_Layers_Review) - designer fixes
+1. 03 (rune+pedestal+book): polygon includes sky pixels at pedestal/rock edges (halo hidden only because bg is the same sky). Deliver clean alpha; separate rune, pedestal WITHOUT book, and book.
+2. 01 background_restored is smeared behind frame, pedestal and beam band. Currently fully covered in the composite (also at tall/short viewports, since layers move together), but exposed if any layer is moved/scaled. Please restore real content there.
+3. Beam is baked into 04 with the vine frame: cannot pulse separately. Deliver beam as its own layer (we use soft code glow now).
+4. 05 mask is only 781x476 vs frame opening; deliver at full 852x1846 scale, same alpha as frame hole.
+5. 02 foreground alpha has a faint edge band; clean edges.
+6. Pedestal book is flatter/paler than the flip-sprite book (sprite ~20% taller, more orange): match proportions/colour, or deliver pedestal without book.
+7. (mobile, 04 frame) Layer 04 has opaque blue/sky/green-smear pixels about 8px wide INSIDE the frame at the right edge (stage x~802-810) and the bottom edge (stage y~1099-1107), over the picture window. Code cannot cover them (they sit above the picture). Make this strip transparent (or vine-coloured) in 04.
+8. (mobile) Layer 04 (vine frame) is no longer used on mobile: replaced by a code-assembled gold frame, see ORDER_FRAME_FIX.md. Beam is now a code gradient (#mbeam) over the 01 bg.

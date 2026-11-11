@@ -8,8 +8,8 @@ File mẫu đầy đủ: `site/assets/content/lopf1.json`.
   "version": 1,
   "page": {
     "title": "Lớp F1",
-    "subtitle": "Kéo cuốn sách sang trái hoặc phải để đổi hình",
-    "hint": "Kéo cuốn sách sang trái hoặc phải",
+    "subtitle": "",
+    "hint": "",
     "backLabel": "← Về trang Bọ", "backHref": "index.html",
     "loaderText": "Bọ đang mở cuốn sách…",
     "bookLabel": "(nhãn đọc cho người dùng trình đọc màn hình)",
@@ -43,3 +43,15 @@ Mỗi lần lật: `document.dispatchEvent(new CustomEvent('memori:sound',{detai
 
 ## Hình học ba ô tranh (đo từ lớp khung 07, trong hệ 1672x941)
 Mặt nạ lấy từ vùng trong suốt của chính lớp khung (`assets/lopf1/img/mask{L,C,R}.webp`), ảnh đặt DƯỚI khung và được bẻ phối cảnh (matrix3d) theo 4 góc từng ô: trái (80,368)(434,299)(433,674)(75,629); giữa (446,298)(1226,300)(1228,673)(444,674); phải (1237,302)(1592,371)(1595,625)(1238,672).
+
+## mobile (optional block, lopf1.json)
+`"mobile":{"enabled":true,"aspect":0.9,"book":{"cx":425.5,"bottom":1378,"baseWidth":351}}`
+- Items list is SHARED with desktop (same schema, incl. video facade). Mobile shows ONE wide frame.
+- Active when portrait and viewport aspect (w/h) < `aspect`; otherwise desktop art.
+- Art in `assets/lopf1/m/{bg,fg,rune,ped,frame,mask}.webp` (stage 852x1846). Picture sits under `frame`, clipped by `mask`.
+- `book`: anchor of bookfx sprites on the stage (cx, bottom, baseWidth in stage px), measured from layer 03.
+- Swipe/drag on book or frame changes picture; arrows drawn by code at frame edges (44px targets).
+
+Note: `page.subtitle` and `page.hint` are optional visible text; default is empty (rule: no visible how-to text). Empty elements are hidden; aria-labels/live announcements stay.
+
+Mobile frame: assembled in code (`buildFrame`) from `assets/lopf1/m/fr_{c,h,v}.webp`; picture window box = x37 y620 w778 h488 (stage), clip radius 23; rim 30px, inner edge 28px.
