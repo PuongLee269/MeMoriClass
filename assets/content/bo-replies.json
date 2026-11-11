@@ -65,7 +65,13 @@
         "cấu trúc câu chuyện",
         "cau truc cau chuyen",
         "mở đầu cuốn hút",
-        "thông điệp"
+        "thông điệp",
+        "story telling video ngan",
+        "ke chuyen video ngan",
+        "cau truc kich ban ngan",
+        "mo dau video",
+        "hook video",
+        "video ngan la gi"
       ],
       "reply": "Workshop \"Storytelling cho video ngắn\" dạy bạn xây cấu trúc câu chuyện, mở đầu cuốn hút và thông điệp dễ nhớ.",
       "link": {
@@ -83,7 +89,14 @@
         "bo cuc",
         "ánh sáng",
         "anh sang",
-        "chuyển động máy"
+        "chuyển động máy",
+        "tu duy cinematic",
+        "hinh anh cinematic",
+        "quay phim cinematic",
+        "anh sang phim",
+        "goc may",
+        "chuyen dong camera",
+        "khung hinh dep"
       ],
       "reply": "Workshop \"Tư duy hình ảnh cinematic\" rèn bố cục, ánh sáng, chuyển động máy và nhịp cảm xúc cho khung hình của bạn.",
       "link": {
@@ -102,7 +115,14 @@
         "edit",
         "footage",
         "hậu kỳ",
-        "hau ky"
+        "hau ky",
+        "quay va dung",
+        "dung video",
+        "hau ki video",
+        "edit video",
+        "cat ghep video",
+        "lam video tu footage",
+        "quay dung creator"
       ],
       "reply": "Workshop \"Quay dựng cho creator\" giúp bạn biến footage thô thành sản phẩm hoàn chỉnh, rõ nhịp và rõ ý.",
       "link": {
@@ -124,7 +144,15 @@
         "đăng ký lớp f2",
         "dang ky lop f2",
         "lớp f2",
-        "lop f2"
+        "lop f2",
+        "muon dang ky",
+        "dk lop",
+        "dang ki lop",
+        "dang ky f2",
+        "ghi danh lop",
+        "form dang ky",
+        "vao hoc",
+        "bat dau hoc"
       ],
       "reply": "Bạn mở trang Đăng ký lớp F2, điền thông tin rồi đóng dấu xác nhận là xong. Cần hỏi thêm thì gửi mail tới hello@memori.class nhé.",
       "link": {
@@ -144,7 +172,13 @@
         "kịch bản",
         "kich ban",
         "video",
-        "roadmap"
+        "roadmap",
+        "lo trinh f2",
+        "cac chuong hoc",
+        "chuong trinh hoc",
+        "video lo trinh",
+        "xem lo trinh",
+        "kich ban f2"
       ],
       "reply": "Bọ có một cuộn giấy Lộ trình lớp F2: mỗi chapter là một chặng với video giới thiệu kèm kịch bản. Bạn bước vào xem cùng Bọ nhé!",
       "link": {
@@ -163,7 +197,14 @@
         "facebook",
         "inbox",
         "hỏi thêm",
-        "hoi them"
+        "hoi them",
+        "lien lac",
+        "cach lien he",
+        "email memori",
+        "dia chi email",
+        "nhan tin",
+        "gui tin nhan",
+        "contact"
       ],
       "reply": "Bạn có thể viết cho ME.MORI qua hello@memori.class, hoặc tìm trang Instagram và Facebook ở phần chân trang nhé.",
       "link": {
@@ -183,7 +224,16 @@
         "chi phí",
         "chi phi",
         "phí",
-        "price"
+        "price",
+        "hoc phi bao nhieu",
+        "gia lop hoc",
+        "gia khoa hoc",
+        "hoc phi f2",
+        "chi phi hoc",
+        "phi tham gia",
+        "co mat khong",
+        "1tr5",
+        "2tr4"
       ],
       "reply": "Bọ chưa thấy học phí trên trang này. Bạn gửi mail tới hello@memori.class để được báo chính xác nhé.",
       "link": {
@@ -203,7 +253,14 @@
         "giờ học",
         "gio hoc",
         "ngày học",
-        "lịch"
+        "lịch",
+        "lich khai giang",
+        "ngay khai giang",
+        "lich workshop",
+        "lop mo khi nao",
+        "hoc vao luc nao",
+        "thoi gian hoc",
+        "ngay bat dau"
       ],
       "reply": "Trang chưa đăng lịch khai giảng cụ thể. Bạn nhắn hello@memori.class để hỏi lịch workshop mới nhất nhé.",
       "link": {
@@ -222,7 +279,12 @@
         "may buoi",
         "kéo dài",
         "keo dai",
-        "bao nhiêu buổi"
+        "bao nhiêu buổi",
+        "mot buoi bao lau",
+        "tong bao nhieu buoi",
+        "hoc may ngay",
+        "thoi gian khoa hoc",
+        "khoa hoc dai bao lau"
       ],
       "reply": "Các lớp được thiết kế ngắn gọn, mỗi buổi tập trung vào một kỹ năng rõ ràng. Số buổi cụ thể bạn hỏi qua hello@memori.class nhé.",
       "link": {
@@ -243,7 +305,13 @@
         "trực tiếp",
         "truc tiep",
         "địa điểm",
-        "dia diem"
+        "dia diem",
+        "dia diem hoc",
+        "hoc o dau",
+        "lop hoc o dau",
+        "hoc truc tuyen",
+        "hoc truc tiep",
+        "online hay offline"
       ],
       "reply": "Bọ chưa có thông tin địa điểm hay hình thức học (online/offline) trên trang. Bạn hỏi giúp qua hello@memori.class nhé.",
       "link": {
@@ -263,7 +331,13 @@
         "co lop nao",
         "workshop có gì",
         "workshop co gi",
-        "danh sách lớp"
+        "danh sách lớp",
+        "cac workshop",
+        "co workshop nao",
+        "danh sach workshop",
+        "cac lop hoc",
+        "khoa hoc nao",
+        "me mori day gi"
       ],
       "reply": "Hiện có 3 workshop: Storytelling cho video ngắn, Tư duy hình ảnh cinematic và Quay dựng cho creator. Lớp nào cũng ngắn gọn, áp dụng được ngay.",
       "link": {
@@ -283,7 +357,13 @@
         "dạy gì",
         "day gi",
         "kỹ năng",
-        "ky nang"
+        "ky nang",
+        "noi dung khoa hoc",
+        "hoc duoc gi",
+        "lop day gi",
+        "hoc ky nang gi",
+        "sau lop biet lam gi",
+        "chuong trinh hoc gi"
       ],
       "reply": "Bạn học tư duy cinematic, cách kể chuyện, quay dựng và tạo cảm xúc bằng hình ảnh, qua bài tập thật có phản hồi.",
       "link": {
@@ -308,7 +388,13 @@
         "quy trình",
         "quy trinh",
         "các bước",
-        "feedback"
+        "feedback",
+        "cach day hoc",
+        "cach hoc o lop",
+        "hoc theo cach nao",
+        "feedback bai",
+        "thuc hanh ra sao",
+        "brief la gi"
       ],
       "reply": "Phương pháp học nằm trên một chiếc bàn đá: bạn ghép ba khối đá cùng ký hiệu để mở từng phương pháp. Mỗi buổi tập trung một kỹ năng, có ví dụ, thực hành theo brief và feedback.",
       "link": {
@@ -329,7 +415,13 @@
         "phu hop",
         "dành cho ai",
         "danh cho ai",
-        "beginner"
+        "beginner",
+        "chua co kinh nghiem",
+        "moi hoc quay phim",
+        "nguoi moi hoc duoc khong",
+        "khong biet quay",
+        "phu hop voi ai",
+        "ai nen hoc"
       ],
       "reply": "Lớp dành cho creator muốn có tư duy cinematic. Khi đăng ký, bạn chọn chủ đề hợp với mục tiêu và kinh nghiệm hiện tại của mình.",
       "link": {
@@ -346,7 +438,13 @@
         "bai tap",
         "brief",
         "làm bài",
-        "lam bai"
+        "lam bai",
+        "co thuc hanh khong",
+        "bai tap tren lop",
+        "lam bai tap",
+        "thuc hanh tai lop",
+        "nhan nhan xet",
+        "duoc gop y khong"
       ],
       "reply": "Bạn làm bài tập tại lớp, quay dựng theo brief và nhận phản hồi để cải thiện từng phiên bản sản phẩm.",
       "link": {
@@ -386,7 +484,14 @@
         "xem gi",
         "có gì",
         "co gi",
-        "trang web có gì"
+        "trang web có gì",
+        "ban do website",
+        "so do website",
+        "cac muc tren web",
+        "tim duong",
+        "mo trang nao",
+        "dieu huong trang",
+        "web co nhung gi"
       ],
       "reply": "Bọ giữ một tấm bản đồ của cả trang: Lớp F2, Cộng đồng, Gallery, Lộ trình... Bạn muốn Bọ mở ra cho xem không?",
       "link": {
@@ -409,7 +514,13 @@
         "studio",
         "thành phố mây",
         "thanh pho may",
-        "ngôi nhà mặt trời"
+        "ngôi nhà mặt trời",
+        "thanh pho tren may",
+        "kham pha me mori",
+        "tham quan thanh pho",
+        "lo gom studio",
+        "san khau lop hoc",
+        "choi thanh pho may"
       ],
       "reply": "Bọ có một thành phố nhỏ trên mây: lò gốm, studio ảnh, ngôi nhà mặt trời, sân khấu và lớp học. Bạn chạm vào từng nơi để đèn sáng lên. Bọ dẫn bạn đi nhé!",
       "link": {
@@ -429,7 +540,13 @@
         "cuon sach",
         "kéo sách",
         "keo sach",
-        "lớp học f1"
+        "lớp học f1",
+        "lop f1 la gi",
+        "tim hieu f1",
+        "hinh anh lop f1",
+        "noi dung lop f1",
+        "xem sach lop",
+        "lop mot"
       ],
       "reply": "Lớp F1 là một cuốn sách kỳ diệu: bạn kéo sang trái hoặc phải để lật qua từng hình và video của lớp. Bọ dẫn bạn vào xem nhé!",
       "link": {
@@ -470,7 +587,14 @@
         "bo rua",
         "ladybug",
         "phòng tranh",
-        "phong tranh"
+        "phong tranh",
+        "xem thu vien",
+        "anh tac pham",
+        "trien lam anh",
+        "phong trien lam",
+        "anh mau",
+        "xem hinh",
+        "may chieu anh"
       ],
       "reply": "Bọ có một phòng tranh nhỏ. Bạn kéo ngón tay qua ba viên đá trên khay gỗ, máy chiếu sẽ hiện ra một bức ảnh khác nhau. Vào xem với Bọ nhé!",
       "link": {
@@ -489,7 +613,13 @@
         "video mẫu",
         "video mau",
         "xem thử",
-        "demo"
+        "demo",
+        "san pham hoc vien",
+        "du an cua hoc vien",
+        "bai lam hoc vien",
+        "video hoc vien",
+        "tac pham creator",
+        "hoc vien lam duoc gi"
       ],
       "reply": "Mục \"Dự án học viên\" nằm ở cộng đồng ME.MORI. Bạn cũng có thể xem video giới thiệu ở đầu trang nhé.",
       "link": {
@@ -515,7 +645,13 @@
         "ban be",
         "feedback nhóm",
         "group",
-        "cộng đồng me.mori"
+        "cộng đồng me.mori",
+        "cong dong creator",
+        "tham gia cong dong",
+        "gap thanh vien",
+        "cac ban hoc vien",
+        "nhom me mori",
+        "noi chuyen voi moi nguoi"
       ],
       "reply": "ME.MORI có cộng đồng creator cùng yêu video, điện ảnh và kể chuyện bằng hình ảnh, có cả feedback nhóm. Bạn bước vào trang Cộng đồng để gặp mọi người nhé, Bọ dẫn đường cho!",
       "link": {
@@ -532,7 +668,13 @@
         "câu chuyện",
         "cau chuyen",
         "nghệ thuật kể chuyện",
-        "story"
+        "story",
+        "ke chuyen bang hinh anh",
+        "nghe thuat ke chuyen",
+        "cach ke chuyen",
+        "story telling",
+        "xay dung cau chuyen",
+        "y tuong cau chuyen"
       ],
       "reply": "ME.MORI giúp bạn biết mình muốn kể gì, vì sao câu chuyện đáng xem và nên thể hiện nó thế nào.",
       "link": {
@@ -551,7 +693,13 @@
         "cô",
         "mentor",
         "ai dạy",
-        "ai day"
+        "ai day",
+        "ai la nguoi day",
+        "giang vien la ai",
+        "thong tin giao vien",
+        "ten thay co",
+        "mentor la ai",
+        "nguoi huong dan"
       ],
       "reply": "Bọ chưa thấy thông tin giảng viên trên trang. Bạn hỏi qua hello@memori.class để biết ai đồng hành cùng lớp nhé.",
       "link": {
@@ -571,7 +719,13 @@
         "máy ảnh",
         "may anh",
         "chuẩn bị",
-        "chuan bi"
+        "chuan bi",
+        "can mang gi",
+        "can dung may gi",
+        "can chuan bi gi",
+        "dung dien thoai quay duoc khong",
+        "may quay nao",
+        "thiet bi hoc"
       ],
       "reply": "Trang chưa nêu yêu cầu thiết bị. Bạn cứ hỏi hello@memori.class xem cần chuẩn bị gì cho workshop mình chọn nhé.",
       "link": {
@@ -588,7 +742,12 @@
         "chung nhan",
         "bằng cấp",
         "bang cap",
-        "certificate"
+        "certificate",
+        "co chung chi khong",
+        "nhan chung nhan khong",
+        "hoc xong co bang",
+        "cap bang khong",
+        "giay chung nhan"
       ],
       "reply": "Trang chưa nhắc tới chứng chỉ. Bạn hỏi thêm qua hello@memori.class để chắc chắn nhé.",
       "link": {
@@ -607,7 +766,13 @@
         "huy lop",
         "bảo lưu",
         "bao luu",
-        "refund"
+        "refund",
+        "doi lich hoc",
+        "nghi hoc bao luu",
+        "huy dang ky",
+        "huy tham gia",
+        "hoan hoc phi",
+        "chinh sach bao luu"
       ],
       "reply": "Bọ chưa có chính sách hoàn tiền hay bảo lưu trên trang. Bạn hỏi trực tiếp qua hello@memori.class nhé.",
       "link": {
@@ -627,7 +792,13 @@
         "si so",
         "mấy người",
         "may nguoi",
-        "lớp bao nhiêu"
+        "lớp bao nhiêu",
+        "gioi han tuoi",
+        "bao nhieu hoc vien",
+        "si so lop hoc",
+        "co gioi han tuoi khong",
+        "tuoi nao hoc duoc",
+        "lop toi da may nguoi"
       ],
       "reply": "Bọ chưa có thông tin về độ tuổi hay sĩ số lớp. Bạn nhắn hello@memori.class để được giải đáp nhé.",
       "link": {
@@ -646,7 +817,13 @@
         "công cụ",
         "cong cu",
         "tools",
-        "software"
+        "software",
+        "dung ai khong",
+        "phan mem edit nao",
+        "hoc capcut khong",
+        "hoc premiere khong",
+        "can cai app gi",
+        "cong cu dung video"
       ],
       "reply": "Trang chưa nhắc tới AI hay phần mềm cụ thể. Workshop tập trung vào tư duy hình ảnh và kỹ năng quay dựng; bạn hỏi thêm qua hello@memori.class nhé.",
       "link": {
@@ -665,7 +842,12 @@
         "con bo",
         "tên gì",
         "ten gi",
-        "chatbot"
+        "chatbot",
+        "bo oi ban la ai",
+        "tro ly la ai",
+        "gioi thieu ban",
+        "ten cua ban",
+        "ban lam duoc gi"
       ],
       "reply": "Mình là Bọ, chú bọ nhỏ trên trang ME.MORI Class. Bọ chuyên chỉ đường và trả lời các câu hỏi về lớp học."
     },
@@ -682,7 +864,12 @@
         "mori la gi",
         "me.mori là gì",
         "video giới thiệu",
-        "trang giới thiệu"
+        "trang giới thiệu",
+        "gioi thieu me mori class",
+        "video ve me mori",
+        "xem gioi thieu",
+        "mori class la gi",
+        "trang gioi thieu o dau"
       ],
       "reply": "Bạn xem video giới thiệu Me.Mori ở trang Giới thiệu nhé. Xem xong Bọ sẽ đưa bạn sang bản đồ.",
       "link": {
@@ -701,7 +888,12 @@
         "là gì",
         "la gi",
         "về lớp",
-        "ve lop"
+        "ve lop",
+        "me mori class la gi",
+        "mori class la gi",
+        "gioi thieu ve lop",
+        "khong gian me mori",
+        "memori class"
       ],
       "reply": "ME.MORI Class là không gian học dành cho creator, kết hợp điện ảnh, storytelling và kỹ năng làm nội dung.",
       "link": {
@@ -721,7 +913,13 @@
         "hai",
         "joke",
         "thích gì",
-        "thich gi"
+        "thich gi",
+        "ke chuyen vui",
+        "bo co vui khong",
+        "bo thich gi",
+        "noi gi vui di",
+        "ke chuyen di",
+        "tam su voi bo"
       ],
       "reply": "Bọ nhỏ xíu nhưng mê điện ảnh lắm, chỗ nào có ánh sáng đẹp là Bọ bay tới liền. Bạn muốn Bọ chỉ workshop nào không?",
       "link": {
@@ -737,7 +935,12 @@
         "thanks",
         "thank",
         "cám ơn",
-        "biết ơn"
+        "biết ơn",
+        "cam on bo",
+        "cam on nhe",
+        "thank you",
+        "thanks bo",
+        "da cam on"
       ],
       "reply": "Không có chi nha bạn! Cần gì cứ hỏi Bọ tiếp nhé."
     },
@@ -750,7 +953,11 @@
         "hẹn gặp lại",
         "hen gap lai",
         "đi đây",
-        "pp"
+        "pp",
+        "tam biet bo",
+        "thoat nhe",
+        "bye bo",
+        "chao tam biet"
       ],
       "reply": "Tạm biệt bạn nhé, hẹn gặp lại ở ME.MORI Class. Bọ vẫy cánh chào!"
     },
@@ -769,7 +976,12 @@
         "làm được gì",
         "lam duoc gi",
         "có thể làm gì",
-        "co the lam gi"
+        "co the lam gi",
+        "bo giup minh",
+        "hoi bo the nao",
+        "bo ho tro gi",
+        "co giup duoc khong",
+        "huong dan hoi dap"
       ],
       "reply": "Bạn có thể hỏi Bọ về các workshop, nội dung học, cách đăng ký hoặc liên hệ nhé.",
       "link": {
@@ -787,9 +999,31 @@
         "hi",
         "alo",
         "chao bo",
-        "hey"
+        "hey",
+        "chao ban",
+        "xin chao bo",
+        "alo bo",
+        "hello bo",
+        "hi bo",
+        "bo oi"
       ],
       "reply": "Chào bạn, Bọ đây! Bạn muốn tìm hiểu workshop nào của ME.MORI Class?"
+    },
+    {
+      "id": "registration_page",
+      "keys": [
+        "trang dang ky",
+        "dang ky o dau",
+        "link dang ky",
+        "mo trang ghi danh",
+        "vao form dang ky",
+        "dang ky lop f2 o dau"
+      ],
+      "reply": "Bạn mở trang Đăng ký lớp F2 để xem và gửi thông tin đăng ký nhé.",
+      "link": {
+        "href": "dangky.html",
+        "label": "Mở trang Đăng ký"
+      }
     }
   ]
 }

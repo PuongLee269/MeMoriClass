@@ -10,5 +10,11 @@
   "widgetTitle": "Bọ",
   "widgetGreeting": "Mình là Bọ đây. Bạn muốn hỏi về lớp, lộ trình hay cách đăng ký nào?",
   "widgetSend": "Gửi",
-  "widgetClose": "Đóng khung chat"
+  "widgetClose": "Đóng khung chat",
+  "ai": {
+    "enabled": false,
+    "endpoint": "",
+    "maxPerSession": 3,
+    "timeoutMs": 4500
+  }
 }

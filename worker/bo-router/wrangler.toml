@@ -1,0 +1,18 @@
+name = "memori-bo-router"
+main = "index.js"
+compatibility_date = "2026-11-11"
+
+[vars]
+AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+LIMITER = "12"
+
+[ai]
+binding = "AI"
+
+[[durable_objects.bindings]]
+name = "RATE_LIMIT"
+class_name = "RateLimit"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["RateLimit"]

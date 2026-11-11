@@ -16,6 +16,7 @@
   var SITE = BASE.replace(/assets\/$/, '');
   var DS = script.dataset;
   var KEY = 'memori.bo.thread';
+  var AI_LIMIT_KEY = 'memori.bo.ai-count';
   var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)');
   var PHONE = window.matchMedia && matchMedia('(max-width:640px)');
 
@@ -31,6 +32,8 @@
     mapCardLabel: 'Tham quan bản đồ',
     fallback: 'Bọ chưa hiểu ý bạn lắm. Thử hỏi Bọ nhé: "Có những workshop nào?", "Học được gì?" hoặc "Đăng ký thế nào?" hoặc "Bản đồ trang đâu?"'
   };
+  var AI = { enabled: false, endpoint: '', maxPerSession: 3, timeoutMs: 4500 };
+  var repliesById = Object.create(null);
   /* Thư viện nhỏ dự phòng khi không tải được bo-replies.json. */
   var DEFAULT_REPLIES = [
     { id: 'w_register', keys: ['đăng ký', 'dang ky', 'ghi danh', 'học phí', 'hoc phi'], reply: 'Bạn đăng ký lớp F2 ở trang Đăng ký nhé.', link: { href: 'dangky.html', label: 'Đăng ký lớp' } },
@@ -195,12 +198,19 @@
           var res = await Promise.all([C.prefetch('bo', 4000), C.prefetch('bo-replies', 10000)]);
           var t = res[0];
           if (t && typeof t === 'object') Object.keys(TEXT).forEach(function (k) { if (typeof t[k] === 'string' && t[k].trim()) TEXT[k] = C.clean(t[k], 600); });
+          if (t && t.ai && typeof t.ai === 'object') {
+            AI.enabled = t.ai.enabled === true;
+            AI.endpoint = typeof t.ai.endpoint === 'string' ? C.url(t.ai.endpoint, '', {}) : '';
+            AI.maxPerSession = Math.max(0, Math.min(10, Number.isFinite(Number(t.ai.maxPerSession)) ? Number(t.ai.maxPerSession) : 3));
+            AI.timeoutMs = Math.max(1000, Math.min(8000, Number(t.ai.timeoutMs) || 4500));
+          }
           if (res[1] && Array.isArray(res[1].replies)) list = res[1].replies;
         } catch (e) {}
       }
       var entries = window.BoMatcher ? BoMatcher.clean(list || [], C && C.url, 5000) : [];
       if (!entries.length && window.BoMatcher) entries = BoMatcher.clean(DEFAULT_REPLIES, C && C.url, 100);
       engine = window.BoMatcher ? BoMatcher.build(entries) : null;
+      entries.forEach(function (entry) { repliesById[entry.id] = entry; });
       applyText();
       return engine;
     })().catch(function () { return null; });
@@ -246,10 +256,36 @@
     if (!q) { botSay(TEXT.emptyPrompt); input.focus(); return; }
     userSay(q); input.value = '';
     window.clearTimeout(replyTimer);
-    ensureEngine().then(function (eng) {
-      var r = eng ? eng.reply(q, TEXT.fallback) : { reply: TEXT.fallback, target: null };
+    ensureEngine().then(async function (eng) {
+      var match = eng && eng.find(q), r = match ? eng.reply(q, TEXT.fallback) : null;
+      if (!r && AI.enabled && AI.endpoint) {
+        var id = await routeWithAI(q);
+        var entry = id && repliesById[id];
+        if (entry) r = { reply: entry.reply, target: entry.link && entry.link.href, label: entry.link && entry.link.label, card: !!entry.card };
+      }
+      r = r || { reply: TEXT.fallback, target: null, label: null, card: false };
       replyTimer = window.setTimeout(function () { botSay(r.reply, r.target, r.label, r.card); }, (RM && RM.matches) ? 0 : 450);
     });
+  }
+
+  async function routeWithAI(question) {
+    var used = 0;
+    try { used = Number(sessionStorage.getItem(AI_LIMIT_KEY)) || 0; } catch (e) { return null; }
+    if (used >= AI.maxPerSession) return null;
+    try { sessionStorage.setItem(AI_LIMIT_KEY, String(used + 1)); } catch (e) { return null; }
+    var controller = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = controller ? window.setTimeout(function () { controller.abort(); }, AI.timeoutMs) : 0;
+    try {
+      var response = await fetch(AI.endpoint, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question: question.slice(0, 200) }),
+        signal: controller ? controller.signal : undefined, credentials: 'omit', referrerPolicy: 'no-referrer'
+      });
+      if (!response.ok) return null;
+      var data = await response.json();
+      return data && typeof data.id === 'string' && Object.prototype.hasOwnProperty.call(repliesById, data.id) ? data.id : null;
+    } catch (e) { return null; }
+    finally { if (timer) window.clearTimeout(timer); }
   }
 
   /* ---- vị trí khung chat gần Bọ của trang (chế độ attach) ---- */
