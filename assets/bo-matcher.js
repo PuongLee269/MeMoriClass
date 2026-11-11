@@ -21,7 +21,7 @@
   }
 
   /* Trang con có nút viên thuốc (class go-community) + hiệu ứng chuyển trang. */
-  var PILL_RE = /(^|\/)(?:community|gallery|sitemap|roadmap|dangky|method|gioithieu)\.html(?:$|[?#])/;
+  var PILL_RE = /(^|\/)(?:community|gallery|sitemap|roadmap|dangky|method|gioithieu|lopf1)\.html(?:$|[?#])/;
   function isPagePill(href) { return typeof href === 'string' && PILL_RE.test(href); }
 
   /* Bản đối chiếu: đúng từng chữ bộ so khớp cũ trong index.html (O(mục x khóa)). */

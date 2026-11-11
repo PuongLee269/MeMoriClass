@@ -111,7 +111,9 @@ body:not(.stampcur) #zone{cursor:pointer}
 #stamp.parked img{transform:translateY(-22px) rotate(-4deg)}
 body.zone-hot #stamp img,#stamp.lit img{filter:brightness(1.05) saturate(1.1) drop-shadow(0 0 16px rgba(255,190,90,.7)) drop-shadow(0 10px 8px rgba(0,0,0,.4))}
 body.stampcur,body.stampcur *{cursor:none!important}
-body.stampcur #back{cursor:pointer!important}
+body.stampcur #back,body.stampcur .bow-hit{cursor:pointer!important}
+body.stampcur .bow,body.stampcur .bow *{cursor:auto!important}body.stampcur .bow-bo,body.stampcur .bow button{cursor:pointer!important}body.stampcur .bow-in{cursor:text!important}
+body.mopen .bow-hit{display:none!important}
 .sp{position:absolute!important;pointer-events:none!important;width:34px;height:34px;margin:-17px 0 0 -17px;opacity:0;background:radial-gradient(circle,#fff8e0 0 14%,rgba(255,214,120,.55) 34%,transparent 68%)}
 .sp::before,.sp::after{content:"";position:absolute;left:50%;top:50%;width:46px;height:2px;margin:-1px 0 0 -23px;background:linear-gradient(90deg,transparent,#fff3c8,transparent)}
 .sp::after{transform:rotate(90deg)}
@@ -353,10 +355,11 @@ function follow(){ // con dấu bám theo chuột, trễ nhẹ và nghiêng theo
 }
 addEventListener('pointermove',e=>{
  if(e.pointerType==='touch')return;
- mouse=[e.clientX,e.clientY];overInput=!!(e.target.closest&&e.target.closest('a'));
+ mouse=[e.clientX,e.clientY];overInput=!!(e.target.closest&&e.target.closest('a,.bow-hit,.bow'));
  if(!fine||busy)return;
  if(overInput){stamp.classList.remove('show');return}
  if(parked){parked=false;stamp.classList.remove('parked');cur=mouse.slice();stamp.classList.remove('glide');stamp.classList.toggle('show',ready&&!mopen)}
+ else if(ready&&!mopen&&!stamp.classList.contains('show'))stamp.classList.add('show');
  if(!rafS)rafS=requestAnimationFrame(follow);
 },{passive:true});
 document.documentElement.addEventListener('pointerleave',()=>{if(fine&&!busy){parked=true;place(true)}});
@@ -465,4 +468,4 @@ Promise.race([Promise.all([...imgs.map(dec),dec(stampImg),fonts]),wait(15000)]).
 </script>
 
 <script src="assets/map-btn.js" defer></script>
-<script src="assets/bo-widget.js?v=r523b9b7" defer data-corner="bl"></script>
+<script src="assets/bo-widget.js?v=r523b9b7" defer data-mode="attach" data-target="#art .bug" data-inset="0.04,0.04,0.04,0.04" data-side="edge-left"></script>

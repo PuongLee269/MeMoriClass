@@ -291,7 +291,7 @@ var S = {
   grp: function (label, fields, o) { return Object.assign({ k: 'grp', label: label, fields: fields }, o); },
   list: function (label, item, o) { return Object.assign({ k: 'list', label: label, item: item }, o); }
 };
-var PAGES = ['index.html', 'gioithieu.html', 'sitemap.html', 'roadmap.html', 'dangky.html', 'method.html', 'community.html', 'gallery.html', 'home-backup.html', 'home-backup.html#courses', 'home-backup.html#workshops', 'home-backup.html#method', 'home-backup.html#contact'];
+var PAGES = ['index.html', 'gioithieu.html', 'sitemap.html', 'roadmap.html', 'dangky.html', 'method.html', 'community.html', 'gallery.html', 'lopf1.html', 'home-backup.html', 'home-backup.html#courses', 'home-backup.html#workshops', 'home-backup.html#method', 'home-backup.html#contact'];
 var ASPECTS = [{ v: 16 / 9, l: 'Ngang 16:9' }, { v: 4 / 3, l: 'Ngang 4:3' }, { v: 1, l: 'Vuông 1:1' }, { v: 9 / 16, l: 'Dọc 9:16' }];
 var GEM = ['đỏ', 'xanh dương', 'cam', 'xanh lá', 'tím', 'vàng chanh', 'lam', 'hồng', 'trắng'];
 var SYM = [{ v: 'spiral', l: 'Xoắn ốc' }, { v: 'eye', l: 'Con mắt' }, { v: 'mountain', l: 'Ngọn núi' }];
@@ -523,6 +523,39 @@ var DOCS = [
       var errs = [], ids = {}, ph = d.photos || [];
       ph.forEach(function (p) { if (ids[p.id]) errs.push('Mã ảnh trùng: “' + p.id + '”.'); ids[p.id] = 1; });
       (d.assignments || []).forEach(function (a) { if (!ids[a.photo]) errs.push('Có bộ đá đang trỏ tới ảnh không còn tồn tại (“' + a.photo + '”). Hãy chọn lại.'); });
+      return errs;
+    } },
+
+  { id: 'lopf1', group: 'Các trang', tab: 'Lớp F1', file: 'assets/content/lopf1.json', page: 'lopf1.html', preview: ['lopf1', 'site'],
+    note: 'Cuốn sách ba ô: kéo sang trái/phải để đổi hình, ô giữa là ô đang xem. Mỗi mục là một ảnh hoặc một video YouTube (ảnh bìa lấy từ ô ảnh, bỏ trống thì lấy từ YouTube). Ảnh nên ngang, khoảng 1200 px, nhẹ. Hiện chỉ hỗ trợ YouTube.',
+    sections: [
+      { title: 'Chữ của trang', fields: { page: S.grp('', {
+        title: T('Tiêu đề trang', { req: 1, max: 60 }), subtitle: T('Dòng mô tả', { max: 120 }), hint: T('Gợi ý dưới sách', { max: 80 }),
+        backLabel: T('Chữ nút về trang Bọ', { max: 40 }), loaderText: T('Chữ lúc đang tải', { max: 80 }),
+        bookLabel: T('Mô tả cuốn sách (cho trình đọc màn hình)', { max: 200 }), prevLabel: T('Nhãn nút trước', { max: 40 }), nextLabel: T('Nhãn nút sau', { max: 40 }),
+        playLabel: T('Nhãn nút phát video', { max: 40 }), counterText: T('Bộ đếm ({n} / {total})', { max: 40 }), announceText: T('Câu đọc khi đổi hình ({n}, {total}, {caption})', { max: 120 }), videoText: T('Chữ “Video”', { max: 30 })
+      }) } },
+      { title: 'Danh sách hình / video', fields: { items: S.list('Mục', S.grp('', {
+        type: S.sel('Loại', [{ v: 'image', l: 'Hình ảnh' }, { v: 'video', l: 'Video YouTube' }], { req: 1 }),
+        imageUrl: S.img('Ảnh (link hoặc tải lên)'),
+        videoId: S.vidurl('Video YouTube (dán link hoặc ID 11 ký tự, chỉ dùng khi Loại = Video)'),
+        caption: T('Chú thích', { max: 120 }), alt: T('Mô tả ảnh (cho người khiếm thị)', { max: 200 })
+      }), { itemName: 'Mục', itemTitle: function (it) { return (it.type === 'video' ? '[Video] ' : '') + (it.caption || ''); }, add: function () { return { type: 'image', imageUrl: '', videoId: '', provider: '', caption: '', alt: '' }; }, min: 1, max: 24, collapse: 1 }) } },
+      { title: 'Kéo và mũi tên', fields: {
+        showArrows: S.bool('Hiện mũi tên trái/phải'),
+        drag: S.grp('Thiết lập kéo', {
+          threshold: S.num('Quãng kéo tối thiểu để đổi hình (px)', { min: 10, max: 300, req: 1 }), snap: S.num('Độ hút về vị trí (0 đến 1)', { min: 0, max: 1, step: 0.05, req: 1 }),
+          flick: S.num('Độ nhạy khi vuốt nhanh', { min: 0, max: 3, step: 0.05, req: 1 }), inertia: S.bool('Quán tính khi thả tay'), loop: S.bool('Lặp vòng (hết hình cuối quay về đầu)'),
+          wheel: S.bool('Dùng con lăn chuột để đổi hình'), wheelCooldown: S.num('Nghỉ giữa hai lần lăn (ms)', { int: 1, min: 100, max: 2000, req: 1 })
+        })
+      } }
+    ],
+    validate: function (d) {
+      var errs = [];
+      (d.items || []).forEach(function (it, i) {
+        if (it.type === 'video' && !MC.youtubeId(String(it.videoId || ''))) errs.push('Mục ' + (i + 1) + ': loại Video cần link hoặc ID YouTube hợp lệ.');
+        if (it.type !== 'video' && !String(it.imageUrl || '').trim()) errs.push('Mục ' + (i + 1) + ': loại Hình ảnh cần có ảnh.');
+      });
       return errs;
     } },
 

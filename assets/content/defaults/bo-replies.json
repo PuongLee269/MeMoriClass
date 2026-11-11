@@ -395,6 +395,26 @@
       }
     },
     {
+      "id": "lopf1",
+      "keys": [
+        "lớp f1",
+        "lop f1",
+        "f1",
+        "sách ảnh",
+        "sach anh",
+        "cuốn sách",
+        "cuon sach",
+        "kéo sách",
+        "keo sach",
+        "lớp học f1"
+      ],
+      "reply": "Lớp F1 là một cuốn sách kỳ diệu: bạn kéo sang trái hoặc phải để lật qua từng hình và video của lớp. Bọ dẫn bạn vào xem nhé!",
+      "link": {
+        "href": "lopf1.html",
+        "label": "Vào trang Lớp F1"
+      }
+    },
+    {
       "id": "gallery",
       "keys": [
         "gallery",

@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Lộ trình Me.Mori</title>
 <script src="assets/content-loader.js"></script>
+<script src="assets/bo-idle.js"></script>
 <script>MemoriContent.prefetch("roadmap");MemoriContent.prefetch("site");</script>
 
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -325,9 +326,9 @@ const RAYS=[[772,.07,16],[812,.06,12],[858,.09,18],[910,.12,26],[948,.07,14],[98
 
 const WAVE=[[442,796],[500,809],[535,815],[590,806],[650,792],[711,789],[778,803],[838,817],[898,813],[960,797],[973,796],[1006,790],[1050,785],[1096,788],[1156,806],[1200,807],[1248,796]];
 const BOXC=[835,300],BOXW=640,BOXH=380; // hộp tối đa của khung video (toạ độ canvas); khung thật theo tỉ lệ video nằm gọn trong hộp này
-const LADY_FEET=[340,787], LADY_K=0.47, SCL={}, YA={}; // 6 dáng đều là sprite bọ rùa do người dùng tự tạo (gallery/ladybug, 288x308, chân y=292)
-const POSES={idle:146.3,front:145.2,turnRight:139.5,threeQuarterLeft:140.9,turnLeft:142.6,back:143.8};
-const LADY_RULES={onSelf:'front',sectors:['turnRight','idle','back','threeQuarterLeft','turnLeft','threeQuarterLeft','front','idle'],dwell:.25,minMove:6,fade:.14,hop:7,mouseIdle:6,touchIdle:4,glance:{poses:['threeQuarterLeft','front','back'],every:[6,12],hold:[1.2,2]}};
+const LADY_FEET=[340,787], LADY_K=0.47, SCL={}, YA={}; // bộ tư thế TĨNH dùng chung assets/bo/pose-*.webp (232x276, chân (116,266)); không có dáng ngang: nghỉ chính diện, nhìn về phía nào thì quay 3/4
+const POSES={rest:116,turnL:116,turnR:116,back:116,blink:116,surprised:116,laugh:116,lookup:116};
+const LADY_RULES={onSelf:'laugh',sectors:['turnR','turnR','lookup','turnL','turnL','turnL','rest','turnR'],dwell:.25,minMove:6,fade:.001,hop:7,mouseIdle:6,touchIdle:4,selLook:2.2};
 const GLINTS=[[138,262],[96,478],[1604,208],[1500,420],[1552,556],[266,372]];
 
 /* ================= TIỆN ÍCH ================= */
@@ -397,13 +398,14 @@ GLINTS.forEach(([x,y],i)=>{const d=document.createElement('div');d.className='gl
 const lcv=document.createElement('canvas');lcv.className='l';lcv.width=440;lcv.height=380;lcv.style.cssText='left:'+(LADY_FEET[0]-100-165)+'px;top:'+(LADY_FEET[1]-150-640)+'px;width:220px;height:190px';$('moundLGI').appendChild(lcv);
 const lctx=lcv.getContext('2d');
 const poses={};
-for(const k in POSES){const o={img:new Image(),ok:false,proc:null,w:288,h:308};o.ready=new Promise(res=>{o.img.onload=()=>{o.ok=true;o.w=o.img.naturalWidth;o.h=o.img.naturalHeight;bake(o);(o.img.decode?o.img.decode():Promise.resolve()).then(res,res)};o.img.onerror=()=>{o.ok=false;res()}});o.img.src=AS+'ladybug_'+k+'.webp';poses[k]=o}
+for(const k in POSES){const o={img:new Image(),ok:false,proc:null,w:232,h:276};o.ready=new Promise(res=>{o.img.onload=()=>{o.ok=true;o.w=o.img.naturalWidth;o.h=o.img.naturalHeight;bake(o);(o.img.decode?o.img.decode():Promise.resolve()).then(res,res)};o.img.onerror=()=>{o.ok=false;res()}});o.img.src='assets/bo/pose-'+k+'.webp';poses[k]=o}
 function bake(o){try{const c=document.createElement('canvas');c.width=o.w;c.height=o.h;const x=c.getContext('2d');x.drawImage(o.img,0,0);const id=x.getImageData(0,0,o.w,o.h),d=id.data;
   for(let i=0;i<d.length;i+=4){if(!d[i+3])continue;let r=d[i]*.8,g=d[i+1]*.78,b=d[i+2]*.76;const l=.3*r+.59*g+.11*b;d[i]=Math.min(255,l+(r-l)*.9+3);d[i+1]=l+(g-l)*.9;d[i+2]=l+(b-l)*.9}
   x.putImageData(id,0,0);o.proc=c}catch(e){o.proc=null}}
-const LADY={cur:'idle',prev:null,t0:-9,hopT0:-9,hopA:0,hopD:.35,hopN:1,ptr:null,ptrType:'mouse',act:-99,cand:null,candT:0,sec:null,lastP:null,glanceEnd:0,nextG:null,watch:false,sx:0,sy:0,sk:1};
+const BOCTL=BoIdle.create({every:[5,12]});
+const LADY={cur:'rest',selT:-9,prev:null,t0:-9,hopT0:-9,hopA:0,hopD:.35,hopN:1,ptr:null,ptrType:'mouse',act:-99,cand:null,candT:0,sec:null,lastP:null,glanceEnd:0,nextG:null,watch:false,sx:0,sy:0,sk:1};
 let now=0;
-function setPose(n,hop){if(!poses[n]||!poses[n].ok)n='idle';if(!poses[n]||!poses[n].ok||n===LADY.cur)return;LADY.prev=LADY.cur;LADY.cur=n;LADY.t0=now;if(hop&&!RM)ladyHop(1,hop,.3)}
+function setPose(n,hop){if(!poses[n]||!poses[n].ok)n='rest';if(!poses[n]||!poses[n].ok||n===LADY.cur)return;LADY.prev=LADY.cur;LADY.cur=n;LADY.t0=now;if(hop&&!RM)ladyHop(1,hop,.3)}
 function ladyHop(n,a,d){if(RM)return;LADY.hopT0=now;LADY.hopN=n;LADY.hopA=a;LADY.hopD=d}
 function ladyTarget(){
   if(!LADY.ptr)return null;const idle=now-LADY.act;if(idle>(LADY.ptrType==='mouse'?LADY_RULES.mouseIdle:LADY_RULES.touchIdle))return null;
@@ -416,23 +418,22 @@ function ladyTarget(){
 }
 function ladyUpdate(){
   if(LADY.watch){LADY.cand=null;if(LADY.cur!=='back')setPose('back');return}
-  const t=ladyTarget(),g=LADY_RULES.glance;
-  if(t){LADY.glanceEnd=0;
+  if(now<LADY.selT){if(LADY.cur!=='turnR')setPose('turnR');return}   // vừa chọn chương: quay 3/4 về phía hàng chương
+  const t=ladyTarget();
+  if(t){
     const mv=!LADY.lastP||Math.hypot(LADY.ptr[0]-LADY.lastP[0],LADY.ptr[1]-LADY.lastP[1])>=LADY_RULES.minMove;if(mv)LADY.lastP=LADY.ptr.slice();
     if(t!==LADY.cand){LADY.cand=t;LADY.candT=now}
     if(t!==LADY.cur&&now-LADY.candT>=LADY_RULES.dwell)setPose(t);return}
   LADY.cand=null;LADY.sec=null;
-  if(LADY.glanceEnd&&now>LADY.glanceEnd){LADY.glanceEnd=0;setPose('idle');LADY.nextG=now+rnd(...g.every)}
-  else if(!LADY.glanceEnd){if(LADY.nextG==null)LADY.nextG=now+rnd(...g.every);
-    if(LADY.cur!=='idle'&&LADY.glanceEnd===0&&!LADY.justGlanced)setPose('idle');
-    else if(now>LADY.nextG){setPose(g.poses[Math.floor(Math.random()*g.poses.length)]);LADY.glanceEnd=now+rnd(...g.hold)}}
+  const ip=BOCTL.pose;if(LADY.cur!==ip)setPose(ip);   // nghỉ chính diện + biểu cảm thỉnh thoảng (bo-idle.js)
 }
+window.__ladyPose=()=>LADY.cur;window.__lady=LADY; // chỉ để kiểm thử tự động
 function drawLady(){
   ladyUpdate();const W=lcv.width,H=lcv.height;lctx.clearRect(0,0,W,H);
   const sc=2,k=LADY_K*sc;let hop=0;
   if(!RM){const hf=(now-LADY.hopT0)/LADY.hopD;if(hf>=0&&hf<1)hop=Math.abs(Math.sin(Math.PI*LADY.hopN*hf))*LADY.hopA;}
   const br=RM?1:1+.012*Math.sin(now*1.5),bob=RM?0:Math.sin(now*1.5)*.6;
-  const draw=(n,al)=>{const o=poses[n];if(!o||!o.ok)return;const im=o.proc||o.img;lctx.save();const kk=k*(SCL[n]||1);lctx.translate(100*sc,150*sc+(bob-hop)*sc);lctx.scale(br,2-br);lctx.globalAlpha=al;lctx.drawImage(im,-POSES[n]*kk,-(YA[n]||292)*kk,o.w*kk,o.h*kk);lctx.restore()};
+  const draw=(n,al)=>{const o=poses[n];if(!o||!o.ok)return;const im=o.proc||o.img;lctx.save();const kk=k*(SCL[n]||1);lctx.translate(100*sc,150*sc+(bob-hop)*sc);lctx.scale(br,2-br);lctx.globalAlpha=al;lctx.drawImage(im,-POSES[n]*kk,-(YA[n]||266)*kk,o.w*kk,o.h*kk);lctx.restore()};
   const f=RM?1:clamp((now-LADY.t0)/LADY_RULES.fade);if(f<1&&LADY.prev){draw(LADY.prev,1);draw(LADY.cur,f)}else draw(LADY.cur,1);
 }
 
@@ -754,7 +755,7 @@ function select(i,opt){opt=opt||{};const first=chapIdx<0;if(i===chapIdx&&!opt.fo
   }
   applyVol();setAriaPlay();upd();refreshCCBtn();
   if(first)renderScript(i);else{stext.classList.add('swap');$('sketch').style.opacity=.2;setTimeout(()=>{renderScript(i);stext.classList.remove('swap');$('sketch').style.opacity=''},230)}
-  setWrapTarget(first);moveRing();if(!first){ecPulse();ladyHop(1,LADY_RULES.hop,.38)}
+  setWrapTarget(first);moveRing();if(!first){ladyHop(1,LADY_RULES.hop,.38);LADY.selT=now+LADY_RULES.selLook}
   $('live').textContent=`Đã chọn ${c.num}: ${c.title}`;
 }
 chBtns.forEach((b,i)=>{
@@ -797,6 +798,9 @@ function frame(ts){
   if(now-FX.last>1/30&&!RM){FX.last=now;fxDraw()}
 }
 document.addEventListener('visibilitychange',()=>{vis=!document.hidden;app.classList.toggle('paused',document.hidden)});
+/* Bọ rùa của trang là canvas: gắn vùng bấm trong suốt (assets/bo-widget.js, data-mode="attach") để bấm vào chính Bọ là mở khung chat */
+(window.boAttachQueue=window.boAttachQueue||[]).push([()=>{if(app.classList.contains('intro')||!LADY.sx||!LADY.sy)return null;const k=LADY.sk;return {x:LADY.sx-52*k,y:LADY.sy-132*k,w:104*k,h:140*k}},
+  {side:'top',onPointer:e=>{LADY.ptr=[e.clientX,e.clientY];LADY.ptrType=e.pointerType==='mouse'?'mouse':'touch';LADY.act=now},react:()=>{setPose('laugh');BOCTL.react('laugh',1400);ladyHop(1,10,.35)}}]);
 
 /* ================= MỞ ĐẦU (~3 s) ================= */
 function intro(){
@@ -837,4 +841,4 @@ window.__rm={select,get PL(){return PL},CHAPTERS,get PW(){return PW},get BOX(){r
 <!-- build9: Drive layers, iframe-embed facade, flicker fixes -->
 
 <script src="assets/map-btn.js" defer></script>
-<script src="assets/bo-widget.js?v=r523b9b7" defer data-corner="bl" data-oy-m="150"></script>
+<script src="assets/bo-widget.js?v=r525f1" defer data-mode="attach"></script>

@@ -17,6 +17,7 @@
  *       ]);
  *     });
  *   </script>
+ * Đang dùng trong index.html: roadmap, dangky, lopf1 (lopf1.html + assets/lopf1/img/{bg,fg,frame,platform,beam,mask*}.webp).
  * Hoặc đặt data-urls trên thẻ script: <script src="assets/preload-pages.js" data-urls="a.webp,b.webp" defer></script>
  * (tự chạy khi có data-urls). Gọi lại nhiều lần an toàn: URL trùng chỉ thêm một lần.
  */

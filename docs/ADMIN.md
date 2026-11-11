@@ -29,6 +29,7 @@ Trang `admin.html` cho chủ web sửa chữ, link video và ảnh của các tr
 | Đăng ký lớp F2 | `dangky.json` | số đã đăng ký và tổng số chỗ, nhãn, chữ gợi ý vùng đóng dấu, chữ và lỗi của form, lời cảm ơn, mô tả cho trình đọc màn hình |
 | Phương pháp | `method.json` | chữ trang, 3 phương pháp (ký hiệu, tên, mô tả, ảnh, video YouTube), luật chơi, thứ tự đống đá, gợi ý tự động (mặc định tắt), âm thanh theo sự kiện. Chi tiết: `docs/METHOD_SCHEMA.md` |
 | Giới thiệu | `gioithieu.json` | tiêu đề, mô tả, video, ảnh bìa, trang chuyển tiếp. Trang chưa có trong web, dữ liệu để sẵn |
+| Lớp F1 | `lopf1.json` | chữ trang, danh sách hình/video (ảnh tải lên hoặc link, video YouTube dán link/ID, chú thích, alt), bật/tắt mũi tên trái/phải, thiết lập kéo (ngưỡng, hút, vuốt nhanh, quán tính, lặp, con lăn). Chỉ YouTube, chưa hỗ trợ Vimeo. Chi tiết: `docs/lopf1/SCHEMA.md` |
 | Cộng đồng | `community.json` | bài thơ, 6 thành viên (tên, nơi ở, giới thiệu, ảnh, link), chữ nút |
 | Gallery | `gallery.json` | danh sách ảnh (thêm/xóa), ảnh nào hiện ra cho từng bộ 3 viên đá, dòng gợi ý |
 | Trang chủ cũ | `content.json` | nội dung `home-backup.html` (trước đây sửa ở admin cũ) |
@@ -54,4 +55,4 @@ Mọi lần lưu là một commit Git: vào GitHub → file → History → ch�
 `assets/content-loader.js` (`MemoriContent.load(name, defaults, {replace})` trộn sâu JSON lên mặc định nhúng, chỉ nhận đúng kiểu). Thêm trang mới: đưa mặc định vào trang, gọi `load`, rồi thêm một mục `DOCS` trong `admin.html` (schema form) và file `assets/content/defaults/<tên>.json`.
 
 ## Bọ nhỏ ở các trang con
-Mọi trang con (trừ trang Bọ) có Bọ nhỏ ở một góc; bấm vào là chat bằng chính thư viện `bo-replies.json`. Thư viện chỉ tải khi người xem mở chat nên thêm hàng trăm mục không làm trang chậm (xem `docs/BO_PAGES.md`). Chữ riêng của Bọ nhỏ sửa ở tab "Bọ: lời chào & chữ", mục "Bọ nhỏ ở góc các trang con".
+Trang đã có sẵn bọ rùa riêng (gallery, lộ trình, bản đồ, đăng ký, giới thiệu) KHÔNG có thêm Bọ nhỏ: bấm/chạm/Enter vào chính con bọ rùa của trang là mở khung chat. Trang chưa có Bọ (cộng đồng, phương pháp, trang chủ cũ) có Bọ nhỏ ở một góc; bấm vào là chat bằng chính thư viện `bo-replies.json`. Thư viện chỉ tải khi người xem mở chat nên thêm hàng trăm mục không làm trang chậm (xem `docs/BO_PAGES.md`). Cả hai kiểu dùng chung bộ chữ và thư viện. Chế độ từng trang (`data-mode`) nằm trong thẻ `<script src="assets/bo-widget.js">` của trang, xem bảng ở `docs/BO_PAGES.md`. Chữ riêng của Bọ nhỏ sửa ở tab "Bọ: lời chào & chữ", mục "Bọ nhỏ ở góc các trang con".

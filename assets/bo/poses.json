@@ -1,0 +1,166 @@
+{
+ "version": 1,
+ "canvas": {
+  "w": 232,
+  "h": 276
+ },
+ "feetAnchor": {
+  "x": 116,
+  "y": 266
+ },
+ "note": "Tất cả tư thế cùng canvas 232x276, chân (tâm thân, đáy bàn chân) tại (116,266), cùng tỉ lệ 0.8 so với nguồn 384px. KHÔNG có dáng nghiêng ngang (profile) trong bộ tĩnh.",
+ "poses": [
+  {
+   "name": "rest",
+   "file": "assets/bo/pose-rest.webp",
+   "w": 232,
+   "h": 276,
+   "anchor": {
+    "x": 116,
+    "y": 266
+   },
+   "kind": "rest",
+   "bytes": 11984,
+   "source": "02_01_front_neutral",
+   "bbox": [
+    11,
+    41,
+    220,
+    266
+   ]
+  },
+  {
+   "name": "turnR",
+   "file": "assets/bo/pose-turnR.webp",
+   "w": 232,
+   "h": 276,
+   "anchor": {
+    "x": 116,
+    "y": 266
+   },
+   "kind": "turn",
+   "bytes": 11940,
+   "source": "01_08_three_quarter_right",
+   "bbox": [
+    17,
+    20,
+    218,
+    266
+   ]
+  },
+  {
+   "name": "turnL",
+   "file": "assets/bo/pose-turnL.webp",
+   "w": 232,
+   "h": 276,
+   "anchor": {
+    "x": 116,
+    "y": 266
+   },
+   "kind": "turn",
+   "bytes": 11932,
+   "source": "01_08_three_quarter_right+mirror",
+   "bbox": [
+    13,
+    20,
+    214,
+    266
+   ]
+  },
+  {
+   "name": "back",
+   "file": "assets/bo/pose-back.webp",
+   "w": 232,
+   "h": 276,
+   "anchor": {
+    "x": 116,
+    "y": 266
+   },
+   "kind": "back",
+   "bytes": 11960,
+   "source": "01_05_back",
+   "bbox": [
+    25,
+    9,
+    207,
+    266
+   ]
+  },
+  {
+   "name": "blink",
+   "file": "assets/bo/pose-blink.webp",
+   "w": 232,
+   "h": 276,
+   "anchor": {
+    "x": 116,
+    "y": 266
+   },
+   "kind": "expression",
+   "bytes": 11408,
+   "source": "02_02_blink",
+   "bbox": [
+    13,
+    41,
+    217,
+    265
+   ]
+  },
+  {
+   "name": "surprised",
+   "file": "assets/bo/pose-surprised.webp",
+   "w": 232,
+   "h": 276,
+   "anchor": {
+    "x": 116,
+    "y": 266
+   },
+   "kind": "expression",
+   "bytes": 11976,
+   "source": "02_04_surprised",
+   "bbox": [
+    19,
+    49,
+    213,
+    266
+   ]
+  },
+  {
+   "name": "laugh",
+   "file": "assets/bo/pose-laugh.webp",
+   "w": 232,
+   "h": 276,
+   "anchor": {
+    "x": 116,
+    "y": 266
+   },
+   "kind": "expression",
+   "bytes": 11662,
+   "source": "02_03_laugh",
+   "bbox": [
+    12,
+    43,
+    218,
+    266
+   ]
+  },
+  {
+   "name": "lookup",
+   "file": "assets/bo/pose-lookup.webp",
+   "w": 232,
+   "h": 276,
+   "anchor": {
+    "x": 116,
+    "y": 266
+   },
+   "kind": "expression",
+   "bytes": 11682,
+   "source": "02_05_look_up",
+   "bbox": [
+    17,
+    41,
+    215,
+    266
+   ]
+  }
+ ]
+}

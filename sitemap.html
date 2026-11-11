@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Site Map Me.Mori</title>
 <script src="assets/content-loader.js"></script>
+<script src="assets/bo-idle.js"></script>
 <script>MemoriContent.prefetch("sitemap");MemoriContent.prefetch("site");</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
@@ -60,10 +61,10 @@ img{-webkit-user-drag:none}
 .dest.lit-on .ico img{transform:scale(1.07);filter:drop-shadow(0 0 10px rgba(255,200,110,.85))}
 .dest:focus-visible .ring polygon{opacity:1;stroke-width:3.5;stroke:#fff1c4}
 .glint{position:absolute;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,236,150,.9),rgba(255,220,110,.25) 40%,transparent 70%);opacity:0;mix-blend-mode:screen}
-#lady{pointer-events:none;transform-origin:50% 94.8%}
+#lady{pointer-events:none;transform-origin:50% 96.4%}
 #lshadow{pointer-events:none;border-radius:50%;background:radial-gradient(ellipse at 50% 50%,rgba(4,10,6,.7) 0,rgba(4,10,6,.42) 45%,rgba(4,10,6,0) 72%)}
 #lady .bob{position:absolute;left:0;top:0;width:100%;height:100%}
-#lady img{position:absolute;left:0;top:0;opacity:0;transition:opacity .14s linear;filter:brightness(.88) saturate(.95)}
+#lady img{position:absolute;left:0;top:0;opacity:0;filter:brightness(.88) saturate(.95)}
 #lady img.on{opacity:1}
 #back{position:fixed;z-index:5;left:var(--gutL);top:var(--gutT);min-height:44px;display:flex;align-items:center;padding:0 4px;color:var(--ink);font:500 16px/1 var(--sans);text-decoration:none;
  text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 10px rgba(0,0,0,.6);opacity:0;animation:fadeIn .6s ease-out .3s forwards;cursor:default}
@@ -93,7 +94,7 @@ const D0=[
  {id:1,name:'Đăng ký',href:'dangky.html',tip:'Đăng ký tham gia lớp',ic:2,lb:[395,238,-12,62,['Đăng ký']]},
  {id:0,name:'Khám phá tác phẩm',href:'home-backup.html#workshops',tip:'Xem workshop và tác phẩm',ic:-1,lb:[880,150,-7,58,['khám phá','tác phẩm']],pk:.82},
  {id:2,name:'Thư viện Ảnh F1',href:'gallery.html',tip:'Mở Gallery lớp F1',ic:6,lb:[1262,225,12,58,['Thư viện','Ảnh F1']]},
- {id:5,name:'Lớp F1',href:'home-backup.html#courses',tip:'Thông tin lớp F1',ic:0,lb:[335,425,-8,58,['Lớp F1']]},
+ {id:5,name:'Lớp F1',href:'lopf1.html',tip:'Thông tin lớp F1',ic:0,lb:[335,425,-8,58,['Lớp F1']]},
  {id:3,name:'Giới thiệu',href:'gioithieu.html',tip:'Giới thiệu Me.Mori Class',ic:3,lb:[655,335,5,60,['Giới thiệu']]},
  {id:4,name:'Lộ trình Lớp F2',href:'roadmap.html',tip:'Xem lộ trình lớp F2',ic:5,lb:[1040,410,6,58,['Lộ trình','Lớp F2']]},
  {id:8,name:'Cộng đồng',href:'community.html',tip:'Vào không gian Cộng đồng',ic:1,lb:[470,735,8,60,['Cộng đồng']]},
@@ -107,9 +108,11 @@ const D=D0.map(d=>{const c=SC.stones.find(x=>x&&x.id===d.id)||{};const ln=a=>Arr
  const lines=ln(c.lines),pl=ln(c.portraitLines);
  return Object.assign({},d,{name:c.name||d.name,tip:c.tip||d.tip,href:MemoriContent.url(c.href,d.href,{hash:true})||d.href,lb:[d.lb[0],d.lb[1],d.lb[2],d.lb[3],lines.length?lines:d.lb[4]],pl:pl.length?pl:(d.pl&&!lines.length?d.pl:undefined)})});
 const ICONS=[{"cx":309.5,"cy":531.0,"w":187,"h":196},{"cx":358.0,"cy":817.5,"w":246,"h":151},{"cx":494.5,"cy":146.5,"w":139,"h":113},{"cx":661.0,"cy":457.5,"w":200,"h":181},{"cx":785.0,"cy":713.5,"w":196,"h":153},{"cx":1028.0,"cy":550.5,"w":284,"h":133},{"cx":1457.5,"cy":310.0,"w":185,"h":162}];
-const POSE={idle:146.2,front:145.2,turnRight:139.5,threeQuarterLeft:140.9,turnLeft:142.6,back:143.8};
-const LADY_RULES={sectors:['turnRight','idle','back','threeQuarterLeft','turnLeft','threeQuarterLeft','front','idle'],
- dwell:.25,hop:2.5,rest:'threeQuarterLeft',restDelay:1.1,glance:{poses:['front','back','turnLeft'],every:[6,12],hold:[1.2,2]}};
+// bộ tư thế TĨNH dùng chung assets/bo/pose-*.webp (232x276, chân (116,266)); không có dáng ngang: nghỉ chính diện, nhìn về viên đá nào thì quay 3/4 về phía đó, đá ở trên thì ngước mắt.
+const POSE={rest:116,turnL:116,turnR:116,back:116,blink:116,surprised:116,laugh:116,lookup:116};
+const LADY_RULES={sectors:['turnR','turnR','lookup','turnL','turnL','turnL','rest','turnR'],
+ dwell:.25,hop:2.5,rest:'rest',restDelay:1.1};
+const BOCTL=BoIdle.create({every:[5,12]});
 const $=s=>document.querySelector(s);
 const root=$('#root'),stage=$('#stage'),mapw=$('#mapw');
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -150,7 +153,7 @@ function imgEl(id,src){const i=document.createElement('img');i.id=id;i.src=src;i
 const lady=document.createElement('div');lady.id='lady';lady.className='pre';lady.innerHTML='<div class="bob"></div>';stage.appendChild(lady);
 const mound2=imgEl('mound2','assets/sitemap/mound.webp');// lớp gò phía trước: che mép dưới bàn chân
 const bob=lady.firstChild,poses={};
-for(const k in POSE){const i=document.createElement('img');i.alt='';i.draggable=false;i.dataset.p=k;i.onload=()=>{poses[k]=i;if(k===LADY.cur&&!LADY.shown)showPose(k,true)};i.onerror=()=>{delete poses[k]};i.src='assets/sitemap/sprites/ladybug_'+k+'.webp';bob.appendChild(i)}
+for(const k in POSE){const i=document.createElement('img');i.alt='';i.draggable=false;i.dataset.p=k;i.onload=()=>{poses[k]=i;if(k===LADY.cur&&!LADY.shown)showPose(k,true)};i.onerror=()=>{delete poses[k]};i.src='assets/bo/pose-'+k+'.webp';bob.appendChild(i)}
 
 /* ----- bố cục ----- */
 let K=1,port=false,OX=0,OY=0;
@@ -178,8 +181,8 @@ function layout(){
  {const sw2=190*LK,sh2=26*LK;css(lshadow,{left:fx-sw2/2+'px',top:fy-sh2*.5-1*LK+'px',width:sw2+'px',height:sh2+'px'});
   css(mound2,{left:mx+'px',top:my+'px',width:DW*ms+'px',height:DH*ms+'px'});
   const y0=(LADY0[1]-7)*ms,m='linear-gradient(to bottom,transparent '+y0+'px,#000 '+(y0+9*ms)+'px)';mound2.style.webkitMaskImage=m;mound2.style.maskImage=m}
- css(lady,{left:(fx-146*LK)+'px',top:(fy-292*LK)+'px',width:288*LK+'px',height:308*LK+'px'});
- for(const i of bob.children){css(i,{width:288*LK+'px',height:308*LK+'px',left:((146-(POSE[i.dataset.p]||146))*LK)+'px'})}
+ css(lady,{left:(fx-116*LK)+'px',top:(fy-266*LK)+'px',width:232*LK+'px',height:276*LK+'px'});
+ for(const i of bob.children){css(i,{width:232*LK+'px',height:276*LK+'px',left:((116-(POSE[i.dataset.p]||116))*LK)+'px'})}
  // các điểm
  const fs=Math.max(1,K);
  for(const d of D){
@@ -215,17 +218,17 @@ D_LAND.length=D.length;
 function setLit(d,v){d.a.classList.toggle('lit-on',v);if(!v&&LADY.tgt===d){LADY.tgt=null;LADY.lostT=now}}
 
 /* ----- bọ rùa ----- */
-const LADY={cur:'threeQuarterLeft',prev:null,tgt:null,cand:null,candT:0,lostT:-9,nextG:null,glanceEnd:0,shown:false};
+const LADY={cur:'rest',prev:null,tgt:null,cand:null,candT:0,lostT:-9,nextG:null,glanceEnd:0,shown:false};
 let now=0;
 function showPose(k,force){
- if(!poses[k]){k='idle';if(!poses[k]){k=Object.keys(poses)[0];if(!k)return}}
+ if(!poses[k]){k='rest';if(!poses[k]){k=Object.keys(poses)[0];if(!k)return}}
  for(const i of bob.children)i.classList.toggle('on',i.dataset.p===k);
  LADY.shown=true;
  if(k!==LADY.cur||force){}
  LADY.cur=k;
 }
 function setPose(k,hop){
- if(!poses[k])k=poses[LADY_RULES.rest]?LADY_RULES.rest:'idle';
+ if(!poses[k])k=poses[LADY_RULES.rest]?LADY_RULES.rest:'rest';
  if(k===LADY.cur&&LADY.shown)return;
  showPose(k);
  if(!RM&&hop!==0&&bob.animate)bob.animate([{transform:'translateY(0)'},{transform:'translateY('+(-LADY_RULES.hop*LK*1.6)+'px)',offset:.4},{transform:'translateY(0)'}],{duration:280,easing:'ease-out'});
@@ -245,11 +248,7 @@ function ladyUpdate(){
   if(t!==LADY.cur&&now-LADY.candT>=LADY_RULES.dwell)setPose(t);return}
  LADY.cand=null;LADY.sec=null;
  if(now-LADY.lostT<LADY_RULES.restDelay)return;
- const g=LADY_RULES.glance;
- if(LADY.glanceEnd&&now>LADY.glanceEnd){LADY.glanceEnd=0;setPose(LADY_RULES.rest);LADY.nextG=now+rnd(...g.every)}
- else if(!LADY.glanceEnd){if(LADY.nextG==null)LADY.nextG=now+rnd(...g.every);
-  if(LADY.cur!==LADY_RULES.rest)setPose(LADY_RULES.rest);
-  else if(now>LADY.nextG&&!RM){setPose(g.poses[Math.floor(Math.random()*g.poses.length)]);LADY.glanceEnd=now+rnd(...g.hold)}}
+ const ip=BOCTL.pose;if(LADY.cur!==ip)setPose(ip,0);   // nghỉ chính diện + biểu cảm thỉnh thoảng (bo-idle.js)
 }
 
 /* ----- vòng lặp nhẹ: bọ nhấp nhô + lấp lánh (tạm dừng khi ẩn) ----- */
@@ -275,4 +274,5 @@ start();
 // sau khi vào xong, bố cục không bị animation giữ lại
 })();
 </script>
-<script src="assets/bo-widget.js?v=r523b9b7" defer data-corner="bl"></script>
+<script src="assets/bo-widget.js?v=r525f1" defer data-mode="attach"></script>
+<script>(window.boAttachQueue=window.boAttachQueue||[]).push(['#lady',{inset:[.1,.14,.1,.03],side:'edge-right',react:()=>{setPose('laugh',0);BOCTL.react('laugh',1400);if(!RM&&bob.animate)bob.animate([{transform:'translateY(0)'},{transform:'translateY('+(-12*LK)+'px)',offset:.4},{transform:'translateY(0)'}],{duration:380,easing:'ease-out'})}}]);</script>

@@ -36,9 +36,10 @@ Script tự nạp CSS, chèn nút (ảnh `assets/sitemap/map-thumb.webp`, `aria-
 | `method.html` | `/method.html` | Bàn đá "Phương pháp": kéo ba khối đá cùng ký hiệu vào đĩa để mở một phương pháp dạy học (không có chữ hướng dẫn, tự khám phá). Ảnh trong `assets/method/`, nội dung và luật chơi trong `assets/content/method.json` (sửa ở `admin.html`, xem `docs/METHOD_SCHEMA.md`). | `method` (từ khóa mới: bàn đá, ghép đá, khối đá) |
 | `roadmap.html` | `/roadmap.html` | Lộ trình lớp F2: 4 chapter, mỗi chapter có video YouTube nhúng (ID tạm từ playlist KMM FILM, cần thay) và kịch bản. Ảnh trong `assets/roadmap/`. | `roadmap` |
 | `dangky.html` | `/dangky.html` | Đăng ký lớp F2 (đóng dấu xác nhận). `submitRegistration()` hiện chỉ là stub demo. Ảnh trong `assets/register/`, font Mali (kèm giấy phép) trong `assets/fonts/`. | `register` |
+| `lopf1.html` | `/lopf1.html` | Cuốn sách ba ô trên bục: kéo trái/phải (hoặc phím mũi tên, con lăn, nút mũi tên) để đổi hình; ô giữa có thể là video YouTube (bấm Phát). Ảnh trong `assets/lopf1/` (+ `bookfx/` khung hình lật sách), nội dung ở `assets/content/lopf1.json` (admin tab "Lớp F1"), tài liệu giao việc ở `docs/lopf1/`. Viên đá "Lớp F1" trên bản đồ trỏ tới trang này. | `lopf1` (từ khóa: lớp f1, sách ảnh, cuốn sách) |
 
 Từ khóa mới: `roadmap` (lộ trình, chapter, chương, kịch bản, video, lộ trình học); `register` trỏ tới `dangky.html` (đăng ký, lớp f2...).
-`assets/preload-pages.js` được nối vào `index.html` (defer) để tải nền ảnh nặng của 3 trang này khi rảnh, bỏ qua khi Tiết kiệm dữ liệu/2g, không tải video.
+`assets/preload-pages.js` được nối vào `index.html` (defer) để tải nền ảnh nặng của roadmap, dangky và lopf1 khi rảnh, bỏ qua khi Tiết kiệm dữ liệu/2g, không tải video.
 
 
 ## Nội dung sửa được bằng admin (JSON)
@@ -50,17 +51,34 @@ Trang video giới thiệu Me.Mori (nền rừng đêm, bọ rùa, khung video k
 
 ## Bọ nhỏ ở góc mọi trang (`assets/bo-widget.js` + `assets/bo-widget.css`)
 Bọ nhỏ (ảnh `assets/bo/bo-idle-s.webp` 144 px, thở nhẹ, lấp lánh thưa, không hiện câu gợi ý). Bấm/chạm/Enter: Bọ nhảy một cái (dùng `bo-fly.webp`) và mở khung chat gọn (bottom sheet trên điện thoại <= 640px, khung nổi trên máy tính). Esc đóng và trả focus về Bọ. Sự kiện con trỏ/phím trong khung không lọt xuống trang. Thread chat lưu trong `sessionStorage` (`memori.bo.thread`, 30 tin cuối) nên chuyển trang vẫn còn.
-Thêm vào trang (trước `</body>`): `<script src="assets/bo-widget.js" defer data-corner="bl"></script>`; tùy chọn `data-corner-m` (góc riêng trên điện thoại), `data-ox`, `data-oy`, `data-ox-m`, `data-oy-m` (dịch vào trong/lên trên, px) để tránh điều khiển của trang.
+Thêm vào trang chưa có Bọ (trước `</body>`): `<script src="assets/bo-widget.js" defer data-mode="floating" data-corner="bl"></script>`; tùy chọn `data-corner-m` (góc riêng trên điện thoại), `data-ox`, `data-oy`, `data-ox-m`, `data-oy-m` (dịch vào trong/lên trên, px) để tránh điều khiển của trang.
 
 | Trang | Góc | Ghi chú |
 |---|---|---|
 | community | bl; điện thoại nâng lên 125px | thơ ở đáy màn hình điện thoại |
-| gallery, dangky, sitemap, home-backup, gioithieu | bl | |
-| roadmap | bl; điện thoại nâng 150px | hàng chapter ở đáy |
+| home-backup | bl | |
 | method | tl | góc dưới trái có nút "Trang Bọ", khối đá ở đáy |
-Nút bản đồ vẫn ở góc của nó (trên phải; home-backup: dưới phải). `index.html` không dùng widget (đã có khung chat đầy đủ).
+Nút bản đồ vẫn ở góc của nó (trên phải; home-backup: dưới phải). `index.html` chỉ dùng `data-mode="hit"` (bấm Bọ thì focus ô chat; không có khung chat riêng).
+
+### Chế độ của widget theo trang (`data-mode`)
+Nguyên tắc: trang nào đã có bọ rùa riêng thì KHÔNG thêm Bọ nhỏ thứ hai; bấm vào chính bọ rùa đó mở khung chat. Trang chưa có Bọ thì dùng Bọ nhỏ ở góc (`floating`).
+
+| Trang | Bọ riêng? | Loại | Chế độ widget | Phần tử / vùng bấm | Hướng khung chat (máy tính; điện thoại: tấm ở phía đối diện Bọ) |
+|---|---|---|---|---|---|
+| gallery | có | canvas (nhiều tư thế) | attach (hàm `boAttachQueue`) | vùng bấm bám theo toạ độ vẽ Bọ; rê lên Bọ vẫn gọi `ladyPtr` (tư thế "front"); bấm: `setPose('front')` + nhảy | `left` |
+| roadmap | có | canvas trên gò trái | attach (`boAttachQueue`) | bám `LADY.sx/sy`; rê giữ logic `LADY.ptr`; bấm: pose "front" + nhảy | `top` |
+| sitemap | có | sprite DOM `#lady` trên gò rêu | attach (`boAttachQueue`, `'#lady'`) | thu hẹp vào thân Bọ để không đè đá; bấm: pose "front" + nhảy (logic rê đá đổi tư thế giữ nguyên) | `edge-right` |
+| dangky | có | ẢNH nướng sẵn `#art .bug` (cầm bút) | attach (`data-target="#art .bug"`) | nút trong suốt phủ lên ảnh, tránh vùng đóng dấu; con trỏ = pointer, con dấu ẩn khi rê lên Bọ; ẩn khi form mở | `edge-left` |
+| gioithieu | có | lớp ảnh `#fxs [data-k=lady]` (bọ rùa trên lá) | attach (`data-target`) | nút trong suốt phủ lên lớp, nhảy bằng thuộc tính `translate` | `edge-left` |
+| index | có | lớp giấy `.beetle-head` | `hit` (không khung chat riêng) | bấm Bọ: focus ô `#question` | không có |
+| community, method, home-backup | không | | floating (Bọ nhỏ ở góc như bảng trên) | | method: `data-panel="right"` |
+
+Gắn vào Bọ có sẵn: `data-mode="attach" data-target="<selector>" data-inset="l,t,r,b" data-side="top|left|right|edge-left|edge-right"` trên thẻ script, hoặc (Bọ vẽ bằng canvas) `(window.boAttachQueue=window.boAttachQueue||[]).push([hàmTrảVềHCN|selector,{side,react,onPointer}])`. `react` là phản ứng của Bọ trang (dùng tư thế/hop của chính trang; mặc định nhảy nhẹ bằng `translate`). API JS: `BoWidget.open() / close() / toggle() / attachTo(target, tuỳ chọn)`. Vùng bấm là `<button class="bow-hit">` trong suốt, >= 44 px, `aria-label="Trò chuyện với Bọ"`, Tab/Enter/Space; thêm `?bodebug=1` vào URL để thấy khung viền.
 
 Hiệu năng (thư viện lớn): lúc tải trang chỉ có widget (~26 KB JS+CSS thô, ~9 KB gzip, ảnh Bọ 10 KB). `bo-matcher.js`, `content-loader.js`, `bo.json`, `bo-replies.json` chỉ được tải khi mở chat lần đầu (có `?v=` chống cache); lỗi mạng thì dùng thư viện nhỏ dự phòng trong widget. Sau khi tải, `BoMatcher.build()` dựng chỉ mục ngược một lần; mỗi câu hỏi tốn O(độ dài câu), không phụ thuộc số mục. Đo trên Chromium (máy dev): 1000 mục = 405 KB thô / 98 KB gzip, dựng chỉ mục ~25 ms, mỗi câu ~0,01 ms; 5000 mục = 2,0 MB / 491 KB gzip, dựng ~100 ms, mỗi câu ~0,02 ms (p99 ~0,13 ms); bộ nhớ thêm ~1,8 MB và ~8 MB. Giới hạn nạp: `content-loader` nhận tối đa 5000 mục (`opts.max`), `admin.html` cho phép tối đa 5000 mục; mỗi mục tối đa 120 từ khóa, khóa <= 80 ký tự.
 `bo-matcher.js` còn có `findLinear` (bản cũ để đối chiếu), `clean`, `duplicates`, và `find(q, true)` (kèm khóa khớp/xếp hạng) để sau này gắn AI dự phòng khi `find` trả null.
 
 Chữ của widget sửa ở `assets/content/bo.json` (admin tab "Bọ: lời chào & chữ", mục "Bọ nhỏ ở góc các trang con"): `widgetLabel`, `widgetTitle`, `widgetGreeting`, `widgetSend`, `widgetClose`; dùng chung `placeholder`, `emptyPrompt`, `mapCardLabel`, `fallback` với trang Bọ.
+
+## Dáng tĩnh của Bọ (không dùng mặt ngang)
+Nghỉ = chính diện, nhìn về một phía = quay 3/4, thỉnh thoảng có biểu cảm (chớp mắt, cười, ngạc nhiên, ngước lên). Bộ ảnh `assets/bo/pose-*.webp` + `assets/bo/poses.json`, mô-đun `assets/bo-idle.js`. Chi tiết, danh sách sprite dùng/loại và hành vi từng trang: `docs/BO_POSES.md`.

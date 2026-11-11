@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#050816">
 <title>Gallery Me.Mori</title>
 <script src="assets/content-loader.js"></script>
+<script src="assets/bo-idle.js"></script>
 <script>MemoriContent.prefetch("gallery");MemoriContent.prefetch("site");</script>
 <link rel="preload" href="assets/fonts/BeVietnamPro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/BeVietnamPro-400-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
@@ -67,31 +68,28 @@ const PHOTOS=(()=>{const seen={},out=[];for(const p of GC.photos){if(!p||typeof 
   const at=Array.isArray(p.at)&&p.at.length===2&&p.at.every(n=>typeof n==='number'&&isFinite(n)&&Math.abs(n)<5000)?p.at:undefined;out.push({id:p.id,src,alt:typeof p.alt==='string'?p.alt:'',at})}
   return out.length?out:PHOTOS0})();
 const ASSIGNMENTS=ASSIGNMENTS0.map((d,i)=>{const c=GC.assignments[i];const ok=c&&PHOTOS.some(p=>p.id===c.photo);return{gems:d.gems,photo:ok?c.photo:(PHOTOS.some(p=>p.id===d.photo)?d.photo:PHOTOS[0].id)}});
-// Bọ rùa: các tư thế (sprite 288x308, chân ở y=292). cx = trọng tâm thân theo x (đo bằng alpha) để đổi tư thế không làm thân bị nhảy.
-// Tư thế available:false CHƯA có sprite: người dùng sẽ đưa file tên assets/gallery/ladybug_<tên tư thế>.webp (blink, lookScreen, happy, surprised, walk_1..4);
-// khi có file chỉ cần đổi available:true (và thêm cx). Tư thế không có sẵn không bị yêu cầu tải (không có lỗi 404).
+// Bọ rùa: bộ tư thế TĨNH dùng chung (assets/bo/pose-*.webp, 232x276, chân ở (116,266); docs/BO_POSES.md). KHÔNG có dáng ngang: nghỉ = chính diện, nhìn về một phía = quay 3/4, "back" chỉ để nhìn ảnh chiếu.
+// Biểu cảm (chớp mắt, cười, ngạc nhiên, ngước lên) do assets/bo-idle.js tự phát 5-12 giây một lần khi không có tương tác.
 const LADYBUG_POSES = {
-  idle:{file:'assets/gallery/ladybug_idle.webp',available:true,cx:146.2},
-  front:{file:'assets/gallery/ladybug_front.webp',available:true,cx:145.2},
-  turnRight:{file:'assets/gallery/ladybug_turnRight.webp',available:true,cx:139.5},
-  threeQuarterLeft:{file:'assets/gallery/ladybug_threeQuarterLeft.webp',available:true,cx:140.9},
-  turnLeft:{file:'assets/gallery/ladybug_turnLeft.webp',available:true,cx:142.6},
-  back:{file:'assets/gallery/ladybug_back.webp',available:true,cx:143.8},
-  blink:{file:'assets/gallery/ladybug_blink.webp',available:false}, lookScreen:{file:'assets/gallery/ladybug_lookScreen.webp',available:false},
-  happy:{file:'assets/gallery/ladybug_happy.webp',available:false}, surprised:{file:'assets/gallery/ladybug_surprised.webp',available:false},
-  walk_1:{file:'assets/gallery/ladybug_walk_1.webp',available:false}, walk_2:{file:'assets/gallery/ladybug_walk_2.webp',available:false},
-  walk_3:{file:'assets/gallery/ladybug_walk_3.webp',available:false}, walk_4:{file:'assets/gallery/ladybug_walk_4.webp',available:false},
+  rest:{file:'assets/bo/pose-rest.webp',available:true},
+  turnL:{file:'assets/bo/pose-turnL.webp',available:true},
+  turnR:{file:'assets/bo/pose-turnR.webp',available:true},
+  back:{file:'assets/bo/pose-back.webp',available:true},
+  blink:{file:'assets/bo/pose-blink.webp',available:true},
+  surprised:{file:'assets/bo/pose-surprised.webp',available:true},
+  laugh:{file:'assets/bo/pose-laugh.webp',available:true},
+  lookup:{file:'assets/bo/pose-lookup.webp',available:true},
 };
+const LADY_FX=116, LADY_FY=266;   // chân (px sprite)
 // Bảng chọn tư thế theo vị trí con trỏ (dễ sửa). Kiểm tra theo thứ tự: vùng trước, rồi 8 hướng (góc 0=phải, 90=trên, ngược chiều kim đồng hồ).
-// Chưa có sprite ngẩng/cúi đầu nên "trên" dùng back (quay lưng nhìn lên ảnh chiếu), "dưới" dùng front.
+// "trên" dùng back (quay lưng nhìn lên ảnh chiếu); các hướng ngang dùng quay 3/4 (turnL/turnR), không bao giờ nhìn ngang.
 const LADY_RULES = {
-  onSelf:'front',            // con trỏ đặt lên chính bọ rùa
-  regions:{frame:'back', tray:'front'},   // con trỏ trên khung ảnh / khay
-  sectors:['turnRight','idle','back','threeQuarterLeft','turnLeft','threeQuarterLeft','front','idle'], // phải, trên-phải, trên, trên-trái, trái, dưới-trái, dưới, dưới-phải
-  dwell:0.25, minMove:6, fade:0.14, hop:2.5,   // giây / px
-  mouseIdle:6, touchIdle:4,                    // về idle sau (giây)
-  glance:{poses:['threeQuarterLeft','front','back'],every:[6,12],hold:[1.2,2]},
-  photoChange:{pose:'back',hold:2.2}, glitch:{pose:'front',hold:1.1},
+  onSelf:'laugh',            // con trỏ đặt lên chính bọ rùa: cười
+  regions:{frame:'back', tray:'rest'},   // con trỏ trên khung ảnh / khay
+  sectors:['turnR','turnR','back','turnL','turnL','turnL','rest','turnR'], // phải, trên-phải, trên, trên-trái, trái, dưới-trái, dưới, dưới-phải
+  dwell:0.25, minMove:6, fade:0.001, hop:2.5,   // giây / px
+  mouseIdle:6, touchIdle:4,                    // về nghỉ sau (giây)
+  photoChange:{pose:'back',hold:2.2}, glitch:{pose:'surprised',hold:1.1},
 };
 /* ===== HẾT DỮ LIỆU ===== */
 
@@ -130,8 +128,9 @@ function bakePose(o){if(!o.ok||o.proc)return;try{const c=document.createElement(
     let r=d[k]*.85,g=d[k+1]*.85,b=d[k+2]*.85;const l=.3*r+.59*g+.11*b;r=l+(r-l)*.92;g=l+(g-l)*.92;b=l+(b-l)*.92;
     d[k]=Math.min(255,r*(1+.05*t));d[k+1]=g*(1+.0*t);d[k+2]=b*(1-.1*t)}
   x.putImageData(id,0,0);o.proc=c}catch(_){o.proc=null}}
-const LADY={cur:'idle',prev:null,t0:-9,hopT0:-9,hopN:1,hopA:0,hopD:.3,shT0:-9,ovr:null,until:0,act:-99,want:'idle',cand:'idle',candT:0,ptr:null,ptrType:'mouse',inside:false,glanceAt:null,glanceEnd:0,lastP:null};
-function setPose(name,hop){if(!poses[name]||!poses[name].ok){name='idle';if(!poses.idle.ok)return}if(name===LADY.cur)return;
+const BOCTL=BoIdle.create({every:[5,12]});
+const LADY={cur:'rest',prev:null,t0:-9,hopT0:-9,hopN:1,hopA:0,hopD:.3,shT0:-9,ovr:null,until:0,act:-99,want:'rest',cand:'rest',candT:0,ptr:null,ptrType:'mouse',inside:false,glanceAt:null,glanceEnd:0,lastP:null};
+function setPose(name,hop){if(!poses[name]||!poses[name].ok){name='rest';if(!poses.rest.ok)return}if(name===LADY.cur)return;
   if(RM){LADY.prev=null;LADY.cur=name;return}
   LADY.prev=LADY.cur;LADY.cur=name;LADY.t0=now;if(hop!==0)ladyHop(1,hop||LADY_RULES.hop,.28)}
 function ladyHop(n,a,d){LADY.hopT0=now;LADY.hopN=n;LADY.hopA=a;LADY.hopD=d}
@@ -155,7 +154,7 @@ function ladyTarget(P){ // trả về tên tư thế theo con trỏ, hoặc null
 }
 function ladyUpdate(P){
   if(RM){ // giảm chuyển động: chỉ đổi tư thế tức thì khi có sự kiện trực tiếp
-    if(LADY.ovr&&now>LADY.until){LADY.ovr=null;setPose('idle')}return}
+    if(LADY.ovr&&now>LADY.until){LADY.ovr=null;setPose('rest')}return}
   if(LADY.ovr){if(now<LADY.until)return;LADY.ovr=null;LADY.cand=null}
   const t=ladyTarget(P);
   if(t){LADY.glanceAt=null;
@@ -164,12 +163,9 @@ function ladyUpdate(P){
     if(t!==LADY.cur&&now-LADY.candT>=LADY_RULES.dwell&&(mv||LADY.cand===t))setPose(t);
     return}
   LADY.cand=null;LADY.sec=null;
-  const g=LADY_RULES.glance;
-  if(LADY.glanceEnd&&now>LADY.glanceEnd){LADY.glanceEnd=0;setPose('idle');LADY.nextG=now+rnd(...g.every)}
-  else if(!LADY.glanceEnd){ if(LADY.nextG==null)LADY.nextG=now+rnd(...g.every);
-    if(LADY.cur!=='idle'){setPose('idle')} // sau khi hết hoạt động con trỏ
-    else if(now>LADY.nextG){LADY.glanceP=g.poses[Math.floor(Math.random()*g.poses.length)];setPose(LADY.glanceP);LADY.glanceEnd=now+rnd(...g.hold)}}
+  const ip=BOCTL.pose;if(LADY.cur!==ip)setPose(ip,0); // nghỉ chính diện + biểu cảm thỉnh thoảng (bo-idle.js)
 }
+window.__ladyPose=()=>LADY.cur;window.__lady=LADY; // chỉ để kiểm thử tự động
 const LADYSK=0.34; // sprite 288x308: thân rộng ~213px; 0.34 cho thân ~72px canvas như sprite cũ
 /* ---- bố cục ---- */
 let W=0,H=0,DPR=1,L=null,portrait=false;
@@ -443,11 +439,10 @@ function drawLady(P,a){
   let hop=0,shx=0;
   if(!RM){const hf=(now-LADY.hopT0)/LADY.hopD;if(hf>=0&&hf<1)hop=Math.abs(Math.sin(Math.PI*LADY.hopN*hf))*LADY.hopA;
     const sf=(now-LADY.shT0)/0.3;if(sf>=0&&sf<1)shx=(Math.floor(sf*4)%2?-1:1)*1.5}
-  const [ax,ay]=pt(P,645,749);
+  const [ax,ay]=pt(P,645,749);LADY.box=[ax,ay,k];
   const draw=(name,al)=>{const o=poses[name];if(!o||!o.ok)return;bakePose(o);const im=o.proc||o.img;
     ctx.save();ctx.translate(ax+shx,ay+bob-hop);ctx.scale(br,br*(2-br));ctx.globalAlpha=al*a;
-    const cx=LADYBUG_POSES[name].cx||144; // căn trọng tâm thân về x=144, chân về y=292
-    ctx.drawImage(im,-cx*k,-292*k,o.w*k,o.h*k);ctx.restore()};
+    ctx.drawImage(im,-LADY_FX*k,-LADY_FY*k,o.w*k,o.h*k);ctx.restore()};
   const f=RM?1:clamp((now-LADY.t0)/LADY_RULES.fade);if(f<1&&LADY.prev){draw(LADY.prev,1-f);draw(LADY.cur,f)}else draw(LADY.cur,1);
 }
 
@@ -512,6 +507,9 @@ function glitchImage(x,cur,ox,oy){
   x.globalCompositeOperation='source-over';
 }
 /* ---- khởi động ---- */
+/* Bọ rùa của trang là canvas: gắn vùng bấm trong suốt (assets/bo-widget.js, data-mode="attach") để bấm vào chính Bọ là mở khung chat */
+(window.boAttachQueue=window.boAttachQueue||[]).push([()=>{if(!introDone||!LADY.box)return null;const r=cv.getBoundingClientRect(),[ax,ay,k]=LADY.box;return {x:r.left+ax-100*k,y:r.top+ay-250*k,w:200*k,h:256*k}},
+  {side:'left',onPointer:e=>ladyPtr(e,null),react:()=>{setPose('laugh',0);BOCTL.react('laugh',1400);ladyHop(1,8,.35)}}]);
 function begin(){resize();requestAnimationFrame(frame)}
 new ResizeObserver(()=>{resize()}).observe(stage);addEventListener('resize',resize);
 document.addEventListener('visibilitychange',()=>{last=0});
@@ -520,6 +518,6 @@ begin();
 </script>
 
 <script src="assets/map-btn.js" defer></script>
-<script src="assets/bo-widget.js?v=r523b9b7" defer data-corner="bl"></script>
+<script src="assets/bo-widget.js?v=r525f1" defer data-mode="attach"></script>
 </body>
 </html>

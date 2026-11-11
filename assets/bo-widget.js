@@ -3,6 +3,10 @@
    data-corner: bl|br|tl|tr (mặc định bl); data-corner-m: góc riêng trên điện thoại (<=640px); data-ox / data-oy (và data-ox-m / data-oy-m cho điện thoại): dịch thêm (px, dương = vào trong/lên trên) để tránh điều khiển của trang.
    data-panel="right": trên máy tính khung chat gắn sát mép PHẢI màn hình (hẹp hơn) để không che bàn/đá; trên điện thoại (<=640px) khung là tấm trượt gắn ở ĐẦU màn hình, thấp (data-sheet-max-m, % chiều cao, mặc định 38) để vẫn kéo được vật ở nửa dưới.
    data-size / data-size-m: cỡ Bọ (px) trên máy tính / điện thoại. data-scroll-fade="1": Bọ mờ còn 35% khi đang cuộn trang, trở lại khi dừng (mặc định tắt).
+   CHẾ ĐỘ (data-mode): "floating" (mặc định) = Bọ nhỏ ở góc, dùng cho trang CHƯA có Bọ riêng. "attach" = KHÔNG tạo Bọ nhỏ; trang đã có Bọ riêng thì bấm vào chính Bọ đó là mở khung chat. "hit" = chỉ gắn vùng bấm, bấm thì focus một phần tử (index.html: data-activate="#question").
+   Chế độ attach/hit: data-target="<selector>" (phần tử có sẵn, kể cả lớp ảnh nướng sẵn), data-inset="l,t,r,b" (tỉ lệ 0..0.5 thu hẹp vùng bấm vào thân Bọ), data-side="top|left|right|edge-left|edge-right" (hướng khung chat so với Bọ; edge-* = khung hẹp sát mép), data-label.
+   Trang tự vẽ Bọ (canvas) gọi: (window.boAttachQueue=window.boAttachQueue||[]).push([function(){return {x,y,w,h}|null}, {side, react:function(){...}, onPointer:function(e){...}}]) hoặc window.BoWidget.attachTo(selector|Element|hàm, tuỳ chọn).
+   API: BoWidget.open() / close() / toggle() / attachTo(target, {label, inset, side, react, onPointer, onActivate}) -> {button, detach()}. Vùng bấm là <button class="bow-hit"> trong suốt >= 44px, bám theo Bọ mỗi khung hình; thêm ?bodebug=1 vào URL để thấy khung viền.
    Nhẹ: lúc tải trang chỉ có nút + ảnh Bọ nhỏ. bo-matcher.js, content-loader.js, bo.json, bo-replies.json CHỈ tải khi mở chat lần đầu. */
 (function () {
   'use strict';
@@ -39,9 +43,11 @@
     { id: 'w_hello', keys: ['xin chào', 'chào', 'hello', 'hi', 'bọ ơi'], reply: 'Chào bạn, Bọ đây! Bạn muốn tìm hiểu gì ở ME.MORI Class?' }
   ];
 
-  var PILL = /(^|\/)(?:community|gallery|sitemap|roadmap|dangky|method|gioithieu)\.html(?:$|[?#])/;   /* giống BoMatcher.PILL_RE */
+  var PILL = /(^|\/)(?:community|gallery|sitemap|roadmap|dangky|method|gioithieu|lopf1)\.html(?:$|[?#])/;   /* giống BoMatcher.PILL_RE */
   var SAFE = /^(?:https:\/\/[^\s<>"']+|[\w.%-]+(?:\/[\w.%-]+)*(?:\?[\w=&.%-]*)?(?:#[\w-]*)?)$/;
-  var root, btn, panel, log, form, input, titleEl, closeBtn, flyImg;
+  var MODE = DS.mode === 'attach' ? 'attach' : (DS.mode === 'hit' ? 'hit' : 'floating');
+  var hits = [], anchor = null, raf = 0, DEBUG = /[?&]bodebug\b/.test(location.search);
+  var root, btn, panel, log, form, input, titleEl, closeBtn, flyImg, idleBox = null, idleCtl = null;
   var open = false, built = false, loadP = null, engine = null, typeTimer = 0, replyTimer = 0, finishTyping = null;
   var thread = [];
 
@@ -67,16 +73,19 @@
 
   function build() {
     if (built) return; built = true;
-    root = el('div', 'bow');
-    setCorner();
-    btn = el('button', 'bow-bo'); btn.type = 'button';
-    btn.setAttribute('aria-label', TEXT.widgetLabel); btn.setAttribute('aria-haspopup', 'dialog'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-controls', 'bow-panel');
-    var sh = el('i', 'bow-shadow');
-    var art = el('span', 'bow-art');
-    var idle = el('img', 'bow-idle'); idle.src = BASE + 'bo/bo-idle-s.webp'; idle.width = 144; idle.height = 144; idle.alt = ''; idle.decoding = 'async'; idle.draggable = false;
-    var fly = el('span', 'bow-fly'); flyImg = el('img'); flyImg.width = 2448; flyImg.height = 280; flyImg.alt = ''; flyImg.decoding = 'async'; flyImg.draggable = false; fly.appendChild(flyImg);
-    art.append(idle, fly);
-    btn.append(sh, art, el('i', 'bow-spark'));
+    root = el('div', MODE === 'attach' ? 'bow bow-attach' : 'bow');
+    if (MODE !== 'attach') setCorner();
+    if (MODE !== 'attach') {      /* trang đã có Bọ riêng (attach) thì KHÔNG tạo Bọ nhỏ */
+      btn = el('button', 'bow-bo'); btn.type = 'button';
+      btn.setAttribute('aria-label', TEXT.widgetLabel); btn.setAttribute('aria-haspopup', 'dialog'); btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-controls', 'bow-panel');
+      var sh = el('i', 'bow-shadow');
+      var art = el('span', 'bow-art');
+      var idle = el('span', 'bow-idle'); idle.dataset.pose = 'rest'; idleBox = idle;
+      var restImg = el('img', 'bo-pose'); restImg.src = BASE + 'bo/pose-rest.webp'; restImg.width = 232; restImg.height = 276; restImg.alt = ''; restImg.decoding = 'async'; restImg.draggable = false; restImg.dataset.pose = 'rest'; idle.appendChild(restImg);
+      var fly = el('span', 'bow-fly'); flyImg = el('img'); flyImg.width = 2448; flyImg.height = 280; flyImg.alt = ''; flyImg.decoding = 'async'; flyImg.draggable = false; fly.appendChild(flyImg);
+      art.append(idle, fly);
+      btn.append(sh, art, el('i', 'bow-spark'));
+    }
     panel = el('section', 'bow-panel'); panel.id = 'bow-panel'; panel.hidden = true; panel.setAttribute('role', 'dialog'); panel.setAttribute('aria-modal', 'false');
     var head = el('header', 'bow-head');
     titleEl = el('h2', 'bow-title', TEXT.widgetTitle); titleEl.tabIndex = -1; panel.setAttribute('aria-labelledby', 'bow-title'); titleEl.id = 'bow-title';
@@ -89,27 +98,37 @@
     var send = el('button', 'bow-send', TEXT.widgetSend); send.type = 'submit';
     form.append(input, send);
     panel.append(head, log, form);
-    root.append(btn, panel);
+    if (btn) root.append(btn); root.append(panel);
     document.body.appendChild(root);
     var css = document.createElement('link'); css.rel = 'stylesheet'; css.href = BASE + 'bo-widget.css' + ((script.src.match(/\?v=[\w.]+/) || [''])[0]);
     css.onload = function () { root.classList.add('is-ready'); };
     css.onerror = function () { root.classList.add('is-ready'); };
     document.head.appendChild(css);
+    /* biểu cảm thỉnh thoảng (chớp mắt, cười...) từ assets/bo-idle.js, nạp nhẹ sau khi trang đã tải xong */
+    if (idleBox) {
+      var startIdle = function () {
+        var go = function () { idleCtl = window.BoIdle.create({ every: [5, 12] }); window.BoIdle.mount(idleBox, idleCtl); };
+        if (window.BoIdle) return go();
+        var js = document.createElement('script'); js.src = BASE + 'bo-idle.js' + ((script.src.match(/\?v=[\w.]+/) || [''])[0]); js.onload = go; document.head.appendChild(js);
+      };
+      var later = function () { if (window.requestIdleCallback) window.requestIdleCallback(startIdle, { timeout: 2500 }); else setTimeout(startIdle, 400); };
+      if (document.readyState === 'complete') later(); else window.addEventListener('load', later, { once: true });
+    }
 
     /* cô lập sự kiện: bấm/phím/cuộn trong widget không lọt xuống trang (phím cách của trình phát, "bấm ra ngoài"...). pointermove/up KHÔNG chặn để một cú kéo của trang đang diễn ra mà thả ngón tay trên khung vẫn kết thúc đúng. */
     ['pointerdown', 'mousedown', 'touchstart', 'click', 'wheel', 'keydown', 'keyup', 'keypress', 'contextmenu', 'dblclick'].forEach(function (t) {
       root.addEventListener(t, function (e) { if (t === 'keydown' && e.key === 'Escape') { if (open) { e.preventDefault(); close(true); } } e.stopPropagation(); }, { passive: t !== 'keydown' });
     });
     root.querySelectorAll('.bow-panel').forEach(function (p) { p.addEventListener('wheel', function (e) { e.stopPropagation(); }, { passive: true }); });
-    btn.addEventListener('click', function () { open ? close(true) : openPanel(); });
-    btn.addEventListener('pointerenter', warm); btn.addEventListener('focus', warm);
+    if (btn) { btn.addEventListener('click', function () { open ? close(true) : openPanel(); }); btn.addEventListener('pointerenter', warm); btn.addEventListener('focus', warm); }
     closeBtn.addEventListener('click', function () { close(true); });
     form.addEventListener('submit', onSubmit);
     if (DS.scrollFade === '1' || DS.scrollFade === 'true') {
       var idleT = 0, onScroll = function () { root.classList.add('is-scrolling'); window.clearTimeout(idleT); idleT = window.setTimeout(function () { root.classList.remove('is-scrolling'); }, 900); };
       window.addEventListener('scroll', onScroll, { passive: true });
     }
-    var onMq = function () { setCorner(); };
+    window.addEventListener('resize', function () { if (open) placePanel(); });
+    var onMq = function () { if (MODE !== 'attach') setCorner(); else if (open) placePanel(); };
     if (PHONE) { if (PHONE.addEventListener) PHONE.addEventListener('change', onMq); }
     if (window.visualViewport) {
       var vv = window.visualViewport, adj = function () { if (!open || !PHONE.matches) { root.style.removeProperty('--bow-sheet-b'); return; } var b = Math.max(0, window.innerHeight - vv.height - vv.offsetTop); root.style.setProperty('--bow-sheet-b', b + 'px'); };
@@ -117,9 +136,11 @@
     }
   }
 
+  function eachBtn(f) { if (btn) f(btn); hits.forEach(function (h) { f(h.btn); }); }
   function warm() { if (flyImg && !flyImg.src) flyImg.src = BASE + 'bo/bo-fly.webp'; }
   function hop() {
     warm();
+    if (!btn) return;           /* attach: Bọ của trang tự phản ứng (xem react) */
     if (RM && RM.matches) return;
     root.classList.remove('is-hop'); void root.offsetWidth; root.classList.add('is-hop');
     setTimeout(function () { root.classList.remove('is-hop'); }, 560);
@@ -187,7 +208,7 @@
   }
   function applyText() {
     if (!built) return;
-    btn.setAttribute('aria-label', TEXT.widgetLabel); titleEl.textContent = TEXT.widgetTitle; log.setAttribute('aria-label', TEXT.widgetTitle);
+    eachBtn(function (b) { if (!b.dataset.custom) b.setAttribute('aria-label', TEXT.widgetLabel); }); titleEl.textContent = TEXT.widgetTitle; log.setAttribute('aria-label', TEXT.widgetTitle);
     input.placeholder = TEXT.placeholder; input.setAttribute('aria-label', TEXT.placeholder);
     closeBtn.setAttribute('aria-label', TEXT.widgetClose); form.querySelector('.bow-send').textContent = TEXT.widgetSend;
   }
@@ -196,8 +217,8 @@
   function openPanel() {
     if (open) return; open = true;
     hop();
-    panel.hidden = false; void panel.offsetWidth;
-    root.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true');
+    panel.hidden = false; placePanel(); void panel.offsetWidth;
+    root.classList.add('is-open'); eachBtn(function (b) { b.setAttribute('aria-expanded', 'true'); });
     if (window.visualViewport) window.visualViewport.dispatchEvent(new Event('resize'));
     var first = ensureEngine();
     if (!log.childElementCount) {
@@ -212,10 +233,11 @@
   }
   function close(refocus) {
     if (!open) return; open = false;
-    root.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false'); root.style.removeProperty('--bow-sheet-b');
+    root.classList.remove('is-open'); eachBtn(function (b) { b.setAttribute('aria-expanded', 'false'); }); root.style.removeProperty('--bow-sheet-b');
     window.clearTimeout(replyTimer); if (finishTyping) finishTyping(); window.clearInterval(typeTimer);
     window.setTimeout(function () { if (!open) panel.hidden = true; }, (RM && RM.matches) ? 0 : 230);
-    if (refocus) { try { btn.focus({ preventScroll: true }); } catch (e) {} }
+    var fb = btn || (anchor && anchor.btn);
+    if (refocus && fb) { try { fb.focus({ preventScroll: true }); } catch (e) {} }
   }
 
   function onSubmit(e) {
@@ -230,7 +252,104 @@
     });
   }
 
-  function init() { build(); }
+  /* ---- vị trí khung chat gần Bọ của trang (chế độ attach) ---- */
+  function placePanel() {
+    if (MODE !== 'attach' || !panel) return;
+    var st = panel.style, ph = PHONE && PHONE.matches, r = anchor && anchor.rect;
+    st.left = st.top = st.right = st.bottom = st.width = st.maxHeight = '';
+    if (ph) {        /* điện thoại: tấm trượt ở phía đối diện Bọ (Bọ ở nửa dưới thì tấm ở đầu màn hình) */
+      var topSheet = !!(r && r.y + r.h / 2 > innerHeight * 0.5);
+      if (topSheet) { root.dataset.panel = 'right'; root.style.setProperty('--bow-sheet-max', '40dvh'); } else { root.removeAttribute('data-panel'); st.maxHeight = 'min(48dvh, 420px)'; }
+      return;
+    }
+    root.removeAttribute('data-panel');
+    var vw = innerWidth, vh = innerHeight, M = 12, side = (anchor && anchor.opts.side) || DS.side || 'top';
+    var edge = side === 'edge-right' || side === 'edge-left';
+    var pw = edge ? Math.min(320, Math.max(250, Math.round(vw * 0.19))) : Math.min(372, vw - 2 * M);
+    var mh = Math.min(edge ? 440 : 520, vh - 2 * M);
+    st.width = pw + 'px'; st.maxHeight = mh + 'px';
+    if (edge || !r) { if (side === 'edge-left') st.left = '8px'; else st.right = '8px'; st.bottom = M + 'px'; return; }
+    var bottomEdge = Math.min(vh - M, r.y + r.h + 8);
+    if (side === 'left' && r.x - 12 - pw >= M) { st.left = (r.x - 12 - pw) + 'px'; st.bottom = (vh - bottomEdge) + 'px'; st.maxHeight = Math.min(mh, bottomEdge - M) + 'px'; return; }
+    if ((side === 'right' || side === 'left') && r.x + r.w + 12 + pw <= vw - M) { st.left = (r.x + r.w + 12) + 'px'; st.bottom = (vh - bottomEdge) + 'px'; st.maxHeight = Math.min(mh, bottomEdge - M) + 'px'; return; }
+    if (side === 'left' && r.x - 12 - pw >= M) { st.left = (r.x - 12 - pw) + 'px'; st.bottom = (vh - bottomEdge) + 'px'; return; }
+    var lx = Math.max(M, Math.min(r.x, vw - pw - M));        /* mặc định: phía trên Bọ, không có chỗ thì phía dưới */
+    var above = r.y - 10 - M;
+    if (above >= 240) { st.left = lx + 'px'; st.bottom = (vh - (r.y - 10)) + 'px'; st.maxHeight = Math.min(mh, above) + 'px'; }
+    else if (vh - (r.y + r.h) - 10 - M >= 240) { st.left = lx + 'px'; st.top = (r.y + r.h + 10) + 'px'; st.maxHeight = Math.min(mh, vh - (r.y + r.h) - 10 - M) + 'px'; }
+    else { st.left = lx + 'px'; st.bottom = M + 'px'; }
+  }
+
+  /* ---- gắn vào Bọ có sẵn của trang: vùng bấm trong suốt bám theo Bọ ---- */
+  function updateHit(h) {
+    var t = h.target, r = null;
+    try {
+      if (typeof t === 'function') r = t();
+      else {
+        var e = h.el;
+        if (!e || !e.isConnected) { e = typeof t === 'string' ? document.querySelector(t) : t; h.el = e; }
+        if (e) { var b = e.getBoundingClientRect(); if (b.width > 0 && b.height > 0) r = { x: b.left, y: b.top, w: b.width, h: b.height }; }
+      }
+    } catch (x) { r = null; }
+    var s = h.opts.inset;
+    if (r && s) r = { x: r.x + r.w * s[0], y: r.y + r.h * s[1], w: r.w * (1 - s[0] - s[2]), h: r.h * (1 - s[1] - s[3]) };
+    if (r) { var W = Math.max(44, r.w), H = Math.max(44, r.h); r = { x: r.x - (W - r.w) / 2, y: r.y - (H - r.h) / 2, w: W, h: H }; }   /* vùng chạm >= 44 px */
+    h.rect = r;
+    var st = h.btn.style;
+    if (!r) { if (h.shown !== false) { st.display = 'none'; h.shown = false; } return; }
+    if (!h.shown) { st.display = 'block'; h.shown = true; }
+    st.transform = 'translate(' + r.x.toFixed(1) + 'px,' + r.y.toFixed(1) + 'px)';
+    var w = r.w.toFixed(1) + 'px', hh = r.h.toFixed(1) + 'px';
+    if (h.w !== w) { st.width = w; h.w = w; } if (h.h !== hh) { st.height = hh; h.h = hh; }
+  }
+  function tick() { raf = requestAnimationFrame(tick); for (var i = 0; i < hits.length; i++) updateHit(hits[i]); }
+  function defaultReact(h) {      /* nhảy nhẹ: dùng thuộc tính "translate" riêng, không đè animation transform của trang */
+    if (RM && RM.matches) return;
+    var e = h.el; if (!e || !e.animate) return;
+    var d = Math.max(6, Math.round((h.rect ? h.rect.h : 60) * 0.12));
+    try { e.animate([{ translate: '0 0' }, { translate: '0 ' + (-d) + 'px', offset: 0.4 }, { translate: '0 0' }], { duration: 420, easing: 'ease-out' }); } catch (x) {}
+  }
+  function activate(h) {
+    anchor = h;
+    try { if (h.opts.react) h.opts.react(h); else defaultReact(h); } catch (x) {}
+    if (h.opts.onActivate) { h.opts.onActivate(h); return; }
+    if (MODE === 'hit') return;
+    build();
+    if (open) close(true); else openPanel();
+  }
+  function attachTo(target, o) {
+    o = o || {};
+    var b = el('button', 'bow-hit'); b.type = 'button';
+    b.setAttribute('aria-label', o.label || TEXT.widgetLabel); if (o.label) b.dataset.custom = '1';
+    if (!o.onActivate) { b.setAttribute('aria-haspopup', 'dialog'); b.setAttribute('aria-expanded', 'false'); b.setAttribute('aria-controls', 'bow-panel'); }
+    b.style.cssText = 'position:fixed;left:0;top:0;width:44px;height:44px;margin:0;padding:0;border:0;border-radius:14px;background:transparent;z-index:9050;display:none;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;appearance:none;-webkit-appearance:none;' + (DEBUG ? 'outline:2px solid #ff2bd6;background:#ff2bd633;' : '');
+    var h = { btn: b, target: target, opts: o, el: null, rect: null, shown: null };
+    hits.push(h);
+    b.addEventListener('click', function () { activate(h); });
+    ['keydown', 'keyup', 'keypress'].forEach(function (t) { b.addEventListener(t, function (e) { if (e.key === 'Enter' || e.key === ' ') e.stopPropagation(); }); });
+    if (o.onPointer) ['pointermove', 'pointerdown', 'pointerenter'].forEach(function (t) { b.addEventListener(t, o.onPointer, { passive: true }); });
+    document.body.appendChild(b);
+    if (!raf) raf = requestAnimationFrame(tick);
+    return { button: b, detach: function () { var i = hits.indexOf(h); if (i >= 0) hits.splice(i, 1); b.remove(); } };
+  }
+  function parseInset(v) { var a = String(v || '').split(',').map(parseFloat); return a.length === 4 && a.every(function (n) { return n >= 0 && n < 0.5; }) ? a : null; }
+
+  function init() {
+    if (MODE !== 'hit') build();
+    if (MODE !== 'floating' && DS.target) {
+      attachTo(DS.target, { inset: parseInset(DS.inset), side: DS.side, label: DS.label,
+        onActivate: DS.activate ? function () { var n = document.querySelector(DS.activate); if (n) { try { n.focus(); } catch (e) {} } } : null });
+    }
+    var Q = window.boAttachQueue;      /* trang tự vẽ Bọ (canvas) đăng ký trước khi widget nạp xong */
+    if (Array.isArray(Q)) Q.forEach(function (a) { attachTo(a[0], a[1]); });
+    window.boAttachQueue = { push: function (a) { attachTo(a[0], a[1]); } };
+  }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
-  window.BoWidget = { open: function () { build(); openPanel(); }, close: function () { close(true); } };
+  window.BoWidget = {
+    mode: MODE,
+    open: function () { if (MODE === 'hit') return; build(); if (!anchor && hits.length) anchor = hits[0]; openPanel(); },
+    close: function () { close(true); },
+    toggle: function () { if (open) close(true); else this.open(); },
+    attachTo: attachTo
+  };
 })();

@@ -217,10 +217,11 @@
     @keyframes msg-in { from { opacity:0; transform:translateY(8px); } }
     /* Bọ: idle sprite planted on the moss, flight sprite sheet (6 frames x 110 ms) for arrival / take-off. Feet stay on the ground: only scale from the feet, never translate. */
     .beetle-head { position:absolute; z-index:2; pointer-events:none; }
-    .bo-shadow { position:absolute; left:16%; right:8%; bottom:-1%; height:9%; border-radius:50%; background:radial-gradient(ellipse at center,#05110d99 0%,#05110d4d 48%,#05110d00 74%); transition:opacity .3s ease; }
+    .bo-shadow { position:absolute; left:11%; right:11%; bottom:-1%; height:8%; border-radius:50%; background:radial-gradient(ellipse at center,#05110d99 0%,#05110d4d 48%,#05110d00 74%); transition:opacity .3s ease; }
     .beetle-head.is-flying .bo-shadow { opacity:0; }
     .bo-art { position:absolute; inset:0; transform-origin:50% 94%; }
-    .bo-idle { display:block; width:100%; height:100%; transform-origin:50% 94%; animation:bo-breathe 4.6s ease-in-out infinite; }
+    /* Bọ nghỉ = chính diện (assets/bo/pose-*.webp, 232x276, chân ở 96,4% chiều cao); đáy chân đặt đúng chỗ tiếp đất cũ (97,7% khung 214x213). Không dùng dáng ngang. */
+    .bo-idle { position:absolute; left:0; top:-17.3%; width:100%; aspect-ratio:232 / 276; transform-origin:50% 96%; animation:bo-breathe 4.6s ease-in-out infinite; }
     .beetle-head.is-flying .bo-idle { visibility:hidden; }
     .beetle-head.is-talking .bo-idle { animation:bo-talk .44s ease-in-out infinite; }
     .bo-fly { position:absolute; left:50%; bottom:-3%; width:161%; aspect-ratio:408 / 280; overflow:hidden; translate:-50% 0; display:none; }
@@ -333,7 +334,7 @@
       <i class="firefly" style="--x:81%;--y:77%;--size:3px;--duration:5.8s;--delay:-2.5s"></i>
     </div>
     <div class="water-glimmer" aria-hidden="true"></div>
-    <div class="beetle-head" aria-hidden="true"><i class="bo-shadow"></i><div class="bo-art"><img class="bo-idle" src="assets/bo/bo-idle.webp" width="480" height="479" alt="" decoding="async"><div class="bo-fly"><img width="2448" height="280" alt="" decoding="async"></div></div></div>
+    <div class="beetle-head" aria-hidden="true"><i class="bo-shadow"></i><div class="bo-art"><div class="bo-idle" data-pose="rest"></div><div class="bo-fly"><img width="2448" height="280" alt="" decoding="async"></div></div></div>
 
     <div class="brand-mark" aria-label="Me.Mori Class"><span class="brand-label"><span>Me.Mori</span><small>CLASS</small></span></div>
     <form class="question-form" aria-label="Hỏi Me.Mori" lang="vi">
@@ -356,6 +357,7 @@
   </main>
   <script src="assets/paper/paper-scene.js"></script>
   <script src="assets/content-loader.js"></script>
+  <script src="assets/bo-idle.js"></script>
   <script>MemoriContent.prefetch("bo");MemoriContent.prefetch("bo-replies",8000);</script>
   <script src="assets/bo-matcher.js"></script>
   <script src="assets/bo-replies.js"></script>
@@ -368,6 +370,15 @@
  "sitemap.html",
  "roadmap.html",
  "dangky.html",
+ "lopf1.html",
+ "assets/lopf1/img/bg.webp",
+ "assets/lopf1/img/fg.webp",
+ "assets/lopf1/img/frame.webp",
+ "assets/lopf1/img/platform.webp",
+ "assets/lopf1/img/beam.webp",
+ "assets/lopf1/img/maskL.webp",
+ "assets/lopf1/img/maskC.webp",
+ "assets/lopf1/img/maskR.webp",
  "assets/sitemap/bg.webp",
  "assets/sitemap/icon0.webp",
  "assets/sitemap/icon1.webp",
@@ -379,19 +390,7 @@
  "assets/sitemap/leaves.webp",
  "assets/sitemap/map.webp",
  "assets/sitemap/mound.webp",
- "assets/sitemap/sprites/ladybug_back.webp",
- "assets/sitemap/sprites/ladybug_front.webp",
- "assets/sitemap/sprites/ladybug_idle.webp",
- "assets/sitemap/sprites/ladybug_threeQuarterLeft.webp",
- "assets/sitemap/sprites/ladybug_turnLeft.webp",
- "assets/sitemap/sprites/ladybug_turnRight.webp",
  "assets/roadmap/bg.webp",
- "assets/roadmap/ladybug_back.webp",
- "assets/roadmap/ladybug_front.webp",
- "assets/roadmap/ladybug_idle.webp",
- "assets/roadmap/ladybug_threeQuarterLeft.webp",
- "assets/roadmap/ladybug_turnLeft.webp",
- "assets/roadmap/ladybug_turnRight.webp",
  "assets/roadmap/leafL1.webp",
  "assets/roadmap/leafR1.webp",
  "assets/roadmap/moundL.webp",
@@ -665,12 +664,10 @@
       // ---- Bọ: idle sprite + flight sprite sheet (assets/bo). Flies in and lands on load, takes off before leaving for another page. ----
       const bo = (() => {
         const art = beetleHead.querySelector('.bo-art'), idle = beetleHead.querySelector('.bo-idle');
+        const idleCtl = BoIdle.create({ every: [5, 12] }); BoIdle.mount(idle, idleCtl); window.boIdleCtl = idleCtl;
         const fly = beetleHead.querySelector('.bo-fly'), flyImg = fly.querySelector('img');
         const decoded = img => (img.decode ? img.decode() : Promise.resolve()).catch(() => {});
-        const idleReady = new Promise(resolve => {
-          if (idle.complete && idle.naturalWidth) decoded(idle).then(resolve);
-          else { idle.addEventListener('load', () => decoded(idle).then(resolve), { once: true }); idle.addEventListener('error', resolve, { once: true }); }
-        });
+        const idleReady = BoIdle.preload();   // cả bộ tư thế được tải + giải mã cùng bộ tải trang
         let flyOK = false;
         const flyReady = new Promise(resolve => {
           flyImg.addEventListener('load', () => decoded(flyImg).then(() => { flyOK = true; resolve(); }), { once: true });
@@ -709,6 +706,18 @@
         return { ready: Promise.all([idleReady, flyReady]), arrive, leave, reset };
       })();
       let boSettled = true;   // the greeting waits until Bọ has landed
+      // Bọ looks toward the mouse (3/4 turn, never side-on) when the cursor is far to one side; back to facing front after 4 s or when the cursor leaves.
+      {
+        const fine = matchMedia('(hover:hover) and (pointer:fine)'); let lookT = 0, dir = 0;
+        scene.addEventListener('pointermove', event => {
+          if (event.pointerType !== 'mouse' || !fine.matches || reduceMotion.matches || beetleHead.classList.contains('is-flying')) return;
+          const r = beetleHead.getBoundingClientRect(), dx = event.clientX - (r.left + r.width / 2), th = Math.max(240, innerWidth * .2);
+          const want = Math.abs(dx) > th ? (dx < 0 ? -1 : 1) : (Math.abs(dx) < th * .75 ? 0 : dir);
+          if (want !== dir) { dir = want; window.boIdleCtl.look(dir); }
+          clearTimeout(lookT); lookT = setTimeout(() => { dir = 0; window.boIdleCtl.look(0); }, 4000);
+        }, { passive: true });
+        scene.addEventListener('pointerleave', () => { dir = 0; window.boIdleCtl.look(0); });
+      }
       if (paper) {
         document.addEventListener('click', event => {
           const link = event.target.closest && event.target.closest('a[href]');
@@ -972,6 +981,7 @@
           if (link) row.append(' ', link);
           dialogue.setAttribute('aria-busy', 'false');
           beetleHead.classList.remove('is-talking');
+          if (window.boIdleCtl) window.boIdleCtl.react('laugh', 1400);   // happy face when a reply is finished
           dialogue.scrollTop = dialogue.scrollHeight;
         };
         if (reduceMotion.matches) { done(); return; }
@@ -1052,5 +1062,6 @@
       });
     })();
   </script>
+<script src="assets/bo-widget.js?v=r525f1" defer data-mode="hit" data-target=".beetle-head .bo-idle" data-inset="0.1,0.12,0.1,0.03" data-activate="#question"></script>
 </body>
 </html>

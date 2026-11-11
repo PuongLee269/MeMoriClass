@@ -18,7 +18,9 @@
 .bow-shadow { position:absolute; left:14%; right:10%; bottom:2px; height:9px; border-radius:50%; background:radial-gradient(ellipse at center,#05110d99 0%,#05110d4d 48%,#05110d00 74%); transition:opacity .25s ease; pointer-events:none; }
 .bow-art { position:absolute; left:4px; bottom:6px; width:var(--bow-size); height:var(--bow-size); transform-origin:50% 94%; pointer-events:none; }
 .bow[data-face="r"] .bow-art { transform:scaleX(-1); }
-.bow-idle { display:block; width:100%; height:100%; transform-origin:50% 94%; animation:bow-breathe 4.6s ease-in-out infinite; filter:drop-shadow(0 2px 3px #04100c66); }
+/* Bọ nghỉ = chính diện (assets/bo/pose-*.webp 232x276, chân ở 96,4% chiều cao), không dùng dáng ngang. Chồng ảnh do assets/bo-idle.js đổi biểu cảm. */
+.bow-idle { position:absolute; left:0; top:-19.1%; width:100%; aspect-ratio:232 / 276; display:block; transform-origin:50% 96%; animation:bow-breathe 4.6s ease-in-out infinite; filter:drop-shadow(0 2px 3px #04100c66); }
+.bow-idle img { position:absolute; left:0; top:0; width:100%; height:100%; display:block; -webkit-user-drag:none; }
 .bow-fly { position:absolute; left:50%; bottom:-3%; width:161%; aspect-ratio:408 / 280; overflow:hidden; translate:-50% 0; display:none; }
 .bow-fly img { display:block; max-width:none; width:600%; height:100%; animation:bow-wing .55s steps(6) infinite; }
 .bow-fly { scale:-1 1; }                       /* hình bay quay mặt sang phải; bản nghỉ quay mặt sang trái */
@@ -70,6 +72,14 @@
 .bow-in:focus { outline:none; box-shadow:inset 0 0 0 2px #ffffff55; }
 .bow-send { flex:none; height:44px; min-width:64px; padding:0 16px; border:0; border-radius:999px; background:linear-gradient(170deg,#f8edcf,#e5cf98); color:#2d2416; font:500 15px/1 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .bow-send:active { transform:scale(.96); } .bow-send:focus-visible { outline:2px solid #f4e7c4; outline-offset:2px; }
+
+/* chế độ attach: không có Bọ nhỏ, khung chat đặt gần Bọ của trang (vị trí tính bằng JS trên máy tính) */
+.bow.bow-attach { left:0; top:0; bottom:auto; width:0; height:0; pointer-events:none; }
+.bow-attach .bow-panel { pointer-events:auto; }
+@media (min-width:641px) { .bow-attach .bow-panel { position:fixed; left:auto; top:auto; right:auto; bottom:auto; transform-origin:50% 100%; } }
+/* vùng bấm trong suốt phủ lên Bọ có sẵn của trang: chỉ có phản hồi khi rê/focus */
+.bow-hit:hover { background:radial-gradient(closest-side,#ffd98a2e,#ffd98a00) !important; }
+.bow-hit:focus-visible { outline:2px solid #f4e7c4; outline-offset:2px; }
 
 /* tuỳ chọn: mờ khi cuộn trang (data-scroll-fade) */
 .bow.is-ready .bow-bo { transition:opacity .6s ease; }

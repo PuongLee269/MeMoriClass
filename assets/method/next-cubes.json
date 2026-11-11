@@ -1,0 +1,73 @@
+{
+  "note": "Bộ cube mới, CHƯA dùng ở trang nào. Quy tắc ghép (giống/khác) sẽ cấu hình sau.",
+  "size": [
+    294,
+    300
+  ],
+  "cubes": [
+    {
+      "id": "heart",
+      "file": "cube-heart.webp",
+      "source": "01_cube_heart.png",
+      "label": "Trái tim",
+      "symbolGuess": "heart",
+      "guess": true
+    },
+    {
+      "id": "book",
+      "file": "cube-book.webp",
+      "source": "02_cube_book.png",
+      "label": "Sách",
+      "symbolGuess": "book",
+      "guess": true
+    },
+    {
+      "id": "skull",
+      "file": "cube-skull.webp",
+      "source": "03_cube_skull.png",
+      "label": "Đầu lâu",
+      "symbolGuess": "skull",
+      "guess": true
+    },
+    {
+      "id": "leaf",
+      "file": "cube-leaf.webp",
+      "source": "04_cube_leaf.png",
+      "label": "Chiếc lá",
+      "symbolGuess": "leaf",
+      "guess": true
+    },
+    {
+      "id": "dice",
+      "file": "cube-dice.webp",
+      "source": "05_cube_dice.png",
+      "label": "Xúc xắc",
+      "symbolGuess": "dice",
+      "guess": true
+    },
+    {
+      "id": "robot",
+      "file": "cube-robot.webp",
+      "source": "06_cube_robot.png",
+      "label": "Robot",
+      "symbolGuess": "robot",
+      "guess": true
+    },
+    {
+      "id": "masked-person",
+      "file": "cube-masked-person.webp",
+      "source": "07_cube_masked_person.png",
+      "label": "Người đeo mặt nạ/mũ trùm",
+      "symbolGuess": "masked-person",
+      "guess": true
+    },
+    {
+      "id": "spark-lightning",
+      "file": "cube-spark-lightning.webp",
+      "source": "08_cube_spark_lightning.png",
+      "label": "Tia chớp",
+      "symbolGuess": "spark-lightning",
+      "guess": true
+    }
+  ]
+}
