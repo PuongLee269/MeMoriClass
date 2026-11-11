@@ -1,0 +1,21 @@
+{
+ "version": 1,
+ "fps": 14,
+ "bbox": [
+  685,
+  700,
+  300,
+  140
+ ],
+ "scale": 2.0,
+ "clips": {
+  "flipNext": {
+   "count": 6,
+   "pattern": "book_flip_left_{i}.webp"
+  },
+  "flipPrev": {
+   "count": 6,
+   "pattern": "book_flip_right_{i}.webp"
+  }
+ }
+}

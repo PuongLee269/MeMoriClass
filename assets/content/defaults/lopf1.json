@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "page": {
+    "title": "Lớp F1",
+    "subtitle": "Kéo cuốn sách sang trái hoặc phải để đổi hình",
+    "hint": "Kéo cuốn sách sang trái hoặc phải",
+    "backLabel": "← Về trang Bọ",
+    "backHref": "index.html",
+    "loaderText": "Bọ đang mở cuốn sách…",
+    "bookLabel": "Cuốn sách. Kéo sang trái hoặc phải, hoặc dùng phím mũi tên, để đổi hình.",
+    "prevLabel": "Hình trước",
+    "nextLabel": "Hình sau",
+    "playLabel": "Phát video",
+    "counterText": "{n} / {total}",
+    "announceText": "Hình {n} trên {total}: {caption}",
+    "videoText": "Video"
+  },
+  "items": [
+    {
+      "type": "image",
+      "imageUrl": "assets/lopf1/img/s_clouds.webp",
+      "videoId": "",
+      "provider": "",
+      "caption": "Mây trắng trên đồi cỏ",
+      "alt": "Những đám mây lớn trên đồi cỏ xanh"
+    },
+    {
+      "type": "image",
+      "imageUrl": "assets/lopf1/img/s_moon.webp",
+      "videoId": "",
+      "provider": "",
+      "caption": "Đêm trăng non trên núi",
+      "alt": "Trăng lưỡi liềm trên những đỉnh núi trong mây"
+    },
+    {
+      "type": "image",
+      "imageUrl": "assets/gallery/photo.webp",
+      "videoId": "",
+      "provider": "",
+      "caption": "Căn nhà bên hồ",
+      "alt": "Căn nhà gỗ sáng đèn bên hồ dưới trăng"
+    },
+    {
+      "type": "video",
+      "imageUrl": "assets/lopf1/img/demo3.webp",
+      "videoId": "jNQXAC9IVRw",
+      "provider": "youtube",
+      "caption": "Video mẫu (giữ chỗ)",
+      "alt": "Hình đại diện của video mẫu"
+    },
+    {
+      "type": "image",
+      "imageUrl": "assets/lopf1/img/demo1.webp",
+      "videoId": "",
+      "provider": "",
+      "caption": "Hình mẫu 1 (giữ chỗ)",
+      "alt": "Hình mẫu giữ chỗ"
+    },
+    {
+      "type": "image",
+      "imageUrl": "assets/lopf1/img/demo2.webp",
+      "videoId": "",
+      "provider": "",
+      "caption": "Hình mẫu 2 (giữ chỗ)",
+      "alt": "Hình mẫu giữ chỗ"
+    },
+    {
+      "type": "image",
+      "imageUrl": "assets/lopf1/img/demo4.webp",
+      "videoId": "",
+      "provider": "",
+      "caption": "Hình mẫu 3 (giữ chỗ)",
+      "alt": "Hình mẫu giữ chỗ"
+    },
+    {
+      "type": "image",
+      "imageUrl": "assets/lopf1/img/s_sunset.webp",
+      "videoId": "",
+      "provider": "",
+      "caption": "Hoàng hôn dưới gốc cây",
+      "alt": "Một người ngồi đọc sách dưới gốc cây lúc hoàng hôn"
+    }
+  ],
+  "drag": {
+    "threshold": 56,
+    "snap": 0.4,
+    "flick": 0.55,
+    "inertia": true,
+    "loop": true,
+    "wheel": true,
+    "wheelCooldown": 520
+  },
+  "bookFx": {
+    "type": "frames",
+    "fps": 14,
+    "manifest": "assets/lopf1/bookfx/manifest.json",
+    "frames": {
+      "flipNext": [],
+      "flipPrev": [],
+      "open": [],
+      "idle": []
+    }
+  },
+  "showArrows": true
+}
