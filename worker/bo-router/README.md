@@ -20,7 +20,7 @@ Bài test thất bại nếu `groups.js` lệch `bo-replies.json`.
 | Biến | Mặc định | Ý nghĩa |
 |---|---|---|
 | `GEMINI_API_KEY` | (secret, bắt buộc) | Khóa Gemini. CHỈ là Worker secret (`npx wrangler secret put GEMINI_API_KEY`); gửi tới Google bằng header `x-goog-api-key`, không nằm trong URL, repo, trang hay log. Thiếu khóa: Worker trả 503 `{ "id": null }` |
-| `GEMINI_MODEL` | `gemini-2.5-flash-lite` | Model Flash nhỏ; đổi bằng biến này |
+| `GEMINI_MODEL` | `gemini-3.5-flash-lite` | Model Flash nhỏ; đổi bằng biến này |
 | `GEMINI_THINKING_BUDGET` | không đặt (wrangler.toml đặt `0`) | `thinkingConfig.thinkingBudget`; `0` tắt suy nghĩ cho nhanh/rẻ. Xóa biến nếu model không hỗ trợ |
 | `GEMINI_TIMEOUT_MS` | `6000` | Worker chờ Gemini; quá hạn trả 504 |
 | `GEMINI_BASE_URL` | Google | Chỉ để test với máy chủ giả |

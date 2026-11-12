@@ -1,6 +1,6 @@
 // Test THẬT với Gemini. Cần khóa trong môi trường (không bao giờ được in/ghi ra):
 //   GEMINI_API_KEY=... node worker/bo-router/live-test.mjs
-// Tùy chọn: GEMINI_MODEL (mặc định gemini-2.5-flash-lite), LIVE_DELAY_MS (nghỉ giữa các lượt, hợp với gói miễn phí giới hạn RPM),
+// Tùy chọn: GEMINI_MODEL (mặc định gemini-3.5-flash-lite), LIVE_DELAY_MS (nghỉ giữa các lượt, hợp với gói miễn phí giới hạn RPM),
 //   PRICE_IN_PER_M / PRICE_OUT_PER_M (USD cho 1 triệu token vào/ra, tự điền theo bảng giá hiện hành để ước tính chi phí), LIVE_OUT (file kết quả JSON),
 //   LIVE_BASE_URL (chỉ để chạy thử script với máy chủ giả; để trống khi test thật).
 // Chạy Worker trong cùng tiến trình (Durable Object giả bằng bộ nhớ), gọi Gemini thật qua fetch.
@@ -16,7 +16,7 @@ const DELAY = Number(process.env.LIVE_DELAY_MS) || 0;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const IDS = new Set(GROUPS.map(g => g[0]));
 const ORIGIN = 'https://moriclass.com';
-const mkEnv = (extra = {}) => ({ RATE_LIMIT: makeRateLimitBinding(), GEMINI_API_KEY: KEY, GEMINI_BASE_URL: process.env.LIVE_BASE_URL || undefined, GEMINI_MODEL: process.env.GEMINI_MODEL || undefined, GEMINI_THINKING_BUDGET: process.env.GEMINI_THINKING_BUDGET || '0', DEBUG_USAGE: '1', LIMITER: '100000', DAILY_CAP: '100000', GEMINI_TIMEOUT_MS: process.env.GEMINI_TIMEOUT_MS || '8000', ...extra });
+const mkEnv = (extra = {}) => ({ RATE_LIMIT: makeRateLimitBinding(), GEMINI_API_KEY: KEY, GEMINI_BASE_URL: process.env.LIVE_BASE_URL || undefined, GEMINI_MODEL: process.env.GEMINI_MODEL || undefined, GEMINI_THINKING_BUDGET: process.env.GEMINI_THINKING_BUDGET || '', DEBUG_USAGE: '1', LIMITER: '100000', DAILY_CAP: '100000', GEMINI_TIMEOUT_MS: process.env.GEMINI_TIMEOUT_MS || '8000', ...extra });
 
 // đếm số lần gọi Gemini thật
 let geminiCalls = 0; const realFetch = globalThis.fetch;
@@ -66,7 +66,7 @@ const mark = (grp, q, exp, r, pass, note = '') => { rows.push({ grp, q, exp, got
 const track = r => { if (r.status === 200 && !r.cached && r.tIn) { lat.push(r.ms); tIn += r.tIn; tOut += r.tOut; billable++; } else if (r.status === 200 && !r.cached) lat.push(r.ms); };
 const env = mkEnv({ AI_DAILY_PER_IP: '1000' });
 
-console.log('Model:', process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite (mặc định)');
+console.log('Model:', process.env.GEMINI_MODEL || 'gemini-3.5-flash-lite (mặc định)');
 for (const [q, exp] of A) { const r = await ask(env, q); track(r); const ok = r.status === 200 && (Array.isArray(exp) ? exp.includes(r.id) : r.id === exp); mark('A', q, exp, r, ok); }
 for (const q of B) { const r = await ask(env, q); track(r); mark('B', q, null, r, r.status === 200 && r.id === null); }
 const leak = t => t.includes(KEY) || /system prompt|x-goog|GEMINI/i.test(t);

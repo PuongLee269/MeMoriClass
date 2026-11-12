@@ -5,7 +5,7 @@ const ALLOWED_IDS = new Set(GROUPS.map(([id]) => id));
 const MAX_BODY = 2048;           // byte, kiểm tra trước khi parse JSON
 const MAX_QUESTION_WORDS = 49;   // câu hỏi phải ít hơn 50 từ
 const MAX_QUESTION_CHARS = 1500; // lưới an toàn sau luật từ (body đã bị chặn 2 KB)
-const DEFAULT_MODEL = 'gemini-2.5-flash-lite';
+const DEFAULT_MODEL = 'gemini-3.5-flash-lite';
 const DEFAULT_ORIGINS = ['https://moriclass.com', 'https://www.moriclass.com'];
 
 function allowedOrigins(env) {
