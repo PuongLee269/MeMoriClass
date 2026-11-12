@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Lộ trình Me.Mori</title>
 <script src="assets/content-loader.js"></script>
+<script src="assets/yt-fast.js"></script>
 <script src="assets/bo-idle.js"></script>
 <script>MemoriContent.prefetch("roadmap");MemoriContent.prefetch("site");</script>
 
@@ -616,7 +617,16 @@ function plCmd(c,a){if(!PL.ifr)return;const m=plMap(c,a);if(!m)return;if(!PL.loa
 function plSeek(s){s=Math.max(0,Math.min(s,PL.d||1e9));PL.t=s;plCmd('seek',s)}
 function plPlay(){clearAuto();plCmd('play')}
 function plPause(){plCmd('pause')}
-function plStart(i){plRelease(true);const c=vcfg(i);
+/* dùng lại iframe YouTube đang có (đã bắt tay xong) khi đổi chương lúc đang phát: loadVideoById thay vì dựng lại cả player */
+function plReuse(i){const c=vcfg(i),f=PL.ifr;
+  if(!f||PL.prov!=='youtube'||c.provider!=='youtube'||!PL.loaded||isPH(c.id))return false;
+  clearTimeout(PL.to);plPost({event:'command',func:'pauseVideo',args:[]});
+  Object.assign(PL,{ci:i,t:0,d:0,buf:0,paused:true,ended:false,started:false});
+  f.classList.remove('show');app.classList.add('embedded','buffering');
+  plPost({event:'command',func:'loadVideoById',args:[{videoId:c.id,startSeconds:c.start||0}]});
+  PL.to=setTimeout(()=>{if(PL.ifr===f&&!PL.started){plStart(i,true)}},9000);   /* không chạy sau 9 giây: dựng iframe mới như cũ */
+  setAriaPlay();upd();return true}
+function plStart(i,noReuse){if(window.YTFast)YTFast.cancelPrime();plRelease(true);const c=vcfg(i);
   if(isPH(c.id)){showMsg('Chưa gắn video thật cho chương này: sửa CONFIG.chapters['+i+'].video.id (chỉ cần ID YouTube hoặc Vimeo).',5000);return}
   const f=document.createElement('iframe');f.className='emb';f.title=CHAPTERS[i].num+': '+CHAPTERS[i].title;
   f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.referrerPolicy='strict-origin-when-cross-origin';f.setAttribute('allowfullscreen','');
@@ -673,7 +683,7 @@ function applyVol(){const eff=muted?0:volume;plCmd('vol',eff);plCmd(eff===0?'mut
   $('vol').value=Math.round(eff*100);$('vol').style.setProperty('--p',Math.round(eff*100)+'%');
   $('volX').style.display=eff===0?'':'none';$('volWaves').style.display=eff===0?'none':'';
   $('bMute').setAttribute('aria-label',eff===0?'Bật tiếng':'Tắt tiếng')}
-$('bPlay').onclick=togglePlay;$('bigplay').onclick=togglePlay;
+$('bPlay').onclick=togglePlay;$('bigplay').onclick=togglePlay;if(window.YTFast){YTFast.intent($('bigplay'));YTFast.intent($('vclick'))}
 // bấm bằng chuột/chạm xong thì bỏ focus nút để phím Space/K luôn điều khiển video (bàn phím vẫn dùng bình thường)
 app.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.cb,#bigplay,.mi');if(b&&e.detail>0)setTimeout(()=>b.blur(),0)});
 $('bMute').onclick=()=>{if(muted||volume===0){muted=false;if(volume===0)volume=.6}else muted=true;applyVol()};
@@ -750,8 +760,9 @@ function select(i,opt){opt=opt||{};const first=chapIdx<0;if(i===chapIdx&&!opt.fo
   showPoster(i);   // poster đã giải mã sẵn: chỉ cross-fade opacity
   app.classList.toggle('nativeui',vcfg(i).ui==='native');
   if(!first){
-    plRelease();   // gỡ iframe cũ (mờ dần rồi xoá); KHÔNG đổi src của phần tử nào đang hiển thị
-    if(wasPlaying)later('vplay',()=>{if(chapIdx===i)plStart(i)},170);else clearTimeout(timers.vplay);
+    if(wasPlaying&&PL.ifr&&plReuse(i)){clearTimeout(timers.vplay)}   // cùng nhà cung cấp: đổi video trong cùng iframe
+    else{plRelease();   // gỡ iframe cũ (mờ dần rồi xoá); KHÔNG đổi src của phần tử nào đang hiển thị
+    if(wasPlaying)later('vplay',()=>{if(chapIdx===i)plStart(i)},170);else clearTimeout(timers.vplay)}
   }
   applyVol();setAriaPlay();upd();refreshCCBtn();
   if(first)renderScript(i);else{stext.classList.add('swap');$('sketch').style.opacity=.2;setTimeout(()=>{renderScript(i);stext.classList.remove('swap');$('sketch').style.opacity=''},230)}
@@ -827,7 +838,7 @@ function loadGate(){
 function boot(){
   layout();SELECTED=SELECTED;select(SELECTED,{force:true});paintChapters();moveRing();
   requestAnimationFrame(frame);
-  loadGate().then(()=>{window.__loaderDone=performance.now();if(RM){app.classList.remove('intro');app.classList.add('ready');READY=true;idle(warmFit);return}intro();setTimeout(()=>{app.classList.add('ready');READY=true;idle(warmFit)},3300)});
+  loadGate().then(()=>{window.__loaderDone=performance.now();if(window.YTFast){YTFast.warm();const c0=vcfg(Math.max(0,curIdx()));if(c0.provider==='youtube'&&!isPH(c0.id))setTimeout(()=>YTFast.prime(c0.id,CONFIG.hosts.youtube),1500)}if(RM){app.classList.remove('intro');app.classList.add('ready');READY=true;idle(warmFit);return}intro();setTimeout(()=>{app.classList.add('ready');READY=true;idle(warmFit)},3300)});
 }
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(layout,60)});
 if(window.visualViewport)visualViewport.addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(layout,60)});
