@@ -1,3 +1,4 @@
+<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Khám phá tác phẩm</title>
@@ -35,8 +36,8 @@ body{font-family:var(--sans);color:var(--cream);-webkit-tap-highlight-color:tran
 .scenery{position:absolute;left:0;top:0;width:1672px;height:941px}
 .ext{position:absolute;width:1672px;height:941px;overflow:hidden;background-size:1672px 941px;background-repeat:no-repeat}
 .ext::after{content:'';position:absolute;inset:0;pointer-events:none}
-#extT::after,#extTL::after,#extTR::after{background:linear-gradient(180deg,rgba(2,30,95,0) 0,rgba(2,30,95,.55) 40%,#021e5f 88%)}
-#extB::after,#extBL::after,#extBR::after{background:linear-gradient(0deg,rgba(2,30,95,0) 0,rgba(2,30,95,.55) 40%,#021e5f 88%)}
+#extT::after,#extTL::after,#extTR::after{background:linear-gradient(180deg,rgba(2,30,95,0) 0,rgba(2,30,95,.55) 50px,rgba(2,30,95,.88) 130px,#021e5f 220px)}
+#extB::after,#extBL::after,#extBR::after{background:linear-gradient(0deg,rgba(2,30,95,0) 0,rgba(2,30,95,.55) 50px,rgba(2,30,95,.88) 130px,#021e5f 220px)}
 #extL::after{background:linear-gradient(90deg,rgba(2,30,95,0) 0,rgba(2,30,95,.2) 60%,rgba(2,30,95,.5) 100%)}
 #extR::after{background:linear-gradient(270deg,rgba(2,30,95,0) 0,rgba(2,30,95,.2) 60%,rgba(2,30,95,.5) 100%)}
 #extL{left:-1669px;transform:scaleX(-1)}#extR{left:1669px;transform:scaleX(-1)}
@@ -117,7 +118,7 @@ html.still *{animation:none!important}
   <div id="stage">
     <div class="scenery" id="scenery">
       <img class="L" id="bg" alt="" style="left:0;top:0;width:1672px;height:941px">
-      <img class="L" id="sky" alt="" style="left:-4px;top:-4px;width:1680px;height:949px">
+      <img class="L" id="sky" alt="" style="left:0;top:0;width:1672px;height:941px">
       <div id="stars"></div>
       <img class="L" id="far" alt="">
       <img class="L" id="base" alt="" style="left:0;top:0;width:1672px;height:941px">
@@ -190,7 +191,7 @@ const ITEMS=(C.items||[]).map(it=>{
 /* ===== bố cục: điện thoại dọc = phủ kín chiều cao và kéo ngang; còn lại vừa khung, dải thừa tạo lười (1 div + 1 ảnh nền dùng chung) ===== */
 const stage=$('stage'),view=$('view');
 let S=1,OX=0,OY=0;
-const EXT_POS={L:[-1669,0,-1,1],R:[1669,0,-1,1],T:[0,-938,1,-1],B:[0,938,1,-1],TL:[-1669,-938,-1,-1],TR:[1669,-938,-1,-1],BL:[-1669,938,-1,-1],BR:[1669,938,-1,-1]};
+const EXT_POS={L:[-1672,0,-1,1],R:[1672,0,-1,1],T:[0,-941,1,-1],B:[0,941,1,-1],TL:[-1672,-941,-1,-1],TR:[1672,-941,-1,-1],BL:[-1672,941,-1,-1],BR:[1672,941,-1,-1]};
 function ext(k,on){
   let e=$('ext'+k);
   if(!e){
@@ -198,13 +199,17 @@ function ext(k,on){
     const P=EXT_POS[k];e=document.createElement('div');e.className='ext';e.id='ext'+k;e.setAttribute('aria-hidden','true');
     e.style.cssText='left:'+P[0]+'px;top:'+P[1]+'px;transform:scale('+P[2]+','+P[3]+');background-image:url('+BGURL+')';
     stage.insertBefore(e,stage.firstChild);
+    if(!$('under')){const un=document.createElement('div');un.id='under';un.setAttribute('aria-hidden','true');   /* bản gộp trùng khít cảnh, nằm dưới cảnh: pixel mép bị khử răng cưa chỉ pha với chính nó, không lộ đường tối */
+      un.style.cssText='position:absolute;left:0;top:0;width:1672px;height:941px;background:url('+BGURL+') 0 0/1672px 941px no-repeat';stage.insertBefore(un,$('scenery'))}
   }
   e.style.display=on?'block':'none';
 }
 function layout(){
   const vw=innerWidth,vh=innerHeight,portrait=vw/vh<.9;
-  const s=portrait?vh/H:Math.min(vw/W,vh/H),oy=(vh-H*s)/2;
-  const ox=portrait?0:(vw-W*s)/2;
+  let s=portrait?vh/H:Math.min(vw/W,vh/H);
+  /* khung vừa cảnh: chọn tỉ lệ để cạnh nối với phần lật gương rơi đúng điểm ảnh (không còn pixel mép bị pha nửa, tránh đường kẻ mờ) */
+  if(!portrait)s=(vw/W<=vh/H)?Math.floor(H*s)/H:Math.floor(W*s)/W;
+  const oy=portrait?(vh-H*s)/2:Math.round((vh-H*s)/2),ox=portrait?0:Math.round((vw-W*s)/2);
   $('hint').textContent=PG.hint;
   const wasPan=view.classList.contains('pan');
   view.classList.toggle('pan',portrait);

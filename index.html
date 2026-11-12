@@ -217,11 +217,11 @@
     @keyframes msg-in { from { opacity:0; transform:translateY(8px); } }
     /* Bọ: idle sprite planted on the moss, flight sprite sheet (6 frames x 110 ms) for arrival / take-off. Feet stay on the ground: only scale from the feet, never translate. */
     .beetle-head { position:absolute; z-index:2; pointer-events:none; }
-    .bo-shadow { position:absolute; left:11%; right:11%; bottom:-1%; height:8%; border-radius:50%; background:radial-gradient(ellipse at center,#05110d99 0%,#05110d4d 48%,#05110d00 74%); transition:opacity .3s ease; }
+    .bo-shadow { position:absolute; left:15%; right:5%; top:92%; height:12%; border-radius:50%; background:radial-gradient(ellipse at center,#05110dcc 0%,#05110d8c 52%,#05110d00 100%); filter:blur(2px); transition:opacity .3s ease; }
     .beetle-head.is-flying .bo-shadow { opacity:0; }
     .bo-art { position:absolute; inset:0; transform-origin:50% 94%; }
     /* Bọ nghỉ = chính diện (assets/bo/pose-*.webp, 232x276, chân ở 96,4% chiều cao); đáy chân đặt đúng chỗ tiếp đất cũ (97,7% khung 214x213). Không dùng dáng ngang. */
-    .bo-idle { position:absolute; left:0; top:-17.3%; width:100%; aspect-ratio:232 / 276; transform-origin:50% 96%; animation:bo-breathe 4.6s ease-in-out infinite; }
+    .bo-idle { position:absolute; left:0; top:-17.3%; width:100%; aspect-ratio:232 / 276; transform-origin:50% 96%; -webkit-mask-image:linear-gradient(#000 92.5%,#0000 96.8%); mask-image:linear-gradient(#000 92.5%,#0000 96.8%); animation:bo-breathe 4.6s ease-in-out infinite; }
     .beetle-head.is-flying .bo-idle { visibility:hidden; }
     .beetle-head.is-talking .bo-idle { animation:bo-talk .44s ease-in-out infinite; }
     .bo-fly { position:absolute; left:50%; bottom:-3%; width:161%; aspect-ratio:408 / 280; overflow:hidden; translate:-50% 0; display:none; }
@@ -366,80 +366,164 @@
   <script src="assets/preload-pages.js" defer></script>
   <script>
     window.addEventListener('load', function () {
-      if (window.MemoriPreload) MemoriPreload.prefetch([
- "sitemap.html",
- "roadmap.html",
- "dangky.html",
- "lopf1.html",
- "khampha.html",
- "assets/khampha/bg.webp",
- "assets/khampha/off.webp",
- "assets/lopf1/img/bg.webp",
- "assets/lopf1/img/fg.webp",
- "assets/lopf1/img/frame.webp",
- "assets/lopf1/img/platform.webp",
- "assets/lopf1/img/beam.webp",
- "assets/lopf1/img/maskL.webp",
- "assets/lopf1/img/maskC.webp",
- "assets/lopf1/img/maskR.webp",
- "assets/sitemap/bg.webp",
- "assets/sitemap/icon0.webp",
- "assets/sitemap/icon1.webp",
- "assets/sitemap/icon2.webp",
- "assets/sitemap/icon3.webp",
- "assets/sitemap/icon4.webp",
- "assets/sitemap/icon5.webp",
- "assets/sitemap/icon6.webp",
- "assets/sitemap/leaves.webp",
- "assets/sitemap/map.webp",
- "assets/sitemap/mound.webp",
- "assets/roadmap/bg.webp",
- "assets/roadmap/leafL1.webp",
- "assets/roadmap/leafR1.webp",
- "assets/roadmap/moundL.webp",
- "assets/roadmap/poster1.webp",
- "assets/roadmap/poster2.webp",
- "assets/roadmap/poster3.webp",
- "assets/roadmap/poster4.webp",
- "assets/roadmap/scroll.webp",
- "assets/roadmap/sshadow.webp",
- "assets/register/d/bg.webp",
- "assets/register/d/bug.webp",
- "assets/register/d/f_bl.webp",
- "assets/register/d/f_br.webp",
- "assets/register/d/f_rm.webp",
- "assets/register/d/f_tl.webp",
- "assets/register/d/fb_f_bl.webp",
- "assets/register/d/fb_f_br.webp",
- "assets/register/d/fb_f_rm.webp",
- "assets/register/d/fb_f_tl.webp",
- "assets/register/d/fc_f_bl_0.webp",
- "assets/register/d/fc_f_bl_1.webp",
- "assets/register/d/fc_f_bl_2.webp",
- "assets/register/d/fc_f_bl_3.webp",
- "assets/register/d/fc_f_bl_4.webp",
- "assets/register/d/fc_f_bl_5.webp",
- "assets/register/d/fc_f_br_0.webp",
- "assets/register/d/fc_f_br_1.webp",
- "assets/register/d/fc_f_rm_0.webp",
- "assets/register/d/fc_f_rm_1.webp",
- "assets/register/d/fc_f_tl_0.webp",
- "assets/register/d/fc_f_tl_1.webp",
- "assets/register/d/fc_f_tl_2.webp",
- "assets/register/d/fc_f_tl_3.webp",
- "assets/register/d/flies.webp",
- "assets/register/d/paper.webp",
- "assets/register/d/seal.webp",
- "assets/register/d/t_A.webp",
- "assets/register/d/t_B.webp",
- "assets/register/d/t_C.webp",
- "assets/register/d/t_D.webp",
- "assets/register/d/t_E.webp",
- "assets/register/imprint.webp",
- "assets/register/stamp.webp",
- "assets/fonts/BeVietnamPro-500-latin.woff2",
- "assets/fonts/BeVietnamPro-500-vietnamese.woff2"
-]);
+      if (window.MemoriPreload) {
+        /* điện thoại dọc: chỉ nạp nền ảnh bản điện thoại của các trang kế (không nạp ảnh bản máy tính) */
+        var PORTRAIT = innerWidth / innerHeight < .9;
+        var PAGES = ["sitemap.html", "roadmap.html", "dangky.html", "lopf1.html", "khampha.html"];
+        var DESK = [
+         "assets/khampha/bg.webp",
+         "assets/khampha/off.webp",
+         "assets/lopf1/img/bg.webp",
+         "assets/lopf1/img/fg.webp",
+         "assets/lopf1/img/frame.webp",
+         "assets/lopf1/img/platform.webp",
+         "assets/lopf1/img/beam.webp",
+         "assets/lopf1/img/maskL.webp",
+         "assets/lopf1/img/maskC.webp",
+         "assets/lopf1/img/maskR.webp",
+         "assets/sitemap/bg.webp",
+         "assets/sitemap/icon0.webp",
+         "assets/sitemap/icon1.webp",
+         "assets/sitemap/icon2.webp",
+         "assets/sitemap/icon3.webp",
+         "assets/sitemap/icon4.webp",
+         "assets/sitemap/icon5.webp",
+         "assets/sitemap/icon6.webp",
+         "assets/sitemap/leaves.webp",
+         "assets/sitemap/map.webp",
+         "assets/sitemap/mound.webp",
+         "assets/roadmap/bg.webp",
+         "assets/roadmap/leafL1.webp",
+         "assets/roadmap/leafR1.webp",
+         "assets/roadmap/moundL.webp",
+         "assets/roadmap/poster1.webp",
+         "assets/roadmap/poster2.webp",
+         "assets/roadmap/poster3.webp",
+         "assets/roadmap/poster4.webp",
+         "assets/roadmap/scroll.webp",
+         "assets/roadmap/sshadow.webp",
+         "assets/register/d/bg.webp",
+         "assets/register/d/bug.webp",
+         "assets/register/d/f_bl.webp",
+         "assets/register/d/f_br.webp",
+         "assets/register/d/f_rm.webp",
+         "assets/register/d/f_tl.webp",
+         "assets/register/d/fb_f_bl.webp",
+         "assets/register/d/fb_f_br.webp",
+         "assets/register/d/fb_f_rm.webp",
+         "assets/register/d/fb_f_tl.webp",
+         "assets/register/d/fc_f_bl_0.webp",
+         "assets/register/d/fc_f_bl_1.webp",
+         "assets/register/d/fc_f_bl_2.webp",
+         "assets/register/d/fc_f_bl_3.webp",
+         "assets/register/d/fc_f_bl_4.webp",
+         "assets/register/d/fc_f_bl_5.webp",
+         "assets/register/d/fc_f_br_0.webp",
+         "assets/register/d/fc_f_br_1.webp",
+         "assets/register/d/fc_f_rm_0.webp",
+         "assets/register/d/fc_f_rm_1.webp",
+         "assets/register/d/fc_f_tl_0.webp",
+         "assets/register/d/fc_f_tl_1.webp",
+         "assets/register/d/fc_f_tl_2.webp",
+         "assets/register/d/fc_f_tl_3.webp",
+         "assets/register/d/flies.webp",
+         "assets/register/d/paper.webp",
+         "assets/register/d/seal.webp",
+         "assets/register/d/t_A.webp",
+         "assets/register/d/t_B.webp",
+         "assets/register/d/t_C.webp",
+         "assets/register/d/t_D.webp",
+         "assets/register/d/t_E.webp",
+         "assets/register/imprint.webp",
+         "assets/register/stamp.webp",
+         "assets/fonts/BeVietnamPro-500-latin.woff2",
+         "assets/fonts/BeVietnamPro-500-vietnamese.woff2"
+        ];
+        var PHONE = [
+         "assets/lopf1/m/bg.webp",
+         "assets/lopf1/m/fg.webp",
+         "assets/lopf1/m/ped.webp",
+         "assets/lopf1/m/fr_v_stone.webp",
+         "assets/lopf1/m/fr_h_stone.webp",
+         "assets/lopf1/m/rune.webp",
+         "assets/lopf1/m/fr_c_stone.webp",
+         "assets/khampha/off_m.webp",
+         "assets/khampha/bg_m.webp",
+         "assets/khampha/lit_m_stage.webp",
+         "assets/khampha/lit_m_studio.webp",
+         "assets/khampha/lit_m_house.webp",
+         "assets/khampha/lit_m_class.webp",
+         "assets/khampha/lit_m_kiln.webp",
+         "assets/sitemap/map.webp",
+         "assets/sitemap/leaves.webp",
+         "assets/sitemap/bg.webp",
+         "assets/sitemap/mound.webp",
+         "assets/sitemap/icon3.webp",
+         "assets/sitemap/icon1.webp",
+         "assets/sitemap/icon0.webp",
+         "assets/sitemap/icon5.webp",
+         "assets/sitemap/icon6.webp",
+         "assets/sitemap/icon4.webp",
+         "assets/sitemap/icon2.webp",
+         "assets/roadmap/scroll.webp",
+         "assets/roadmap/bg.webp",
+         "assets/roadmap/moundL.webp",
+         "assets/roadmap/poster4.webp",
+         "assets/roadmap/poster2.webp",
+         "assets/roadmap/poster1.webp",
+         "assets/roadmap/poster3.webp",
+         "assets/roadmap/leafL1.webp",
+         "assets/roadmap/leafR1.webp",
+         "assets/roadmap/sshadow.webp",
+         "assets/register/p/bg.webp",
+         "assets/register/p/m_paper.webp",
+         "assets/register/p/fb_m_f_bt.webp",
+         "assets/register/p/mt_A.webp",
+         "assets/register/p/m_flies.webp",
+         "assets/register/p/fb_m_f_tl.webp",
+         "assets/register/imprint.webp",
+         "assets/register/d/seal.webp",
+         "assets/register/p/mt_C.webp",
+         "assets/register/p/mt_E.webp",
+         "assets/register/p/mt_D.webp",
+         "assets/register/stamp.webp",
+         "assets/register/p/mt_B.webp",
+         "assets/register/p/m_bug.webp",
+         "assets/register/p/fc_m_f_tl_4.webp",
+         "assets/register/p/fc_m_f_bt_15.webp",
+         "assets/register/p/fc_m_f_tl_1.webp",
+         "assets/register/p/fc_m_f_tl_7.webp",
+         "assets/register/p/fc_m_f_tl_9.webp",
+         "assets/register/p/fc_m_f_tl_11.webp",
+         "assets/register/p/fc_m_f_bt_4.webp",
+         "assets/register/p/fc_m_f_bt_10.webp",
+         "assets/register/p/fc_m_f_bt_11.webp",
+         "assets/register/p/fc_m_f_tl_8.webp",
+         "assets/register/p/fc_m_f_tl_10.webp",
+         "assets/register/p/fc_m_f_bt_0.webp",
+         "assets/register/p/fc_m_f_bt_1.webp",
+         "assets/register/p/fc_m_f_bt_3.webp",
+         "assets/register/p/fc_m_f_bt_8.webp",
+         "assets/register/p/fc_m_f_bt_12.webp",
+         "assets/register/p/fc_m_f_bt_13.webp",
+         "assets/register/p/fc_m_f_bt_14.webp",
+         "assets/register/p/fc_m_f_tl_3.webp",
+         "assets/register/p/fc_m_f_tl_5.webp",
+         "assets/register/p/fc_m_f_tl_6.webp",
+         "assets/register/p/fc_m_f_bt_2.webp",
+         "assets/register/p/fc_m_f_bt_6.webp",
+         "assets/register/p/fc_m_f_bt_7.webp",
+         "assets/register/p/fc_m_f_bt_16.webp",
+         "assets/register/p/fc_m_f_tl_2.webp",
+         "assets/register/p/fc_m_f_bt_5.webp",
+         "assets/register/p/fc_m_f_bt_9.webp",
+         "assets/register/p/fc_m_f_bt_17.webp",
+         "assets/register/p/fc_m_f_tl_0.webp",
+         "assets/fonts/BeVietnamPro-500-latin.woff2",
+         "assets/fonts/BeVietnamPro-500-vietnamese.woff2"
+        ];
+        MemoriPreload.prefetch(PAGES.concat(PORTRAIT ? PHONE : DESK));
+      }
     });
   </script>
   <script>
@@ -477,7 +561,7 @@
       // This keeps the actual controls aligned when the browser crops the artwork on narrow screens.
       const hotspots = [
         [brand, 52, 24, 205, 82],
-        [beetleHead, 1138, 454, 214, 213],
+        [beetleHead, 1165, 519, 160, 160],   // Bọ ~75% size; feet sunk ~12 art px into the moss crest
         [form, 418, 500, 625, 66],
         [dialogue, 418, 186, 660, 302]
       ];
@@ -667,7 +751,7 @@
       // ---- Bọ: idle sprite + flight sprite sheet (assets/bo). Flies in and lands on load, takes off before leaving for another page. ----
       const bo = (() => {
         const art = beetleHead.querySelector('.bo-art'), idle = beetleHead.querySelector('.bo-idle');
-        const idleCtl = BoIdle.create({ every: [5, 12] }); BoIdle.mount(idle, idleCtl); window.boIdleCtl = idleCtl;
+        const idleCtl = BoIdle.create({ every: [6, 14], profile: 'gentle' }); BoIdle.mount(idle, idleCtl); window.boIdleCtl = idleCtl;
         const fly = beetleHead.querySelector('.bo-fly'), flyImg = fly.querySelector('img');
         const decoded = img => (img.decode ? img.decode() : Promise.resolve()).catch(() => {});
         const idleReady = BoIdle.preload();   // cả bộ tư thế được tải + giải mã cùng bộ tải trang
@@ -693,7 +777,7 @@
           ], { duration: 1500, delay: 500, easing: 'cubic-bezier(.3,.5,.4,1)', fill: 'both' });
           return move.finished.then(() => {
             show(false); fly.classList.remove('flip'); move.cancel();
-            idle.animate([{ transform: 'scale(1.035,.95)' }, { transform: 'scale(1,1)' }], { duration: 300, easing: 'ease-out' });
+            idle.animate([{ transform: 'scale(1.035,.95)', opacity: .35 }, { transform: 'scale(1,1)', opacity: 1 }], { duration: 300, easing: 'ease-out' });
           }).catch(() => { reset(); });
         }
         // Short flight up and away while the paper scene lifts off.
@@ -721,6 +805,7 @@
         }, { passive: true });
         scene.addEventListener('pointerleave', () => { dir = 0; window.boIdleCtl.look(0); });
       }
+      document.addEventListener('click', event => { if (event.target.closest && event.target.closest('.bow-hit') && window.boIdleCtl) window.boIdleCtl.react('laugh', 1400); });   // clicking Bọ makes him smile
       if (paper) {
         document.addEventListener('click', event => {
           const link = event.target.closest && event.target.closest('a[href]');
@@ -984,7 +1069,7 @@
           if (link) row.append(' ', link);
           dialogue.setAttribute('aria-busy', 'false');
           beetleHead.classList.remove('is-talking');
-          if (window.boIdleCtl) window.boIdleCtl.react('laugh', 1400);   // happy face when a reply is finished
+          if (userAsked && window.boIdleCtl) window.boIdleCtl.react('laugh', 1400);   // happy face only after the user's own question is answered, never for the greeting
           dialogue.scrollTop = dialogue.scrollHeight;
         };
         if (reduceMotion.matches) { done(); return; }

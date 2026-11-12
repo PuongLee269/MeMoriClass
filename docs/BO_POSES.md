@@ -24,14 +24,14 @@ Lưu ý phong cách: bộ này vẽ kiểu đất sét (mờ, mềm); chuỗi ba
 
 ## Mô-đun `assets/bo-idle.js`
 - `BoIdle.preload()` tải + giải mã cả bộ (gọi cùng bộ tải trang). Không có mạng sau đó.
-- `BoIdle.create({every:[5,12]})` -> `ctl.pose`, `ctl.look(-1|+1|0|'up')`, `ctl.react('laugh',1400)`, `ctl.pause()/resume()/destroy()`, `ctl.on(fn)`.
+- `BoIdle.create({every:[5,12], profile:'gentle'?, base:'turnL'?})` (profile 'gentle' = dùng ở trang chủ, xem mục index.html; mặc định giữ hành vi cũ cho các trang khác) -> `ctl.pose`, `ctl.look(-1|+1|0|'up')`, `ctl.react('laugh',1400)`, `ctl.pause()/resume()/destroy()`, `ctl.on(fn)`.
   - Mỗi 5-12 giây (ngẫu nhiên) có một biểu cảm rồi về `rest`: chớp mắt 66% (đôi khi chớp đôi), cười 14%, ngạc nhiên 12%, ngước lên 8%.
   - `look(-1/+1)` = quay 3/4 (turnL/turnR), `look('up')` = quay lưng, `look(0)` = nghỉ. Không có dáng ngang. Đang `look` thì không phát biểu cảm.
   - `prefers-reduced-motion`: chỉ `rest`.
 - `BoIdle.mount(container, ctl)` xếp chồng các ảnh, đổi tư thế bằng opacity. Trang vẽ canvas dùng `ctl.pose` + ảnh riêng, anchor chân (116,266).
 
 ## Theo trang
-- index.html: nghỉ chính diện (hướng vào khung chat), con trỏ chuột ở xa hai bên -> quay 3/4 về phía con trỏ; xong một câu trả lời -> cười 1,4 s; chuỗi bay vào/ra giữ nguyên. Cả bộ tải trong màn hình tải.
+- index.html (`BoIdle.create({every:[6,14],profile:'gentle'})`): KHÔNG BAO GIỜ chính diện. Nghỉ = turnL (3/4 hướng vào khung chat); tự phát mỗi 6-14 s chỉ liếc turnR (~72%) hoặc ngước lên (lookup, ~28%) 1,8-2,8 s rồi về turnL; blink/laugh/surprised không tự phát. Cười (laugh 1,4 s) chỉ sau khi người dùng bấm Bọ hoặc Bọ trả lời câu hỏi của chính họ (không cười khi trang mới tải hay lời chào hiện); surprised chỉ qua `ctl.react()` khi có kích thích. Con trỏ xa hai bên -> turnL/turnR. Hạ cánh xong mờ dần (0,3 s) sang turnL. Chuỗi bay vào/ra giữ nguyên.
 - gallery.html: con trỏ phải/trái -> turnR/turnL, trên/khung ảnh/đổi ảnh -> back (nhìn ảnh chiếu), lên chính Bọ -> cười, ảnh nhiễu -> ngạc nhiên.
 - roadmap.html: nghỉ chính diện; rê chuột theo 8 hướng (phải = turnR, trái = turnL, trên = ngước); chọn chương -> turnR 2,2 s về phía hàng chương; đang phát video -> back.
 - sitemap.html: nghỉ chính diện; đá được rê/chạm -> turnL/turnR (đá ở phía trên -> ngước lên).
