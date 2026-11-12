@@ -1,4 +1,4 @@
-// Đồ dùng test dùng chung: Durable Object giả (bộ nhớ) và máy chủ giả Gemini. Không cần mạng, không cần khóa thật.
+// Đồ dùng test dùng chung: Durable Object giả (bộ nhớ) và máy chủ giả OpenAI. Không cần mạng, không cần khóa thật.
 import http from 'node:http';
 import { RateLimit } from './index.js';
 
@@ -19,9 +19,9 @@ export function makeRateLimitBinding() {
 }
 
 // handler(body, req) -> { status?, json?, delayMs? }. Mặc định trả {id:"price"}.
-export async function startMockGemini(handler) {
+export async function startMockOpenAI(handler) {
   const calls = [];
-  let h = handler || (() => ({ json: geminiReply('{"id":"price"}') }));
+  let h = handler || (() => ({ json: openaiReply('{"id":"price"}') }));
   const server = http.createServer((req, res) => {
     let raw = '';
     req.on('data', c => { raw += c; });
@@ -37,4 +37,4 @@ export async function startMockGemini(handler) {
   return { url: 'http://127.0.0.1:' + server.address().port, calls, set(fn) { h = fn; }, close: () => { server.closeAllConnections?.(); return new Promise(r => server.close(r)); } };
 }
 
-export const geminiReply = (text, usage = { promptTokenCount: 1500, candidatesTokenCount: 8 }) => ({ candidates: [{ content: { parts: [{ text }] } }], usageMetadata: usage });
+export const openaiReply = (text, usage = { prompt_tokens: 1500, completion_tokens: 8 }) => ({ choices: [{ finish_reason: 'stop', message: { role: 'assistant', content: text } }], usage });

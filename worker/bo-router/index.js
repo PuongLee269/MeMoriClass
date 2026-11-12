@@ -5,7 +5,7 @@ const ALLOWED_IDS = new Set(GROUPS.map(([id]) => id));
 const MAX_BODY = 2048;           // byte, kiểm tra trước khi parse JSON
 const MAX_QUESTION_WORDS = 49;   // câu hỏi phải ít hơn 50 từ
 const MAX_QUESTION_CHARS = 1500; // lưới an toàn sau luật từ (body đã bị chặn 2 KB)
-const DEFAULT_MODEL = 'gemini-3.5-flash-lite';
+const DEFAULT_MODEL = 'gpt-4o-mini';
 const DEFAULT_ORIGINS = ['https://moriclass.com', 'https://www.moriclass.com'];
 
 function allowedOrigins(env) {
@@ -56,7 +56,7 @@ export function extractId(raw) {
 }
 
 
-// ---- Gemini ----
+// ---- OpenAI ----
 const NONE = 'none';   // schema enum chỉ nhận chuỗi, nên "none" nghĩa là {id:null}
 export function buildSystemPrompt() {
   return 'Bạn là bộ định tuyến ý định cho chatbot Bọ của lớp học ME.MORI Class. Nhiệm vụ DUY NHẤT: đọc câu hỏi của người dùng, hiểu NGỮ CẢNH và Ý ĐỊNH thật sự của họ '
@@ -72,41 +72,35 @@ export function buildSystemPrompt() {
 }
 const SYSTEM_PROMPT = buildSystemPrompt();
 
-export function buildGeminiRequest(env, question) {
-  const generationConfig = {
-    temperature: 0, maxOutputTokens: 32, responseMimeType: 'application/json',
-    responseSchema: { type: 'OBJECT', properties: { id: { type: 'STRING', enum: [...ALLOWED_IDS, NONE] } }, required: ['id'] }
-  };
-  if (env.GEMINI_THINKING_BUDGET !== undefined && env.GEMINI_THINKING_BUDGET !== '') generationConfig.thinkingConfig = { thinkingBudget: Number(env.GEMINI_THINKING_BUDGET) };
-  return {
-    systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
-    contents: [{ role: 'user', parts: [{ text: question }] }],
-    generationConfig
+export function buildOpenAIRequest(env, question) {
+  return { model: String(env.OPENAI_MODEL || DEFAULT_MODEL), temperature: 0, max_completion_tokens: 64,
+    messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: question }],
+    response_format: { type: 'json_schema', json_schema: { name: 'bo_group', strict: true,
+      schema: { type: 'object', properties: { id: { type: 'string', enum: [...ALLOWED_IDS, NONE] } }, required: ['id'], additionalProperties: false } } }
   };
 }
 
-async function askGemini(env, question) {
-  const model = String(env.GEMINI_MODEL || DEFAULT_MODEL).replace(/[^\w.\-]/g, '');
-  const base = String(env.GEMINI_BASE_URL || 'https://generativelanguage.googleapis.com').replace(/\/+$/, '');
-  const timeout = Number(env.GEMINI_TIMEOUT_MS) || 6000;
+async function askOpenAI(env, question) {
+  // Test chỉ được đổi host sang loopback; không chuyển khóa đến host tùy ý.
+  const base = String(env.OPENAI_BASE_URL || 'https://api.openai.com').replace(/\/+$/, '');
+  if (base !== 'https://api.openai.com' && !/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(base)) return { ok:false, status:503 };
   const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeout);
+  const timer = setTimeout(() => controller.abort(), Number(env.OPENAI_TIMEOUT_MS) || 6000);
   try {
-    const res = await fetch(base + '/v1beta/models/' + model + ':generateContent', {
+    const res = await fetch(base + '/v1/chat/completions', {
       method: 'POST', signal: controller.signal,
-      headers: { 'content-type': 'application/json', 'x-goog-api-key': env.GEMINI_API_KEY },
-      body: JSON.stringify(buildGeminiRequest(env, question))
+      headers: { 'content-type': 'application/json', authorization: 'Bearer ' + env.OPENAI_API_KEY },
+      body: JSON.stringify(buildOpenAIRequest(env, question))
     });
-    if (!res.ok) { try { await res.body && res.body.cancel(); } catch {} return { ok: false, status: res.status === 429 ? 503 : 502 }; }
-    const data = await res.json();
-    const part = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts;
-    const raw = Array.isArray(part) ? part.map(p => (p && typeof p.text === 'string') ? p.text : '').join('') : '';
-    if (!raw) return { ok: false, status: 502 };    // bị chặn an toàn/rỗng: coi là lỗi để client dùng từ khóa
-    const u = data.usageMetadata;
-    return { ok: true, id: extractId(raw), usage: u ? [u.promptTokenCount | 0, u.candidatesTokenCount | 0, u.thoughtsTokenCount | 0] : null };
-  } catch (e) {
-    return { ok: false, status: e && e.name === 'AbortError' ? 504 : 502 };
-  } finally { clearTimeout(timer); }
+    if (!res.ok) { try { await res.body?.cancel(); } catch {} return {ok:false,status:res.status === 429 ? 503 : 502}; }
+    const data = await res.json(), choice = data?.choices?.[0];
+    if (!choice || choice.finish_reason !== 'stop' || choice.message?.refusal || typeof choice.message?.content !== 'string') return {ok:false,status:502};
+    let parsed; try { parsed = JSON.parse(choice.message.content); } catch { return {ok:false,status:502}; }
+    if (!parsed || Object.keys(parsed).length !== 1 || typeof parsed.id !== 'string' || (!ALLOWED_IDS.has(parsed.id) && parsed.id !== NONE)) return {ok:false,status:502};
+    const u=data.usage;
+    return {ok:true,id:parsed.id === NONE ? null : parsed.id,usage:u ? [u.prompt_tokens|0,u.completion_tokens|0,0] : null};
+  } catch(e) { return {ok:false,status:e?.name === 'AbortError' ? 504 : 502}; }
+  finally { clearTimeout(timer); }
 }
 
 // ---- cache câu lặp (trong bộ nhớ isolate, tối đa 500 câu, 1 giờ) ----
@@ -140,7 +134,7 @@ export default {
       'access-control-allow-origin': origin, 'access-control-allow-methods': 'POST, OPTIONS',
       'access-control-allow-headers': 'content-type', 'access-control-max-age': '86400', vary: 'Origin' } });
     if (request.method !== 'POST') return none(405, origin);
-    if (!env.RATE_LIMIT || !env.GEMINI_API_KEY) return none(503, origin);
+    if (!env.RATE_LIMIT || !env.OPENAI_API_KEY) return none(503, origin);
 
     const text = await readLimited(request, MAX_BODY);
     if (text === null) return none(413, origin);
@@ -156,7 +150,7 @@ export default {
     const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
     if (!(await limited(env, 'ip:' + ip, perMin, 60_000))) return none(429, origin);
 
-    // Cache câu lặp (đã chuẩn hóa): không gọi Gemini, không tính hạn mức ngày.
+    // Cache câu lặp (đã chuẩn hóa): không gọi OpenAI, không tính hạn mức ngày.
     const hit = cacheGet(ckey);
     if (hit !== undefined) return respond({ id: hit }, 200, origin, { 'x-bo-cache': 'hit' });
 
@@ -165,7 +159,7 @@ export default {
     if (!(await limited(env, 'ipd:' + ip + ':' + new Date().toISOString().slice(0, 10), perDay, 86_400_000))) return none(429, origin);
     if (!(await limited(env, 'global', daily, 86_400_000))) return none(429, origin);
 
-    const r = await askGemini(env, question);
+    const r = await askOpenAI(env, question);
     if (!r.ok) return none(r.status, origin);       // lỗi thật: client rơi về từ khóa
     cachePut(ckey, r.id);
     const extra = String(env.DEBUG_USAGE) === '1' && r.usage ? { 'x-bo-tokens': r.usage.join(',') } : null;

@@ -3,9 +3,8 @@ main = "index.js"
 compatibility_date = "2026-11-11"
 
 [vars]
-GEMINI_MODEL = "gemini-3.5-flash-lite"   # model Flash nhỏ; đổi ở đây, không cần sửa code
-GEMINI_THINKING_BUDGET = "0"             # tắt "suy nghĩ" để nhanh và rẻ (chỉ model 2.5 hỗ trợ; xóa dòng này nếu đổi sang model khác báo lỗi)
-GEMINI_TIMEOUT_MS = "6000"               # Worker chờ Gemini tối đa; trang chờ Worker tối đa 8000 ms (ai.timeoutMs)
+OPENAI_MODEL = "gpt-4o-mini"   # model phân loại nhỏ; đổi ở đây, không cần sửa code
+OPENAI_TIMEOUT_MS = "6000"               # Worker chờ OpenAI tối đa; trang chờ Worker tối đa 8000 ms (ai.timeoutMs)
 LIMITER = "12"            # câu hỏi/phút/IP
 AI_DAILY_PER_IP = "50"    # lượt gọi AI/ngày UTC cho mỗi IP
 DAILY_CAP = "2000"        # tổng số lượt gọi AI/ngày cho toàn Worker
@@ -13,9 +12,9 @@ ALLOWED_ORIGINS = "https://moriclass.com,https://www.moriclass.com"
 # DEV = "1"               # chỉ khi thử cục bộ: cho phép http://localhost
 # DEBUG_USAGE = "1"       # chỉ khi test: trả số token trong header x-bo-tokens (vào,ra,suy nghĩ)
 
-# KHÓA: GEMINI_API_KEY chỉ đặt bằng Worker secret, KHÔNG ghi vào file này:
-#   npx wrangler secret put GEMINI_API_KEY
-# Chạy thử cục bộ: tạo file .dev.vars (đã bị gitignore) chứa dòng GEMINI_API_KEY=...
+# KHÓA: OPENAI_API_KEY chỉ đặt bằng Worker secret, KHÔNG ghi vào file này:
+#   npx wrangler secret put OPENAI_API_KEY
+# Chạy thử cục bộ: tạo file .dev.vars (đã bị gitignore) chứa dòng OPENAI_API_KEY=...
 
 [[durable_objects.bindings]]
 name = "RATE_LIMIT"

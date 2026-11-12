@@ -1,2 +1,9 @@
 .dev.vars
 live-test-result.json
+
+.preview-rate-state.json
+.env
+.env.*
+.dev.vars.*
+
+live-test-baseline.json

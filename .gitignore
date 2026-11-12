@@ -1,0 +1,6 @@
+# Bí mật cục bộ; không commit hoặc phục vụ qua web.
+/env/
+.env
+.env.*
+.dev.vars
+.dev.vars.*

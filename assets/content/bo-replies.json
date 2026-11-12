@@ -210,7 +210,8 @@
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
-      }
+      },
+      "description": "Hỏi cách liên lạc, thời gian có thể gọi điện hay hỏi tư vấn, chờ phản hồi sau khi gửi đăng ký. Không phải thời khóa biểu lớp."
     },
     {
       "id": "price",
@@ -287,7 +288,8 @@
       "link": {
         "href": "home-backup.html#method",
         "label": "Xem phương pháp"
-      }
+      },
+      "description": "Chỉ hỏi thời lượng khóa hoặc buổi, số buổi mỗi tuần. Thời gian đợi tư vấn hoặc đợi xác nhận đăng ký thuộc contact."
     },
     {
       "id": "location",
@@ -366,7 +368,8 @@
       "link": {
         "href": "home-backup.html#features",
         "label": "Xem nội dung"
-      }
+      },
+      "description": "Hỏi kiến thức và chủ đề được giảng dạy, có học nội dung điện ảnh hoặc lịch sử điện ảnh không. Đây là câu hỏi về nội dung học, không phải lịch khai giảng."
     },
     {
       "id": "method",
@@ -676,7 +679,8 @@
       "link": {
         "href": "home-backup.html#workshops",
         "label": "Xem giới thiệu"
-      }
+      },
+      "description": "Hỏi ý nghĩa, lợi ích, giá trị và tư duy kể chuyện, tại sao câu chuyện đáng xem; giá trị ở đây không phải học phí."
     },
     {
       "id": "teachers",
@@ -895,7 +899,8 @@
       "link": {
         "href": "home-backup.html#workshops",
         "label": "Giới thiệu"
-      }
+      },
+      "description": "Hỏi về tổ chức Me.Mori, nguồn gốc, lịch sử hình thành hoặc thành lập, Me.Mori là gì. Không phải hỏi lịch khai giảng; không tự suy đoán thông tin lịch sử chưa có."
     },
     {
       "id": "fun",
