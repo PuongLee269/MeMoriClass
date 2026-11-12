@@ -260,7 +260,7 @@ const CONFIG_DEFAULT={
   bookFx:{type:'frames',fps:14,manifest:'assets/lopf1/bookfx/manifest.json',frames:{flipNext:[],flipPrev:[],open:[],idle:[]}},
   showArrows:true,
   /* BẢN ĐIỆN THOẠI DỌC: dùng chung danh sách items; art 852x1846 nằm ở assets/lopf1/m/. enabled=false thì dùng art desktop cắt giữa. aspect = ngưỡng rộng/cao để bật. */
-  mobile:{enabled:true,aspect:.9,book:{cx:425.5,bottom:1378,baseWidth:351}}
+  mobile:{enabled:true,frameStyle:'stone',aspect:.9,book:{cx:425.5,bottom:1378,baseWidth:351}}
 };
 const PANELS={"L":{"box":[73,297,366,380],"w":367,"h":344,"m":"matrix3d(0.700116,-0.1783873,0,-0.0007714573,-0.01450068,0.821917,0,-3.420589e-05,0,0,1,0,4,56.52542,0,1)"},"C":{"box":[442,278,790,410],"w":788,"h":411,"m":"matrix3d(1.004763,0.002537643,0,9.277337e-06,-0.004853816,0.9989889,0,-1.236447e-05,0,0,1,0,1,-2.046154,0,1)"},"R":{"box":[1234,300,364,376],"w":367,"h":337,"m":"matrix3d(1.391699,0.2522039,0,0.001130326,0.002940837,1.160837,0,-2.652221e-05,0,0,1,0,0,-12.20845,0,1)"}};
 const C=await MemoriContent.load('lopf1',CONFIG_DEFAULT,{replace:['items','flipNext','flipPrev','open','idle']});
@@ -334,7 +334,7 @@ function layoutM(vw,vh){
 function buildFrame(el){
   const w=MG.mask,CW=82.5,CH=74,TH=30,OV=0,IN=28,
     L=w[0]-OV-IN,T=w[1]-OV-IN,R=w[0]+w[2]+OV+IN,B=w[1]+w[3]+OV+IN,
-    u=n=>'assets/lopf1/m/fr_'+n+'.webp';
+    FS=(new URLSearchParams(location.search).get('frame')||C.mobile.frameStyle||'stone')==='wood'?'wood':'stone',u=n=>'assets/lopf1/m/fr_'+n+'_'+FS+'.webp';
   const add=(l,t,wd,ht,bg,sx,sy,bs)=>{const e=document.createElement('i');
     e.style.cssText='left:'+l+'px;top:'+t+'px;width:'+wd+'px;height:'+ht+'px;background-image:url('+u(bg)+');background-size:'+bs+';transform:scale('+sx+','+sy+')';el.appendChild(e)};
   const hw=(R-L)/2-CW,vh=(B-T)/2-CH;
@@ -649,6 +649,3 @@ if(!matchMedia('(hover:hover)').matches){const h=$('hud');h.classList.add('showh
 </script>
 </body>
 </html>
-<!-- v5 frame -->
-<!-- v6 -->
-<!-- v7 -->
