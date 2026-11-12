@@ -1020,6 +1020,731 @@
         "href": "dangky.html",
         "label": "Mở trang Đăng ký"
       }
+    },
+    {
+      "id": "share_friend",
+      "description": "Người xem muốn chia sẻ, giới thiệu trang hoặc lớp cho bạn bè (KHÔNG phải hỏi về cộng đồng hay đăng ký).",
+      "keys": [
+        "chia sẻ cho bạn",
+        "chia se cho ban",
+        "giới thiệu cho bạn bè",
+        "gioi thieu cho ban be",
+        "gửi link cho bạn",
+        "gui link cho ban",
+        "rủ bạn",
+        "ru ban",
+        "share lớp",
+        "share trang",
+        "mời bạn bè",
+        "moi ban be",
+        "giới thiệu bạn"
+      ],
+      "reply": "Bạn cứ gửi đường dẫn trang này cho bạn bè nhé. Bạn nào muốn biết thêm, Bọ rất vui được trả lời!"
+    },
+    {
+      "id": "trial_class",
+      "description": "Hỏi có học thử, dự thính hay buổi trải nghiệm miễn phí không (KHÔNG phải hỏi học phí hay lịch khai giảng).",
+      "keys": [
+        "buổi trải nghiệm",
+        "buoi trai nghiem",
+        "dự thính",
+        "du thinh",
+        "thử một buổi",
+        "thu mot buoi",
+        "học miễn phí",
+        "hoc mien phi",
+        "trải nghiệm thử",
+        "trai nghiem thu",
+        "buổi học thử",
+        "buoi hoc thu",
+        "học thử không",
+        "hoc thu khong",
+        "học thử được không",
+        "hoc thu duoc khong",
+        "học thử miễn phí",
+        "hoc thu mien phi",
+        "có buổi thử",
+        "co buoi thu"
+      ],
+      "reply": "Bọ chưa có thông tin về buổi học thử. Bạn nhắn hello@memori.class để được báo chính xác nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "teaching_language",
+      "description": "Hỏi lớp dạy bằng tiếng Việt hay ngôn ngữ nào, có phụ đề tiếng Anh không.",
+      "keys": [
+        "tiếng gì",
+        "tieng gi",
+        "ngôn ngữ giảng dạy",
+        "ngon ngu giang day",
+        "dạy bằng tiếng",
+        "day bang tieng",
+        "giảng bằng tiếng",
+        "giang bang tieng",
+        "phụ đề",
+        "phu de",
+        "học bằng tiếng"
+      ],
+      "reply": "Bọ chưa có thông tin về ngôn ngữ giảng dạy. Bạn hỏi giúp qua hello@memori.class nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "final_project",
+      "description": "Hỏi về dự án cuối khóa, bài tốt nghiệp hay sản phẩm hoàn thiện khi học xong (KHÔNG phải bài tập hằng buổi).",
+      "keys": [
+        "dự án cuối khóa",
+        "du an cuoi khoa",
+        "bài cuối khóa",
+        "bai cuoi khoa",
+        "phim tốt nghiệp",
+        "phim tot nghiep",
+        "sản phẩm cuối",
+        "san pham cuoi",
+        "tốt nghiệp",
+        "tot nghiep",
+        "kết thúc khóa",
+        "ket thuc khoa",
+        "có đồ án không",
+        "co do an khong",
+        "đồ án cuối khóa",
+        "do an cuoi khoa"
+      ],
+      "reply": "Bọ chưa có thông tin về dự án cuối khóa. Bạn hỏi qua hello@memori.class, hoặc xem lộ trình lớp F2 nhé.",
+      "link": {
+        "href": "roadmap.html",
+        "label": "Lộ trình lớp F2"
+      }
+    },
+    {
+      "id": "copyright_works",
+      "description": "Hỏi quyền sử dụng, bản quyền tác phẩm, hình ảnh hoặc video trên trang hay do học viên làm.",
+      "keys": [
+        "bản quyền",
+        "ban quyen",
+        "quyền sử dụng",
+        "quyen su dung",
+        "copyright",
+        "dùng lại ảnh",
+        "dung lai anh",
+        "đăng lại video",
+        "dang lai video",
+        "quyền tác giả",
+        "quyen tac gia",
+        "lấy ảnh",
+        "lay anh",
+        "xin phép sử dụng",
+        "xin phep su dung"
+      ],
+      "reply": "Bọ chưa có thông tin về bản quyền tác phẩm. Bạn muốn dùng lại hình hay video, hãy hỏi qua hello@memori.class nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "privacy_info",
+      "description": "Hỏi thông tin cá nhân khi đăng ký có được bảo mật, lưu ở đâu, dùng làm gì.",
+      "keys": [
+        "bảo mật",
+        "bao mat",
+        "thông tin cá nhân",
+        "thong tin ca nhan",
+        "quyền riêng tư",
+        "quyen rieng tu",
+        "dữ liệu của tôi",
+        "du lieu cua toi",
+        "lộ thông tin",
+        "lo thong tin",
+        "privacy",
+        "chính sách bảo mật",
+        "chinh sach bao mat",
+        "an toàn thông tin"
+      ],
+      "reply": "Bọ chưa có chính sách bảo mật để trích dẫn. Bạn hỏi trực tiếp qua hello@memori.class để được giải đáp nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "site_error",
+      "description": "Báo trang web bị lỗi, đơ, không bấm được, hiển thị sai và cần liên hệ (KHÔNG phải video không chạy).",
+      "keys": [
+        "trang bị lỗi",
+        "trang bi loi",
+        "web bị lỗi",
+        "web bi loi",
+        "báo lỗi",
+        "bao loi",
+        "không bấm được",
+        "khong bam duoc",
+        "trang bị treo",
+        "trang bi treo",
+        "không tải được trang",
+        "khong tai duoc trang",
+        "trang bị đơ",
+        "trang bi do",
+        "web bị đơ",
+        "web bi do"
+      ],
+      "reply": "Xin lỗi bạn nhé. Bạn thử tải lại trang, nếu vẫn lỗi hãy báo qua hello@memori.class để được sửa.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "video_not_play",
+      "description": "Video trên trang không phát, bị giật hoặc không có tiếng.",
+      "keys": [
+        "video không chạy",
+        "video khong chay",
+        "không xem được video",
+        "khong xem duoc video",
+        "video bị giật",
+        "video bi giat",
+        "video không phát",
+        "video khong phat",
+        "không có tiếng",
+        "khong co tieng",
+        "video đứng hình",
+        "video dung hinh",
+        "video lỗi",
+        "video loi"
+      ],
+      "reply": "Bạn thử tải lại trang và kiểm tra mạng nhé. Nếu video vẫn không chạy, hãy báo qua hello@memori.class.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "installment",
+      "description": "Hỏi có trả góp, chia nhỏ học phí thành nhiều đợt không (KHÔNG phải hỏi mức học phí).",
+      "keys": [
+        "trả góp",
+        "tra gop",
+        "chia đợt",
+        "chia dot",
+        "đóng nhiều lần",
+        "dong nhieu lan",
+        "đóng từng đợt",
+        "dong tung dot",
+        "trả dần",
+        "tra dan",
+        "thanh toán góp",
+        "thanh toan gop",
+        "đóng theo tháng",
+        "dong theo thang",
+        "có trả góp không",
+        "co tra gop khong",
+        "chia đợt đóng",
+        "chia dot dong",
+        "đóng học phí nhiều lần",
+        "dong hoc phi nhieu lan",
+        "học phí trả góp",
+        "hoc phi tra gop"
+      ],
+      "reply": "Bọ chưa có thông tin về trả góp. Bạn hỏi giúp qua hello@memori.class để biết chính xác nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "discount",
+      "description": "Hỏi ưu đãi, giảm giá, mã khuyến mãi, học bổng hoặc học theo nhóm được giảm (KHÔNG phải hỏi học phí).",
+      "keys": [
+        "ưu đãi",
+        "uu dai",
+        "giảm giá",
+        "giam gia",
+        "khuyến mãi",
+        "khuyen mai",
+        "mã giảm",
+        "ma giam",
+        "học bổng",
+        "hoc bong",
+        "voucher",
+        "đăng ký sớm",
+        "dang ky som",
+        "đi nhóm được giảm",
+        "khuyến mại",
+        "có ưu đãi không",
+        "co uu dai khong",
+        "có giảm giá không",
+        "co giam gia khong",
+        "có khuyến mãi không",
+        "co khuyen mai khong",
+        "có học bổng không",
+        "co hoc bong khong"
+      ],
+      "reply": "Bọ chưa có thông tin về ưu đãi nào. Bạn hỏi giúp qua hello@memori.class để biết mới nhất nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "payment_method",
+      "description": "Hỏi cách thanh toán, chuyển khoản, trả bằng thẻ hay ví điện tử.",
+      "keys": [
+        "thanh toán",
+        "thanh toan",
+        "chuyển khoản",
+        "chuyen khoan",
+        "trả bằng thẻ",
+        "tra bang the",
+        "ví điện tử",
+        "vi dien tu",
+        "momo",
+        "hình thức thanh toán",
+        "hinh thuc thanh toan",
+        "đóng tiền",
+        "dong tien",
+        "nộp tiền",
+        "nop tien"
+      ],
+      "reply": "Bọ chưa có thông tin về cách thanh toán. Bạn hỏi giúp qua hello@memori.class nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "after_register",
+      "description": "Hỏi sau khi đăng ký thì chuyện gì xảy ra, bao lâu được phản hồi, có xác nhận không (KHÔNG phải hỏi cách đăng ký).",
+      "keys": [
+        "đăng ký xong",
+        "dang ky xong",
+        "sau khi đăng ký",
+        "sau khi dang ky",
+        "bao giờ được phản hồi",
+        "bao gio duoc phan hoi",
+        "có email xác nhận",
+        "co email xac nhan",
+        "đã đăng ký rồi",
+        "da dang ky roi",
+        "chờ phản hồi",
+        "cho phan hoi",
+        "đăng ký rồi thì sao",
+        "bước tiếp theo"
+      ],
+      "reply": "Bọ chưa có thông tin về các bước sau khi đăng ký. Bạn nhắn hello@memori.class để được báo nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "join_community_how",
+      "description": "Hỏi cách vào nhóm chat, group Facebook hay Zalo của cộng đồng (KHÔNG phải hỏi cộng đồng là gì).",
+      "keys": [
+        "vào nhóm",
+        "vao nhom",
+        "group zalo",
+        "group facebook",
+        "nhóm zalo",
+        "nhom zalo",
+        "nhóm chat",
+        "nhom chat",
+        "link nhóm",
+        "link nhom",
+        "tham gia nhóm",
+        "tham gia nhom",
+        "vào group",
+        "vao group",
+        "nhóm facebook",
+        "có group zalo không",
+        "co group zalo khong",
+        "có nhóm zalo không",
+        "co nhom zalo khong",
+        "có nhóm chat không",
+        "co nhom chat khong",
+        "có group không",
+        "co group khong"
+      ],
+      "reply": "Bọ chưa có đường dẫn nhóm chat nào. Bạn xem không gian cộng đồng, hoặc hỏi qua hello@memori.class nhé.",
+      "link": {
+        "href": "community.html",
+        "label": "Cộng đồng ME.MORI"
+      }
+    },
+    {
+      "id": "nav_home",
+      "description": "Muốn quay về trang chủ hoặc trang đầu.",
+      "keys": [
+        "về trang chủ",
+        "ve trang chu",
+        "quay lại trang đầu",
+        "quay lai trang dau",
+        "trở về",
+        "tro ve",
+        "về đầu trang",
+        "ve dau trang",
+        "home",
+        "về lại",
+        "ve lai",
+        "trang đầu",
+        "trang dau",
+        "xem trang chủ",
+        "xem trang chu",
+        "mở trang chủ",
+        "mo trang chu",
+        "vào trang chủ",
+        "vao trang chu",
+        "đến trang chủ",
+        "den trang chu",
+        "tới trang chủ",
+        "toi trang chu",
+        "quay về trang chủ",
+        "quay ve trang chu"
+      ],
+      "reply": "Bọ dẫn bạn về trang đầu nhé, nơi Bọ chào đón mọi người.",
+      "link": {
+        "href": "index.html",
+        "label": "Về trang đầu"
+      }
+    },
+    {
+      "id": "nav_start_where",
+      "description": "Người mới không biết nên xem trang nào trước, nhờ Bọ dẫn đường (KHÔNG phải nhờ mở một trang cụ thể).",
+      "keys": [
+        "nên xem gì",
+        "nen xem gi",
+        "xem trang nào",
+        "xem trang nao",
+        "bắt đầu từ đâu",
+        "bat dau tu dau",
+        "đi đâu trước",
+        "di dau truoc",
+        "dẫn đường",
+        "dan duong",
+        "chỉ đường",
+        "chi duong",
+        "lạc đường",
+        "lac duong",
+        "không biết xem gì",
+        "khong biet xem gi"
+      ],
+      "reply": "Bạn cứ đi một vòng theo tấm bản đồ, Bọ sẽ dẫn bạn qua từng nơi trong ME.MORI nhé.",
+      "link": {
+        "href": "sitemap.html",
+        "label": "Bản đồ trang"
+      }
+    },
+    {
+      "id": "mobile_support",
+      "description": "Hỏi xem trang có dùng được trên điện thoại, máy tính bảng không.",
+      "keys": [
+        "xem trên điện thoại",
+        "xem tren dien thoai",
+        "dùng được trên điện thoại",
+        "dung duoc tren dien thoai",
+        "trang có mobile",
+        "máy tính bảng",
+        "may tinh bang",
+        "ipad",
+        "xem bằng điện thoại",
+        "xem bang dien thoai",
+        "trên di động",
+        "tren di dong",
+        "màn hình nhỏ",
+        "iphone"
+      ],
+      "reply": "Trang được làm để xem tốt cả trên điện thoại lẫn máy tính, bạn cứ thoải mái ghé thăm nhé."
+    },
+    {
+      "id": "language_site",
+      "description": "Hỏi trang có bản tiếng Anh hoặc ngôn ngữ khác không.",
+      "keys": [
+        "bản tiếng anh",
+        "ban tieng anh",
+        "trang tiếng anh",
+        "trang tieng anh",
+        "english version",
+        "đổi ngôn ngữ",
+        "doi ngon ngu",
+        "có tiếng anh không",
+        "co tieng anh khong",
+        "chuyển tiếng anh",
+        "chuyen tieng anh",
+        "english",
+        "website tiếng anh",
+        "đa ngôn ngữ"
+      ],
+      "reply": "Hiện Bọ chưa thấy bản ngôn ngữ nào khác ngoài tiếng Việt. Bạn cần gì cứ hỏi Bọ nhé."
+    },
+    {
+      "id": "partnership",
+      "description": "Doanh nghiệp, thương hiệu hoặc báo chí muốn hợp tác, quảng cáo, tài trợ, phỏng vấn.",
+      "keys": [
+        "hợp tác",
+        "hop tac",
+        "quảng cáo",
+        "quang cao",
+        "tài trợ",
+        "tai tro",
+        "báo chí",
+        "bao chi",
+        "phỏng vấn",
+        "phong van",
+        "đối tác",
+        "doi tac",
+        "booking",
+        "kết hợp thương hiệu",
+        "ket hop thuong hieu"
+      ],
+      "reply": "Cảm ơn bạn đã quan tâm! Bọ chưa có thông tin về hợp tác, bạn viết cho hello@memori.class nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "recruit",
+      "description": "Người muốn ứng tuyển làm giảng viên, trợ giảng, cộng tác viên hoặc thực tập.",
+      "keys": [
+        "tuyển dụng",
+        "tuyen dung",
+        "ứng tuyển",
+        "ung tuyen",
+        "xin việc",
+        "xin viec",
+        "thực tập",
+        "thuc tap",
+        "cộng tác viên",
+        "cong tac vien",
+        "trợ giảng",
+        "tro giang",
+        "làm việc cùng",
+        "muốn dạy",
+        "muon day"
+      ],
+      "reply": "Bọ chưa có thông tin về tuyển dụng. Bạn gửi giới thiệu bản thân qua hello@memori.class nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "feedback_suggest",
+      "description": "Người xem muốn góp ý, đề xuất cải thiện trang hoặc lớp, hoặc phản ánh ý kiến (KHÔNG phải báo lỗi kỹ thuật).",
+      "keys": [
+        "góp ý",
+        "gop y",
+        "đề xuất",
+        "de xuat",
+        "ý kiến",
+        "y kien",
+        "phản hồi về trang",
+        "phan hoi ve trang",
+        "khiếu nại",
+        "khieu nai",
+        "đóng góp ý",
+        "dong gop y",
+        "gợi ý cải thiện"
+      ],
+      "reply": "Bọ cảm ơn bạn nhiều! Ý kiến của bạn hãy gửi qua hello@memori.class để đội ngũ ME.MORI đọc nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "need_human",
+      "description": "Muốn nói chuyện với người thật, tư vấn viên, xin số điện thoại hoặc hotline.",
+      "keys": [
+        "gặp người thật",
+        "gap nguoi that",
+        "tư vấn viên",
+        "tu van vien",
+        "số điện thoại",
+        "so dien thoai",
+        "hotline",
+        "gọi điện",
+        "goi dien",
+        "nói chuyện với người",
+        "noi chuyen voi nguoi",
+        "nhân viên",
+        "nhan vien",
+        "zalo của lớp",
+        "tư vấn trực tiếp",
+        "hotline là gì",
+        "hotline la gi",
+        "số hotline",
+        "so hotline"
+      ],
+      "reply": "Bọ chưa có số điện thoại hay hotline. Bạn viết cho hello@memori.class, người thật sẽ trả lời bạn nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "bo_age",
+      "description": "Hỏi chính Bọ bao nhiêu tuổi, sinh năm nào (KHÔNG phải hỏi độ tuổi học viên).",
+      "keys": [
+        "bọ bao nhiêu tuổi",
+        "bo bao nhieu tuoi",
+        "bạn bao nhiêu tuổi",
+        "ban bao nhieu tuoi",
+        "bọ mấy tuổi",
+        "bo may tuoi",
+        "bọ sinh năm",
+        "bo sinh nam",
+        "tuổi của bọ",
+        "tuoi cua bo",
+        "bạn mấy tuổi",
+        "ban may tuoi",
+        "sinh nhật bọ",
+        "sinh nhat bo",
+        "sinh nhật của bọ",
+        "sinh nhat cua bo"
+      ],
+      "reply": "Bọ nhỏ xíu nên tuổi là bí mật nha! Chỉ biết Bọ mê ánh sáng đẹp lắm."
+    },
+    {
+      "id": "bo_likes",
+      "description": "Hỏi Bọ thích gì, sở thích, món ăn, màu yêu thích.",
+      "keys": [
+        "bọ thích gì",
+        "bo thich gi",
+        "bạn thích gì",
+        "ban thich gi",
+        "sở thích của bọ",
+        "so thich cua bo",
+        "màu yêu thích",
+        "mau yeu thich",
+        "bọ ăn gì",
+        "bo an gi",
+        "bạn thích màu",
+        "bạn thích ăn",
+        "món yêu thích",
+        "bọ thích",
+        "bo thich"
+      ],
+      "reply": "Bọ thích ánh sáng đẹp, cảnh phim đẹp và được trò chuyện với bạn đó!"
+    },
+    {
+      "id": "bo_robot",
+      "description": "Hỏi Bọ là người thật, robot hay AI.",
+      "keys": [
+        "bọ là người hay máy",
+        "bo la nguoi hay may",
+        "bạn là robot",
+        "ban la robot",
+        "người thật không",
+        "nguoi that khong",
+        "bạn là ai thật",
+        "bot hay người",
+        "bot hay nguoi",
+        "là máy à",
+        "la may a",
+        "bọ là ai vậy",
+        "bạn có phải người"
+      ],
+      "reply": "Bọ là chú bọ trợ lý trên trang, không phải người thật. Việc Bọ chưa biết, Bọ sẽ chỉ bạn nơi hỏi.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "bo_feelings",
+      "description": "Hỏi thăm sức khỏe hoặc tâm trạng của Bọ.",
+      "keys": [
+        "bạn khỏe không",
+        "ban khoe khong",
+        "bọ khỏe không",
+        "bo khoe khong",
+        "bạn ổn không",
+        "ban on khong",
+        "hôm nay thế nào",
+        "hom nay the nao",
+        "bạn có vui không",
+        "dạo này sao",
+        "dao nay sao",
+        "bạn đang làm gì",
+        "ban dang lam gi",
+        "khỏe không"
+      ],
+      "reply": "Bọ khỏe re, cánh còn đang vỗ phành phạch đây! Còn bạn hôm nay thế nào?"
+    },
+    {
+      "id": "bo_home",
+      "description": "Hỏi Bọ sống ở đâu, nhà của Bọ ở đâu (KHÔNG phải địa chỉ lớp học).",
+      "keys": [
+        "bọ sống ở đâu",
+        "bo song o dau",
+        "nhà bọ ở đâu",
+        "nha bo o dau",
+        "bạn sống ở đâu",
+        "ban song o dau",
+        "bọ ở đâu",
+        "bo o dau",
+        "bạn ở đâu vậy",
+        "tổ của bọ",
+        "to cua bo",
+        "nhà của bọ",
+        "bạn ở đâu",
+        "ban o dau"
+      ],
+      "reply": "Bọ sống trong khu rừng đêm lấp lánh của ME.MORI. Bạn muốn xem thì ghé trang Giới thiệu nhé.",
+      "link": {
+        "href": "gioithieu.html",
+        "label": "Trang Giới thiệu"
+      }
+    },
+    {
+      "id": "compliment",
+      "description": "Khen Bọ hoặc khen trang web dễ thương, đẹp, hay.",
+      "keys": [
+        "bọ dễ thương",
+        "bo de thuong",
+        "bọ giỏi quá",
+        "bo gioi qua",
+        "trang đẹp quá",
+        "trang dep qua",
+        "bạn giỏi quá",
+        "ban gioi qua",
+        "bọ xinh",
+        "bo xinh",
+        "tuyệt vời",
+        "bọ hay quá",
+        "bo hay qua",
+        "trang hay quá",
+        "trang hay qua",
+        "bọ đáng yêu",
+        "bo dang yeu"
+      ],
+      "reply": "Bọ ngại quá, cảm ơn bạn nhiều nha! Bạn vui là Bọ vui rồi."
+    },
+    {
+      "id": "sorry",
+      "description": "Người dùng xin lỗi Bọ, hoặc nói đã làm phiền, hỏi nhiều.",
+      "keys": [
+        "xin lỗi",
+        "xin loi",
+        "làm phiền",
+        "lam phien",
+        "sorry",
+        "hỏi nhiều quá",
+        "hoi nhieu qua",
+        "bạn thông cảm",
+        "ban thong cam",
+        "mình hỏi hơi nhiều",
+        "xin lỗi bọ",
+        "phiền bạn quá",
+        "phien ban qua"
+      ],
+      "reply": "Không sao đâu bạn! Bọ thích được hỏi mà, bạn cứ hỏi tiếp nhé."
     }
   ]
 }

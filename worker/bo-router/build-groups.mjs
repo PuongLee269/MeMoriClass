@@ -22,7 +22,8 @@ export function buildGroups() {
     // Mô tả cho AI: nội dung nhóm trả lời (giữ dấu, cắt ~110 ký tự) + vài từ khóa tiêu biểu.
     let gist = String(r.reply || '').replace(/\s+/g, ' ').trim();
     if (gist.length > 110) gist = gist.slice(0, 110).replace(/\s+\S*$/, '') + '...';
-    return [r.id, 'trả lời: ' + gist + ' | từ khóa: ' + keys.join(', ')];
+    const head = r.description ? 'mô tả: ' + String(r.description).replace(/\s+/g, ' ').trim() + ' | trả lời: ' : 'trả lời: ';
+    return [r.id, head + gist + ' | từ khóa: ' + keys.join(', ')];
   });
 }
 
