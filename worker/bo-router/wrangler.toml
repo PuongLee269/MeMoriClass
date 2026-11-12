@@ -3,16 +3,19 @@ main = "index.js"
 compatibility_date = "2026-11-11"
 
 [vars]
-AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+GEMINI_MODEL = "gemini-2.5-flash-lite"   # model Flash nhỏ; đổi ở đây, không cần sửa code
+GEMINI_THINKING_BUDGET = "0"             # tắt "suy nghĩ" để nhanh và rẻ (chỉ model 2.5 hỗ trợ; xóa dòng này nếu đổi sang model khác báo lỗi)
+GEMINI_TIMEOUT_MS = "6000"               # Worker chờ Gemini tối đa; trang chờ Worker tối đa 8000 ms (ai.timeoutMs)
 LIMITER = "12"            # câu hỏi/phút/IP
-AI_DAILY_PER_IP = "50"    # lần gọi AI/ngày UTC cho mỗi IP
-DAILY_CAP = "2000"        # tổng số lần gọi AI/ngày cho toàn Worker
+AI_DAILY_PER_IP = "50"    # lượt gọi AI/ngày UTC cho mỗi IP
+DAILY_CAP = "2000"        # tổng số lượt gọi AI/ngày cho toàn Worker
 ALLOWED_ORIGINS = "https://moriclass.com,https://www.moriclass.com"
 # DEV = "1"               # chỉ khi thử cục bộ: cho phép http://localhost
-# AI_JSON = "1"           # bật response_format json_schema nếu model hỗ trợ
+# DEBUG_USAGE = "1"       # chỉ khi test: trả số token trong header x-bo-tokens (vào,ra,suy nghĩ)
 
-[ai]
-binding = "AI"
+# KHÓA: GEMINI_API_KEY chỉ đặt bằng Worker secret, KHÔNG ghi vào file này:
+#   npx wrangler secret put GEMINI_API_KEY
+# Chạy thử cục bộ: tạo file .dev.vars (đã bị gitignore) chứa dòng GEMINI_API_KEY=...
 
 [[durable_objects.bindings]]
 name = "RATE_LIMIT"

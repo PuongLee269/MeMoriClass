@@ -353,12 +353,12 @@ var DOCS = [
         widgetClose: T('Tên nút đóng khung chat (đọc màn hình)', { req: 1, max: 40 })
       } },
       { title: 'AI chọn nhóm trả lời (mặc định TẮT)', fields: { ai: S.grp('', {
-        enabled: S.bool('Bật AI khi từ khóa không khớp (đang tắt nếu không tích)', { help: 'AI chỉ chọn một nhóm câu trả lời có sẵn, không tự viết nội dung. Chỉ bật sau khi đã triển khai Worker.' }),
+        enabled: S.bool('Bật AI trả lời trước, từ khóa làm dự phòng (đang tắt nếu không tích)', { help: 'AI chỉ chọn một nhóm câu trả lời có sẵn, không tự viết nội dung. Chỉ bật sau khi đã triển khai Worker.' }),
         endpoint: S.url('Địa chỉ Worker (https://…)', { https: 1, help: 'Địa chỉ Worker trong thư mục worker/bo-router. Để trống thì AI không chạy dù đã tích.' }),
         maxPerDay: S.num('Số lần gọi AI tối đa mỗi ngày trên mỗi trình duyệt', { int: 1, min: 0, max: 50 }),
         maxQuestionWords: S.num('Câu hỏi dài hơn số từ này thì không gọi AI', { int: 1, min: 1, max: 49 }),
         maxAnswerWords: S.num('Số từ tối đa của chữ do AI sinh (AI hiện chỉ chọn nhóm, không viết chữ)', { int: 1, min: 1, max: 29 }),
-        timeoutMs: S.num('Thời gian chờ AI (mili giây)', { int: 1, min: 1000, max: 8000 })
+        timeoutMs: S.num('Thời gian chờ AI (mili giây)', { int: 1, min: 1000, max: 10000 })
       }) } }
     ] },
 

@@ -251,15 +251,25 @@
     userSay(q); input.value = '';
     window.clearTimeout(replyTimer);
     ensureEngine().then(async function (eng) {
-      var match = eng && eng.find(q), r = match ? eng.reply(q, TEXT.fallback) : null;
-      if (!r && window.BoAI && BoAI.active()) {
-        var id = await BoAI.route(q, function (k) { return Object.prototype.hasOwnProperty.call(repliesById, k); });
-        var entry = id && repliesById[id];
-        if (entry) r = { reply: entry.reply, target: entry.link && entry.link.href, label: entry.link && entry.link.label, card: !!entry.card };
+      var r = null, ai = window.BoAI, wait = null;
+      if (ai && ai.canAsk(q)) {            /* AI-trước: Gemini đọc ngữ cảnh/ý định; lỗi/timeout/hết lượt thì dùng từ khóa */
+        wait = addWait();
+        var res = await ai.route(q, function (k) { return Object.prototype.hasOwnProperty.call(repliesById, k); });
+        if (wait.parentNode) wait.remove(); log.setAttribute('aria-busy', 'false');
+        if (res.ok) {
+          var entry = res.id && repliesById[res.id];
+          r = entry ? { reply: entry.reply, target: entry.link && entry.link.href, label: entry.link && entry.link.label, card: !!entry.card } : { reply: TEXT.fallback, target: null, label: null, card: false };
+        }
       }
+      if (!r) r = eng && eng.find(q) ? eng.reply(q, TEXT.fallback) : null;
       r = r || { reply: TEXT.fallback, target: null, label: null, card: false };
-      replyTimer = window.setTimeout(function () { botSay(r.reply, r.target, r.label, r.card); }, (RM && RM.matches) ? 0 : 450);
+      replyTimer = window.setTimeout(function () { botSay(r.reply, r.target, r.label, r.card); }, (wait || (RM && RM.matches)) ? 0 : 450);
     });
+  }
+  function addWait() {                     /* chỉ báo chờ: ba chấm nhấp nháy, không có chữ */
+    var p = el('p', 'bow-msg bow-bot bow-wait'); p.setAttribute('aria-hidden', 'true');
+    for (var i = 0; i < 3; i++) p.appendChild(el('span', 'bow-dot'));
+    log.appendChild(p); log.setAttribute('aria-busy', 'true'); scrollDown(); return p;
   }
 
   /* ---- vị trí khung chat gần Bọ của trang (chế độ attach) ---- */

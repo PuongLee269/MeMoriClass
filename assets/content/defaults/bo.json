@@ -17,6 +17,6 @@
     "maxPerDay": 50,
     "maxQuestionWords": 49,
     "maxAnswerWords": 29,
-    "timeoutMs": 4500
+    "timeoutMs": 8000
   }
 }

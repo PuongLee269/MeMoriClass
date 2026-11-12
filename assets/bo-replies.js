@@ -60,12 +60,12 @@ var BO_TEXT = {
 };
 
 /* Nạp nội dung từ JSON (không làm hỏng trang nếu thiếu). Phát sự kiện 'bo:content' khi xong; window.BO_READY là Promise. */
-var BO_AI = { enabled: false, endpoint: '', maxPerDay: 50, maxQuestionWords: 49, maxAnswerWords: 29, timeoutMs: 4500 };
+var BO_AI = { enabled: false, endpoint: '', maxPerDay: 50, maxQuestionWords: 49, maxAnswerWords: 29, timeoutMs: 8000 };
 var BO_READY = (typeof MemoriContent === 'undefined') ? Promise.resolve() : (function () {
   var C = MemoriContent;
   var T0 = JSON.parse(JSON.stringify(BO_TEXT));
   return Promise.all([
-    C.load('bo', Object.assign(T0, { ai: { enabled: false, endpoint: '', maxPerDay: 50, maxQuestionWords: 49, maxAnswerWords: 29, timeoutMs: 4500 } })),
+    C.load('bo', Object.assign(T0, { ai: { enabled: false, endpoint: '', maxPerDay: 50, maxQuestionWords: 49, maxAnswerWords: 29, timeoutMs: 8000 } })),
     C.load('bo-replies', { replies: BO_REPLIES }, { replace: ['replies'], max: 5000, timeout: 8000 })
   ]).then(function (r) {
     var t = r[0], rep = (r[1] && r[1].replies) || [];

@@ -1,11 +1,12 @@
 /* Bộ định tuyến AI dùng chung cho chat của Bọ (widget và trang chủ).
-   Mặc định TẮT. Chỉ gọi khi từ khóa không khớp. Giới hạn: câu hỏi tối đa maxQuestionWords từ (mặc định 49),
-   tối đa maxPerDay lần/ngày/trình duyệt (mặc định 50). AI không viết chữ: chỉ trả một id có trong danh sách (isValid).
-   Hết hạn mức hoặc máy chủ báo 429 thì im lặng, Bọ trả lời bằng từ khóa/câu mặc định. */
+   Mặc định TẮT. Khi bật (ai.enabled + endpoint) AI được hỏi TRƯỚC: Worker (Gemini) đọc ngữ cảnh/ý định rồi chỉ trả một id nhóm.
+   Giới hạn: câu hỏi tối đa maxQuestionWords từ (49), tối đa maxPerDay lượt/ngày/trình duyệt (50), timeoutMs mặc định 8000.
+   route() trả { ok, id }: ok=true là AI đã trả lời (id có thể null = không nhóm nào hợp, vd lạc đề);
+   ok=false là AI không dùng được (lỗi/timeout/hết lượt/429) -> nơi gọi rơi về bo-matcher từ khóa rồi câu dự phòng. Không bao giờ ném lỗi, không hiện lỗi. */
 (function () {
   'use strict';
   var KEY = 'memori.bo.ai-day';
-  var DEF = { enabled: false, endpoint: '', maxPerDay: 50, maxQuestionWords: 49, maxAnswerWords: 29, timeoutMs: 4500 };
+  var DEF = { enabled: false, endpoint: '', maxPerDay: 50, maxQuestionWords: 49, maxAnswerWords: 29, timeoutMs: 8000 };
   var cfg = Object.assign({}, DEF);
   function num(v, d, lo, hi) { v = Number(v); return Math.max(lo, Math.min(hi, Number.isFinite(v) ? v : d)); }
   function configure(ai, urlFn) {
@@ -16,7 +17,7 @@
     cfg.maxPerDay = num(ai.maxPerDay, 50, 0, 50);
     cfg.maxQuestionWords = num(ai.maxQuestionWords, 49, 1, 49);
     cfg.maxAnswerWords = num(ai.maxAnswerWords, 29, 1, 29);
-    cfg.timeoutMs = num(ai.timeoutMs || 4500, 4500, 1000, 8000);
+    cfg.timeoutMs = num(ai.timeoutMs || 8000, 8000, 1000, 10000);
     return cfg;
   }
   function active() { return !!(cfg.enabled && cfg.endpoint); }
@@ -40,12 +41,22 @@
     return c.kind === 'localStorage' && writeCount('sessionStorage', c.n + 1);
   }
   function exhaust() { if (!writeCount('localStorage', 9999)) writeCount('sessionStorage', 9999); }
+  var cache = {}, cacheN = 0;
+  function norm(q) { return String(q || '').toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, ' ').replace(/\s+/g, ' ').trim(); }
+  function canAsk(question) {                          /* có đáng hiện trạng thái chờ không (sẽ thật sự gọi AI) */
+    if (!active() || !String(question || '').trim() || words(question) > cfg.maxQuestionWords) return false;
+    if (Object.prototype.hasOwnProperty.call(cache, norm(question))) return true;
+    var c = readCount(); return !!(c && c.n < cfg.maxPerDay);
+  }
   async function route(question, isValid) {
-    if (!active()) return null;
-    if (words(question) > cfg.maxQuestionWords) return null;           /* câu dài: không gọi AI */
+    var FAIL = { ok: false, id: null };
+    if (!active()) return FAIL;
+    if (words(question) > cfg.maxQuestionWords) return FAIL;          /* câu dài: không gọi AI */
+    var key = norm(question);
+    if (Object.prototype.hasOwnProperty.call(cache, key)) return { ok: true, id: cache[key] };
     var c = readCount();
-    if (!c || c.n >= cfg.maxPerDay) return null;
-    if (!bump(c)) return null;
+    if (!c || c.n >= cfg.maxPerDay) return FAIL;
+    if (!bump(c)) return FAIL;
     var controller = typeof AbortController === 'function' ? new AbortController() : null;
     var timer = controller ? window.setTimeout(function () { controller.abort(); }, cfg.timeoutMs) : 0;
     try {
@@ -54,12 +65,16 @@
         body: JSON.stringify({ question: String(question).trim() }),
         signal: controller ? controller.signal : undefined, credentials: 'omit', referrerPolicy: 'no-referrer'
       });
-      if (response.status === 429) { exhaust(); return null; }
-      if (!response.ok) return null;
+      if (response.status === 429) { exhaust(); return FAIL; }
+      if (!response.ok) return FAIL;
       var data = await response.json();
-      return data && typeof data.id === 'string' && isValid(data.id) ? data.id : null;
-    } catch (e) { return null; }
+      if (!data || typeof data !== 'object' || !('id' in data)) return FAIL;
+      var id = typeof data.id === 'string' && isValid(data.id) ? data.id : null;
+      if (cacheN >= 100) { cache = {}; cacheN = 0; }
+      cache[key] = id; cacheN++;
+      return { ok: true, id: id };
+    } catch (e) { return FAIL; }
     finally { if (timer) window.clearTimeout(timer); }
   }
-  window.BoAI = { configure: configure, active: active, route: route, words: words };
+  window.BoAI = { configure: configure, active: active, route: route, canAsk: canAsk, words: words };
 })();
