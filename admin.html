@@ -114,6 +114,16 @@ details.item>.ib{padding:6px 12px 2px;border-top:1px solid var(--line)}
 .pile select{min-height:40px;padding:4px 6px;font-size:14px}
 .chk{display:flex;align-items:center;gap:10px;min-height:44px;cursor:pointer}
 .chk input{width:22px;height:22px;accent-color:#e9b95c}
+.wcount{font-size:13px;color:var(--mute);text-align:right;margin-top:4px}
+.wcount.long,.wc.long{color:#2a1c05;background:var(--gold);border-radius:999px;padding:1px 10px;font-weight:500}
+.wcount.long{display:table;margin-left:auto}
+.wc{flex:none;font-size:12px;color:var(--mute);white-space:nowrap}
+.wc.long{padding:1px 8px}
+details.item.long{border-color:var(--gold2);box-shadow:inset 3px 0 0 var(--gold)}
+.longbar{display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap;margin:10px 0;padding:10px 14px}
+.longbar .chk{min-height:44px}
+.longbar .sum{font-size:14px;color:var(--mute)}
+body.demo #outBtn,body.demo header.top a.btn,body.demo .pane .bar{display:none}
 .skel{color:var(--mute);padding:30px 0;text-align:center}
 
 /* hộp lưu + toast */
@@ -220,6 +230,8 @@ function el(tag, attrs) {
   }
   return e;
 }
+function wc(s) { return String(s || '').trim().split(/\s+/).filter(Boolean).length; }
+var WARN_TITLE = 'Dài từ 30 chữ trở lên';
 function clone(x) { return x === undefined ? undefined : JSON.parse(JSON.stringify(x)); }
 function isO(x) { return x !== null && typeof x === 'object' && !Array.isArray(x); }
 var toastT = 0;
@@ -230,6 +242,15 @@ function b64ToStr(b) { var bin = atob(String(b).replace(/\s/g, '')), u = new Uin
 
 /* ===================== Phiên & GitHub API ===================== */
 var cfg = null;
+/* Chế độ demo (?demo=1): không cần token, không gọi GitHub; đọc các JSON của kho (hoặc bản nhúng sẵn) và "lưu" chỉ trong bộ nhớ trang. */
+var DEMO = /[?&]demo=1(&|$)/.test(location.search);
+var demoStore = null;
+function demoText(path) {
+  if (!demoStore) demoStore = Object.assign({}, window.MEMORI_DEMO_FILES || {});
+  if (path in demoStore) return Promise.resolve(demoStore[path]);
+  if (window.MEMORI_DEMO_FILES) return Promise.resolve(null);
+  return fetch(path, { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : null; }).catch(function () { return null; }).then(function (t) { if (t !== null) demoStore[path] = t; return t; });
+}
 function readCfg() { try { var c = JSON.parse(localStorage.getItem(LS_CFG) || 'null'); return c && c.token ? c : null; } catch (e) { return null; } }
 function writeCfg(c) { try { localStorage.setItem(LS_CFG, JSON.stringify(c)); try { localStorage.setItem(LS_REPO, JSON.stringify({ owner: c.owner, repo: c.repo, branch: c.branch })); } catch (e) {} return true; } catch (e) { return false; } }
 function wipeSession() {
@@ -264,12 +285,14 @@ function gh(method, path, body) {
 function repoBase() { return '/repos/' + cfg.owner + '/' + cfg.repo; }
 function contentsPath(p) { return repoBase() + '/contents/' + p.split('/').map(encodeURIComponent).join('/'); }
 function getFile(path) {
+  if (DEMO) return demoText(path).then(function (t) { return t === null ? null : { sha: 'demo', text: t }; });
   return gh('GET', contentsPath(path) + '?ref=' + encodeURIComponent(cfg.branch)).then(function (d) {
     if (!d || typeof d.sha !== 'string' || typeof d.content !== 'string') throw new GhErr(0, 'GitHub trả về dữ liệu lạ cho ' + path + '.');
     return { sha: d.sha, text: b64ToStr(d.content) };
   }, function (e) { if (e.status === 404) return null; throw e; });
 }
 function putFile(path, b64, sha, message) {
+  if (DEMO) { demoStore = demoStore || {}; demoStore[path] = b64ToStr(b64); return Promise.resolve({ content: { sha: 'demo' } }); }
   var body = { message: message, content: b64, branch: cfg.branch };
   if (sha) body.sha = sha;
   return gh('PUT', contentsPath(path), body);
@@ -346,14 +369,14 @@ var DOCS = [
         replies: S.list('Các mục trả lời', S.grp('', {
           id: T('Mã mục (chữ thường, số, gạch dưới)', { req: 1, max: 40, re: /^[a-z0-9_]+$/, reMsg: 'Chỉ dùng chữ thường không dấu, số và dấu _.' }),
           keys: S.lines('Từ khóa (mỗi dòng một từ khóa)', { req: 1, rows: 4, max: 80 }),
-          reply: S.area('Câu Bọ trả lời', { req: 1, max: 600 }),
+          reply: S.area('Câu Bọ trả lời', { req: 1, max: 600, wordWarn: 30 }),
           exact: S.bool('Chỉ khớp khi CẢ câu đúng bằng từ khóa (dùng cho “có / ok / đi”)'),
           card: S.bool('Hiện thẻ bản đồ kèm câu trả lời'),
           link: S.grp('Nút liên kết kèm theo (để trống nếu không cần)', {
             href: S.url('Đường dẫn', { hash: 1, pages: 1 }),
             label: T('Chữ trên nút', { max: 40 })
           })
-        }), { itemName: 'Mục', itemTitle: function (it) { return (it.id || '(chưa đặt mã)') + ' — ' + ((it.keys || [])[0] || ''); }, add: function () { return { id: 'moi_' + Date.now().toString(36).slice(-4), keys: [], reply: '', link: { href: '', label: '' } }; }, collapse: 1, max: 5000, min: 1 })
+        }), { itemName: 'Mục', itemTitle: function (it) { return (it.id || '(chưa đặt mã)') + ' — ' + ((it.keys || [])[0] || ''); }, add: function () { return { id: 'moi_' + Date.now().toString(36).slice(-4), keys: [], reply: '', link: { href: '', label: '' } }; }, collapse: 1, max: 5000, min: 1, wordKey: 'reply', wordWarn: 30 })
       } }
     ],
     prep: function (d) { (d.replies || []).forEach(function (r) { if (!isO(r.link)) r.link = { href: '', label: '' }; }); },
@@ -649,7 +672,7 @@ function loadDoc(doc) {
   if (doc.loading) return doc.loading;
   doc.loading = Promise.all([
     getFile(doc.file),
-    fetch('assets/content/defaults/' + doc.defName + '.json?v=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; })
+    (DEMO ? demoText('assets/content/defaults/' + doc.defName + '.json').then(function (t) { return t === null ? null : JSON.parse(t); }) : fetch('assets/content/defaults/' + doc.defName + '.json?v=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; })).catch(function () { return null; })
   ]).then(function (r) {
     var f = r[0], defs = r[1], data = null, warn = '';
     doc.defaults = defs;
@@ -713,6 +736,17 @@ function field(node, obj, key, doc, ctx) {
       return '';
     };
     body = inp;
+    if (node.wordWarn) {
+      var wcEl = el('div', { class: 'wcount', 'aria-live': 'off' });
+      var updWc = function () {
+        var n = wc(obj[key]), lg = n >= node.wordWarn;
+        wcEl.textContent = n + ' chữ' + (lg ? ' · ' + WARN_TITLE : '');
+        wcEl.title = lg ? WARN_TITLE : '';
+        wcEl.classList.toggle('long', lg);
+      };
+      updWc(); inp.addEventListener('input', updWc);
+      body = el('div', {}, inp, wcEl);
+    }
   } else if (k === 'url' || k === 'img') {
     inp = el('input', { id: id, type: 'text', autocomplete: 'off', autocapitalize: 'off', spellcheck: 'false', inputmode: 'url' });
     inp.value = cur == null ? '' : String(cur);
@@ -872,14 +906,21 @@ function listField(node, obj, key, doc, ctx) {
   var box = el('div', { class: 'list' }), items = el('div', {});
   var addBtn = null;
   function titles() {
-    Array.prototype.forEach.call(items.children, function (c, i) { var tt = c.querySelector('.tt'); if (tt && arr[i]) tt.textContent = node.itemTitle ? node.itemTitle(arr[i], i) : (node.itemName || 'Mục') + ' ' + (i + 1); });
+    Array.prototype.forEach.call(items.children, function (c, i) {
+      var tt = c.querySelector('.tt'); if (tt && arr[i]) tt.textContent = node.itemTitle ? node.itemTitle(arr[i], i) : (node.itemName || 'Mục') + ' ' + (i + 1);
+      if (node.wordKey && arr[i]) {
+        var n = wc(arr[i][node.wordKey]), lg = n >= node.wordWarn, chip = c.querySelector('.wc');
+        c.classList.toggle('long', lg); c.dataset.words = n;
+        if (chip) { chip.hidden = !lg; chip.textContent = n + ' chữ'; chip.title = lg ? WARN_TITLE : ''; }
+      }
+    });
   }
   function draw(openIdx) {
     items.textContent = '';
     arr.forEach(function (item, i) {
       var d = el('details', { class: 'item' });
       if (!node.collapse || i === openIdx) d.open = true;
-      var sum = el('summary', {}, el('span', { class: 'no', text: String(i + 1) }), el('span', { class: 'tt' }));
+      var sum = el('summary', {}, el('span', { class: 'no', text: String(i + 1) }), el('span', { class: 'tt' }), node.wordKey ? el('span', { class: 'wc long', hidden: true }) : null);
       if (!node.fixed) {
         var btn = function (txt, lab, dis, fn) { return el('button', { type: 'button', class: 'ibtn', 'aria-label': lab, text: txt, disabled: dis, onclick: function (e) { e.preventDefault(); e.stopPropagation(); fn(); } }); };
         sum.append(
@@ -912,7 +953,7 @@ function listField(node, obj, key, doc, ctx) {
 /* Thử câu hỏi (tab trả lời của Bọ): dùng assets/bo-matcher.js trên dữ liệu ĐANG SỬA (chưa cần lưu). */
 function boTester(doc) {
   var box = el('div', { class: 'sec', id: 'boTester', style: 'padding:12px 14px;margin:10px 0' });
-  var inp = el('input', { type: 'text', id: 'boTestQ', placeholder: 'Gõ thử một câu hỏi, ví dụ: học phí bao nhiêu', maxlength: '200', style: 'flex:1;min-width:0;font-size:16px;padding:8px 10px' });
+  var inp = el('input', { type: 'text', id: 'boTestQ', placeholder: 'Gõ thử một câu hỏi, ví dụ: học phí bao nhiêu', maxlength: '200', style: 'flex:1 1 100%;min-width:0;font-size:16px;padding:8px 10px' });
   var go = el('button', { type: 'button', class: 'btn sm', id: 'boTestGo', text: 'Thử câu hỏi' });
   var dupBtn = el('button', { type: 'button', class: 'btn sm ghost', id: 'boDupGo', text: 'Kiểm tra từ khóa trùng' });
   var out = el('div', { id: 'boTestOut', role: 'status', style: 'margin-top:10px;font-size:14px;line-height:1.5' });
@@ -956,15 +997,41 @@ function boTester(doc) {
   return box;
 }
 
+/* Bộ lọc câu dài (tab trả lời của Bọ): chỉ báo, không chặn lưu. */
+function longBar(doc, pane) {
+  var chk = el('input', { type: 'checkbox', id: 'boLongOnly' });
+  var sum = el('span', { class: 'sum', id: 'boLongSum', role: 'status' });
+  var box = el('div', { class: 'sec longbar', id: 'boLongBar' }, el('label', { class: 'chk', for: 'boLongOnly' }, chk, 'Chỉ hiện câu dài (>=30 chữ)'), sum);
+  function items() { return pane.querySelectorAll('.list > div > details.item'); }
+  function count() {
+    var all = items(), lg = 0;
+    Array.prototype.forEach.call(all, function (d) { if (+d.dataset.words >= 30) lg++; });
+    sum.textContent = lg + ' câu dài (>=30 chữ) trên tổng ' + all.length + ' câu';
+  }
+  function filter() {
+    Array.prototype.forEach.call(items(), function (d) { d.hidden = chk.checked && !(+d.dataset.words >= 30); });
+    count();
+  }
+  chk.addEventListener('change', filter);
+  /* danh sách được dựng lại khi thêm/xóa/đổi thứ tự: áp lại bộ lọc; khi gõ chỉ cập nhật số đếm (mục đang sửa không biến mất) */
+  pane.addEventListener('input', function () { count(); });
+  setTimeout(function () {
+    var host = pane.querySelector('.list > div');
+    if (host) new MutationObserver(function () { filter(); }).observe(host, { childList: true });
+    filter();
+  }, 0);
+  return box;
+}
+
 function buildPane(doc) {
   var pane = doc.pane;
   pane.textContent = '';
   doc.ctx = { vals: [] };
-  pane.append(el('h2', { text: doc.tab }), el('p', { class: 'meta', text: doc.file + (cfg ? '  ·  nhánh ' + cfg.branch : '') }));
+  pane.append(el('h2', { text: doc.tab }), el('p', { class: 'meta', text: doc.file + (cfg && !DEMO ? '  ·  nhánh ' + cfg.branch : '') }));
   if (doc.note) pane.append(el('div', { class: 'note', text: doc.note }));
   if (doc.warn) pane.append(el('div', { class: 'msg bad', text: doc.warn }));
   doc.adv = el('div', { class: 'note', hidden: true, role: 'status' }); pane.append(doc.adv); showAdvise(doc);
-  if (doc.id === 'bo-replies') pane.append(boTester(doc));
+  if (doc.id === 'bo-replies') pane.append(boTester(doc), longBar(doc, pane));
   var bar = el('div', { class: 'bar' });
   if (doc.preview && doc.page) bar.append(el('button', { type: 'button', class: 'btn sm', text: 'Xem thử (chưa lưu)', onclick: function () { previewDoc(doc); } }));
   if (doc.page) bar.append(el('a', { class: 'btn sm ghost', href: doc.page, target: '_blank', rel: 'noopener', text: 'Mở trang đang chạy' }));
@@ -1101,7 +1168,7 @@ function saveAll() {
   }
   saving = true;
   var sb = $('#savebox'), ul2 = $('#sbList'), res = $('#sbRes'), close = $('#sbClose');
-  $('#sbTitle').textContent = 'Đang lưu lên GitHub…'; ul2.textContent = ''; res.textContent = ''; close.hidden = true; sb.hidden = false;
+  $('#sbTitle').textContent = DEMO ? 'Đang lưu (demo)…' : 'Đang lưu lên GitHub…'; ul2.textContent = ''; res.textContent = ''; close.hidden = true; sb.hidden = false;
   var rows = list.map(function (d) { var li = el('li', { class: 'st-wait', text: '… ' + d.file }); ul2.append(li); return li; });
   var okDocs = [], fails = 0, stop = false;
   var chain = Promise.resolve();
@@ -1121,8 +1188,8 @@ function saveAll() {
   chain.then(function () {
     saving = false; refreshDirty(); close.hidden = false; close.focus();
     if (okDocs.length && !fails) {
-      $('#sbTitle').textContent = 'Đã lưu';
-      res.append(el('div', { class: 'msg ok', text: 'Đã lưu, web cập nhật sau ~1 phút.' }));
+      $('#sbTitle').textContent = DEMO ? 'Đã lưu (demo, không ghi GitHub)' : 'Đã lưu';
+      res.append(el('div', { class: 'msg ok', text: DEMO ? 'Đã lưu (demo, không ghi GitHub)' : 'Đã lưu, web cập nhật sau ~1 phút.' }));
     } else if (okDocs.length) { $('#sbTitle').textContent = 'Lưu một phần'; res.append(el('div', { class: 'msg bad', text: 'Một số file chưa lưu được. Phần đã lưu sẽ lên web sau ~1 phút.' })); }
     else { $('#sbTitle').textContent = 'Chưa lưu được'; res.append(el('div', { class: 'msg bad', text: 'Không file nào được lưu. Xem lý do ở trên; các chỉnh sửa của bạn vẫn còn trong form.' })); }
     var seen = {};
@@ -1157,11 +1224,13 @@ function buildShell() {
     doc.pane = el('div', { class: 'pane', id: 'pane-' + doc.id, hidden: true, role: 'tabpanel' });
     panes.append(doc.pane);
   });
-  $('#repoLbl').textContent = cfg.owner + '/' + cfg.repo + ' · ' + cfg.branch;
+  $('#repoLbl').textContent = DEMO ? 'Bản demo · không ghi GitHub' : cfg.owner + '/' + cfg.repo + ' · ' + cfg.branch;
   refreshDirty();
   showPane(DOCS[0]);
 }
-function enter() { document.body.classList.add('in'); buildShell(); }
+function enter() { if (DEMO) document.body.classList.add('demo');
+  if (DEMO && !cfg) cfg = { token: '', owner: 'demo', repo: 'demo', branch: 'demo' };
+  document.body.classList.add('in'); buildShell(); }
 function logout() {
   if (dirtyDocs().length && !confirm('Còn thay đổi chưa lưu. Đăng xuất sẽ mất chúng. Tiếp tục?')) return;
   wipeSession();
@@ -1195,6 +1264,7 @@ $('#loginForm').addEventListener('submit', function (ev) {
     .then(function () { btn.disabled = false; btn.textContent = 'Đăng nhập'; });
 });
 (function init() {
+  if (DEMO) { enter(); return; }
   try { var r = JSON.parse(localStorage.getItem(LS_REPO) || 'null'); if (r) { if (r.owner) $('#inOwner').value = r.owner; if (r.repo) $('#inRepo').value = r.repo; if (r.branch) $('#inBranch').value = r.branch; } } catch (e) {}
   var c = readCfg();
   if (c && /^[A-Za-z0-9_.-]+$/.test(c.owner) && /^[A-Za-z0-9_.-]+$/.test(c.repo) && /^[A-Za-z0-9_./-]+$/.test(c.branch)) {

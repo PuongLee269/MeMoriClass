@@ -58,5 +58,10 @@ Mọi lần lưu là một commit Git: vào GitHub → file → History → ch�
 ## AI chọn nhóm trả lời (tab "Bọ: lời chào & chữ", mục cuối)
 Mặc định TẮT. Khi bật và có địa chỉ Worker (xem `worker/bo-router/README.md`), câu hỏi không khớp từ khóa sẽ được AI chọn một nhóm trả lời có sẵn; AI không viết chữ. Giới hạn: mỗi trình duyệt tối đa 50 lần/ngày, câu hỏi dưới 50 từ; từ khóa vẫn trả lời không giới hạn, hết hạn mức thì Bọ trả lời bằng từ khóa hoặc câu "Bọ không hiểu" như thường. Các ô số trong mục này nằm trong `ai` của `bo.json` (`maxPerDay`, `maxQuestionWords`, `maxAnswerWords`, `timeoutMs`).
 
+## Tab "Bọ: từ khóa": câu dài và chế độ demo
+- Mỗi câu trả lời có bộ đếm chữ (tách theo khoảng trắng, không tính chữ/đường dẫn của nút liên kết). Từ 30 chữ trở lên: số chữ được tô vàng kèm "Dài từ 30 chữ trở lên", mục có vạch vàng và nhãn số chữ ngay trên dòng tóm tắt. Chỉ để dễ tìm, KHÔNG chặn lưu.
+- Ô "Chỉ hiện câu dài (>=30 chữ)" ở đầu tab lọc ra các câu dài, kèm tổng số (hiện có 4: method, khampha, gallery, community).
+- `admin.html?demo=1` mở bản thử không cần token và không gọi GitHub: đọc các JSON của kho, nút Lưu chỉ báo "Đã lưu (demo, không ghi GitHub)" và giữ trong bộ nhớ trang.
+
 ## Bọ nhỏ ở các trang con
 Trang đã có sẵn bọ rùa riêng (gallery, lộ trình, bản đồ, đăng ký, giới thiệu) KHÔNG có thêm Bọ nhỏ: bấm/chạm/Enter vào chính con bọ rùa của trang là mở khung chat. Trang chưa có Bọ (cộng đồng, phương pháp, trang chủ cũ) có Bọ nhỏ ở một góc; bấm vào là chat bằng chính thư viện `bo-replies.json`. Thư viện chỉ tải khi người xem mở chat nên thêm hàng trăm mục không làm trang chậm (xem `docs/BO_PAGES.md`). Cả hai kiểu dùng chung bộ chữ và thư viện. Chế độ từng trang (`data-mode`) nằm trong thẻ `<script src="assets/bo-widget.js">` của trang, xem bảng ở `docs/BO_PAGES.md`. Chữ riêng của Bọ nhỏ sửa ở tab "Bọ: lời chào & chữ", mục "Bọ nhỏ ở góc các trang con".
