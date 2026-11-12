@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "tour_phrase",
+        "tour_yes",
+        "course_short_video",
+        "course_cinematic",
+        "course_editing",
+        "register",
+        "roadmap",
+        "contact",
+        "price",
+        "schedule",
+        "duration",
+        "location",
+        "workshops",
+        "what_learn",
+        "method",
+        "beginner",
+        "practice",
+        "sitemap",
+        "khampha",
+        "lopf1",
+        "gallery",
+        "works",
+        "community",
+        "storytelling",
+        "teachers",
+        "equipment",
+        "certificate",
+        "refund",
+        "age_size",
+        "ai_tools",
+        "who_bo",
+        "intro",
+        "what_is",
+        "fun",
+        "thanks",
+        "goodbye",
+        "help",
+        "greeting",
+        "registration_page",
+        null
+      ]
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "additionalProperties": false
+}

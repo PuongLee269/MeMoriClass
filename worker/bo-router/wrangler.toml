@@ -3,13 +3,15 @@ main = "index.js"
 compatibility_date = "2026-11-11"
 
 [vars]
-AI_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+AI_MODEL = "openai/gpt-6-luna"
 LIMITER = "12"            # câu hỏi/phút/IP
 AI_DAILY_PER_IP = "50"    # lần gọi AI/ngày UTC cho mỗi IP
 DAILY_CAP = "2000"        # tổng số lần gọi AI/ngày cho toàn Worker
+MODEL_TIMEOUT_MS = "4000" # timeout gọi GPT, trước timeout phía trình duyệt 4500 ms
 ALLOWED_ORIGINS = "https://moriclass.com,https://www.moriclass.com"
 # DEV = "1"               # chỉ khi thử cục bộ: cho phép http://localhost
-# AI_JSON = "1"           # bật response_format json_schema nếu model hỗ trợ
+LOG_USAGE = "1"
+AI_JSON = "1"
 
 [ai]
 binding = "AI"

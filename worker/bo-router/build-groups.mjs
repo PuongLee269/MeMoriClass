@@ -19,7 +19,9 @@ export function buildGroups() {
       if (p.length >= 3 && !seen.has(p)) { seen.add(p); keys.push(p); }
       if (keys.length >= 8) break;
     }
-    return [r.id, keys.join(', ')];
+    // Nội dung đã duyệt giúp phân biệt các nhóm có từ khóa gần nhau.
+    // Không đưa dữ kiện mới vào prompt và không sửa bộ khớp từ khóa.
+    return [r.id, keys.join(', ') + '. Nội dung nhóm: ' + r.reply];
   });
 }
 
@@ -34,5 +36,11 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     let cur = ''; try { cur = readFileSync(OUT, 'utf8'); } catch {}
     if (cur !== text) { console.error('groups.js lệch bo-replies.json. Chạy: node worker/bo-router/build-groups.mjs'); process.exit(1); }
     console.log('groups.js khớp bo-replies.json');
-  } else { writeFileSync(OUT, text); console.log('Đã ghi groups.js (' + buildGroups().length + ' nhóm)'); }
+  } else {
+    writeFileSync(OUT, text);
+    writeFileSync(join(here, 'cli-schema.json'), JSON.stringify({ type: 'object', properties: {
+      id: { type: ['string', 'null'], enum: [...buildGroups().map(g => g[0]), null] }
+    }, required: ['id'], additionalProperties: false }, null, 2));
+    console.log('Đã ghi groups.js và cli-schema.json (' + buildGroups().length + ' nhóm)');
+  }
 }

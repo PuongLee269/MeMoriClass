@@ -1,5 +1,5 @@
 /* Bộ định tuyến AI dùng chung cho chat của Bọ (widget và trang chủ).
-   Mặc định TẮT. Chỉ gọi khi từ khóa không khớp. Giới hạn: câu hỏi tối đa maxQuestionWords từ (mặc định 49),
+   Mặc định TẮT. Khi bật, AI chọn nhóm trước từ khóa. Giới hạn: câu hỏi tối đa maxQuestionWords từ (mặc định 49),
    tối đa maxPerDay lần/ngày/trình duyệt (mặc định 50). AI không viết chữ: chỉ trả một id có trong danh sách (isValid).
    Hết hạn mức hoặc máy chủ báo 429 thì im lặng, Bọ trả lời bằng từ khóa/câu mặc định. */
 (function () {

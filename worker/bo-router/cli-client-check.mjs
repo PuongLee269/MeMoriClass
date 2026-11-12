@@ -1,0 +1,23 @@
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+import { readFileSync, writeFileSync } from 'node:fs';
+const values = new Map(); let calls = 0;
+const ctx = { window: { localStorage: { getItem: k => values.get(k), setItem: (k,v) => values.set(k,v) }, setTimeout, clearTimeout },
+  AbortController, fetch: async (url, options) => { calls++; return fetch(url, {...options, headers:{...options.headers, Origin:'http://localhost:8766'}}); } };
+vm.createContext(ctx); vm.runInContext(readFileSync(new URL('../../assets/bo-ai.js',import.meta.url),'utf8'),ctx);
+const api = ctx.window.BoAI;
+api.configure({enabled:true, endpoint:'http://127.0.0.1:8788',timeoutMs:8000}, x=>x);
+for (const n of [50,51,80]) assert.equal(await api.route(Array(n).fill('học').join(' '),()=>true),null);
+assert.equal(calls,0);
+const started=Date.now();
+const id=await api.route('Khoản đầu tư cho lớp là bao nhiêu?',x=>x==='price');
+const live={id,elapsed_ms:Date.now()-started,calls};
+assert.equal(id,'price');
+ctx.fetch=async()=>{throw new Error('AbortError');};
+assert.equal(await api.route('Khoản đầu tư?',()=>true),null);
+values.clear(); calls=0;
+ctx.fetch=async()=>{calls++; return {ok:true,status:200,json:async()=>({id:'price'})};};
+for(let n=0;n<50;n++) assert.equal(await api.route('Khoản đầu tư?',()=>true),'price');
+assert.equal(await api.route('Khoản đầu tư?',()=>true),null); assert.equal(calls,50);
+writeFileSync(new URL('./cli-client-results.json',import.meta.url),JSON.stringify({long_questions:{words:[50,51,80],network_calls:0},live_cli:live,abort_mock:null,browser_quota_mock:{calls,request51:null}},null,2));
+console.log('Frontend: 3 câu dài không gọi mạng; CLI thật -> price; abort -> null; lượt trình duyệt 51 bị chặn (2 mục cuối dùng fetch giả).');

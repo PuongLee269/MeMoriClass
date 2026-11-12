@@ -246,18 +246,18 @@
 
   function onSubmit(e) {
     e.preventDefault();
-    var q = input.value.trim().slice(0, 200);
+    var q = input.value.trim();
     if (!q) { botSay(TEXT.emptyPrompt); input.focus(); return; }
     userSay(q); input.value = '';
     window.clearTimeout(replyTimer);
     ensureEngine().then(async function (eng) {
-      var match = eng && eng.find(q), r = match ? eng.reply(q, TEXT.fallback) : null;
-      if (!r && window.BoAI && BoAI.active()) {
+      var r = null;
+      if (window.BoAI && BoAI.active()) {
         var id = await BoAI.route(q, function (k) { return Object.prototype.hasOwnProperty.call(repliesById, k); });
         var entry = id && repliesById[id];
         if (entry) r = { reply: entry.reply, target: entry.link && entry.link.href, label: entry.link && entry.link.label, card: !!entry.card };
       }
-      r = r || { reply: TEXT.fallback, target: null, label: null, card: false };
+      r = r || (eng && eng.reply(q, TEXT.fallback)) || { reply: TEXT.fallback, target: null, label: null, card: false };
       replyTimer = window.setTimeout(function () { botSay(r.reply, r.target, r.label, r.card); }, (RM && RM.matches) ? 0 : 450);
     });
   }

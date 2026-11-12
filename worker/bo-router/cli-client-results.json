@@ -1,0 +1,20 @@
+{
+  "long_questions": {
+    "words": [
+      50,
+      51,
+      80
+    ],
+    "network_calls": 0
+  },
+  "live_cli": {
+    "id": "price",
+    "elapsed_ms": 5084,
+    "calls": 1
+  },
+  "abort_mock": null,
+  "browser_quota_mock": {
+    "calls": 50,
+    "request51": null
+  }
+}

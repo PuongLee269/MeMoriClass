@@ -20,8 +20,14 @@ function makeEnv(extra = {}, aiAnswer = '{"id":"price"}') {
       const o = objs.get(name); return { fetch: (u) => o.fetch(new Request(u)) };
     }
   };
-  const AI = { run: async (model, req) => { calls.push(req); return { response: typeof aiAnswer === 'function' ? aiAnswer(req) : aiAnswer }; } };
-  return { env: { RATE_LIMIT, AI, AI_MODEL: 'm', ...extra }, calls, objs };
+  const AI = { run: async (model, req, options) => {
+    assert.equal(model, 'openai/gpt-6-luna');
+    if (options) assert.ok(options.signal);
+    calls.push(req);
+    const response = typeof aiAnswer === 'function' ? aiAnswer(req) : aiAnswer;
+    return { response, usage: { prompt_tokens: 512, completion_tokens: 5 } };
+  } };
+  return { env: { RATE_LIMIT, AI, AI_MODEL: 'openai/gpt-6-luna', AI_JSON: '1', LOG_USAGE: '0', ...extra }, calls, objs };
 }
 const post = (body, headers = {}) => new Request('https://w/', { method: 'POST', headers: { origin: OK, 'content-type': 'application/json', 'cf-connecting-ip': '1.1.1.1', ...headers }, body: typeof body === 'string' ? body : JSON.stringify(body) });
 const only = async r => { const j = await r.json(); assert.deepEqual(Object.keys(j), ['id']); return j.id; };
@@ -30,6 +36,8 @@ test('groups.js khớp bo-replies.json (không lệch id)', () => {
   assert.equal(readFileSync(new URL('./groups.js', import.meta.url), 'utf8'), render());
   const ids = JSON.parse(readFileSync(new URL('../../assets/content/bo-replies.json', import.meta.url), 'utf8')).replies.map(r => r.id);
   assert.deepEqual(GROUPS.map(g => g[0]), ids);
+  const schema = JSON.parse(readFileSync(new URL('./cli-schema.json', import.meta.url), 'utf8'));
+  assert.deepEqual(schema.properties.id.enum, [...ids, null]);
 });
 test('CORS: mặc định cho moriclass.com và www; chặn localhost, origin lạ, origin rỗng', async () => {
   const { env } = makeEnv();
@@ -69,9 +77,8 @@ test('prompt injection: câu hỏi nằm ở role user; id ngoài allowlist -> n
   const { env, calls } = makeEnv({}, '{"id":"admin"}');
   const r = await worker.fetch(post({ question: q }), env);
   assert.equal(await only(r), null);
-  const msgs = calls[0].messages;
-  assert.equal(msgs.find(m => m.role === 'user').content, q);
-  assert.ok(!msgs.find(m => m.role === 'system').content.includes(q));
+  assert.equal(calls[0].messages.find(m => m.role === 'user').content, q);
+  assert.ok(!calls[0].messages.find(m => m.role === 'system').content.includes(q));
   const ok = makeEnv({}, '{"id":"price"}').env; // model bị dụ nhưng vẫn trả id hợp lệ -> chỉ id hợp lệ ra ngoài
   assert.equal(await only(await worker.fetch(post({ question: q }), ok)), 'price');
 });
@@ -109,8 +116,15 @@ test('mỗi IP tối đa 50 lần/ngày: lần 51 -> 429 {id:null}; IP khác v�
   const s = []; for (let i = 0; i < 3; i++) s.push((await worker.fetch(post({ question: 'a' }), small)).status);
   assert.deepEqual(s, [200, 200, 429]);
 });
-test('max_tokens nhỏ (<=16)', async () => {
-  const { env, calls } = makeEnv(); await worker.fetch(post({ question: 'a' }), env); assert.ok(calls[0].max_tokens <= 16);
+test('GPT-6 Luna: JSON Schema và max_completion_tokens nhỏ (<=16)', async () => {
+  const { env, calls } = makeEnv(); await worker.fetch(post({ question: 'a' }), env);
+  assert.equal(calls[0].max_completion_tokens, 16);
+  assert.equal(calls[0].response_format.type, 'json_schema');
+});
+test('timeout provider: lỗi abort trả id:null, không lộ thông tin', async () => {
+  const { env } = makeEnv({ AI: { run: async (_model, _req, options) => { assert.ok(options.signal); throw new DOMException('timed out', 'TimeoutError'); } } });
+  const r = await worker.fetch(post({ question: 'a' }), env);
+  assert.equal(r.status, 502); assert.equal(await only(r), null);
 });
 test('capWords: cắt tối đa 29 từ, không tính URL', () => {
   const long = Array.from({ length: 40 }, (_, i) => 'w' + i).join(' ');

@@ -1,1 +1,8 @@
-{ "type": "module", "private": true }
+{
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test test.mjs",
+    "groups:check": "node build-groups.mjs --check"
+  }
+}

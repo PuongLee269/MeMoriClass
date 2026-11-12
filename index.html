@@ -1061,13 +1061,14 @@
         answer(question);
       });
       async function answer(question) {
-        let { reply, target, label, card } = findReply(question);
-        if (!replyIndex.find(question) && typeof BoAI !== 'undefined') {
+        let selected = null;
+        if (typeof BoAI !== 'undefined') {
           BoAI.configure(typeof BO_AI !== 'undefined' ? BO_AI : null, MemoriContent.url);
           const id = await BoAI.route(question, k => BO_REPLIES.some(e => e.id === k));
           const hit = id && BO_REPLIES.find(e => e.id === id);
-          if (hit) ({ reply, target, label, card } = { reply: hit.reply, target: hit.link && hit.link.href, label: hit.link && hit.link.label, card: !!hit.card });
+          if (hit) selected = { reply: hit.reply, target: hit.link && hit.link.href, label: hit.link && hit.link.label, card: !!hit.card };
         }
+        const { reply, target, label, card } = selected || findReply(question);
         let link = null;
         if (card) link = makeMapCard();
         else if (target) { link = document.createElement('a'); link.href = target; link.textContent = label; if (BoMatcher.isPagePill(target)) { link.classList.add('go-community'); link.textContent = '✦ ' + label; } }
