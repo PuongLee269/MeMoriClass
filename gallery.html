@@ -44,7 +44,7 @@ body{font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans
 <body>
 <a class="back" href="index.html" data-site-back>← Về trang Bọ</a>
 <div id="stage"><canvas id="cv"></canvas></div>
-<div class="hint" id="hint">Kéo qua 3 viên đá để đổi ảnh</div>
+<div class="hint" id="hint"></div>
 <div class="sr" id="live" aria-live="polite" role="status"></div>
 <script>
 (async()=>{
@@ -62,7 +62,7 @@ const ASSIGNMENTS0 = [
   {gems:[0,4,8], photo:'sample'}, {gems:[2,4,6], photo:'sample'},
 ];
 /* Nội dung sửa được từ trang admin (assets/content/gallery.json + site.json): danh sách ảnh, bộ 3 đá -> ảnh, chữ gợi ý. */
-const GC=await MemoriContent.load('gallery',{pageTitle:document.title,hint:'Kéo qua 3 viên đá để đổi ảnh',photos:PHOTOS0,assignments:ASSIGNMENTS0},{replace:['photos']}),SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);
+const GC=await MemoriContent.load('gallery',{pageTitle:document.title,hint:'',photos:PHOTOS0,assignments:ASSIGNMENTS0},{replace:['photos']}),SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);
 MemoriContent.applySite(SITE,'.back');document.title=GC.pageTitle||document.title;MemoriContent.setText('#hint',GC.hint);
 const PHOTOS=(()=>{const seen={},out=[];for(const p of GC.photos){if(!p||typeof p.id!=='string'||!/^[a-z0-9_-]{1,32}$/i.test(p.id)||seen[p.id])continue;const src=MemoriContent.url(p.src,'');if(!src)continue;seen[p.id]=1;
   const at=Array.isArray(p.at)&&p.at.length===2&&p.at.every(n=>typeof n==='number'&&isFinite(n)&&Math.abs(n)<5000)?p.at:undefined;out.push({id:p.id,src,alt:typeof p.alt==='string'?p.alt:'',at})}

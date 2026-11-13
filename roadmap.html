@@ -628,7 +628,7 @@ function plStart(i){plRelease(true);const c=vcfg(i);
     const q=PL.q;PL.q=[];q.forEach(plPost);applyVol();if(rate!==1)plCmd('rate',rate)});
   f.src=embedUrl(i);$('vwrap').insertBefore(f,$('shade'));
   app.classList.add('embedded','buffering');
-  PL.to=setTimeout(()=>{if(PL.ifr===f&&!PL.started){app.classList.remove('buffering');showMsg('Không tải được video (mạng chậm hoặc nhà cung cấp bị chặn nhúng). Bấm phát để thử lại.')}},15000);
+  PL.to=setTimeout(()=>{if(PL.ifr===f&&!PL.started){app.classList.remove('buffering');showMsg('Không tải được video (mạng chậm hoặc nhà cung cấp bị chặn nhúng).')}},15000);
   setAriaPlay();upd()}
 function plRelease(now_){clearTimeout(PL.to);const f=PL.ifr;
   if(f){plPost(PL.prov==='vimeo'?{method:'pause'}:{event:'command',func:'pauseVideo',args:[]});f.classList.remove('show');if(now_)f.remove();else setTimeout(()=>f.remove(),360)}

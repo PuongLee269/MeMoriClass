@@ -99,7 +99,7 @@ const D0=[
  {id:4,name:'Lộ trình Lớp F2',href:'roadmap.html',tip:'Xem lộ trình lớp F2',ic:5,lb:[1040,410,6,58,['Lộ trình','Lớp F2']]},
  {id:8,name:'Cộng đồng',href:'community.html',tip:'Vào không gian Cộng đồng',ic:1,lb:[470,735,8,60,['Cộng đồng']]},
  {id:7,name:'Phương pháp',href:'method.html',tip:'Phương pháp học',ic:4,lb:[725,640,-6,50,['phương pháp']],pl:['phương','pháp']},
- {id:6,name:'Thử “Tôi có phù hợp không”',href:'index.html',tip:'Hỏi Bọ xem bạn có hợp không',ic:-1,lb:[1378,650,-4,54,['Thử','“Tôi có','phù hợp','không”']]}
+ {id:6,name:'Tôi có phù hợp không',href:'index.html',tip:'Tôi có phù hợp không',ic:-1,lb:[1378,650,-4,54,['“Tôi có','phù hợp','không”']]}
 ];
 /* Nội dung sửa được từ trang admin (assets/content/sitemap.json + site.json): tên, gợi ý, đường dẫn, dòng chữ của 9 viên đá. Toạ độ/hình giữ trong trang. */
 const SC=await MemoriContent.load('sitemap',{pageTitle:document.title,srTitle:'Bản đồ trang web Me.Mori Class',stones:D0.map(d=>({id:d.id,name:d.name,href:d.href,tip:d.tip,lines:d.lb[4],portraitLines:d.pl||[]}))}),SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);

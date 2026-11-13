@@ -90,11 +90,10 @@
     },
     {
       "id": 6,
-      "name": "Thử “Tôi có phù hợp không”",
+      "name": "Tôi có phù hợp không",
       "href": "index.html",
-      "tip": "Hỏi Bọ xem bạn có hợp không",
+      "tip": "Tôi có phù hợp không",
       "lines": [
-        "Thử",
         "“Tôi có",
         "phù hợp",
         "không”"

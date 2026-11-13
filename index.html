@@ -900,8 +900,6 @@
           if (ok) return;
           // phones only count a finished tap (pointerup / touchend / click) as permission to play sound
           const kinds = ['pointerup', 'touchend', 'click', 'keydown'];
-          title.textContent = 'Chạm vào màn hình để nghe tiếng rừng';
-          title.classList.add('is-visible');
           const start = event => {
             if (box.contains(event.target)) return;
             kinds.forEach(t => document.removeEventListener(t, start, true));

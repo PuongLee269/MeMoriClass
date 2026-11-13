@@ -168,7 +168,7 @@ body.mopen{cursor:auto}body.mopen *{cursor:auto!important}body.mopen button,body
 <div id="root">
  <img id="under" alt="" aria-hidden="true">
  <div id="view"><div id="art" aria-hidden="true"></div><div id="ui"></div></div>
- <div id="stamp" aria-hidden="true"><img alt=""><span class="cta">Nhấn để đóng dấu</span></div>
+ <div id="stamp" aria-hidden="true"><img alt=""></div>
  <a id="back" href="index.html" data-site-back>← Về trang Bọ</a>
  <div class="sr" id="live" aria-live="polite"></div>
  <div class="sr" id="a11y"></div>
@@ -192,7 +192,7 @@ const CONFIG_DEFAULT={
  srTitle:'Đăng ký lớp F2',
  srText:'Học phí ưu đãi 1.500.000đ, giá gốc 2.400.000đ. Số lượng có hạn.',
  enrolledLabel:'Số người đã đăng ký',seatWord:'chỗ',
- hint:'',zoneLabelDesk:'Đóng dấu tại đây để đăng ký',zoneLabelTouch:'Chạm vào đây để đóng dấu',ctaDesk:'Nhấn để đóng dấu',
+ hint:'',zoneLabelDesk:'',zoneLabelTouch:'',ctaDesk:'',
  hintDone:'Đã gửi đăng ký. Cảm ơn bạn!',
  /* CHỮ MẪU cho form đăng ký riêng (placeholder) */
  form:{title:'Đăng ký lớp F2',lead:'Để lại thông tin, Bọ sẽ liên hệ giữ chỗ cho bạn.',
@@ -280,7 +280,7 @@ function build(m){
  const gb=M.ghost,g=document.createElement('img');g.className='gh';g.alt='';g.src='assets/register/imprint.webp';g.draggable=false;
  g.style.cssText='left:'+(gb[0]-(M.seal[0]-z/2))+'px;top:'+(gb[1]-(M.seal[1]-z/2))+'px;width:'+gb[2]+'px;height:'+gb[3]+'px';zone.appendChild(g);
  const lb=document.createElement('p');lb.className='zl rv';lb.id='zlab';lb.textContent=fine?CONFIG.zoneLabelDesk:CONFIG.zoneLabelTouch;lb.setAttribute('aria-hidden','true');
- lb.style.cssText='left:'+(M.lab.x-M.lab.w/2)+'px;top:'+M.lab.y+'px;width:'+M.lab.w+'px;--zf:'+M.lab.fs+'px;--d:4.6s';ui.appendChild(lb);
+ lb.style.cssText='left:'+(M.lab.x-M.lab.w/2)+'px;top:'+M.lab.y+'px;width:'+M.lab.w+'px;--zf:'+M.lab.fs+'px;--d:4.6s';if(!lb.textContent)lb.style.display='none';ui.appendChild(lb);
  const gsw=SS/K;const gs=document.createElement('div');gs.id='gs';gs.setAttribute('aria-hidden','true');gs.innerHTML='<img alt="" src="assets/register/stamp.webp">';
  gs.style.cssText='width:'+gsw+'px;height:'+gsw+'px;left:'+(M.seal[0]-HX*gsw)+'px;top:'+(M.seal[1]-HY*gsw)+'px';ui.appendChild(gs);
  gs.addEventListener('animationend',()=>gs.classList.remove('on'));

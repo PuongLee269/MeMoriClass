@@ -6,9 +6,9 @@
   "enrolledLabel": "Số người đã đăng ký",
   "seatWord": "chỗ",
   "hint": "",
-  "zoneLabelDesk": "Đóng dấu tại đây để đăng ký",
-  "zoneLabelTouch": "Chạm vào đây để đóng dấu",
-  "ctaDesk": "Nhấn để đóng dấu",
+  "zoneLabelDesk": "",
+  "zoneLabelTouch": "",
+  "ctaDesk": "",
   "hintDone": "Đã gửi đăng ký. Cảm ơn bạn!",
   "form": {
     "title": "Đăng ký lớp F2",

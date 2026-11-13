@@ -414,8 +414,8 @@ var DOCS = [
         enrolledLabel: T('Nhãn “Số người đã đăng ký”', { req: 1, max: 60 }), seatWord: T('Từ “chỗ”', { req: 1, max: 20 }), fullLabel: T('Chữ khi hết chỗ', { req: 1, max: 40 })
       } },
       { title: 'Chữ gợi ý & vùng đóng dấu', fields: {
-        zoneLabelDesk: T('Nhãn vùng đóng dấu (máy tính)', { req: 1, max: 60 }), zoneLabelTouch: T('Nhãn vùng đóng dấu (điện thoại)', { req: 1, max: 60 }),
-        ctaDesk: T('Chữ bong bóng cạnh con dấu', { req: 1, max: 40 }), hint: T('Dòng gợi ý (để trống nếu không dùng)', { max: 100 }), hintDone: T('Dòng hiện sau khi gửi xong', { req: 1, max: 100 })
+        zoneLabelDesk: T('Nhãn vùng đóng dấu (máy tính)', { max: 60 }), zoneLabelTouch: T('Nhãn vùng đóng dấu (điện thoại)', { max: 60 }),
+        ctaDesk: T('Chữ bong bóng cạnh con dấu', { max: 40 }), hint: T('Dòng gợi ý (để trống nếu không dùng)', { max: 100 }), hintDone: T('Dòng hiện sau khi gửi xong', { req: 1, max: 100 })
       } },
       { title: 'Form đăng ký & lời cảm ơn', fields: {
         form: S.grp('Form', {
@@ -510,7 +510,7 @@ var DOCS = [
   { id: 'gallery', group: 'Các trang', tab: 'Gallery ảnh', file: 'assets/content/gallery.json', page: 'gallery.html', preview: ['gallery', 'site'],
     note: 'Ảnh mới nên có khung ngang khoảng 833×413. Kéo qua ba viên đá để đổi ảnh; mỗi bộ ba đá gắn với một ảnh.',
     sections: [
-      { title: 'Chung', fields: { pageTitle: T('Tiêu đề trang (tab)', { req: 1, max: 80 }), hint: T('Dòng gợi ý dưới khay đá', { req: 1, max: 80 }) } },
+      { title: 'Chung', fields: { pageTitle: T('Tiêu đề trang (tab)', { req: 1, max: 80 }), hint: T('Dòng chữ dưới khay đá (để trống nếu không dùng)', { max: 80 }) } },
       { title: 'Danh sách ảnh', fields: { photos: S.list('Ảnh', S.grp('', {
         id: T('Mã ảnh (chữ thường, số, gạch ngang)', { req: 1, max: 32, re: /^[a-z0-9_-]+$/, reMsg: 'Chỉ dùng chữ thường không dấu, số, - và _.' }),
         src: S.img('Ảnh (link hoặc tải lên)', { req: 1 }), alt: T('Mô tả ảnh (cho người khiếm thị)', { max: 160 })
