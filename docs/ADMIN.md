@@ -24,6 +24,7 @@ Trang `admin.html` cho chủ web sửa chữ, link video và ảnh của các tr
 | Cả web | `site.json` | chữ + link nút "Về trang Bọ" (mọi trang con), bật/tắt âm mặc định (hiện áp dụng cho Phương pháp), link nhạc nền (để dành, chưa có module phát) |
 | Bọ: lời chào | `bo.json` | câu chào đầu, nhãn thẻ bản đồ, câu khi mở chat/ô trống, chữ mờ ô chat, câu "Bọ không hiểu", tiêu đề trang, chữ của Bọ nhỏ ở các trang con (tên nút, tiêu đề, câu chào trong khung, nút Gửi/Đóng) |
 | Bọ: từ khóa | `bo-replies.json` | toàn bộ danh sách trả lời (mã, từ khóa, câu trả lời, nút liên kết, cờ exact/card), thêm/xóa/đổi thứ tự; tối đa 5000 mục. Ô "Thử câu hỏi" ở đầu tab: gõ một câu để xem mục nào khớp, điểm, từ khóa khớp, câu trả lời (dùng dữ liệu đang sửa, chưa cần lưu); nút "Kiểm tra từ khóa trùng" cảnh báo hai mục có bộ từ khóa giống hệt |
+| Bọ: câu hỏi có sẵn (FAQ) | `bo-faq.json` | danh sách FAQ (mã, trạng thái, chủ đề, cờ "cần người xác nhận", các cách hỏi mỗi dòng một câu, câu trả lời, nút liên kết). Mỗi mục có bộ đếm chữ. AI chọn câu hỏi có sẵn SÁT NHẤT với câu người dùng; không có câu nào sát mới tự trả lời. Sửa chữ câu trả lời có hiệu lực ngay khi lưu; thêm/xóa FAQ hoặc đổi chủ đề/cách hỏi cần chạy `node worker/bo-router/build-groups.mjs` rồi deploy Worker để AI biết danh sách mới (xem `worker/bo-router/README.md`). Mục gắn "cần người xác nhận" là thông tin chưa chốt (cọc, hoàn tiền, học thử, lịch, địa chỉ, tuổi...): chỉ sửa khi chính sách đã được duyệt |
 | Bản đồ | `sitemap.json` | tên, gợi ý, link, chữ trên 9 viên đá (Phương pháp mặc định trỏ `method.html`) |
 | Lộ trình | `roadmap.json` | 4 chương: nhãn, tên, ảnh bìa, video YouTube/Vimeo + tỉ lệ khung, cảnh, lời kể VO, phụ đề theo giây |
 | Đăng ký lớp F2 | `dangky.json` | số đã đăng ký và tổng số chỗ, nhãn, chữ gợi ý vùng đóng dấu, chữ và lỗi của form, lời cảm ơn, mô tả cho trình đọc màn hình |
@@ -54,6 +55,14 @@ Mọi lần lưu là một commit Git: vào GitHub → file → History → ch�
 
 ## 7. Dành cho người phát triển
 `assets/content-loader.js` (`MemoriContent.load(name, defaults, {replace})` trộn sâu JSON lên mặc định nhúng, chỉ nhận đúng kiểu). Thêm trang mới: đưa mặc định vào trang, gọi `load`, rồi thêm một mục `DOCS` trong `admin.html` (schema form) và file `assets/content/defaults/<tên>.json`.
+
+## AI chọn nhóm trả lời (tab "Bọ: lời chào & chữ", mục cuối)
+Mặc định TẮT. Khi bật và có địa chỉ Worker (xem `worker/bo-router/README.md`), AI (Google OpenAI qua Worker) được hỏi TRƯỚC: AI đọc ngữ cảnh/ý định câu hỏi rồi chọn một nhóm trả lời có sẵn (hoặc không nhóm nào nếu lạc đề); AI không viết chữ. Trong lúc chờ, Bọ hiện ba chấm nhấp nháy. AI lỗi, quá thời gian chờ, hết lượt hoặc câu quá dài thì Bọ rơi về bộ từ khóa, rồi câu "Bọ không hiểu", không hiện lỗi. Giới hạn: mỗi trình duyệt tối đa 50 lượt AI/ngày, câu hỏi dưới 50 từ. Các ô số trong mục này nằm trong `ai` của `bo.json` (`maxPerDay`, `maxQuestionWords`, `maxAnswerWords`, `timeoutMs` mặc định 8000).
+
+## Tab "Bọ: từ khóa": câu dài và chế độ demo
+- Mỗi câu trả lời có bộ đếm chữ (tách theo khoảng trắng, không tính chữ/đường dẫn của nút liên kết). Từ 30 chữ trở lên: số chữ được tô vàng kèm "Dài từ 30 chữ trở lên", mục có vạch vàng và nhãn số chữ ngay trên dòng tóm tắt. Chỉ để dễ tìm, KHÔNG chặn lưu.
+- Ô "Chỉ hiện câu dài (>=30 chữ)" ở đầu tab lọc ra các câu dài, kèm tổng số (hiện có 4: method, khampha, gallery, community).
+- `admin.html?demo=1` mở bản thử không cần token và không gọi GitHub: đọc các JSON của kho, nút Lưu chỉ báo "Đã lưu (demo, không ghi GitHub)" và giữ trong bộ nhớ trang.
 
 ## Bọ nhỏ ở các trang con
 Trang đã có sẵn bọ rùa riêng (gallery, lộ trình, bản đồ, đăng ký, giới thiệu) KHÔNG có thêm Bọ nhỏ: bấm/chạm/Enter vào chính con bọ rùa của trang là mở khung chat. Trang chưa có Bọ (cộng đồng, phương pháp, trang chủ cũ) có Bọ nhỏ ở một góc; bấm vào là chat bằng chính thư viện `bo-replies.json`. Thư viện chỉ tải khi người xem mở chat nên thêm hàng trăm mục không làm trang chậm (xem `docs/BO_PAGES.md`). Cả hai kiểu dùng chung bộ chữ và thư viện. Chế độ từng trang (`data-mode`) nằm trong thẻ `<script src="assets/bo-widget.js">` của trang, xem bảng ở `docs/BO_PAGES.md`. Chữ riêng của Bọ nhỏ sửa ở tab "Bọ: lời chào & chữ", mục "Bọ nhỏ ở góc các trang con".

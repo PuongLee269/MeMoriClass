@@ -1,0 +1,29 @@
+name = "bo-router-eval"
+main = "index.js"
+compatibility_date = "2026-11-11"
+
+[vars]
+OPENAI_REASONING_EFFORT = "low"
+OPENAI_MODEL = "gpt-6-luna"   # model nhỏ; đổi ở đây, không cần sửa code
+OPENAI_TIMEOUT_MS = "5000"               # mỗi bước gọi OpenAI chờ tối đa (bước 1 chọn câu có sẵn, bước 2 tự trả lời)
+AI_TOTAL_TIMEOUT_MS = "7500"             # tổng hai bước; trang chờ Worker tối đa 8000 ms (ai.timeoutMs)
+LIMITER = "1000"            # câu hỏi/phút/IP
+AI_DAILY_PER_IP = "200"    # lượt gọi AI/ngày UTC cho mỗi IP
+DAILY_CAP = "2000"        # tổng số lượt gọi AI/ngày cho toàn Worker
+ALLOWED_ORIGINS = "http://127.0.0.1:8766,http://localhost:8766"
+# DEV = "1"               # chỉ khi thử cục bộ: cho phép http://localhost
+DEBUG_USAGE = "1"       # chỉ khi test: trả số token trong header x-bo-tokens (bước 1) và x-bo-tokens2 (bước 2): vào,ra,suy nghĩ
+
+# KHÓA: OPENAI_API_KEY chỉ đặt bằng Worker secret, KHÔNG ghi vào file này:
+#   npx wrangler secret put OPENAI_API_KEY
+# Chạy thử cục bộ: tạo file .dev.vars (đã bị gitignore) chứa dòng OPENAI_API_KEY=...
+
+[[durable_objects.bindings]]
+name = "RATE_LIMIT"
+class_name = "RateLimit"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["RateLimit"]
+
+# Evaluation only: enlarged quota separates 60+ quality cases from 50/day limit test.

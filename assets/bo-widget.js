@@ -31,6 +31,7 @@
     mapCardLabel: 'Tham quan bản đồ',
     fallback: 'Bọ chưa hiểu ý bạn lắm. Thử hỏi Bọ nhé: "Có những workshop nào?", "Học được gì?" hoặc "Đăng ký thế nào?" hoặc "Bản đồ trang đâu?"'
   };
+  var repliesById = Object.create(null);
   /* Thư viện nhỏ dự phòng khi không tải được bo-replies.json. */
   var DEFAULT_REPLIES = [
     { id: 'w_register', keys: ['đăng ký', 'dang ky', 'ghi danh', 'học phí', 'hoc phi'], reply: 'Bạn đăng ký lớp F2 ở trang Đăng ký nhé.', link: { href: 'dangky.html', label: 'Đăng ký lớp' } },
@@ -189,18 +190,25 @@
     loadP = (async function () {
       if (!window.BoMatcher) await loadScript(BASE + 'bo-matcher.js');
       if (!window.MemoriContent) await loadScript(BASE + 'content-loader.js');
-      var C = window.MemoriContent, list = null;
+      if (!window.BoAI) { try { await loadScript(BASE + 'bo-ai.js'); } catch (e) {} }
+      var C = window.MemoriContent, list = null, faqList = null;
       if (C) {
         try {
-          var res = await Promise.all([C.prefetch('bo', 4000), C.prefetch('bo-replies', 10000)]);
+          var res = await Promise.all([C.prefetch('bo', 4000), C.prefetch('bo-replies', 10000), C.prefetch('bo-faq', 10000)]);
           var t = res[0];
           if (t && typeof t === 'object') Object.keys(TEXT).forEach(function (k) { if (typeof t[k] === 'string' && t[k].trim()) TEXT[k] = C.clean(t[k], 600); });
+          if (t && window.BoAI) BoAI.configure(t.ai, C.url);
           if (res[1] && Array.isArray(res[1].replies)) list = res[1].replies;
+          if (res[2] && Array.isArray(res[2].faqs)) faqList = res[2].faqs;
         } catch (e) {}
       }
       var entries = window.BoMatcher ? BoMatcher.clean(list || [], C && C.url, 5000) : [];
       if (!entries.length && window.BoMatcher) entries = BoMatcher.clean(DEFAULT_REPLIES, C && C.url, 100);
-      engine = window.BoMatcher ? BoMatcher.build(entries) : null;
+      var faqs = window.BoMatcher ? BoMatcher.cleanFaq(faqList || [], C && C.url, 500) : [];
+      /* Dự phòng từ khóa hai tầng: FAQ (mỗi câu hỏi mẫu là một khóa) trước, nhóm cũ sau. */
+      engine = window.BoMatcher ? BoMatcher.buildAll(faqs, entries) : null;
+      entries.forEach(function (entry) { repliesById[entry.id] = entry; });
+      faqs.forEach(function (f) { repliesById[f.id] = { id: f.id, reply: f.answer, link: f.link }; });
       applyText();
       return engine;
     })().catch(function () { return null; });
@@ -246,10 +254,27 @@
     if (!q) { botSay(TEXT.emptyPrompt); input.focus(); return; }
     userSay(q); input.value = '';
     window.clearTimeout(replyTimer);
-    ensureEngine().then(function (eng) {
-      var r = eng ? eng.reply(q, TEXT.fallback) : { reply: TEXT.fallback, target: null };
-      replyTimer = window.setTimeout(function () { botSay(r.reply, r.target, r.label, r.card); }, (RM && RM.matches) ? 0 : 450);
+    ensureEngine().then(async function (eng) {
+      var r = null, ai = window.BoAI, wait = null;
+      if (ai && ai.canAsk(q)) {            /* AI-trước: Gemini đọc ngữ cảnh/ý định; lỗi/timeout/hết lượt thì dùng từ khóa */
+        wait = addWait();
+        var res = await ai.route(q, function (k) { return Object.prototype.hasOwnProperty.call(repliesById, k); });
+        if (wait.parentNode) wait.remove(); log.setAttribute('aria-busy', 'false');
+        if (res.ok) {   /* thứ tự: câu có sẵn (FAQ/nhóm) -> câu AI tự trả lời -> câu dự phòng */
+          var entry = res.id && repliesById[res.id];
+          r = entry ? { reply: entry.reply, target: entry.link && entry.link.href, label: entry.link && entry.link.label, card: !!entry.card }
+            : { reply: res.answer || TEXT.fallback, target: null, label: null, card: false };
+        }
+      }
+      if (!r) r = eng && eng.find(q) ? eng.reply(q, TEXT.fallback) : null;
+      r = r || { reply: TEXT.fallback, target: null, label: null, card: false };
+      replyTimer = window.setTimeout(function () { botSay(r.reply, r.target, r.label, r.card); }, (wait || (RM && RM.matches)) ? 0 : 450);
     });
+  }
+  function addWait() {                     /* chỉ báo chờ: ba chấm nhấp nháy, không có chữ */
+    var p = el('p', 'bow-msg bow-bot bow-wait'); p.setAttribute('aria-hidden', 'true');
+    for (var i = 0; i < 3; i++) p.appendChild(el('span', 'bow-dot'));
+    log.appendChild(p); log.setAttribute('aria-busy', 'true'); scrollDown(); return p;
   }
 
   /* ---- vị trí khung chat gần Bọ của trang (chế độ attach) ---- */

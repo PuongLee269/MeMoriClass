@@ -65,7 +65,13 @@
         "cấu trúc câu chuyện",
         "cau truc cau chuyen",
         "mở đầu cuốn hút",
-        "thông điệp"
+        "thông điệp",
+        "story telling video ngan",
+        "ke chuyen video ngan",
+        "cau truc kich ban ngan",
+        "mo dau video",
+        "hook video",
+        "video ngan la gi"
       ],
       "reply": "Workshop \"Storytelling cho video ngắn\" dạy bạn xây cấu trúc câu chuyện, mở đầu cuốn hút và thông điệp dễ nhớ.",
       "link": {
@@ -83,7 +89,14 @@
         "bo cuc",
         "ánh sáng",
         "anh sang",
-        "chuyển động máy"
+        "chuyển động máy",
+        "tu duy cinematic",
+        "hinh anh cinematic",
+        "quay phim cinematic",
+        "anh sang phim",
+        "goc may",
+        "chuyen dong camera",
+        "khung hinh dep"
       ],
       "reply": "Workshop \"Tư duy hình ảnh cinematic\" rèn bố cục, ánh sáng, chuyển động máy và nhịp cảm xúc cho khung hình của bạn.",
       "link": {
@@ -102,7 +115,14 @@
         "edit",
         "footage",
         "hậu kỳ",
-        "hau ky"
+        "hau ky",
+        "quay va dung",
+        "dung video",
+        "hau ki video",
+        "edit video",
+        "cat ghep video",
+        "lam video tu footage",
+        "quay dung creator"
       ],
       "reply": "Workshop \"Quay dựng cho creator\" giúp bạn biến footage thô thành sản phẩm hoàn chỉnh, rõ nhịp và rõ ý.",
       "link": {
@@ -124,9 +144,17 @@
         "đăng ký lớp f2",
         "dang ky lop f2",
         "lớp f2",
-        "lop f2"
+        "lop f2",
+        "muon dang ky",
+        "dk lop",
+        "dang ki lop",
+        "dang ky f2",
+        "ghi danh lop",
+        "form dang ky",
+        "vao hoc",
+        "bat dau hoc"
       ],
-      "reply": "Bạn mở trang Đăng ký lớp F2, điền thông tin rồi đóng dấu xác nhận là xong. Cần hỏi thêm thì gửi mail tới hello@memori.class nhé.",
+      "reply": "Bạn có thể để lại lời nhắn cho MoriClass để người phụ trách trao đổi về lịch học, sự phù hợp và cách đăng ký của lớp sắp tới. Quy trình giữ chỗ và thanh toán sẽ được xác nhận rõ trước khi bạn quyết định nhé.",
       "link": {
         "href": "dangky.html",
         "label": "Đăng ký lớp F2"
@@ -144,7 +172,13 @@
         "kịch bản",
         "kich ban",
         "video",
-        "roadmap"
+        "roadmap",
+        "lo trinh f2",
+        "cac chuong hoc",
+        "chuong trinh hoc",
+        "video lo trinh",
+        "xem lo trinh",
+        "kich ban f2"
       ],
       "reply": "Bọ có một cuộn giấy Lộ trình lớp F2: mỗi chapter là một chặng với video giới thiệu kèm kịch bản. Bạn bước vào xem cùng Bọ nhé!",
       "link": {
@@ -163,7 +197,14 @@
         "facebook",
         "inbox",
         "hỏi thêm",
-        "hoi them"
+        "hoi them",
+        "lien lac",
+        "cach lien he",
+        "email memori",
+        "dia chi email",
+        "nhan tin",
+        "gui tin nhan",
+        "contact"
       ],
       "reply": "Bạn có thể viết cho ME.MORI qua hello@memori.class, hoặc tìm trang Instagram và Facebook ở phần chân trang nhé.",
       "link": {
@@ -183,9 +224,15 @@
         "chi phí",
         "chi phi",
         "phí",
-        "price"
+        "price",
+        "hoc phi bao nhieu",
+        "gia lop hoc",
+        "gia khoa hoc",
+        "hoc phi f2",
+        "chi phi hoc",
+        "phi tham gia"
       ],
-      "reply": "Bọ chưa thấy học phí trên trang này. Bạn gửi mail tới hello@memori.class để được báo chính xác nhé.",
+      "reply": "Học phí gốc của khóa bốn buổi là 2.400.000đ. MoriClass cũng đã thông tin về mức ưu đãi 1.500.000đ dành cho người đăng ký sớm/giữ chỗ sớm. Điều kiện áp dụng cho đợt lớp bạn quan tâm cần được xác nhận trước khi bạn thanh toán nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -203,9 +250,16 @@
         "giờ học",
         "gio hoc",
         "ngày học",
-        "lịch"
+        "lịch",
+        "lich khai giang",
+        "ngay khai giang",
+        "lich workshop",
+        "lop mo khi nao",
+        "hoc vao luc nao",
+        "thoi gian hoc",
+        "ngay bat dau"
       ],
-      "reply": "Trang chưa đăng lịch khai giảng cụ thể. Bạn nhắn hello@memori.class để hỏi lịch workshop mới nhất nhé.",
+      "reply": "Mình chưa có lịch khai giảng đã được xác nhận để báo bạn chính xác. Bạn có thể để lại thời gian thuận tiện hoặc thông tin liên hệ, MoriClass sẽ cập nhật lịch ngay khi chốt nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Hỏi lịch"
@@ -222,9 +276,14 @@
         "may buoi",
         "kéo dài",
         "keo dai",
-        "bao nhiêu buổi"
+        "bao nhiêu buổi",
+        "mot buoi bao lau",
+        "tong bao nhieu buoi",
+        "hoc may ngay",
+        "thoi gian khoa hoc",
+        "khoa hoc dai bao lau"
       ],
-      "reply": "Các lớp được thiết kế ngắn gọn, mỗi buổi tập trung vào một kỹ năng rõ ràng. Số buổi cụ thể bạn hỏi qua hello@memori.class nhé.",
+      "reply": "Khóa đang được giới thiệu gồm bốn buổi, mỗi buổi khoảng ba giờ, tức khoảng mười hai giờ trải nghiệm trực tiếp.",
       "link": {
         "href": "home-backup.html#method",
         "label": "Xem phương pháp"
@@ -243,9 +302,15 @@
         "trực tiếp",
         "truc tiep",
         "địa điểm",
-        "dia diem"
+        "dia diem",
+        "dia diem hoc",
+        "hoc o dau",
+        "lop hoc o dau",
+        "hoc truc tuyen",
+        "hoc truc tiep",
+        "online hay offline"
       ],
-      "reply": "Bọ chưa có thông tin địa điểm hay hình thức học (online/offline) trên trang. Bạn hỏi giúp qua hello@memori.class nhé.",
+      "reply": "MoriClass được xây dựng cho hình thức học trực tiếp tại Hà Nội. Địa chỉ chính xác của đợt học đang tuyển sẽ được người phụ trách xác nhận trước khi bạn đăng ký chính thức nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -263,7 +328,13 @@
         "co lop nao",
         "workshop có gì",
         "workshop co gi",
-        "danh sách lớp"
+        "danh sách lớp",
+        "cac workshop",
+        "co workshop nao",
+        "danh sach workshop",
+        "cac lop hoc",
+        "khoa hoc nao",
+        "me mori day gi"
       ],
       "reply": "Hiện có 3 workshop: Storytelling cho video ngắn, Tư duy hình ảnh cinematic và Quay dựng cho creator. Lớp nào cũng ngắn gọn, áp dụng được ngay.",
       "link": {
@@ -283,9 +354,15 @@
         "dạy gì",
         "day gi",
         "kỹ năng",
-        "ky nang"
+        "ky nang",
+        "noi dung khoa hoc",
+        "hoc duoc gi",
+        "lop day gi",
+        "hoc ky nang gi",
+        "sau lop biet lam gi",
+        "chuong trinh hoc gi"
       ],
-      "reply": "Bạn học tư duy cinematic, cách kể chuyện, quay dựng và tạo cảm xúc bằng hình ảnh, qua bài tập thật có phản hồi.",
+      "reply": "MoriClass mong bạn hiểu mình hơn, tự tin hơn và có thêm góc nhìn để đưa ra những quyết định sáng suốt. Lớp không hứa tìm sẵn câu trả lời cho cuộc đời bạn; tụi mình tạo ra một không gian để bạn tự khám phá qua trải nghiệm, quan sát và đối thoại.",
       "link": {
         "href": "home-backup.html#features",
         "label": "Xem nội dung"
@@ -308,7 +385,13 @@
         "quy trình",
         "quy trinh",
         "các bước",
-        "feedback"
+        "feedback",
+        "cach day hoc",
+        "cach hoc o lop",
+        "hoc theo cach nao",
+        "feedback bai",
+        "thuc hanh ra sao",
+        "brief la gi"
       ],
       "reply": "Phương pháp học nằm trên một chiếc bàn đá: bạn ghép ba khối đá cùng ký hiệu để mở từng phương pháp. Mỗi buổi tập trung một kỹ năng, có ví dụ, thực hành theo brief và feedback.",
       "link": {
@@ -329,9 +412,15 @@
         "phu hop",
         "dành cho ai",
         "danh cho ai",
-        "beginner"
+        "beginner",
+        "chua co kinh nghiem",
+        "moi hoc quay phim",
+        "nguoi moi hoc duoc khong",
+        "khong biet quay",
+        "phu hop voi ai",
+        "ai nen hoc"
       ],
-      "reply": "Lớp dành cho creator muốn có tư duy cinematic. Khi đăng ký, bạn chọn chủ đề hợp với mục tiêu và kinh nghiệm hiện tại của mình.",
+      "reply": "Được nhé. MoriClass không yêu cầu bạn phải biết quay dựng chuyên nghiệp trước. Ở những phần thực hành hình ảnh, người học có thể bắt đầu từ công cụ quen thuộc như điện thoại, còn trọng tâm là cách quan sát và kể câu chuyện của mình.",
       "link": {
         "href": "home-backup.html#method",
         "label": "Xem phương pháp"
@@ -346,9 +435,15 @@
         "bai tap",
         "brief",
         "làm bài",
-        "lam bai"
+        "lam bai",
+        "co thuc hanh khong",
+        "bai tap tren lop",
+        "lam bai tap",
+        "thuc hanh tai lop",
+        "nhan nhan xet",
+        "duoc gop y khong"
       ],
-      "reply": "Bạn làm bài tập tại lớp, quay dựng theo brief và nhận phản hồi để cải thiện từng phiên bản sản phẩm.",
+      "reply": "Cốt lõi là trải nghiệm và quan sát. Mình chơi, hành động, hợp tác, rồi thử quan sát xem trong lúc đó mình đang nghĩ gì, cảm thấy gì. Người dẫn chủ yếu đặt câu hỏi và cùng mọi người trò chuyện, thay vì giảng bài liên tục.",
       "link": {
         "href": "home-backup.html#features",
         "label": "Thực hành thật"
@@ -386,7 +481,13 @@
         "xem gi",
         "có gì",
         "co gi",
-        "trang web có gì"
+        "trang web có gì",
+        "ban do website",
+        "so do website",
+        "cac muc tren web",
+        "mo trang nao",
+        "dieu huong trang",
+        "web co nhung gi"
       ],
       "reply": "Bọ giữ một tấm bản đồ của cả trang: Lớp F2, Cộng đồng, Gallery, Lộ trình... Bạn muốn Bọ mở ra cho xem không?",
       "link": {
@@ -409,7 +510,13 @@
         "studio",
         "thành phố mây",
         "thanh pho may",
-        "ngôi nhà mặt trời"
+        "ngôi nhà mặt trời",
+        "thanh pho tren may",
+        "kham pha me mori",
+        "tham quan thanh pho",
+        "lo gom studio",
+        "san khau lop hoc",
+        "choi thanh pho may"
       ],
       "reply": "Bọ có một thành phố nhỏ trên mây: lò gốm, studio ảnh, ngôi nhà mặt trời, sân khấu và lớp học. Bạn chạm vào từng nơi để đèn sáng lên. Bọ dẫn bạn đi nhé!",
       "link": {
@@ -429,7 +536,13 @@
         "cuon sach",
         "kéo sách",
         "keo sach",
-        "lớp học f1"
+        "lớp học f1",
+        "lop f1 la gi",
+        "tim hieu f1",
+        "hinh anh lop f1",
+        "noi dung lop f1",
+        "xem sach lop",
+        "lop mot"
       ],
       "reply": "Lớp F1 là một cuốn sách kỳ diệu: bạn kéo sang trái hoặc phải để lật qua từng hình và video của lớp. Bọ dẫn bạn vào xem nhé!",
       "link": {
@@ -470,7 +583,14 @@
         "bo rua",
         "ladybug",
         "phòng tranh",
-        "phong tranh"
+        "phong tranh",
+        "xem thu vien",
+        "anh tac pham",
+        "trien lam anh",
+        "phong trien lam",
+        "anh mau",
+        "xem hinh",
+        "may chieu anh"
       ],
       "reply": "Bọ có một phòng tranh nhỏ. Bạn kéo ngón tay qua ba viên đá trên khay gỗ, máy chiếu sẽ hiện ra một bức ảnh khác nhau. Vào xem với Bọ nhé!",
       "link": {
@@ -489,9 +609,15 @@
         "video mẫu",
         "video mau",
         "xem thử",
-        "demo"
+        "demo",
+        "san pham hoc vien",
+        "du an cua hoc vien",
+        "bai lam hoc vien",
+        "video hoc vien",
+        "tac pham creator",
+        "hoc vien lam duoc gi"
       ],
-      "reply": "Mục \"Dự án học viên\" nằm ở cộng đồng ME.MORI. Bạn cũng có thể xem video giới thiệu ở đầu trang nhé.",
+      "reply": "Đã có những tác phẩm cá nhân từ lớp F1. Vì mỗi câu chuyện gắn với trải nghiệm riêng của học viên, MoriClass sẽ chỉ giới thiệu những tác phẩm được phép chia sẻ. Bạn có thể để lại lời nhắn để được gửi các ví dụ phù hợp nhé.",
       "link": {
         "href": "home-backup.html#workshops",
         "label": "Về đầu trang"
@@ -515,7 +641,13 @@
         "ban be",
         "feedback nhóm",
         "group",
-        "cộng đồng me.mori"
+        "cộng đồng me.mori",
+        "cong dong creator",
+        "tham gia cong dong",
+        "gap thanh vien",
+        "cac ban hoc vien",
+        "nhom me mori",
+        "noi chuyen voi moi nguoi"
       ],
       "reply": "ME.MORI có cộng đồng creator cùng yêu video, điện ảnh và kể chuyện bằng hình ảnh, có cả feedback nhóm. Bạn bước vào trang Cộng đồng để gặp mọi người nhé, Bọ dẫn đường cho!",
       "link": {
@@ -532,7 +664,13 @@
         "câu chuyện",
         "cau chuyen",
         "nghệ thuật kể chuyện",
-        "story"
+        "story",
+        "ke chuyen bang hinh anh",
+        "nghe thuat ke chuyen",
+        "cach ke chuyen",
+        "story telling",
+        "xay dung cau chuyen",
+        "y tuong cau chuyen"
       ],
       "reply": "ME.MORI giúp bạn biết mình muốn kể gì, vì sao câu chuyện đáng xem và nên thể hiện nó thế nào.",
       "link": {
@@ -551,9 +689,15 @@
         "cô",
         "mentor",
         "ai dạy",
-        "ai day"
+        "ai day",
+        "ai la nguoi day",
+        "giang vien la ai",
+        "thong tin giao vien",
+        "ten thay co",
+        "mentor la ai",
+        "nguoi huong dan"
       ],
-      "reply": "Bọ chưa thấy thông tin giảng viên trên trang. Bạn hỏi qua hello@memori.class để biết ai đồng hành cùng lớp nhé.",
+      "reply": "Người sáng lập và dẫn dắt MoriClass được giới thiệu là Lê Hồng Phương, làm công việc đạo diễn và kể chuyện bằng hình ảnh, có kinh nghiệm với phim ngắn và video thương hiệu. Phong cách lớp tập trung vào gợi mở bằng câu hỏi và thực hành, thay vì giảng một chiều.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -571,9 +715,15 @@
         "máy ảnh",
         "may anh",
         "chuẩn bị",
-        "chuan bi"
+        "chuan bi",
+        "can mang gi",
+        "can dung may gi",
+        "can chuan bi gi",
+        "dung dien thoai quay duoc khong",
+        "may quay nao",
+        "thiet bi hoc"
       ],
-      "reply": "Trang chưa nêu yêu cầu thiết bị. Bạn cứ hỏi hello@memori.class xem cần chuẩn bị gì cho workshop mình chọn nhé.",
+      "reply": "Bạn không nhất thiết cần có nền tảng quay dựng trước, nhưng danh sách thiết bị cần mang sẽ phụ thuộc hoạt động của khóa cụ thể. Mình xin kiểm tra với người phụ trách trước khi hướng dẫn bạn chuẩn bị nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -588,7 +738,12 @@
         "chung nhan",
         "bằng cấp",
         "bang cap",
-        "certificate"
+        "certificate",
+        "co chung chi khong",
+        "nhan chung nhan khong",
+        "hoc xong co bang",
+        "cap bang khong",
+        "giay chung nhan"
       ],
       "reply": "Trang chưa nhắc tới chứng chỉ. Bạn hỏi thêm qua hello@memori.class để chắc chắn nhé.",
       "link": {
@@ -607,9 +762,15 @@
         "huy lop",
         "bảo lưu",
         "bao luu",
-        "refund"
+        "refund",
+        "doi lich hoc",
+        "nghi hoc bao luu",
+        "huy dang ky",
+        "huy tham gia",
+        "hoan hoc phi",
+        "chinh sach bao luu"
       ],
-      "reply": "Bọ chưa có chính sách hoàn tiền hay bảo lưu trên trang. Bạn hỏi trực tiếp qua hello@memori.class nhé.",
+      "reply": "Các điều kiện hủy, hoàn học phí, bảo lưu và học bù cần được xác nhận cho từng khóa trước khi thanh toán. MoriClass sẽ gửi bạn chính sách rõ ràng để bạn cân nhắc, chứ mình không tự hứa quyền hoàn/học bù khi chưa có quy định nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -627,9 +788,15 @@
         "si so",
         "mấy người",
         "may nguoi",
-        "lớp bao nhiêu"
+        "lớp bao nhiêu",
+        "gioi han tuoi",
+        "bao nhieu hoc vien",
+        "si so lop hoc",
+        "co gioi han tuoi khong",
+        "tuoi nao hoc duoc",
+        "lop toi da may nguoi"
       ],
-      "reply": "Bọ chưa có thông tin về độ tuổi hay sĩ số lớp. Bạn nhắn hello@memori.class để được giải đáp nhé.",
+      "reply": "Mỗi lớp có tối đa sáu học viên. Lớp mở cho cả người trẻ lẫn người trưởng thành; độ tuổi tối thiểu của khóa hiện tại mình chưa có xác nhận chính thức, mình sẽ nhờ người phụ trách xác nhận nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -646,7 +813,13 @@
         "công cụ",
         "cong cu",
         "tools",
-        "software"
+        "software",
+        "dung ai khong",
+        "phan mem edit nao",
+        "hoc capcut khong",
+        "hoc premiere khong",
+        "can cai app gi",
+        "cong cu dung video"
       ],
       "reply": "Trang chưa nhắc tới AI hay phần mềm cụ thể. Workshop tập trung vào tư duy hình ảnh và kỹ năng quay dựng; bạn hỏi thêm qua hello@memori.class nhé.",
       "link": {
@@ -665,7 +838,12 @@
         "con bo",
         "tên gì",
         "ten gi",
-        "chatbot"
+        "chatbot",
+        "bo oi ban la ai",
+        "tro ly la ai",
+        "gioi thieu ban",
+        "ten cua ban",
+        "ban lam duoc gi"
       ],
       "reply": "Mình là Bọ, chú bọ nhỏ trên trang ME.MORI Class. Bọ chuyên chỉ đường và trả lời các câu hỏi về lớp học."
     },
@@ -682,7 +860,12 @@
         "mori la gi",
         "me.mori là gì",
         "video giới thiệu",
-        "trang giới thiệu"
+        "trang giới thiệu",
+        "gioi thieu me mori class",
+        "video ve me mori",
+        "xem gioi thieu",
+        "mori class la gi",
+        "trang gioi thieu o dau"
       ],
       "reply": "Bạn xem video giới thiệu Me.Mori ở trang Giới thiệu nhé. Xem xong Bọ sẽ đưa bạn sang bản đồ.",
       "link": {
@@ -701,9 +884,14 @@
         "là gì",
         "la gi",
         "về lớp",
-        "ve lop"
+        "ve lop",
+        "me mori class la gi",
+        "mori class la gi",
+        "gioi thieu ve lop",
+        "khong gian me mori",
+        "memori class"
       ],
-      "reply": "ME.MORI Class là không gian học dành cho creator, kết hợp điện ảnh, storytelling và kỹ năng làm nội dung.",
+      "reply": "MoriClass là một lớp học trải nghiệm nghệ thuật và kể chuyện bằng hình ảnh, nhưng điều thú vị nhất không chỉ nằm ở việc làm ra một tác phẩm. Qua trò chơi, trò chuyện và các hoạt động sáng tạo, mỗi người có dịp quan sát suy nghĩ, cảm xúc và những lựa chọn của chính mình.",
       "link": {
         "href": "home-backup.html#workshops",
         "label": "Giới thiệu"
@@ -721,7 +909,13 @@
         "hai",
         "joke",
         "thích gì",
-        "thich gi"
+        "thich gi",
+        "ke chuyen vui",
+        "bo co vui khong",
+        "bo thich gi",
+        "noi gi vui di",
+        "ke chuyen di",
+        "tam su voi bo"
       ],
       "reply": "Bọ nhỏ xíu nhưng mê điện ảnh lắm, chỗ nào có ánh sáng đẹp là Bọ bay tới liền. Bạn muốn Bọ chỉ workshop nào không?",
       "link": {
@@ -737,7 +931,12 @@
         "thanks",
         "thank",
         "cám ơn",
-        "biết ơn"
+        "biết ơn",
+        "cam on bo",
+        "cam on nhe",
+        "thank you",
+        "thanks bo",
+        "da cam on"
       ],
       "reply": "Không có chi nha bạn! Cần gì cứ hỏi Bọ tiếp nhé."
     },
@@ -750,7 +949,11 @@
         "hẹn gặp lại",
         "hen gap lai",
         "đi đây",
-        "pp"
+        "pp",
+        "tam biet bo",
+        "thoat nhe",
+        "bye bo",
+        "chao tam biet"
       ],
       "reply": "Tạm biệt bạn nhé, hẹn gặp lại ở ME.MORI Class. Bọ vẫy cánh chào!"
     },
@@ -769,7 +972,12 @@
         "làm được gì",
         "lam duoc gi",
         "có thể làm gì",
-        "co the lam gi"
+        "co the lam gi",
+        "bo giup minh",
+        "hoi bo the nao",
+        "bo ho tro gi",
+        "co giup duoc khong",
+        "huong dan hoi dap"
       ],
       "reply": "Bạn có thể hỏi Bọ về các workshop, nội dung học, cách đăng ký hoặc liên hệ nhé.",
       "link": {
@@ -787,9 +995,756 @@
         "hi",
         "alo",
         "chao bo",
-        "hey"
+        "hey",
+        "chao ban",
+        "xin chao bo",
+        "alo bo",
+        "hello bo",
+        "hi bo",
+        "bo oi"
       ],
       "reply": "Chào bạn, Bọ đây! Bạn muốn tìm hiểu workshop nào của ME.MORI Class?"
+    },
+    {
+      "id": "registration_page",
+      "keys": [
+        "trang dang ky",
+        "dang ky o dau",
+        "link dang ky",
+        "mo trang ghi danh",
+        "vao form dang ky",
+        "dang ky lop f2 o dau"
+      ],
+      "reply": "Bạn mở trang Đăng ký lớp F2 để xem và gửi thông tin đăng ký nhé.",
+      "link": {
+        "href": "dangky.html",
+        "label": "Mở trang Đăng ký"
+      }
+    },
+    {
+      "id": "share_friend",
+      "description": "Người xem muốn chia sẻ, giới thiệu trang hoặc lớp cho bạn bè (KHÔNG phải hỏi về cộng đồng hay đăng ký).",
+      "keys": [
+        "chia sẻ cho bạn",
+        "chia se cho ban",
+        "giới thiệu cho bạn bè",
+        "gioi thieu cho ban be",
+        "gửi link cho bạn",
+        "gui link cho ban",
+        "rủ bạn",
+        "ru ban",
+        "share lớp",
+        "share trang",
+        "mời bạn bè",
+        "moi ban be",
+        "giới thiệu bạn"
+      ],
+      "reply": "Bạn cứ gửi đường dẫn trang này cho bạn bè nhé. Bạn nào muốn biết thêm, Bọ rất vui được trả lời!"
+    },
+    {
+      "id": "trial_class",
+      "description": "Hỏi có học thử, dự thính hay buổi trải nghiệm miễn phí không (KHÔNG phải hỏi học phí hay lịch khai giảng).",
+      "keys": [
+        "buổi trải nghiệm",
+        "buoi trai nghiem",
+        "dự thính",
+        "du thinh",
+        "thử một buổi",
+        "thu mot buoi",
+        "học miễn phí",
+        "hoc mien phi",
+        "trải nghiệm thử",
+        "trai nghiem thu",
+        "buổi học thử",
+        "buoi hoc thu",
+        "học thử không",
+        "hoc thu khong",
+        "học thử được không",
+        "hoc thu duoc khong",
+        "học thử miễn phí",
+        "hoc thu mien phi",
+        "có buổi thử",
+        "co buoi thu"
+      ],
+      "reply": "Trước đây MoriClass từng có hình thức trải nghiệm buổi đầu rồi mới quyết định đóng học phí nếu học tiếp. Hiện lớp đang hoàn thiện lại cách đăng ký để giữ sự ổn định cho nhóm sáu người trong trọn bốn buổi. Mình sẽ nhờ người phụ trách xác nhận quyền dừng và chi phí cụ thể của đợt này trước khi bạn đăng ký nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "teaching_language",
+      "description": "Hỏi lớp dạy bằng tiếng Việt hay ngôn ngữ nào, có phụ đề tiếng Anh không.",
+      "keys": [
+        "tiếng gì",
+        "tieng gi",
+        "ngôn ngữ giảng dạy",
+        "ngon ngu giang day",
+        "dạy bằng tiếng",
+        "day bang tieng",
+        "giảng bằng tiếng",
+        "giang bang tieng",
+        "phụ đề",
+        "phu de",
+        "học bằng tiếng"
+      ],
+      "reply": "Bọ chưa có thông tin về ngôn ngữ giảng dạy. Bạn hỏi giúp qua hello@memori.class nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "final_project",
+      "description": "Hỏi về dự án cuối khóa, bài tốt nghiệp hay sản phẩm hoàn thiện khi học xong (KHÔNG phải bài tập hằng buổi).",
+      "keys": [
+        "dự án cuối khóa",
+        "du an cuoi khoa",
+        "bài cuối khóa",
+        "bai cuoi khoa",
+        "phim tốt nghiệp",
+        "phim tot nghiep",
+        "sản phẩm cuối",
+        "san pham cuoi",
+        "tốt nghiệp",
+        "tot nghiep",
+        "kết thúc khóa",
+        "ket thuc khoa",
+        "có đồ án không",
+        "co do an khong",
+        "đồ án cuối khóa",
+        "do an cuoi khoa"
+      ],
+      "reply": "MoriClass có hướng thực hành kể chuyện bằng hình ảnh và video, và một tài liệu chương trình trước đây từng đặt mục tiêu video cá nhân ngắn. Tuy nhiên nội dung được điều chỉnh theo nhóm và khả năng thực hành, nên mình không muốn hứa ai cũng có một sản phẩm giống nhau. Mình có thể chuyển câu hỏi để người dẫn giải thích đầu ra cụ thể của khóa bạn định đăng ký.",
+      "link": {
+        "href": "roadmap.html",
+        "label": "Lộ trình lớp F2"
+      }
+    },
+    {
+      "id": "copyright_works",
+      "description": "Hỏi quyền sử dụng, bản quyền tác phẩm, hình ảnh hoặc video trên trang hay do học viên làm.",
+      "keys": [
+        "bản quyền",
+        "ban quyen",
+        "quyền sử dụng",
+        "quyen su dung",
+        "copyright",
+        "dùng lại ảnh",
+        "dung lai anh",
+        "đăng lại video",
+        "dang lai video",
+        "quyền tác giả",
+        "quyen tac gia",
+        "lấy ảnh",
+        "lay anh",
+        "xin phép sử dụng",
+        "xin phep su dung"
+      ],
+      "reply": "Bọ chưa có thông tin về bản quyền tác phẩm. Bạn muốn dùng lại hình hay video, hãy hỏi qua hello@memori.class nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "privacy_info",
+      "description": "Hỏi thông tin cá nhân khi đăng ký có được bảo mật, lưu ở đâu, dùng làm gì.",
+      "keys": [
+        "bảo mật",
+        "bao mat",
+        "thông tin cá nhân",
+        "thong tin ca nhan",
+        "quyền riêng tư",
+        "quyen rieng tu",
+        "dữ liệu của tôi",
+        "du lieu cua toi",
+        "lộ thông tin",
+        "lo thong tin",
+        "privacy",
+        "chính sách bảo mật",
+        "chinh sach bao mat",
+        "an toàn thông tin"
+      ],
+      "reply": "Việc chia sẻ chuyện riêng trong lớp là hoàn toàn tự nguyện. Tuy nhiên quy định về quyền riêng tư và việc sử dụng hình ảnh trong nhóm đang được hoàn thiện, nên mình chưa dám hứa bảo mật tuyệt đối. Mình sẽ nhờ người phụ trách xác nhận rõ trước khi bạn quyết định nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "site_error",
+      "description": "Báo trang web bị lỗi, đơ, không bấm được, hiển thị sai và cần liên hệ (KHÔNG phải video không chạy).",
+      "keys": [
+        "trang bị lỗi",
+        "trang bi loi",
+        "web bị lỗi",
+        "web bi loi",
+        "báo lỗi",
+        "bao loi",
+        "không bấm được",
+        "khong bam duoc",
+        "trang bị treo",
+        "trang bi treo",
+        "không tải được trang",
+        "khong tai duoc trang",
+        "trang bị đơ",
+        "trang bi do",
+        "web bị đơ",
+        "web bi do"
+      ],
+      "reply": "Xin lỗi bạn nhé. Bạn thử tải lại trang, nếu vẫn lỗi hãy báo qua hello@memori.class để được sửa.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "video_not_play",
+      "description": "Video trên trang không phát, bị giật hoặc không có tiếng.",
+      "keys": [
+        "video không chạy",
+        "video khong chay",
+        "không xem được video",
+        "khong xem duoc video",
+        "video bị giật",
+        "video bi giat",
+        "video không phát",
+        "video khong phat",
+        "không có tiếng",
+        "khong co tieng",
+        "video đứng hình",
+        "video dung hinh",
+        "video lỗi",
+        "video loi"
+      ],
+      "reply": "Bạn thử tải lại trang và kiểm tra mạng nhé. Nếu video vẫn không chạy, hãy báo qua hello@memori.class.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "installment",
+      "description": "Hỏi có trả góp, chia nhỏ học phí thành nhiều đợt không (KHÔNG phải hỏi mức học phí).",
+      "keys": [
+        "trả góp",
+        "tra gop",
+        "chia đợt",
+        "chia dot",
+        "đóng nhiều lần",
+        "dong nhieu lan",
+        "đóng từng đợt",
+        "dong tung dot",
+        "trả dần",
+        "tra dan",
+        "thanh toán góp",
+        "thanh toan gop",
+        "đóng theo tháng",
+        "dong theo thang",
+        "có trả góp không",
+        "co tra gop khong",
+        "chia đợt đóng",
+        "chia dot dong",
+        "đóng học phí nhiều lần",
+        "dong hoc phi nhieu lan",
+        "học phí trả góp",
+        "hoc phi tra gop"
+      ],
+      "reply": "Lịch thanh toán và khả năng chia đợt đang được thống nhất cho khóa mới. Mình không muốn báo nhầm chính sách; cho mình ghi nhận nhu cầu của bạn để người phụ trách phản hồi chính xác nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "discount",
+      "description": "Hỏi ưu đãi, giảm giá, mã khuyến mãi, học bổng hoặc học theo nhóm được giảm (KHÔNG phải hỏi học phí).",
+      "keys": [
+        "ưu đãi",
+        "uu dai",
+        "giảm giá",
+        "giam gia",
+        "khuyến mãi",
+        "khuyen mai",
+        "mã giảm",
+        "ma giam",
+        "học bổng",
+        "hoc bong",
+        "voucher",
+        "đăng ký sớm",
+        "dang ky som",
+        "đi nhóm được giảm",
+        "khuyến mại",
+        "có ưu đãi không",
+        "co uu dai khong",
+        "có giảm giá không",
+        "co giam gia khong",
+        "có khuyến mãi không",
+        "co khuyen mai khong",
+        "có học bổng không",
+        "co hoc bong khong"
+      ],
+      "reply": "Mức 1.500.000đ đang được dành cho nhóm đăng ký sớm hoặc giữ chỗ sớm. Tuy nhiên số suất, hạn áp dụng và cách xác nhận ưu đãi chưa được công bố chính thức, nên mình cần kiểm tra đúng đợt lớp của bạn trước khi xác nhận giá cuối cùng.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "payment_method",
+      "description": "Hỏi cách thanh toán, chuyển khoản, trả bằng thẻ hay ví điện tử.",
+      "keys": [
+        "thanh toán",
+        "thanh toan",
+        "chuyển khoản",
+        "chuyen khoan",
+        "trả bằng thẻ",
+        "tra bang the",
+        "ví điện tử",
+        "vi dien tu",
+        "momo",
+        "hình thức thanh toán",
+        "hinh thuc thanh toan",
+        "đóng tiền",
+        "dong tien",
+        "nộp tiền",
+        "nop tien"
+      ],
+      "reply": "Lịch thanh toán và khả năng chia đợt đang được thống nhất cho khóa mới. Mình không muốn báo nhầm chính sách; cho mình ghi nhận nhu cầu của bạn để người phụ trách phản hồi chính xác nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "after_register",
+      "description": "Hỏi sau khi đăng ký thì chuyện gì xảy ra, bao lâu được phản hồi, có xác nhận không (KHÔNG phải hỏi cách đăng ký).",
+      "keys": [
+        "đăng ký xong",
+        "dang ky xong",
+        "sau khi đăng ký",
+        "sau khi dang ky",
+        "bao giờ được phản hồi",
+        "bao gio duoc phan hoi",
+        "có email xác nhận",
+        "co email xac nhan",
+        "đã đăng ký rồi",
+        "da dang ky roi",
+        "chờ phản hồi",
+        "cho phan hoi",
+        "đăng ký rồi thì sao",
+        "bước tiếp theo"
+      ],
+      "reply": "Bạn có thể để lại lời nhắn cho MoriClass để người phụ trách trao đổi về lịch học, sự phù hợp và cách đăng ký của lớp sắp tới. Quy trình giữ chỗ và thanh toán sẽ được xác nhận rõ trước khi bạn quyết định nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "join_community_how",
+      "description": "Hỏi cách vào nhóm chat, group Facebook hay Zalo của cộng đồng (KHÔNG phải hỏi cộng đồng là gì).",
+      "keys": [
+        "vào nhóm",
+        "vao nhom",
+        "group zalo",
+        "group facebook",
+        "nhóm zalo",
+        "nhom zalo",
+        "nhóm chat",
+        "nhom chat",
+        "link nhóm",
+        "link nhom",
+        "tham gia nhóm",
+        "tham gia nhom",
+        "vào group",
+        "vao group",
+        "nhóm facebook",
+        "có group zalo không",
+        "co group zalo khong",
+        "có nhóm zalo không",
+        "co nhom zalo khong",
+        "có nhóm chat không",
+        "co nhom chat khong",
+        "có group không",
+        "co group khong"
+      ],
+      "reply": "Bọ chưa có đường dẫn nhóm chat nào. Bạn xem không gian cộng đồng, hoặc hỏi qua hello@memori.class nhé.",
+      "link": {
+        "href": "community.html",
+        "label": "Cộng đồng ME.MORI"
+      }
+    },
+    {
+      "id": "nav_home",
+      "description": "Muốn quay về trang chủ hoặc trang đầu.",
+      "keys": [
+        "về trang chủ",
+        "ve trang chu",
+        "quay lại trang đầu",
+        "quay lai trang dau",
+        "trở về",
+        "tro ve",
+        "về đầu trang",
+        "ve dau trang",
+        "home",
+        "về lại",
+        "ve lai",
+        "trang đầu",
+        "trang dau",
+        "xem trang chủ",
+        "xem trang chu",
+        "mở trang chủ",
+        "mo trang chu",
+        "vào trang chủ",
+        "vao trang chu",
+        "đến trang chủ",
+        "den trang chu",
+        "tới trang chủ",
+        "toi trang chu",
+        "quay về trang chủ",
+        "quay ve trang chu"
+      ],
+      "reply": "Bọ dẫn bạn về trang đầu nhé, nơi Bọ chào đón mọi người.",
+      "link": {
+        "href": "index.html",
+        "label": "Về trang đầu"
+      }
+    },
+    {
+      "id": "nav_start_where",
+      "description": "Người mới không biết nên xem trang nào trước, nhờ Bọ dẫn đường (KHÔNG phải nhờ mở một trang cụ thể).",
+      "keys": [
+        "nên xem gì",
+        "nen xem gi",
+        "xem trang nào",
+        "xem trang nao",
+        "bắt đầu từ đâu",
+        "bat dau tu dau",
+        "đi đâu trước",
+        "di dau truoc",
+        "dẫn đường",
+        "dan duong",
+        "chỉ đường",
+        "chi duong",
+        "lạc đường",
+        "lac duong",
+        "không biết xem gì",
+        "khong biet xem gi"
+      ],
+      "reply": "Bạn cứ đi một vòng theo tấm bản đồ, Bọ sẽ dẫn bạn qua từng nơi trong ME.MORI nhé.",
+      "link": {
+        "href": "sitemap.html",
+        "label": "Bản đồ trang"
+      }
+    },
+    {
+      "id": "mobile_support",
+      "description": "Hỏi xem trang có dùng được trên điện thoại, máy tính bảng không.",
+      "keys": [
+        "xem trên điện thoại",
+        "xem tren dien thoai",
+        "dùng được trên điện thoại",
+        "dung duoc tren dien thoai",
+        "trang có mobile",
+        "máy tính bảng",
+        "may tinh bang",
+        "ipad",
+        "xem bằng điện thoại",
+        "xem bang dien thoai",
+        "trên di động",
+        "tren di dong",
+        "màn hình nhỏ",
+        "iphone"
+      ],
+      "reply": "Trang được làm để xem tốt cả trên điện thoại lẫn máy tính, bạn cứ thoải mái ghé thăm nhé."
+    },
+    {
+      "id": "language_site",
+      "description": "Hỏi trang có bản tiếng Anh hoặc ngôn ngữ khác không.",
+      "keys": [
+        "bản tiếng anh",
+        "ban tieng anh",
+        "trang tiếng anh",
+        "trang tieng anh",
+        "english version",
+        "đổi ngôn ngữ",
+        "doi ngon ngu",
+        "có tiếng anh không",
+        "co tieng anh khong",
+        "chuyển tiếng anh",
+        "chuyen tieng anh",
+        "english",
+        "website tiếng anh",
+        "đa ngôn ngữ"
+      ],
+      "reply": "Hiện Bọ chưa thấy bản ngôn ngữ nào khác ngoài tiếng Việt. Bạn cần gì cứ hỏi Bọ nhé."
+    },
+    {
+      "id": "partnership",
+      "description": "Doanh nghiệp, thương hiệu hoặc báo chí muốn hợp tác, quảng cáo, tài trợ, phỏng vấn.",
+      "keys": [
+        "hợp tác",
+        "hop tac",
+        "quảng cáo",
+        "quang cao",
+        "tài trợ",
+        "tai tro",
+        "báo chí",
+        "bao chi",
+        "phỏng vấn",
+        "phong van",
+        "đối tác",
+        "doi tac",
+        "booking",
+        "kết hợp thương hiệu",
+        "ket hop thuong hieu"
+      ],
+      "reply": "Cảm ơn bạn đã quan tâm! Bọ chưa có thông tin về hợp tác, bạn viết cho hello@memori.class nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "recruit",
+      "description": "Người muốn ứng tuyển làm giảng viên, trợ giảng, cộng tác viên hoặc thực tập.",
+      "keys": [
+        "tuyển dụng",
+        "tuyen dung",
+        "ứng tuyển",
+        "ung tuyen",
+        "xin việc",
+        "xin viec",
+        "thực tập",
+        "thuc tap",
+        "cộng tác viên",
+        "cong tac vien",
+        "trợ giảng",
+        "tro giang",
+        "làm việc cùng",
+        "muốn dạy",
+        "muon day"
+      ],
+      "reply": "Bọ chưa có thông tin về tuyển dụng. Bạn gửi giới thiệu bản thân qua hello@memori.class nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "feedback_suggest",
+      "description": "Người xem muốn góp ý, đề xuất cải thiện trang hoặc lớp, hoặc phản ánh ý kiến (KHÔNG phải báo lỗi kỹ thuật).",
+      "keys": [
+        "góp ý",
+        "gop y",
+        "đề xuất",
+        "de xuat",
+        "ý kiến",
+        "y kien",
+        "phản hồi về trang",
+        "phan hoi ve trang",
+        "khiếu nại",
+        "khieu nai",
+        "đóng góp ý",
+        "dong gop y",
+        "gợi ý cải thiện"
+      ],
+      "reply": "Bọ cảm ơn bạn nhiều! Ý kiến của bạn hãy gửi qua hello@memori.class để đội ngũ ME.MORI đọc nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "need_human",
+      "description": "Muốn nói chuyện với người thật, tư vấn viên, xin số điện thoại hoặc hotline.",
+      "keys": [
+        "gặp người thật",
+        "gap nguoi that",
+        "tư vấn viên",
+        "tu van vien",
+        "số điện thoại",
+        "so dien thoai",
+        "hotline",
+        "gọi điện",
+        "goi dien",
+        "nói chuyện với người",
+        "noi chuyen voi nguoi",
+        "nhân viên",
+        "nhan vien",
+        "zalo của lớp",
+        "tư vấn trực tiếp",
+        "hotline là gì",
+        "hotline la gi",
+        "số hotline",
+        "so hotline"
+      ],
+      "reply": "Bọ chưa có số điện thoại hay hotline. Bạn viết cho hello@memori.class, người thật sẽ trả lời bạn nhé.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "bo_age",
+      "description": "Hỏi chính Bọ bao nhiêu tuổi, sinh năm nào (KHÔNG phải hỏi độ tuổi học viên).",
+      "keys": [
+        "bọ bao nhiêu tuổi",
+        "bo bao nhieu tuoi",
+        "bạn bao nhiêu tuổi",
+        "ban bao nhieu tuoi",
+        "bọ mấy tuổi",
+        "bo may tuoi",
+        "bọ sinh năm",
+        "bo sinh nam",
+        "tuổi của bọ",
+        "tuoi cua bo",
+        "bạn mấy tuổi",
+        "ban may tuoi",
+        "sinh nhật bọ",
+        "sinh nhat bo",
+        "sinh nhật của bọ",
+        "sinh nhat cua bo"
+      ],
+      "reply": "Bọ nhỏ xíu nên tuổi là bí mật nha! Chỉ biết Bọ mê ánh sáng đẹp lắm."
+    },
+    {
+      "id": "bo_likes",
+      "description": "Hỏi Bọ thích gì, sở thích, món ăn, màu yêu thích.",
+      "keys": [
+        "bọ thích gì",
+        "bo thich gi",
+        "bạn thích gì",
+        "ban thich gi",
+        "sở thích của bọ",
+        "so thich cua bo",
+        "màu yêu thích",
+        "mau yeu thich",
+        "bọ ăn gì",
+        "bo an gi",
+        "bạn thích màu",
+        "bạn thích ăn",
+        "món yêu thích",
+        "bọ thích",
+        "bo thich"
+      ],
+      "reply": "Bọ thích ánh sáng đẹp, cảnh phim đẹp và được trò chuyện với bạn đó!"
+    },
+    {
+      "id": "bo_robot",
+      "description": "Hỏi Bọ là người thật, robot hay AI.",
+      "keys": [
+        "bọ là người hay máy",
+        "bo la nguoi hay may",
+        "bạn là robot",
+        "ban la robot",
+        "người thật không",
+        "nguoi that khong",
+        "bạn là ai thật",
+        "bot hay người",
+        "bot hay nguoi",
+        "là máy à",
+        "la may a",
+        "bọ là ai vậy",
+        "bạn có phải người"
+      ],
+      "reply": "Bọ là chú bọ trợ lý trên trang, không phải người thật. Việc Bọ chưa biết, Bọ sẽ chỉ bạn nơi hỏi.",
+      "link": {
+        "href": "home-backup.html#contact",
+        "label": "Liên hệ"
+      }
+    },
+    {
+      "id": "bo_feelings",
+      "description": "Hỏi thăm sức khỏe hoặc tâm trạng của Bọ.",
+      "keys": [
+        "bạn khỏe không",
+        "ban khoe khong",
+        "bọ khỏe không",
+        "bo khoe khong",
+        "bạn ổn không",
+        "ban on khong",
+        "hôm nay thế nào",
+        "hom nay the nao",
+        "bạn có vui không",
+        "dạo này sao",
+        "dao nay sao",
+        "bạn đang làm gì",
+        "ban dang lam gi",
+        "khỏe không"
+      ],
+      "reply": "Bọ khỏe re, cánh còn đang vỗ phành phạch đây! Còn bạn hôm nay thế nào?"
+    },
+    {
+      "id": "bo_home",
+      "description": "Hỏi Bọ sống ở đâu, nhà của Bọ ở đâu (KHÔNG phải địa chỉ lớp học).",
+      "keys": [
+        "bọ sống ở đâu",
+        "bo song o dau",
+        "nhà bọ ở đâu",
+        "nha bo o dau",
+        "bạn sống ở đâu",
+        "ban song o dau",
+        "bọ ở đâu",
+        "bo o dau",
+        "bạn ở đâu vậy",
+        "tổ của bọ",
+        "to cua bo",
+        "nhà của bọ",
+        "bạn ở đâu",
+        "ban o dau"
+      ],
+      "reply": "Bọ sống trong khu rừng đêm lấp lánh của ME.MORI. Bạn muốn xem thì ghé trang Giới thiệu nhé.",
+      "link": {
+        "href": "gioithieu.html",
+        "label": "Trang Giới thiệu"
+      }
+    },
+    {
+      "id": "compliment",
+      "description": "Khen Bọ hoặc khen trang web dễ thương, đẹp, hay.",
+      "keys": [
+        "bọ dễ thương",
+        "bo de thuong",
+        "bọ giỏi quá",
+        "bo gioi qua",
+        "trang đẹp quá",
+        "trang dep qua",
+        "bạn giỏi quá",
+        "ban gioi qua",
+        "bọ xinh",
+        "bo xinh",
+        "tuyệt vời",
+        "bọ hay quá",
+        "bo hay qua",
+        "trang hay quá",
+        "trang hay qua",
+        "bọ đáng yêu",
+        "bo dang yeu"
+      ],
+      "reply": "Bọ ngại quá, cảm ơn bạn nhiều nha! Bạn vui là Bọ vui rồi."
+    },
+    {
+      "id": "sorry",
+      "description": "Người dùng xin lỗi Bọ, hoặc nói đã làm phiền, hỏi nhiều.",
+      "keys": [
+        "xin lỗi",
+        "xin loi",
+        "làm phiền",
+        "lam phien",
+        "sorry",
+        "hỏi nhiều quá",
+        "hoi nhieu qua",
+        "bạn thông cảm",
+        "ban thong cam",
+        "mình hỏi hơi nhiều",
+        "xin lỗi bọ",
+        "phiền bạn quá",
+        "phien ban qua"
+      ],
+      "reply": "Không sao đâu bạn! Bọ thích được hỏi mà, bạn cứ hỏi tiếp nhé."
     }
   ]
 }

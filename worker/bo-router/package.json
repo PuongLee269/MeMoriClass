@@ -1,0 +1,1 @@
+{ "type": "module", "private": true, "scripts": { "test": "node --test test.mjs client-test.mjs", "live-test": "node live-test.mjs" } }

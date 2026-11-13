@@ -1,0 +1,621 @@
+{
+  "quota": {
+    "url": "https://bo-router-quota-test.phuongfilmmaker.workers.dev",
+    "origin": "http://127.0.0.1:8766",
+    "mode": "quota",
+    "at": "2026-11-13T17:55:15.031Z",
+    "rows": [
+      {
+        "n": 1,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 3985,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 2,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2101,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 3,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2203,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 4,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2324,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 5,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2430,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 6,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2755,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 7,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2142,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 8,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1904,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 9,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2394,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 10,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1775,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 11,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1936,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 12,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2228,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 13,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1826,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 14,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1806,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 15,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1784,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 16,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2155,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 17,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1773,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 18,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1919,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 19,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1944,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 20,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2225,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 21,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2386,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 22,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1967,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 23,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1914,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 24,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1434,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 25,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1842,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 26,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1754,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 27,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1974,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 28,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1860,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 29,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2242,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 30,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2210,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 31,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2479,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 32,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1845,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 33,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2197,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 34,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2567,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 35,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2021,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 36,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1926,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 37,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1827,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 38,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2071,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 39,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1923,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 40,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2166,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 41,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2174,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 42,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1953,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 43,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1984,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 44,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1846,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 45,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2083,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 46,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2008,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 47,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1919,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 48,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2098,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 49,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 2109,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 50,
+        "status": 200,
+        "body": {
+          "id": "faq-23"
+        },
+        "ms": 1998,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "n": 51,
+        "status": 429,
+        "body": {
+          "id": null
+        },
+        "ms": 444,
+        "tokens": null,
+        "cache": null
+      }
+    ],
+    "pass": true,
+    "ai": {
+      "ok": false,
+      "id": null
+    },
+    "fallback": "faq-23"
+  },
+  "timeout": {
+    "url": "https://bo-router-test.phuongfilmmaker.workers.dev",
+    "origin": "http://127.0.0.1:8766",
+    "mode": "timeout",
+    "at": "2026-11-13T17:54:04.862Z",
+    "rows": [
+      {
+        "status": 504,
+        "body": {
+          "id": null
+        },
+        "ms": 1772,
+        "tokens": null,
+        "cache": null
+      }
+    ],
+    "pass": true
+  },
+  "boundaries": {
+    "url": "https://bo-router-eval.phuongfilmmaker.workers.dev",
+    "origin": "http://127.0.0.1:8766",
+    "mode": "boundary",
+    "at": "2026-11-13T17:50:53.595Z",
+    "rows": [
+      {
+        "name": "cors",
+        "status": 403,
+        "body": {
+          "id": null
+        },
+        "ms": 160,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "name": "oversize",
+        "status": 413,
+        "body": {
+          "id": null
+        },
+        "ms": 116,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "name": "long-50",
+        "status": 200,
+        "body": {
+          "id": null
+        },
+        "ms": 34,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "name": "long-51",
+        "status": 200,
+        "body": {
+          "id": null
+        },
+        "ms": 35,
+        "tokens": null,
+        "cache": null
+      },
+      {
+        "name": "long-80",
+        "status": 200,
+        "body": {
+          "id": null
+        },
+        "ms": 49,
+        "tokens": null,
+        "cache": null
+      }
+    ],
+    "pass": true
+  },
+  "cleanup": {
+    "workers": [
+      "bo-router-test",
+      "bo-router-eval",
+      "bo-router-quota-test"
+    ],
+    "delete_statuses": [
+      200,
+      200,
+      200
+    ],
+    "verify_settings_statuses": [
+      404,
+      404,
+      404
+    ],
+    "remaining_test_namespaces": 0
+  }
+}

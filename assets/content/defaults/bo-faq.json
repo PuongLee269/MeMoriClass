@@ -1,0 +1,1011 @@
+{
+  "meta": {
+    "unknownReply": "Mình chưa muốn thông tin sai cho bạn. Để mình chuyển câu hỏi này đến người phụ trách và xác nhận chính xác trước nhé."
+  },
+  "faqs": [
+    {
+      "id": "faq-01",
+      "status": "XAC_NHAN",
+      "topic": "MoriClass là lớp gì, dạy gì",
+      "needsConfirm": false,
+      "questions": [
+        "MoriClass là lớp gì?",
+        "Bên mình dạy cái gì vậy?",
+        "Mori Cloud là gì?",
+        "Cho mình hỏi ME.MORI Class là gì với ạ",
+        "lớp này học về cái gì thế",
+        "moriclass la lop gi vay ban",
+        "Mới nghe tên Me.Mori, bạn giới thiệu sơ qua giúp mình được không?",
+        "Lớp này thực chất là làm gì vậy bạn?",
+        "ở đây người ta dạy gì ấy nhỉ",
+        "Mori class có gì hay, kể mình nghe với"
+      ],
+      "answer": "MoriClass là một lớp học trải nghiệm nghệ thuật và kể chuyện bằng hình ảnh, nhưng điều thú vị nhất không chỉ nằm ở việc làm ra một tác phẩm. Qua trò chơi, trò chuyện và các hoạt động sáng tạo, mỗi người có dịp quan sát suy nghĩ, cảm xúc và những lựa chọn của chính mình."
+    },
+    {
+      "id": "faq-02",
+      "status": "XAC_NHAN",
+      "topic": "mục tiêu của lớp, học xong được gì",
+      "needsConfirm": false,
+      "questions": [
+        "Học để làm gì?",
+        "Học xong được gì?",
+        "Có giúp tìm hướng đi không?",
+        "Học lớp này mình nhận được gì vậy",
+        "hoc xong thi duoc cai gi",
+        "Lớp hướng tới điều gì thế bạn?",
+        "Mình đang lạc hướng, lớp này có giúp mình tìm ra con đường không?",
+        "Mục đích của lớp là gì ạ",
+        "tham gia xong mình thay đổi được gì",
+        "lớp giúp ích gì cho cuộc sống của mình"
+      ],
+      "answer": "MoriClass mong bạn hiểu mình hơn, tự tin hơn và có thêm góc nhìn để đưa ra những quyết định sáng suốt. Lớp không hứa tìm sẵn câu trả lời cho cuộc đời bạn; tụi mình tạo ra một không gian để bạn tự khám phá qua trải nghiệm, quan sát và đối thoại."
+    },
+    {
+      "id": "faq-03",
+      "status": "XAC_NHAN",
+      "topic": "có phải lớp quay dựng/làm content không",
+      "needsConfirm": false,
+      "questions": [
+        "Đây là khóa làm video đúng không?",
+        "Có dạy content không?",
+        "Lớp này có dạy quay dựng không?",
+        "Mình muốn học làm video, lớp này có phải không?",
+        "day lam content khong ban",
+        "Có phải học edit video không vậy",
+        "Lớp này là học phần mềm dựng phim hả?",
+        "Đi học để làm creator được không?",
+        "Có học sáng tạo nội dung không ạ",
+        "Khóa này thiên về kỹ thuật làm phim hay gì"
+      ],
+      "answer": "Kể chuyện bằng hình ảnh, video và sáng tạo nội dung là một phần công cụ của MoriClass. Nhưng trọng tâm của lớp là cách mình quan sát cuộc sống, hiểu bản thân và tìm ra tiếng nói riêng, chứ không đơn thuần học phần mềm hay công thức tăng lượt xem."
+    },
+    {
+      "id": "faq-04",
+      "status": "XAC_NHAN",
+      "topic": "ai hợp với lớp, mọi lứa tuổi: người trẻ, người lớn tuổi, người đi làm, không làm nghề sáng tạo",
+      "needsConfirm": false,
+      "questions": [
+        "Ai hợp lớp này?",
+        "Tôi đi làm rồi có học được không?",
+        "Những ai nên tham gia?",
+        "Lớp này dành cho đối tượng nào?",
+        "Người lớn tuổi có học được không",
+        "minh 35 tuoi hoc duoc khong",
+        "Em là sinh viên, lớp này có hợp không?",
+        "Có cần làm nghề sáng tạo mới đăng ký được không?",
+        "Đối tượng của lớp là ai vậy bạn",
+        "mình không làm trong ngành nghệ thuật thì có tham gia được không"
+      ],
+      "answer": "Có chứ. Lớp dành cho cả người trẻ lẫn người trưởng thành, nhất là những ai đang muốn hiểu mình hơn, thử một trải nghiệm khác thường hoặc tìm thêm góc nhìn về con đường mình đang đi. Bạn không cần làm nghề sáng tạo mới tham gia được."
+    },
+    {
+      "id": "faq-05",
+      "status": "XAC_NHAN",
+      "topic": "hướng nội, ngại người lạ, nhút nhát",
+      "needsConfirm": false,
+      "questions": [
+        "Tôi hướng nội / ngại người lạ thì sao?",
+        "Tôi nhút nhát có học được không?",
+        "Ngại chia sẻ thì sao?",
+        "Mình sợ giao tiếp với người lạ, có tham gia nổi không?",
+        "minh hoi huong noi co hoc duoc khong",
+        "Em tự ti, sợ phải đứng lên nói trước mọi người",
+        "Có phải giới thiệu bản thân trước cả nhóm không?",
+        "Người ít nói như mình có hợp lớp không?",
+        "xã hội phobia nhẹ thì có đi học được không",
+        "sợ ngại không dám nói chuyện thì lớp có ép không"
+      ],
+      "answer": "Vẫn tham gia được nhé. Nhóm chỉ tối đa sáu người và buổi đầu làm quen qua một trò chơi cùng kể chuyện, chứ không bắt mọi người đứng lên giới thiệu hay phải tiết lộ chuyện riêng. Bạn có thể chia sẻ theo mức mình thấy thoải mái."
+    },
+    {
+      "id": "faq-06",
+      "status": "XAC_NHAN",
+      "topic": "có bị ép kể chuyện riêng tư không",
+      "needsConfirm": false,
+      "questions": [
+        "Có phải kể bí mật của mình không?",
+        "Có bị ép nói ra vấn đề không?",
+        "Có phải nói chuyện riêng tư không?",
+        "Mình có bắt buộc phải kể chuyện cá nhân không",
+        "khong muon ke chuyen rieng co sao khong",
+        "Đến lớp có bị hỏi về đời tư không?",
+        "Mình không thích chia sẻ chuyện nhà, có sao không?",
+        "Có phải mở lòng hết ra mới học được không",
+        "Lớp có ép học viên tâm sự không",
+        "Bị gặng hỏi chuyện riêng thì sao"
+      ],
+      "answer": "Không đâu. Những trải nghiệm cá nhân có thể trở thành chất liệu cho cuộc trò chuyện, nhưng chia sẻ đến đâu là lựa chọn của bạn. Điều quan trọng là được tham gia và quan sát chính mình trong một không gian tôn trọng nhau."
+    },
+    {
+      "id": "faq-07",
+      "status": "XAC_NHAN",
+      "topic": "phương pháp dạy, có nhiều lý thuyết không",
+      "needsConfirm": false,
+      "questions": [
+        "MoriClass dạy như thế nào?",
+        "Có nhiều lý thuyết không?",
+        "Phương pháp dạy của lớp là gì?",
+        "Lớp học theo cách nào vậy?",
+        "Cách học ở đây ra sao?",
+        "co phai ngoi nghe giang bai khong",
+        "Thầy cô có giảng bài liên tục không?",
+        "Học kiểu gì, thực hành hay lý thuyết nhiều hơn?",
+        "Phương pháp trải nghiệm và quan sát là sao?",
+        "Buổi học diễn ra như thế nào nhỉ"
+      ],
+      "answer": "Cốt lõi là trải nghiệm và quan sát. Mình chơi, hành động, hợp tác, rồi thử quan sát xem trong lúc đó mình đang nghĩ gì, cảm thấy gì. Người dẫn chủ yếu đặt câu hỏi và cùng mọi người trò chuyện, thay vì giảng bài liên tục.",
+      "link": {
+        "href": "method.html",
+        "label": "Bàn đá Phương pháp"
+      }
+    },
+    {
+      "id": "faq-08",
+      "status": "XAC_NHAN",
+      "topic": "đối thoại Bohm là gì, vì sao ngồi trò chuyện",
+      "needsConfirm": false,
+      "questions": [
+        "Bohm Dialogue là gì?",
+        "Đối thoại Bohm là sao?",
+        "Tại sao lớp ngồi trò chuyện?",
+        "David Bohm liên quan gì đến lớp?",
+        "doi thoai bohm la gi vay",
+        "Trò chuyện nhóm trong lớp là kiểu gì?",
+        "Sao lớp lại ngồi nói chuyện chứ không học bài?",
+        "Cái đối thoại treo vấn đề lên là gì thế",
+        "Bohm nghĩa là gì ạ",
+        "Lớp có tranh luận hơn thua không"
+      ],
+      "answer": "Đây là tinh thần đối thoại gắn với nhà vật lý David Bohm: mọi người lắng nghe và cùng nhìn vào một vấn đề thay vì vội tranh đúng sai. Trong lớp, câu chuyện và góc nhìn của mỗi người giúp cả nhóm nhìn điều quen thuộc theo cách mới."
+    },
+    {
+      "id": "faq-09",
+      "status": "XAC_NHAN",
+      "topic": "không biết triết học, khái niệm shadow/bản ngã/entropy có khó không",
+      "needsConfirm": false,
+      "questions": [
+        "Shadow, bản ngã, entropy có khó không?",
+        "Em không biết triết học.",
+        "Không học triết học thì có bị khó không?",
+        "Mình không có nền tảng tâm lý học, có theo kịp không?",
+        "Các khái niệm trong lớp có cao siêu không",
+        "khong biet gi ve triet hoc co hoc duoc khong",
+        "Lớp có bắt học thuộc lý thuyết không?",
+        "Persona với Shadow là gì, nghe khó quá",
+        "Phải đọc sách trước khi đến lớp không?",
+        "Mình dốt lý thuyết, đi học có sao không"
+      ],
+      "answer": "Không cần biết trước đâu. Các khái niệm chỉ được giới thiệu bằng cách giải thích đơn giản và ví dụ đời thường để cả nhóm có ngôn ngữ chung khi trò chuyện. Đây không phải lớp học thuộc lý thuyết."
+    },
+    {
+      "id": "faq-10",
+      "status": "XAC_NHAN",
+      "topic": "buổi 1 làm gì, có trò chơi nào",
+      "needsConfirm": false,
+      "questions": [
+        "Buổi 1 học gì?",
+        "Có trò chơi nào?",
+        "Buổi học đầu tiên làm gì?",
+        "Buổi đầu mình sẽ làm những gì vậy",
+        "buoi dau tien hoc gi the",
+        "Vào buổi đầu có phải giới thiệu bản thân không?",
+        "Cuối buổi 1 có bài tập gì không?",
+        "Mô tả giúp mình một buổi đầu điển hình được không",
+        "ngày đầu tiên đến lớp sẽ diễn ra thế nào",
+        "buổi 1 có viết lách gì không ạ"
+      ],
+      "answer": "Buổi đầu mọi người làm quen bằng một trò chơi cùng sáng tạo câu chuyện, sau đó trò chuyện về vài khái niệm gần với đời sống như bản ngã, phẩm chất hay mặt nạ xã hội. Cuối buổi bạn sẽ viết một câu chuyện về điều mình đang hoặc muốn theo đuổi. Những chi tiết cụ thể có thể thay đổi theo đặc điểm của nhóm sáu người."
+    },
+    {
+      "id": "faq-11",
+      "status": "XAC_NHAN",
+      "topic": "điều đặc biệt ở buổi đầu, khác workshop thường",
+      "needsConfirm": false,
+      "questions": [
+        "Sao buổi đầu lại đáng thử?",
+        "Có gì hơn một buổi workshop?",
+        "Điều gì đặc biệt ở buổi đầu tiên?",
+        "Khác gì mấy buổi workshop bình thường vậy",
+        "buoi dau co gi dac biet",
+        "Tại sao mình nên tham gia buổi đầu?",
+        "Điểm hay nhất của lớp này là gì",
+        "Lớp này khác gì các lớp kể chuyện khác?",
+        "Cái gì làm buổi đầu thú vị vậy bạn",
+        "Có gì độc đáo mà chỗ khác không có"
+      ],
+      "answer": "Một điểm rất riêng là sáu người có thể bắt đầu từ chỗ không quen biết, rồi hiểu nhau qua cách cùng kể chuyện và đối thoại, thay vì qua những màn giới thiệu thông thường. MoriClass muốn tạo cơ hội để người học được lắng nghe và trò chuyện chân thành về điều mình thật sự quan tâm."
+    },
+    {
+      "id": "faq-12",
+      "status": "XAC_NHAN",
+      "topic": "các lớp có cùng giáo trình, trò chơi giống nhau không",
+      "needsConfirm": false,
+      "questions": [
+        "Các trò giống nhau không?",
+        "Có lịch học chi tiết từng buổi không?",
+        "Mỗi lớp có cùng giáo trình không?",
+        "Lớp nào cũng học y như nhau à?",
+        "Có giáo án cố định không?",
+        "giao trinh co co dinh khong ban",
+        "Các khóa trước chơi trò gì, khóa này có lặp lại không?",
+        "Nội dung có thay đổi theo từng nhóm không",
+        "Mình muốn xem chương trình học chi tiết",
+        "chương trình có theo kịch bản cứng không"
+      ],
+      "answer": "MoriClass có mục tiêu và nguyên tắc trải nghiệm rõ ràng, nhưng hoạt động sẽ được điều chỉnh theo con người và nhu cầu của nhóm. Vì thế không phải mọi lớp đều trải qua đúng một chuỗi trò chơi cố định."
+    },
+    {
+      "id": "faq-13",
+      "status": "XAC_NHAN",
+      "topic": "sĩ số, bao nhiêu học viên một lớp",
+      "needsConfirm": false,
+      "questions": [
+        "Lớp đông không?",
+        "Bao nhiêu người một lớp?",
+        "Mỗi lớp có bao nhiêu học viên?",
+        "Sĩ số lớp là bao nhiêu vậy",
+        "lop co may nguoi hoc",
+        "Một nhóm tối đa mấy bạn?",
+        "Học chung với bao nhiêu người ạ",
+        "Lớp nhỏ hay lớp đông vậy bạn",
+        "co dong nguoi khong",
+        "Mỗi khóa nhận bao nhiêu học viên thế"
+      ],
+      "answer": "Mỗi lớp có tối đa sáu học viên để mọi người thật sự có thời gian trò chuyện, cùng làm việc và quan sát mình trong nhóm."
+    },
+    {
+      "id": "faq-14",
+      "status": "XAC_NHAN",
+      "topic": "số buổi và thời lượng khóa học",
+      "needsConfirm": false,
+      "questions": [
+        "Có mấy buổi?",
+        "Mỗi buổi bao lâu?",
+        "Khóa học kéo dài bao lâu?",
+        "Tổng cộng học bao nhiêu tiếng?",
+        "hoc may buoi, moi buoi may tieng",
+        "Một khóa gồm bao nhiêu buổi vậy",
+        "Thời lượng mỗi buổi là bao nhiêu giờ",
+        "Khóa này dài hay ngắn thế",
+        "học trong bao lâu thì xong",
+        "Tổng thời gian cả khóa là bao nhiêu"
+      ],
+      "answer": "Khóa đang được giới thiệu gồm bốn buổi, mỗi buổi khoảng ba giờ, tức khoảng mười hai giờ trải nghiệm trực tiếp."
+    },
+    {
+      "id": "faq-15",
+      "status": "XAC_NHAN",
+      "topic": "F1 là gì, có học viên đã học chưa",
+      "needsConfirm": false,
+      "questions": [
+        "Có học viên nào học rồi chưa?",
+        "F1 là gì?",
+        "F1 với khóa đang tuyển có giống nhau không?",
+        "Lớp F1 là lớp nào vậy",
+        "f1 khac f2 o cho nao",
+        "Đã có ai học thật chưa hay mới mở?",
+        "Khóa trước diễn ra thế nào rồi",
+        "Lớp F1 học mấy buổi",
+        "Lớp đã từng mở chưa bạn",
+        "Mình nghe nói có lớp F1, giải thích giúp với"
+      ],
+      "answer": "MoriClass đã có lớp F1 và học viên thực tế với những tác phẩm rất cá nhân. F1 là hành trình nhiều buổi hơn, không giống hoàn toàn cấu trúc bốn buổi hiện tại.",
+      "link": {
+        "href": "lopf1.html",
+        "label": "Xem lớp F1"
+      }
+    },
+    {
+      "id": "faq-16",
+      "status": "XAC_NHAN",
+      "topic": "tác phẩm học viên, kết quả thật",
+      "needsConfirm": false,
+      "questions": [
+        "Có tác phẩm nào để xem không?",
+        "Kết quả thật thế nào?",
+        "Đã có sản phẩm học viên chưa?",
+        "Cho mình xem sản phẩm của học viên được không",
+        "co video cua hoc vien khong",
+        "Học viên làm ra được gì rồi?",
+        "Có ví dụ thực tế nào không",
+        "Mình muốn xem bài của các bạn đã học",
+        "Học viên cũ làm ra những gì vậy",
+        "tác phẩm của lớp F1 đâu rồi bạn"
+      ],
+      "answer": "Đã có những tác phẩm cá nhân từ lớp F1. Vì mỗi câu chuyện gắn với trải nghiệm riêng của học viên, MoriClass sẽ chỉ giới thiệu những tác phẩm được phép chia sẻ. Bạn có thể để lại lời nhắn để được gửi các ví dụ phù hợp nhé.",
+      "link": {
+        "href": "lopf1.html",
+        "label": "Xem lớp F1"
+      }
+    },
+    {
+      "id": "faq-17",
+      "status": "CAN_PHAN_BIET",
+      "topic": "có làm video hoàn chỉnh, đầu ra khóa học",
+      "needsConfirm": true,
+      "questions": [
+        "Học xong có làm được phim?",
+        "Có video mang về không?",
+        "Có phải làm video hoàn chỉnh không?",
+        "Cuối khóa mình có sản phẩm gì trong tay",
+        "hoc xong co phim ngan khong",
+        "Có bắt buộc làm một video cá nhân không?",
+        "Đầu ra của khóa là gì ạ",
+        "Mỗi người sẽ có một bộ phim riêng chứ?",
+        "Kết thúc lớp mình nhận được thành phẩm nào",
+        "cuối khóa có phải nộp phim không"
+      ],
+      "answer": "MoriClass có hướng thực hành kể chuyện bằng hình ảnh và video, và một tài liệu chương trình trước đây từng đặt mục tiêu video cá nhân ngắn. Tuy nhiên nội dung được điều chỉnh theo nhóm và khả năng thực hành, nên mình không muốn hứa ai cũng có một sản phẩm giống nhau. Mình có thể chuyển câu hỏi để người dẫn giải thích đầu ra cụ thể của khóa bạn định đăng ký."
+    },
+    {
+      "id": "faq-18",
+      "status": "DA_BIET_TU_TAI_LIEU",
+      "topic": "chưa biết quay dựng chụp thì học được không",
+      "needsConfirm": true,
+      "questions": [
+        "Em chưa biết quay, dựng, chụp; học được không?",
+        "Không có kinh nghiệm quay dựng thì sao?",
+        "Mình chưa từng làm video bao giờ, có học được không",
+        "Người mới tinh hoàn toàn có theo được không",
+        "chua biet quay dung gi het co hoc duoc khong",
+        "Có cần biết dùng phần mềm dựng trước không?",
+        "Mình chỉ có điện thoại thôi, tham gia được không",
+        "Không biết edit có sao không bạn",
+        "Newbie như mình có hợp không",
+        "chưa cầm máy quay bao giờ thì có học nổi không"
+      ],
+      "answer": "Được nhé. MoriClass không yêu cầu bạn phải biết quay dựng chuyên nghiệp trước. Ở những phần thực hành hình ảnh, người học có thể bắt đầu từ công cụ quen thuộc như điện thoại, còn trọng tâm là cách quan sát và kể câu chuyện của mình."
+    },
+    {
+      "id": "faq-19",
+      "status": "CHUA_CO_THONG_TIN",
+      "topic": "thiết bị cần mang, máy ảnh/laptop",
+      "needsConfirm": true,
+      "questions": [
+        "Có bắt buộc có máy ảnh/laptop không?",
+        "Cần chuẩn bị thiết bị gì?",
+        "Mang laptop không?",
+        "Đi học cần mang theo gì vậy",
+        "can mang may anh khong ban",
+        "Có phải mua máy quay không?",
+        "Mình cần chuẩn bị đồ dùng gì trước buổi học",
+        "Phải có laptop mới học được hả",
+        "Thiết bị yêu cầu của lớp là gì",
+        "mang theo điện thoại là đủ chưa"
+      ],
+      "answer": "Bạn không nhất thiết cần có nền tảng quay dựng trước, nhưng danh sách thiết bị cần mang sẽ phụ thuộc hoạt động của khóa cụ thể. Mình xin kiểm tra với người phụ trách trước khi hướng dẫn bạn chuẩn bị nhé."
+    },
+    {
+      "id": "faq-20",
+      "status": "DA_BIET_TU_TAI_LIEU",
+      "topic": "học online hay trực tiếp",
+      "needsConfirm": true,
+      "questions": [
+        "Có lớp online không?",
+        "Tôi ở xa học được không?",
+        "Có học online được không?",
+        "Học qua zoom được không bạn",
+        "hoc online duoc khong",
+        "Mình ở tỉnh khác, tham gia từ xa được không?",
+        "Lớp có livestream hay học từ xa không",
+        "Bắt buộc phải đến tận nơi hả",
+        "Có hình thức học trực tuyến không",
+        "mình đang ở nước ngoài thì học thế nào"
+      ],
+      "answer": "Mô hình khóa đang được giới thiệu là học trực tiếp trong nhóm nhỏ, bởi trải nghiệm và tương tác giữa mọi người là một phần quan trọng. Hiện mình chưa có thông tin xác nhận về lớp online."
+    },
+    {
+      "id": "faq-21",
+      "status": "MOT_PHAN_CHUA_CO_THONG_TIN",
+      "topic": "địa điểm học, địa chỉ, Hà Nội",
+      "needsConfirm": true,
+      "questions": [
+        "Địa chỉ ở đâu?",
+        "Có học ở Hà Nội không?",
+        "Lớp học ở đâu vậy bạn?",
+        "Học ở khu nào của Hà Nội",
+        "dia chi lop hoc o dau",
+        "Mình ở Hà Nội, phòng học nằm chỗ nào?",
+        "Cho mình xin địa chỉ phòng học với",
+        "Lớp tổ chức ở thành phố nào",
+        "Có chi nhánh ở Sài Gòn không?",
+        "đến lớp đi đường nào, số nhà bao nhiêu"
+      ],
+      "answer": "MoriClass được xây dựng cho hình thức học trực tiếp tại Hà Nội. Địa chỉ chính xác của đợt học đang tuyển sẽ được người phụ trách xác nhận trước khi bạn đăng ký chính thức nhé."
+    },
+    {
+      "id": "faq-22",
+      "status": "CHUA_CO_THONG_TIN",
+      "topic": "ngày khai giảng, lịch học, thứ mấy",
+      "needsConfirm": true,
+      "questions": [
+        "Khi nào khai giảng?",
+        "Lịch lớp mới?",
+        "Học thứ mấy?",
+        "Bao giờ mở khóa?",
+        "Lớp bắt đầu ngày nào vậy",
+        "khai giang khi nao the ban",
+        "Học vào buổi tối hay cuối tuần?",
+        "Mỗi buổi học vào giờ nào?",
+        "Khóa tới bắt đầu tháng mấy",
+        "Cho mình hỏi lịch học cụ thể với"
+      ],
+      "answer": "Mình chưa có lịch khai giảng đã được xác nhận để báo bạn chính xác. Bạn có thể để lại thời gian thuận tiện hoặc thông tin liên hệ, MoriClass sẽ cập nhật lịch ngay khi chốt nhé."
+    },
+    {
+      "id": "faq-23",
+      "status": "XAC_NHAN",
+      "topic": "học phí gốc 2.400.000đ và ưu đãi 1.500.000đ",
+      "needsConfirm": true,
+      "questions": [
+        "Học phí bao nhiêu?",
+        "Giá bao nhiêu?",
+        "Có ưu đãi không?",
+        "Khóa này giá thế nào vậy bạn",
+        "hoc phi bao nhieu tien",
+        "Cho mình hỏi chi phí tham gia",
+        "Tốn bao nhiêu tiền để học lớp này",
+        "Giá gốc với giá ưu đãi là bao nhiêu",
+        "Phí cả khóa 4 buổi là bao nhiêu",
+        "mắc không bạn, bao nhiêu một khóa vậy"
+      ],
+      "answer": "Học phí gốc của khóa bốn buổi là 2.400.000đ. MoriClass cũng đã thông tin về mức ưu đãi 1.500.000đ dành cho người đăng ký sớm/giữ chỗ sớm. Điều kiện áp dụng cho đợt lớp bạn quan tâm cần được xác nhận trước khi bạn thanh toán nhé."
+    },
+    {
+      "id": "faq-24",
+      "status": "CHUA_CHOT",
+      "topic": "ưu đãi 1,5 triệu dành cho ai, hạn áp dụng",
+      "needsConfirm": true,
+      "questions": [
+        "Em có được giá 1tr5 không?",
+        "Giảm đến bao giờ?",
+        "Ưu đãi 1,5 triệu dành cho ai?",
+        "Làm sao để được giá 1.500.000đ",
+        "Đăng ký sớm là bao lâu thì còn giá ưu đãi?",
+        "gia 1tr5 ap dung den khi nao",
+        "Điều kiện để hưởng mức ưu đãi là gì",
+        "Ưu đãi này hết hạn ngày nào",
+        "Mình đăng ký hôm nay thì được giá nào",
+        "giữ chỗ sớm thì được giảm bao nhiêu"
+      ],
+      "answer": "Mức 1.500.000đ đang được dành cho nhóm đăng ký sớm hoặc giữ chỗ sớm. Tuy nhiên số suất, hạn áp dụng và cách xác nhận ưu đãi chưa được công bố chính thức, nên mình cần kiểm tra đúng đợt lớp của bạn trước khi xác nhận giá cuối cùng."
+    },
+    {
+      "id": "faq-25",
+      "status": "DANG_XEM_XET",
+      "topic": "học thử buổi đầu rồi mới đóng tiền, quyền dừng",
+      "needsConfirm": true,
+      "questions": [
+        "Học thử miễn phí không?",
+        "Không hợp có nghỉ được không?",
+        "Có được học thử buổi đầu rồi mới đóng tiền không?",
+        "Học buổi đầu xong mới trả tiền được không",
+        "hoc thu co mat phi khong",
+        "Nếu học một buổi thấy không hợp thì sao?",
+        "Có được trải nghiệm trước khi thanh toán không",
+        "Mình muốn thử trước rồi mới quyết định",
+        "Có chính sách học buổi đầu rồi trả tiền sau không",
+        "buoi trai nghiem dau tien co phai tra tien khong"
+      ],
+      "answer": "Trước đây MoriClass từng có hình thức trải nghiệm buổi đầu rồi mới quyết định đóng học phí nếu học tiếp. Hiện lớp đang hoàn thiện lại cách đăng ký để giữ sự ổn định cho nhóm sáu người trong trọn bốn buổi. Mình sẽ nhờ người phụ trách xác nhận quyền dừng và chi phí cụ thể của đợt này trước khi bạn đăng ký nhé."
+    },
+    {
+      "id": "faq-26",
+      "status": "CHUA_CHOT",
+      "topic": "đặt cọc giữ chỗ, mức cọc, hoàn cọc",
+      "needsConfirm": true,
+      "questions": [
+        "Có đặt cọc không?",
+        "Cọc bao nhiêu?",
+        "Phí giữ chỗ có hoàn không?",
+        "Muốn giữ chỗ thì phải đóng bao nhiêu",
+        "co can dat coc khong ban",
+        "Tiền cọc có được trừ vào học phí không?",
+        "Giữ chỗ trước cần chuyển khoản không",
+        "Nếu hủy thì cọc có mất không",
+        "coc giu cho la bao nhieu tien",
+        "Có phải trả trước một khoản để giữ slot không"
+      ],
+      "answer": "MoriClass đang hoàn thiện quy trình giữ chỗ, nên hiện mình chưa thể xác nhận mức cọc, điều kiện trừ vào học phí hay hoàn cọc. Mình sẽ chuyển người phụ trách xác nhận rõ bằng văn bản trước khi bạn thanh toán bất kỳ khoản nào nhé."
+    },
+    {
+      "id": "faq-27",
+      "status": "CHUA_CHOT",
+      "topic": "thời điểm đóng tiền, chia đợt, trả góp",
+      "needsConfirm": true,
+      "questions": [
+        "Đóng tiền lúc nào?",
+        "Có chia hai đợt hay trả góp không?",
+        "Có phải đóng hết tiền ngay không?",
+        "Mình có thể đóng học phí làm hai lần không",
+        "tra gop duoc khong ban",
+        "Thanh toán trước khai giảng hay sau buổi đầu?",
+        "Có phải đóng cả khóa một lần không",
+        "Hình thức thanh toán là gì vậy",
+        "Cho mình chia nhỏ học phí được không",
+        "khi nào phải chuyển khoản học phí"
+      ],
+      "answer": "Lịch thanh toán và khả năng chia đợt đang được thống nhất cho khóa mới. Mình không muốn báo nhầm chính sách; cho mình ghi nhận nhu cầu của bạn để người phụ trách phản hồi chính xác nhé."
+    },
+    {
+      "id": "faq-28",
+      "status": "CHUA_CHOT",
+      "topic": "hủy lớp, hoàn tiền, bảo lưu, học bù",
+      "needsConfirm": true,
+      "questions": [
+        "Đóng rồi muốn nghỉ?",
+        "Bận một buổi học bù?",
+        "Có được hoàn tiền không?",
+        "Đóng tiền xong không học được thì có lấy lại không",
+        "hoan tien duoc khong",
+        "Có bảo lưu sang khóa sau được không?",
+        "Nghỉ một buổi thì có học bù không ạ",
+        "Chính sách hủy lớp như thế nào",
+        "Đổi lịch học sang đợt khác được không",
+        "nếu mình có việc đột xuất không đi được thì sao"
+      ],
+      "answer": "Các điều kiện hủy, hoàn học phí, bảo lưu và học bù cần được xác nhận cho từng khóa trước khi thanh toán. MoriClass sẽ gửi bạn chính sách rõ ràng để bạn cân nhắc, chứ mình không tự hứa quyền hoàn/học bù khi chưa có quy định nhé."
+    },
+    {
+      "id": "faq-29",
+      "status": "XAC_NHAN",
+      "topic": "vì sao cần cam kết đủ bốn buổi",
+      "needsConfirm": false,
+      "questions": [
+        "Sao lớp cần cam kết?",
+        "Nghỉ giữa chừng có ảnh hưởng gì?",
+        "Vì sao phải học đủ bốn buổi?",
+        "Tại sao yêu cầu đi đủ cả khóa",
+        "Bỏ giữa chừng thì ảnh hưởng ai",
+        "tai sao phai cam ket hoc du 4 buoi",
+        "Lớp có bắt buộc đi đủ không?",
+        "Mình bỏ ngang thì nhóm bị sao",
+        "Cam kết đủ khóa nghĩa là gì ạ",
+        "Vì sao không được học lẻ từng buổi theo ý mình"
+      ],
+      "answer": "Vì lớp chỉ có sáu người, chính những người cùng tham gia tạo nên trải nghiệm chung. MoriClass mong mọi người đến với tâm thế đồng hành đủ bốn buổi để cảm giác tin tưởng và kết nối của cả nhóm không bị đứt đoạn."
+    },
+    {
+      "id": "faq-30",
+      "status": "XAC_NHAN",
+      "topic": "tư vấn, trò chuyện trước khi đăng ký",
+      "needsConfirm": false,
+      "questions": [
+        "Tôi chưa chắc hợp; có ai tư vấn không?",
+        "Có được gặp/tư vấn trước khi đăng ký không?",
+        "Mình muốn được tư vấn trước",
+        "Cho mình nói chuyện với người phụ trách được không",
+        "toi con phan van, co ai tu van khong",
+        "Mình chưa biết có hợp không thì hỏi ai",
+        "Có buổi trò chuyện trước khi quyết định không",
+        "Mình muốn trao đổi thêm trước khi đăng ký",
+        "xin tu van truoc khi dang ky",
+        "Còn phân vân, bạn giúp mình quyết định với"
+      ],
+      "answer": "Có, nếu bạn còn phân vân thì cứ để lại lời nhắn hoặc thông tin liên hệ. MoriClass muốn có một cuộc trò chuyện để cả hai phía hiểu mong muốn của bạn trước khi bạn quyết định tham gia, thay vì thúc ép đăng ký ngay."
+    },
+    {
+      "id": "faq-31",
+      "status": "XAC_NHAN",
+      "topic": "không có vấn đề lớn, chỉ tò mò vẫn học được không",
+      "needsConfirm": false,
+      "questions": [
+        "Em chỉ tò mò thôi, không bị lạc hướng, có hợp không?",
+        "Tôi không có vấn đề gì lớn, vẫn học được?",
+        "Mình ổn cả, chỉ muốn thử thôi thì có đi được không",
+        "Phải có vấn đề gì đó mới nên đến lớp à?",
+        "minh khong co van de gi chi to mo thoi",
+        "Cuộc sống mình bình thường, lớp có phù hợp không",
+        "Không gặp biến cố nào thì tham gia có ý nghĩa không",
+        "Muốn trải nghiệm cho vui thôi có được không",
+        "Mình hiếu kỳ thôi chứ không bí chuyện gì",
+        "khong lac huong gi ca van hoc duoc chu"
+      ],
+      "answer": "Có thể rất hợp. Bạn không cần đang gặp một biến cố hay có 'vấn đề' mới đến MoriClass. Chỉ cần muốn thử nhìn bản thân và cuộc sống theo cách khác, thích trải nghiệm và sẵn sàng tham gia cùng một nhóm nhỏ là đã có lý do để tìm hiểu lớp rồi."
+    },
+    {
+      "id": "faq-32",
+      "status": "XAC_NHAN",
+      "topic": "có phải trị liệu tâm lý, chữa lành không",
+      "needsConfirm": false,
+      "questions": [
+        "Đây là lớp chữa lành à?",
+        "Có chữa trầm cảm, lo âu không?",
+        "Lớp này có phải trị liệu tâm lý không?",
+        "Lớp có thay thế đi gặp bác sĩ tâm lý được không",
+        "co phai lop chua lanh khong",
+        "Đây có phải therapy nhóm không?",
+        "Mình bị stress nặng, lớp này có chữa được không",
+        "Lớp có phải dịch vụ chăm sóc sức khỏe tinh thần không",
+        "Học ở đây có điều trị được vấn đề tâm lý không",
+        "healing class phải không bạn"
+      ],
+      "answer": "MoriClass là lớp trải nghiệm nghệ thuật và khám phá bản thân, không phải dịch vụ trị liệu hay chăm sóc sức khỏe tâm thần. Những cuộc trò chuyện có thể giúp bạn có thêm góc nhìn, nhưng lớp không thay thế chuyên gia tâm lý hoặc bác sĩ khi bạn cần hỗ trợ chuyên môn."
+    },
+    {
+      "id": "faq-33",
+      "status": "XAC_NHAN",
+      "topic": "có đảm bảo thay đổi, giải quyết vấn đề không",
+      "needsConfirm": false,
+      "questions": [
+        "Có đảm bảo thay đổi không?",
+        "Có giải quyết được vấn đề của tôi không?",
+        "Học xong có chắc tự tin hơn không?",
+        "Cam kết kết quả thế nào ạ",
+        "dam bao hieu qua khong ban",
+        "Sau bốn buổi mình có hết bế tắc không?",
+        "Chắc chắn mình sẽ tìm ra hướng đi chứ",
+        "Lớp có hứa đổi đời được không",
+        "Có bảo đảm ai học cũng tự tin hơn không",
+        "Hiệu quả thực sự của lớp là gì, có chắc chắn không"
+      ],
+      "answer": "MoriClass hướng tới việc để bạn tự tin hơn và nhìn rõ hơn những lựa chọn của mình. Nhưng trải nghiệm của mỗi người khác nhau, nên tụi mình không hứa sau bốn buổi mọi vướng mắc đều được giải quyết. Điều lớp có thể tạo ra là không gian và phương pháp để bạn thực sự quan sát, trò chuyện và thử nhìn lại mình."
+    },
+    {
+      "id": "faq-34",
+      "status": "DA_BIET_TU_TAI_LIEU",
+      "topic": "có giúp kênh nổi tiếng, viral, kiếm tiền",
+      "needsConfirm": false,
+      "questions": [
+        "Học xong làm TikTok viral được không?",
+        "Có kiếm tiền từ video không?",
+        "Học xong có giúp kênh mình nổi tiếng không?",
+        "Lớp có dạy cách tăng follow không",
+        "hoc xong co kiem duoc tien khong",
+        "Có công thức viral nào không?",
+        "Mình muốn làm influencer, lớp này có giúp không",
+        "Làm content kiếm tiền có học được ở đây không",
+        "Có dạy tăng view, lên xu hướng không",
+        "lớp này có cam kết thu nhập sau khi học không"
+      ],
+      "answer": "MoriClass không bán công thức viral hay cam kết thu nhập. Nếu bạn thích làm nội dung, cách quan sát, kể chuyện và tìm giọng riêng có thể hữu ích, nhưng trọng tâm của lớp vẫn là trải nghiệm và câu chuyện có ý nghĩa với chính bạn."
+    },
+    {
+      "id": "faq-35",
+      "status": "DA_BIET_TU_TAI_LIEU",
+      "topic": "người dẫn lớp, giảng viên",
+      "needsConfirm": false,
+      "questions": [
+        "Ai là người dẫn lớp?",
+        "Ai dạy?",
+        "Thầy có chuyên môn gì?",
+        "Giảng viên là ai vậy bạn",
+        "nguoi sang lap lop la ai",
+        "Người dẫn có kinh nghiệm gì không?",
+        "Ai là người phụ trách chương trình",
+        "Lê Hồng Phương là ai",
+        "Giáo viên có làm phim thật không",
+        "mình muốn biết thêm về người hướng dẫn"
+      ],
+      "answer": "Người sáng lập và dẫn dắt MoriClass được giới thiệu là Lê Hồng Phương, làm công việc đạo diễn và kể chuyện bằng hình ảnh, có kinh nghiệm với phim ngắn và video thương hiệu. Phong cách lớp tập trung vào gợi mở bằng câu hỏi và thực hành, thay vì giảng một chiều."
+    },
+    {
+      "id": "faq-36",
+      "status": "DA_BIET_TU_TAI_LIEU",
+      "topic": "bài thực hành minh họa, ví dụ cảnh đánh cờ, đổi góc nhìn",
+      "needsConfirm": false,
+      "questions": [
+        "Cho xem bài thực hành được không?",
+        "Có ví dụ đổi góc nhìn không?",
+        "Có sản phẩm minh họa của lớp không?",
+        "Case đánh cờ là gì",
+        "co vi du bai thuc hanh nao khong",
+        "Bốn bản dựng cảnh đánh cờ do ai làm?",
+        "Cùng một cảnh mà dựng khác nhau là thế nào",
+        "Mình muốn xem thử một bài thực hành mẫu",
+        "Có clip demo bài tập nào không",
+        "Đánh cờ là bài tập gì vậy bạn"
+      ],
+      "answer": "Có một bài thực hành về cảnh đánh cờ được dùng làm ví dụ cho việc cùng một chất liệu có thể kể theo nhiều cách. Nhóm học viên tham gia ý tưởng và setup; phần bốn bản dựng minh họa là do giảng viên thực hiện. Mình sẽ kiểm tra tư liệu được phép chia sẻ rồi gửi bạn nhé."
+    },
+    {
+      "id": "faq-37",
+      "status": "CHO_XAC_NHAN",
+      "topic": "hỗ trợ sau khóa, cộng đồng, hỏi 1-1",
+      "needsConfirm": true,
+      "questions": [
+        "Có nhóm cộng đồng / được hỏi sau khóa không?",
+        "Có hỗ trợ sau khóa không?",
+        "Học xong có được hỗ trợ thêm không?",
+        "Có kèm 1-1 khi mình gặp khó khăn không",
+        "sau khoa co duoc hoi them khong",
+        "Lớp có group cho học viên sau khi học xong không?",
+        "Gặp khó thì có ai hướng dẫn riêng không",
+        "Hết khóa rồi còn được liên lạc với người dẫn không",
+        "Có cộng đồng học viên để kết nối không",
+        "sau này có được hỗ trợ trực tiếp không bạn"
+      ],
+      "answer": "Trong các chương trình trước, MoriClass có định hướng hỗ trợ cá nhân và kết nối cộng đồng. Mình sẽ xác nhận quyền lợi cụ thể của khóa hiện tại trước khi hứa về hình thức hay thời lượng hỗ trợ nhé."
+    },
+    {
+      "id": "faq-38",
+      "status": "CHUA_CHOT",
+      "topic": "cách đăng ký, link đăng ký",
+      "needsConfirm": true,
+      "questions": [
+        "Muốn đăng ký thì làm sao?",
+        "Có link không?",
+        "Đăng ký thế nào?",
+        "Cho mình xin link đăng ký",
+        "dang ky o dau vay ban",
+        "Các bước đăng ký như thế nào?",
+        "Mình muốn tham gia thì liên hệ ai",
+        "Có form đăng ký không",
+        "Làm sao để vào học",
+        "đăng kí khóa này bằng cách nào ạ"
+      ],
+      "answer": "Bạn có thể để lại lời nhắn cho MoriClass để người phụ trách trao đổi về lịch học, sự phù hợp và cách đăng ký của lớp sắp tới. Quy trình giữ chỗ và thanh toán sẽ được xác nhận rõ trước khi bạn quyết định nhé.",
+      "link": {
+        "href": "dangky.html",
+        "label": "Trang Đăng ký"
+      }
+    },
+    {
+      "id": "faq-39",
+      "status": "LINK_THAM_KHAO",
+      "topic": "xem website, Facebook, kênh thông tin",
+      "needsConfirm": false,
+      "questions": [
+        "Cho mình xem website / Facebook?",
+        "Cần tìm thông tin trên mạng ở đâu?",
+        "MoriClass có fanpage không?",
+        "Cho mình xin link Facebook của lớp",
+        "trang facebook cua lop la gi",
+        "Mình xem thêm thông tin ở kênh nào được",
+        "Có trang web chính thức không",
+        "Gửi mình link tham khảo thêm đi",
+        "Instagram của lớp là gì vậy",
+        "kênh liên hệ chính thức của lớp ở đâu"
+      ],
+      "answer": "MoriClass có trang giới thiệu trải nghiệm và kênh liên hệ. Mình có thể gửi link đã được người phụ trách xác nhận dùng để tư vấn cho đợt học hiện tại nhé."
+    },
+    {
+      "id": "faq-40",
+      "status": "SUY_LUAN",
+      "topic": "người bận chỉ đi được 1-2 buổi, học lẻ",
+      "needsConfirm": true,
+      "questions": [
+        "Em bận, chỉ đi được 1–2 buổi có học không?",
+        "Lớp có phù hợp người rất bận không?",
+        "Mình chỉ rảnh một buổi thì tham gia được không?",
+        "Có học lẻ từng buổi không",
+        "chi di duoc hai buoi co duoc khong",
+        "Lịch làm việc của mình kín, tham gia được không",
+        "Mình hay đi công tác, vắng vài buổi có sao không",
+        "Có thể đăng ký một buổi để thử không",
+        "Đi không đủ bốn buổi được không",
+        "Người đi làm bận rộn có xếp lịch được không"
+      ],
+      "answer": "Vì MoriClass là hành trình bốn buổi với nhóm tối đa sáu người, việc tham gia đều giúp trải nghiệm của bạn và cả nhóm trọn vẹn hơn. Nếu lịch của bạn chưa phù hợp, mình có thể ghi nhận để xem có khóa khác thuận tiện hơn không; hiện chưa có chính sách học lẻ đã được xác nhận."
+    },
+    {
+      "id": "faq-41",
+      "status": "XAC_NHAN",
+      "topic": "ai có thể không phù hợp với lớp",
+      "needsConfirm": false,
+      "questions": [
+        "Ai có thể không phù hợp với lớp này?",
+        "Những ai không nên đăng ký?",
+        "Lớp này không dành cho ai?",
+        "Ai thì không hợp học ở đây",
+        "khong phu hop voi nhung ai",
+        "Mình có hợp lớp không nếu chỉ muốn học phần mềm dựng?",
+        "Người muốn lấy chứng chỉ nghề có nên tham gia không",
+        "Muốn tìm công thức viral thì lớp có đúng không",
+        "Ai nên cân nhắc lại trước khi đăng ký",
+        "Có kiểu người nào đến lớp sẽ thấy lệch kỳ vọng không"
+      ],
+      "answer": "Mỗi người có lý do riêng nên mình không phân loại ai hợp hay không. Nếu bạn chỉ muốn học sâu một phần mềm quay dựng, lấy chứng chỉ nghề hoặc tìm công thức chắc chắn để viral, kiếm tiền thì MoriClass có thể chưa đúng điều bạn cần. Lớp dành cho người muốn tham gia hoạt động, trò chuyện và quan sát chính mình cùng một nhóm nhỏ."
+    },
+    {
+      "id": "faq-42",
+      "status": "CHUA_CO_THONG_TIN",
+      "topic": "độ tuổi TỐI THIỂU hoặc giới hạn tuổi cho học sinh/trẻ em, điều kiện tham dự (không phải hỏi người lớn có hợp không)",
+      "needsConfirm": true,
+      "questions": [
+        "Bao nhiêu tuổi thì được học?",
+        "Độ tuổi tối thiểu là bao nhiêu?",
+        "Em 16 tuổi đăng ký được không?",
+        "Học sinh cấp 3 có tham gia được không",
+        "tuoi toi thieu de hoc la may tuoi",
+        "Có giới hạn độ tuổi không ạ",
+        "Con mình 15 tuổi có học được không",
+        "Có điều kiện gì để được nhận vào lớp không",
+        "Lớp có tuyển chọn đầu vào không",
+        "trên bao nhiêu tuổi mới đăng ký được vậy"
+      ],
+      "answer": "Lớp mở cho cả người trẻ lẫn người trưởng thành, nhưng độ tuổi tối thiểu và điều kiện tham dự của khóa hiện tại mình chưa có xác nhận chính thức. Mình có thể ghi nhận tuổi của bạn và nhờ người phụ trách xác nhận chính xác trước khi bạn quyết định nhé."
+    },
+    {
+      "id": "faq-43",
+      "status": "CHUA_CHOT",
+      "topic": "mức cọc/phí giữ chỗ cụ thể 200k, 300k có đúng không",
+      "needsConfirm": true,
+      "questions": [
+        "Cọc 300k có hoàn không?",
+        "Nghe nói giữ chỗ 200k, đúng không?",
+        "Đặt cọc 300 nghìn có được trừ vào học phí không?",
+        "Phí giữ chỗ 300.000đ không hoàn lại đúng không",
+        "coc 300k co hoan lai khong",
+        "Mình chuyển cọc 200k rồi thì có mất không",
+        "Cọc 200 hay 300 vậy bạn",
+        "Mình nghe bảo phải cọc trước 300k mới giữ được chỗ",
+        "mất cọc nếu bỏ học đúng không",
+        "Số tiền cọc có được hoàn nếu mình đổi ý không"
+      ],
+      "answer": "Mình chưa thể xác nhận mức giữ chỗ nào đang được áp dụng, kể cả các con số bạn đã nghe, cũng như việc khoản đó có được trừ vào học phí hay hoàn lại không. Mình sẽ nhờ người phụ trách xác nhận rõ trước khi bạn chuyển bất kỳ khoản nào nhé."
+    },
+    {
+      "id": "faq-44",
+      "status": "CHUA_CHOT",
+      "topic": "buổi đầu có miễn phí không",
+      "needsConfirm": true,
+      "questions": [
+        "Buổi đầu miễn phí không?",
+        "Buổi đầu có mất tiền không?",
+        "Học buổi đầu có phải trả phí không?",
+        "Buổi 1 free đúng không bạn",
+        "buoi dau free khong",
+        "Có được học thử buổi đầu không tốn tiền không?",
+        "Buổi đầu tiên thu phí hay miễn phí",
+        "Nghe nói buổi đầu không mất tiền, đúng không",
+        "Đi buổi đầu rồi mới đóng tiền thì có được không",
+        "buổi đầu có phải đóng học phí không"
+      ],
+      "answer": "Mình chưa thể xác nhận buổi đầu có miễn phí hay không. Quy trình giữ chỗ và thanh toán của khóa đang được cập nhật, và cần người phụ trách xác nhận trước khi bạn chuyển bất kỳ khoản tiền nào nhé."
+    },
+    {
+      "id": "faq-45",
+      "status": "CHUA_CO_THONG_TIN",
+      "topic": "còn chỗ hay còn suất ưu đãi không",
+      "needsConfirm": true,
+      "questions": [
+        "Còn mấy suất 1tr5?",
+        "Còn chỗ không?",
+        "Lớp còn slot không bạn?",
+        "Giá ưu đãi còn suất nào không",
+        "con may cho trong lop",
+        "Đã có bao nhiêu người đăng ký rồi?",
+        "Lớp đã đầy chưa vậy",
+        "Suất ưu đãi còn lại là bao nhiêu",
+        "Mình có kịp đăng ký giá 1,5 triệu không",
+        "con cho khong, het cho chua"
+      ],
+      "answer": "Mình chưa có thông tin về số chỗ hay số suất ưu đãi còn lại, nên chưa dám báo bạn còn bao nhiêu. Mình có thể nhờ người phụ trách kiểm tra đúng đợt lớp bạn quan tâm và báo lại nhé."
+    },
+    {
+      "id": "faq-46",
+      "status": "CHUA_CO_THONG_TIN",
+      "topic": "lịch học tuần tới, tháng này, có lớp sắp tới không",
+      "needsConfirm": true,
+      "questions": [
+        "Lịch tuần tới?",
+        "Tuần sau có lớp không?",
+        "Tháng này có lớp nào mở không?",
+        "Cuối tuần này học được không",
+        "lich tuan toi the nao ban",
+        "Khi nào có buổi học gần nhất?",
+        "Lớp tiếp theo mở vào ngày nào",
+        "Tuần này mình đến thử được không",
+        "Có buổi nào vào thứ bảy tới không",
+        "ngày mai có lớp không"
+      ],
+      "answer": "Mình chưa có lịch học nào đã được xác nhận để báo bạn chính xác, kể cả tuần tới hay tháng này. Bạn có thể để lại thời gian thuận tiện hoặc thông tin liên hệ, MoriClass sẽ cập nhật ngay khi lịch được chốt nhé."
+    },
+    {
+      "id": "faq-47",
+      "status": "XAC_NHAN",
+      "topic": "trầm cảm, lo âu, bệnh tâm lý có học để khỏi không",
+      "needsConfirm": false,
+      "questions": [
+        "Trầm cảm học có khỏi?",
+        "Mình bị trầm cảm, học lớp này có hết không?",
+        "Em bị lo âu, học xong có đỡ không?",
+        "Lớp này có điều trị mất ngủ, hoảng loạn không",
+        "tram cam hoc co khoi khong",
+        "Mình đang rất buồn và chán, lớp giúp mình thoát ra được không?",
+        "Học ở đây có thay thuốc điều trị được không",
+        "Bị bệnh tâm lý có nên đi học lớp này không",
+        "Mình có vấn đề tâm lý nặng, lớp có chữa được không",
+        "tình trạng sức khỏe tinh thần của mình không tốt, lớp có giúp được không"
+      ],
+      "answer": "Cảm ơn bạn đã chia sẻ. MoriClass là lớp trải nghiệm nghệ thuật và khám phá bản thân, không phải dịch vụ trị liệu, nên mình không thể hứa lớp giúp bạn khỏi hay thay thế bác sĩ, chuyên gia tâm lý. Nếu bạn đang thấy nặng nề, hãy nói chuyện với người thân hoặc chuyên gia để được hỗ trợ nhé."
+    },
+    {
+      "id": "faq-48",
+      "status": "CHUA_CHOT",
+      "topic": "khóa đang tuyển tên là F2 hay M2",
+      "needsConfirm": true,
+      "questions": [
+        "Khóa đang tuyển là F2 hay M2?",
+        "M2 và F2 khác nhau thế nào?",
+        "Lớp M2 là lớp nào?",
+        "Mình thấy chỗ ghi F2 chỗ ghi M2, là sao",
+        "khoa nay ten la f2 hay m2",
+        "Tên chính thức của khóa hiện tại là gì?",
+        "Khóa mới gọi là gì vậy bạn",
+        "Giá 1tr5 áp dụng cho lớp M2 hay F2",
+        "F2 có phải khóa 4 buổi không",
+        "lớp tiếp theo của F1 tên là gì"
+      ],
+      "answer": "Tên gọi cuối cùng của khóa đang tuyển (F2 hay M2) mình chưa có xác nhận. Bạn cứ gọi là ME.MORI Class nhé; mình sẽ nhờ người phụ trách xác nhận tên gọi và thông tin của đợt học bạn quan tâm."
+    },
+    {
+      "id": "faq-49",
+      "status": "CHUA_CHOT",
+      "topic": "nội dung buổi 2, 3, 4",
+      "needsConfirm": true,
+      "questions": [
+        "Buổi 2 học gì?",
+        "Buổi 3 và buổi 4 làm gì?",
+        "Các buổi sau buổi đầu học những gì?",
+        "Bốn buổi học chi tiết như thế nào",
+        "buoi 2 3 4 hoc gi vay ban",
+        "Có phải buổi 2 học quay, buổi 3 học dựng không?",
+        "Buổi cuối có chiếu phim không",
+        "Lộ trình bốn buổi cụ thể ra sao",
+        "Sau buổi đầu thì lớp tiếp tục làm gì",
+        "có timeline từng buổi không bạn"
+      ],
+      "answer": "Buổi đầu đã có hình dung khá rõ, còn các buổi sau sẽ phát triển tự nhiên theo đặc điểm và nhu cầu thực tế của nhóm sáu người, nên chưa có timeline cố định (ví dụ buổi nào học quay, buổi nào học dựng). Nếu cần chi tiết hơn, mình nhờ người phụ trách trao đổi với bạn nhé."
+    },
+    {
+      "id": "faq-50",
+      "status": "CHUA_CHOT",
+      "topic": "bảo mật chuyện riêng trong nhóm, quyền riêng tư",
+      "needsConfirm": true,
+      "questions": [
+        "Chuyện mình kể trong lớp có được giữ kín không?",
+        "Mọi người trong nhóm có tiết lộ chuyện của mình không?",
+        "Lớp có bảo mật thông tin cá nhân không?",
+        "Mình chia sẻ chuyện riêng thì có ai biết ngoài nhóm không",
+        "bao mat chuyen rieng trong lop the nao",
+        "Có ghi hình buổi học không?",
+        "Hình ảnh của học viên có bị đăng công khai không",
+        "Có quy định giữ bí mật giữa các thành viên không",
+        "Mình kể chuyện riêng có an toàn không",
+        "quyền riêng tư của học viên được bảo vệ ra sao"
+      ],
+      "answer": "Việc chia sẻ chuyện riêng trong lớp là hoàn toàn tự nguyện. Tuy nhiên quy định về quyền riêng tư và việc sử dụng hình ảnh trong nhóm đang được hoàn thiện, nên mình chưa dám hứa bảo mật tuyệt đối. Mình sẽ nhờ người phụ trách xác nhận rõ trước khi bạn quyết định nhé."
+    },
+    {
+      "id": "faq-51",
+      "status": "CHUA_CHOT",
+      "topic": "muốn đăng ký ngay, giữ chỗ ngay",
+      "needsConfirm": true,
+      "questions": [
+        "Mình muốn đăng ký ngay",
+        "Cho mình giữ chỗ luôn được không?",
+        "Đăng ký khóa 4 buổi giúp mình với",
+        "Mình chốt đăng ký, gửi số tài khoản cho mình nhé",
+        "dang ky luon cho minh",
+        "Mình sẵn sàng tham gia rồi, làm sao tiếp theo",
+        "Cho mình xin số tài khoản để chuyển tiền",
+        "Mình muốn chuyển khoản học phí luôn",
+        "Đăng ký giá 1,5 triệu ngay bây giờ được không",
+        "tôi quyết định học rồi, các bước tiếp theo là gì"
+      ],
+      "answer": "Vui quá, cảm ơn bạn đã quan tâm! Khóa gồm bốn buổi, nhóm tối đa sáu người, học phí gốc 2.400.000đ và ưu đãi 1.500.000đ nếu đúng điều kiện của đợt tuyển. Quy trình giữ chỗ đang được hoàn thiện nên mình chưa gửi số tài khoản hay nhận khoản nào; mình sẽ nhờ người phụ trách xác nhận lịch, giá áp dụng, điều kiện thanh toán và giữ chỗ cho bạn nhé."
+    },
+    {
+      "id": "faq-52",
+      "status": "XAC_NHAN",
+      "topic": "phân vân vì phí hoặc sợ không hợp",
+      "needsConfirm": false,
+      "questions": [
+        "Mình phân vân vì học phí, không biết có đáng không",
+        "Sợ đóng tiền rồi thấy không hợp thì sao?",
+        "Mình còn đắn đo, có nên đăng ký không?",
+        "Học phí hơi cao so với mình, bạn thuyết phục giúp mình",
+        "phan van qua khong biet co hop khong",
+        "Mình lo học xong không thấy hiệu quả",
+        "Làm sao biết lớp này có hợp với mình",
+        "Mình sợ lãng phí tiền, lớp có gì đảm bảo không",
+        "Có nên thử hay thôi nhỉ",
+        "Giá khá mềm hay đắt vậy, mình chưa chắc nên đăng ký"
+      ],
+      "answer": "Mình hiểu băn khoăn của bạn, và bạn không cần quyết định vội. Lớp chỉ có tối đa sáu người, đi theo hướng trải nghiệm và đối thoại, không yêu cầu bạn kể chuyện riêng hay biết quay dựng. Về quy chế buổi thử, giữ chỗ và hủy/hoàn, MoriClass đang rà soát nên mình chưa hứa quyền lợi nào khi chưa chốt. Bạn muốn trò chuyện thêm với người phụ trách trước khi quyết định không?"
+    }
+  ]
+}
