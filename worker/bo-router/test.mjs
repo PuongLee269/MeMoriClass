@@ -265,6 +265,13 @@ test('cache Durable Object survives isolate memory clear and does not charge ano
   assert.equal(calls.length, 1);
 });
 
+test('Luna low: explicit reasoning effort, no unsupported temperature, enough reasoning budget', () => {
+  const r=buildOpenAIRequest({}, {system:'classify',user:'question',schema:{type:'object',properties:{id:{type:'string',enum:['none']}},required:['id']},maxOutputTokens:64});
+  assert.equal(r.model,'gpt-6-luna'); assert.equal(r.reasoning_effort,'low');
+  assert.equal(r.temperature,undefined); assert.equal(r.max_completion_tokens,1024);
+  assert.equal(r.response_format.json_schema.strict,true);
+});
+
 test('capWords: cắt tối đa N từ, không tính URL', () => {
   const long = Array.from({ length: 40 }, (_, i) => 'w' + i).join(' ');
   assert.equal(countWords(long + ' https://a.b/c'), 40); assert.equal(capWords(long, 29).split(' ').length, 29);

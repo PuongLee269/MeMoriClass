@@ -10,7 +10,8 @@ function strictSchema(schema) {
  return s;
 }
 export function buildOpenAIRequest(env,req) {
- return {model:env.OPENAI_MODEL||'gpt-4o-mini',temperature:req.temperature??0,max_completion_tokens:Math.max(16,req.maxOutputTokens),
+ const model=env.OPENAI_MODEL||'gpt-6-luna',luna=model.startsWith('gpt-6-luna');
+ return {model,...(luna?{reasoning_effort:env.OPENAI_REASONING_EFFORT||'low'}:{temperature:req.temperature??0}),max_completion_tokens:luna?Math.max(1024,req.maxOutputTokens):Math.max(16,req.maxOutputTokens),
  messages:[{role:'system',content:req.system},{role:'user',content:req.user}],
  response_format:{type:'json_schema',json_schema:{name:'bo_faq',strict:true,schema:strictSchema(req.schema)}}};
 }
@@ -28,4 +29,4 @@ export async function generate(env,req) {
  }catch(e){return {ok:false,status:e?.name==='AbortError'?504:502};}finally{clearTimeout(timer);}
 }
 
-export const providerIdentity = env => 'openai:' + (env.OPENAI_MODEL || 'gpt-4o-mini');
+export const providerIdentity = env => 'openai:' + (env.OPENAI_MODEL || 'gpt-6-luna') + ':' + (env.OPENAI_REASONING_EFFORT || 'low');

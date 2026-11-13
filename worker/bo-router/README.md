@@ -27,7 +27,8 @@ Chatbot Bọ định tuyến AI-TRƯỚC: khi `ai.enabled` bật, mọi câu h�
 | Biến | Mặc định | Ý nghĩa |
 |---|---|---|
 | `OPENAI_API_KEY` | (secret, bắt buộc) | Khóa OpenAI. CHỈ là Worker secret (`npx wrangler secret put OPENAI_API_KEY`); gửi tới api.openai.com bằng header Authorization: Bearer, không nằm trong URL, repo, trang hay log. Thiếu khóa: Worker trả 503 `{ "id": null }` |
-| `OPENAI_MODEL` | `gpt-4o-mini` | Model nhỏ cho hai bước FAQ; đổi bằng biến này |
+| `OPENAI_MODEL` | `gpt-6-luna` | Model nhỏ cho hai bước FAQ; đổi bằng biến này |
+| `OPENAI_REASONING_EFFORT` | `low` | Mức suy luận Luna theo lựa chọn chủ dự án; nằm trong cache identity |
 | `OPENAI_TIMEOUT_MS` | `5000` | Mỗi bước chờ OpenAI; quá hạn trả 504 |
 | `AI_TOTAL_TIMEOUT_MS` | `7500` | Tổng thời gian hai bước (trang chờ Worker tối đa 8000 ms) |
 | `OPENAI_BASE_URL` | `https://api.openai.com` | Chỉ cho đổi sang localhost/127.0.0.1 để mock, không gửi khóa tới host tùy ý |
@@ -38,7 +39,7 @@ Chatbot Bọ định tuyến AI-TRƯỚC: khi `ai.enabled` bật, mọi câu h�
 | `DEV` | không đặt | `1` = cho thêm `http://localhost[:cổng]` (chỉ để thử cục bộ) |
 | `DEBUG_USAGE` | không đặt | `1` = thêm header `x-bo-tokens` (bước 1) và `x-bo-tokens2` (bước 2): `vào,ra,suy nghĩ` (chỉ khi test) |
 
-Yêu cầu OpenAI: Chat Completions, messages tách system/user, temperature thấp, max_completion_tokens theo từng bước, response_format JSON Schema strict. Schema bổ sung additionalProperties:false, trường tùy chọn được đổi thành nullable. Bước 1 enum FAQ/navigation/none; bước 2 kind answer/unknown/offtopic và answer nullable. Worker giữ bộ kiểm câu tự trả lời tối đa 60 chữ. Refusal, thiếu nội dung, đầu ra bị cắt và lỗi HTTP được coi là lỗi nhà cung cấp.
+Yêu cầu OpenAI: Chat Completions, messages tách system/user, Luna dùng reasoning_effort=low, bỏ temperature; max_completion_tokens tối thiểu 1024 gồm token suy luận, không phải giới hạn chữ hiển thị. Model cũ dùng temperature thấp; ngân sách token theo từng bước, response_format JSON Schema strict. Schema bổ sung additionalProperties:false, trường tùy chọn được đổi thành nullable. Bước 1 enum FAQ/navigation/none; bước 2 kind answer/unknown/offtopic và answer nullable. Worker giữ bộ kiểm câu tự trả lời tối đa 60 chữ. Refusal, thiếu nội dung, đầu ra bị cắt và lỗi HTTP được coi là lỗi nhà cung cấp.
 
 Mã trạng thái: 200 `{id}` (id có thể null); 429 hết hạn mức (phút/ngày/toàn cục); 502 OpenAI lỗi; 503 OpenAI 429 hoặc thiếu khóa; 504 timeout; 4xx khác là yêu cầu sai. Trang coi mọi mã khác 200 là "AI không dùng được".
 
@@ -82,5 +83,5 @@ Câu lặp được chuẩn hóa (chữ thường, bỏ dấu câu, gộp khoả
 - LIVE_WORKER_URL trỏ tới HTTPS Worker; LIVE_ORIGIN phải thuộc ALLOWED_ORIGINS. Ví dụ: cấp LIVE_WORKER_URL, LIVE_ORIGIN=http://127.0.0.1:8766, LIVE_GROUPS=A,S,B,C,D,E,H, LIVE_SKIP51=1 qua môi trường rồi chạy node worker/bo-router/live-test.mjs. Cờ chọn nhóm làm script báo CHƯA ĐỦ tổng thể; kết luận tổng hợp chỉ trong báo cáo khi đã chạy riêng quota/timeout/boundary/browser.
 - Script đánh giá qua mạng không thể đếm lệnh gọi OpenAI ở server từ client. Token header và cache hit là bằng chứng; câu dài còn được kiểm mock đảm bảo 0 lời gọi provider.
 - Nạp OPENAI_API_KEY qua môi trường trước khi chạy local; load-private-env.mjs không tự đọc khóa từ file. Các wrapper vận hành do chủ dự án cấp file khóa nằm riêng env/ bị gitignore, không nằm trong source hay kết quả.
-- Bản thử dùng gpt-4o-mini theo OPENAI_MODEL. Trang giá OpenAI ngày 2026-11-13 đánh dấu model Deprecated; không tự đổi model sau khi đo. Trước dùng thật cần chọn model còn hỗ trợ và kiểm lại.
+- Chủ dự án đã chọn GPT-6 Luna mức suy luận low (không có model ID riêng Luna Light): OPENAI_MODEL=gpt-6-luna, OPENAI_REASONING_EFFORT=low. Cache phân biệt cả model và effort. Kết quả gpt-4o-mini trong báo cáo cũ chỉ là lịch sử, không đại diện bản Luna. Tài liệu: https://developers.openai.com/api/docs/models/gpt-6-luna .
 - Xem docs/BO_FAQ_OPENAI_TEST_REPORT.md cho số liệu thật, giới hạn và trạng thái dọn Worker. Nhắc rotate khóa OpenAI và token Cloudflare sau khi kết thúc test.

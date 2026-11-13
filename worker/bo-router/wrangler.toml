@@ -3,7 +3,8 @@ main = "index.js"
 compatibility_date = "2026-11-11"
 
 [vars]
-OPENAI_MODEL = "gpt-4o-mini"   # model nhỏ; đổi ở đây, không cần sửa code
+OPENAI_REASONING_EFFORT = "low"
+OPENAI_MODEL = "gpt-6-luna"   # model nhỏ; đổi ở đây, không cần sửa code
 OPENAI_TIMEOUT_MS = "5000"               # mỗi bước gọi OpenAI chờ tối đa (bước 1 chọn câu có sẵn, bước 2 tự trả lời)
 AI_TOTAL_TIMEOUT_MS = "7500"             # tổng hai bước; trang chờ Worker tối đa 8000 ms (ai.timeoutMs)
 LIMITER = "12"            # câu hỏi/phút/IP

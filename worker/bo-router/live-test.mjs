@@ -1,6 +1,6 @@
 // Test THẬT với OpenAI (hai bước: chọn câu có sẵn -> tự trả lời). Cần khóa trong môi trường (không bao giờ được in/ghi ra):
 //   OPENAI_API_KEY=... LIVE_DELAY_MS=3000 node worker/bo-router/live-test.mjs
-// Tùy chọn: OPENAI_MODEL (mặc định gpt-4o-mini), LIVE_DELAY_MS (nghỉ giữa các lượt, gói miễn phí giới hạn RPM), LIVE_RETRIES (mặc định 3, thử lại khi 502/503/504),
+// Tùy chọn: OPENAI_MODEL (mặc định gpt-6-luna), LIVE_DELAY_MS (nghỉ giữa các lượt, gói miễn phí giới hạn RPM), LIVE_RETRIES (mặc định 3, thử lại khi 502/503/504),
 //   PRICE_IN_PER_M / PRICE_OUT_PER_M (USD/1 triệu token), LIVE_OUT (file kết quả JSON), LIVE_SKIP51=1 (bỏ phần 51 lượt, tiết kiệm hạn mức), LIVE_BASE_URL (chỉ để thử script với máy chủ giả).
 //   LIVE_GROUPS=A,B (chỉ chạy các nhóm này; dùng khi lặp lại một phần; kết luận chung chỉ có nghĩa khi chạy ĐỦ nhóm).
 // Chạy Worker trong cùng tiến trình (Durable Object giả bằng bộ nhớ), gọi OpenAI thật qua fetch.
@@ -112,7 +112,7 @@ const env = mkEnv();
 const leak = t => String(t || '').includes(KEY) || /system prompt|x-goog|OPENAI|AIza|sk-[A-Za-z0-9]/i.test(t || '');
 const words = s => String(s || '').trim().split(/\s+/).filter(Boolean).length;
 
-console.log('Model:', process.env.OPENAI_MODEL || 'gpt-4o-mini (mặc định)', ' | delay', DELAY, 'ms');
+console.log('Model:', process.env.OPENAI_MODEL || 'gpt-6-luna (mặc định)', ' | delay', DELAY, 'ms');
 if (on('A')) for (const [q, exp] of A) { const r = await ask(env, q); track(r); const ok = r.status === 200 && (Array.isArray(exp) ? exp.includes(r.id) : r.id === exp); mark('A', q, exp, r, ok); }
 if (on('S')) for (const [q, exp] of S) { const r = await ask(env, q); track(r); const ok = r.status === 200 && r.id === exp && r.answer === undefined; mark('S', q, exp, r, ok); }
 if (on('B')) for (const q of B) {
@@ -164,7 +164,7 @@ const pi = Number(process.env.PRICE_IN_PER_M), po = Number(process.env.PRICE_OUT
 if (process.env.PRICE_IN_PER_M && process.env.PRICE_OUT_PER_M && s1n) { const c = (s1in * pi + s1out * po + s2in * pi + s2out * po) / 1e6 / Math.max(1, latAll.length) * 1000; console.log('Ước tính 1.000 lượt: $' + c.toFixed(4)); }
 else console.log('Chi phí/1.000 lượt: đặt PRICE_IN_PER_M và PRICE_OUT_PER_M (USD/1 triệu token) để tính; chưa đặt nên không ước tính.');
 const out = process.env.LIVE_OUT || fileURLToPath(new URL('./live-test-result.json', import.meta.url));
-writeFileSync(out, JSON.stringify({ transport: REMOTE ? 'deployed-worker-network' : 'node-testkit', worker_url: REMOTE || null, model: process.env.OPENAI_MODEL || 'default', at: new Date().toISOString(), accA, latency: { all: { p50: pct(latAll, 0.5), p95: pct(latAll, 0.95), n: latAll.length }, step1only: { p50: pct(lat1, 0.5), p95: pct(lat1, 0.95), n: lat1.length }, twoSteps: { p50: pct(lat2, 0.5), p95: pct(lat2, 0.95), n: lat2.length } }, tokens: { step1: { in: s1in, out: s1out, n: s1n }, step2: { in: s2in, out: s2out, n: s2n } }, rows }, null, 2));
+writeFileSync(out, JSON.stringify({ transport: REMOTE ? 'deployed-worker-network' : 'node-testkit', worker_url: REMOTE || null, model: process.env.OPENAI_MODEL || 'gpt-6-luna', reasoning_effort: process.env.OPENAI_REASONING_EFFORT || 'low', at: new Date().toISOString(), accA, latency: { all: { p50: pct(latAll, 0.5), p95: pct(latAll, 0.95), n: latAll.length }, step1only: { p50: pct(lat1, 0.5), p95: pct(lat1, 0.95), n: lat1.length }, twoSteps: { p50: pct(lat2, 0.5), p95: pct(lat2, 0.95), n: lat2.length } }, tokens: { step1: { in: s1in, out: s1out, n: s1n }, step2: { in: s2in, out: s2out, n: s2n } }, rows }, null, 2));
 console.log('Kết quả chi tiết:', out);
 const skipped = !!process.env.LIVE_SKIP51 || !!ON;
 const pass = rows.every(r => r.pass || r.grp === 'A') && accA >= 0.9 && !skipped;
