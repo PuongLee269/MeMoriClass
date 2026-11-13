@@ -45,5 +45,5 @@ Giá chính thức ngày 2026-11-13: gpt-4o-mini $0.15 vào/$0.60 ra/$0.075 cach
 
 - Token Cloudflare được tạo/roll theo xác nhận của chủ dự án, chỉ Workers Scripts Write, hạn 7 ngày. File bí mật ở env/ bị gitignore; mã loader chỉ nhận biến môi trường. Secret OpenAI được đưa qua stdin vào Worker secret; không đưa vào log/code/ảnh.
 - Cần rotate OpenAI key và Cloudflare token sau khi kết thúc test. Không tự thu hồi khóa tài khoản khác của chủ dự án.
-- Chưa quyết định giữ/xóa Worker thử: đã hỏi chủ dự án; chưa xóa khi chưa có lựa chọn. Không kết luận ĐẠT toàn bộ công việc cho tới khi xử lý phần giữ/xóa và duyệt tay.
-- Kết luận hiện tại: bộ tiêu chí kỹ thuật thử đã đạt ngưỡng; **CHƯA ĐẠT toàn bộ bàn giao**, còn quyết định vòng đời Worker thử và duyệt tay chủ lớp. Không merge main, không bật moriclass.com.
+- Chủ dự án đã chọn xóa Worker thử sau báo cáo. Đã xóa bo-router-test, bo-router-eval, bo-router-quota-test: API DELETE đều 200/success=true; xác minh settings cả ba trả 404. Danh sách namespace DO không còn mục gắn với ba script thử. Các URL ở trên là lịch sử kiểm thử, hiện không còn endpoint hoạt động.
+- Kết luận hiện tại: bộ tiêu chí kỹ thuật thử đã đạt ngưỡng; **CHƯA ĐẠT toàn bộ bàn giao**, đã dọn Worker thử; còn duyệt tay chủ lớp. Không merge main, không bật moriclass.com.
