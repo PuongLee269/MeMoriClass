@@ -27,9 +27,9 @@ Giá chính thức ngày 2026-11-13: gpt-4o-mini $0.15 vào/$0.60 ra/$0.075 cach
 
 ## Triển khai thử và bằng chứng
 
-- https://bo-router-test.phuongfilmmaker.workers.dev — cấu hình thường 50/ngày/IP, 12/phút; DO SQLite thật; timeout đã khôi phục.
-- https://bo-router-eval.phuongfilmmaker.workers.dev — 200/ngày/IP, 1000/phút và DEBUG_USAGE chỉ cho bộ chất lượng. Không dùng cấu hình eval ở production.
-- https://bo-router-quota-test.phuongfilmmaker.workers.dev — 50/ngày/IP, phút nới 1000 để test 51 nhanh. Không giả header IP client; Cloudflare cấp IP thật.
+- https://bo-router-test.ACCOUNT.workers.dev — cấu hình thường 50/ngày/IP, 12/phút; DO SQLite thật; timeout đã khôi phục.
+- https://bo-router-eval.ACCOUNT.workers.dev — 200/ngày/IP, 1000/phút và DEBUG_USAGE chỉ cho bộ chất lượng. Không dùng cấu hình eval ở production.
+- https://bo-router-quota-test.ACCOUNT.workers.dev — 50/ngày/IP, phút nới 1000 để test 51 nhanh. Không giả header IP client; Cloudflare cấp IP thật.
 - ALLOWED_ORIGINS chỉ 127.0.0.1:8766 và localhost:8766. Không moriclass.com, không wildcard; bo.json production vẫn ai.enabled=false.
 - Lượt quota đầu in log 10/20/30/40/50 HTTP 200 và 51 HTTP 429; script cũ lỗi import SAU khi gửi đủ 51 nên không giữ file từng request. Đã kiểm lại fallback sau quota thành công. network-check.mjs đã sửa ghi file sau mỗi lượt cho lần chạy sau; không ngụy tạo dòng dữ liệu bị mất.
 - Live harness A/S/B/C/D/E/H báo CHƯA ĐỦ do cố ý tách bài quota/timeout; báo cáo này tổng hợp các phase riêng. Kết quả cuối đầy đủ từng câu/token từng bước trong BO_FAQ_OPENAI_NETWORK_RESULTS.json.

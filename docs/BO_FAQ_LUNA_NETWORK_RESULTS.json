@@ -1,6 +1,6 @@
 {
   "transport": "deployed-worker-network",
-  "worker_url": "https://bo-router-eval.phuongfilmmaker.workers.dev",
+  "worker_url": "https://bo-router-eval.ACCOUNT.workers.dev",
   "model": "gpt-6-luna",
   "reasoning_effort": "low",
   "at": "2026-11-13T17:52:52.255Z",

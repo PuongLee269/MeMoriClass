@@ -1,6 +1,6 @@
 {
   "quota": {
-    "url": "https://bo-router-quota-test.phuongfilmmaker.workers.dev",
+    "url": "https://bo-router-quota-test.ACCOUNT.workers.dev",
     "origin": "http://127.0.0.1:8766",
     "mode": "quota",
     "at": "2026-11-13T17:55:15.031Z",
@@ -524,7 +524,7 @@
     "fallback": "faq-23"
   },
   "timeout": {
-    "url": "https://bo-router-test.phuongfilmmaker.workers.dev",
+    "url": "https://bo-router-test.ACCOUNT.workers.dev",
     "origin": "http://127.0.0.1:8766",
     "mode": "timeout",
     "at": "2026-11-13T17:54:04.862Z",
@@ -542,7 +542,7 @@
     "pass": true
   },
   "boundaries": {
-    "url": "https://bo-router-eval.phuongfilmmaker.workers.dev",
+    "url": "https://bo-router-eval.ACCOUNT.workers.dev",
     "origin": "http://127.0.0.1:8766",
     "mode": "boundary",
     "at": "2026-11-13T17:50:53.595Z",

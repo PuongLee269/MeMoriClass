@@ -34,7 +34,7 @@ Chi phí bảo thủ $0.5782/1.000 lượt theo tỷ lệ hai bước của bộ
 ## Triển khai, bằng chứng và kết luận
 
 - Đã deploy bo-router-eval (200/ngày/IP để đánh giá >60 câu), bo-router-quota-test (50/ngày/IP, nới phút để test nhanh), bo-router-test (timeout1ms). Cả ba có DO thật; không dùng cấu hình đánh giá cho production.
-- URL lịch sử: https://bo-router-eval.phuongfilmmaker.workers.dev ; https://bo-router-quota-test.phuongfilmmaker.workers.dev ; https://bo-router-test.phuongfilmmaker.workers.dev .
+- URL lịch sử: https://bo-router-eval.ACCOUNT.workers.dev ; https://bo-router-quota-test.ACCOUNT.workers.dev ; https://bo-router-test.ACCOUNT.workers.dev .
 - Đã xóa lại cả ba theo chỉ đạo giữ dọn sau test: DELETE 200/success, settings 404, không còn namespace DO gắn script thử. Không có endpoint thử hoạt động sau bàn giao.
 - Kết quả script live-test vẫn báo CHƯA ĐỦ vì cố ý tách nhóm quota/timeout; báo cáo này tổng hợp bộ chất lượng với network-check qua các Worker riêng. Không hạ ngưỡng hoặc đổi expected.
 - Bằng chứng: BO_FAQ_LUNA_NETWORK_RESULTS.json, BO_FAQ_LUNA_CONTROLS.json, bo-luna-console-check.json, bo-luna-proof.png. Dữ liệu nhạy cảm không nằm trong các file này.

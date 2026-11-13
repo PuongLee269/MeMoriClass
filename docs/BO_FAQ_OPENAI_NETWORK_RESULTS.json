@@ -1,6 +1,6 @@
 {
   "transport": "deployed-worker-network",
-  "worker_url": "https://bo-router-eval.phuongfilmmaker.workers.dev",
+  "worker_url": "https://bo-router-eval.ACCOUNT.workers.dev",
   "model": "default",
   "at": "2026-11-13T07:55:55.877Z",
   "accA": 0.9333333333333333,
