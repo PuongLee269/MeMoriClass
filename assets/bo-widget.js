@@ -191,20 +191,24 @@
       if (!window.BoMatcher) await loadScript(BASE + 'bo-matcher.js');
       if (!window.MemoriContent) await loadScript(BASE + 'content-loader.js');
       if (!window.BoAI) { try { await loadScript(BASE + 'bo-ai.js'); } catch (e) {} }
-      var C = window.MemoriContent, list = null;
+      var C = window.MemoriContent, list = null, faqList = null;
       if (C) {
         try {
-          var res = await Promise.all([C.prefetch('bo', 4000), C.prefetch('bo-replies', 10000)]);
+          var res = await Promise.all([C.prefetch('bo', 4000), C.prefetch('bo-replies', 10000), C.prefetch('bo-faq', 10000)]);
           var t = res[0];
           if (t && typeof t === 'object') Object.keys(TEXT).forEach(function (k) { if (typeof t[k] === 'string' && t[k].trim()) TEXT[k] = C.clean(t[k], 600); });
           if (t && window.BoAI) BoAI.configure(t.ai, C.url);
           if (res[1] && Array.isArray(res[1].replies)) list = res[1].replies;
+          if (res[2] && Array.isArray(res[2].faqs)) faqList = res[2].faqs;
         } catch (e) {}
       }
       var entries = window.BoMatcher ? BoMatcher.clean(list || [], C && C.url, 5000) : [];
       if (!entries.length && window.BoMatcher) entries = BoMatcher.clean(DEFAULT_REPLIES, C && C.url, 100);
-      engine = window.BoMatcher ? BoMatcher.build(entries) : null;
+      var faqs = window.BoMatcher ? BoMatcher.cleanFaq(faqList || [], C && C.url, 500) : [];
+      /* Dự phòng từ khóa hai tầng: FAQ (mỗi câu hỏi mẫu là một khóa) trước, nhóm cũ sau. */
+      engine = window.BoMatcher ? BoMatcher.buildAll(faqs, entries) : null;
       entries.forEach(function (entry) { repliesById[entry.id] = entry; });
+      faqs.forEach(function (f) { repliesById[f.id] = { id: f.id, reply: f.answer, link: f.link }; });
       applyText();
       return engine;
     })().catch(function () { return null; });
@@ -256,9 +260,10 @@
         wait = addWait();
         var res = await ai.route(q, function (k) { return Object.prototype.hasOwnProperty.call(repliesById, k); });
         if (wait.parentNode) wait.remove(); log.setAttribute('aria-busy', 'false');
-        if (res.ok) {
+        if (res.ok) {   /* thứ tự: câu có sẵn (FAQ/nhóm) -> câu AI tự trả lời -> câu dự phòng */
           var entry = res.id && repliesById[res.id];
-          r = entry ? { reply: entry.reply, target: entry.link && entry.link.href, label: entry.link && entry.link.label, card: !!entry.card } : { reply: TEXT.fallback, target: null, label: null, card: false };
+          r = entry ? { reply: entry.reply, target: entry.link && entry.link.href, label: entry.link && entry.link.label, card: !!entry.card }
+            : { reply: res.answer || TEXT.fallback, target: null, label: null, card: false };
         }
       }
       if (!r) r = eng && eng.find(q) ? eng.reply(q, TEXT.fallback) : null;

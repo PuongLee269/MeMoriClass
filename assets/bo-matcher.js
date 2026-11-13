@@ -154,6 +154,49 @@
     return out;
   }
 
+
+  /* Lọc danh sách FAQ thô (assets/content/bo-faq.json) -> {id, questions[], answer, link?, needsConfirm?}. Mỗi mục cần id, >= 1 câu hỏi, câu trả lời. */
+  function cleanFaq(list, urlFn, max) {
+    var seen = Object.create(null), out = [];
+    if (!Array.isArray(list)) return out;
+    max = max || 500;
+    for (var i = 0; i < list.length && out.length < max; i++) {
+      var e = list[i];
+      if (!e || typeof e.id !== 'string' || !e.id || seen[e.id] || typeof e.answer !== 'string' || !e.answer.trim() || !Array.isArray(e.questions)) continue;
+      var qs = e.questions.filter(function (k) { return typeof k === 'string' && k.trim() && k.length <= 200; }).slice(0, 60);
+      if (!qs.length) continue;
+      seen[e.id] = 1;
+      var o = { id: e.id.slice(0, 60), questions: qs, answer: e.answer };
+      if (e.needsConfirm === true) o.needsConfirm = true;
+      if (e.link && typeof e.link === 'object' && typeof e.link.label === 'string' && e.link.label.trim()) {
+        var href = urlFn ? urlFn(e.link.href, '', { hash: true }) : e.link.href;
+        if (href) o.link = { href: href, label: e.link.label };
+      }
+      out.push(o);
+    }
+    return out;
+  }
+
+  /* FAQ -> mục cho bộ từ khóa: mỗi CÂU HỎI là một khóa (khóa dài > 80 ký tự bị bỏ, như mọi khóa). Đặt FAQ TRƯỚC nhóm cũ để hòa điểm thì FAQ thắng. */
+  function faqEntries(faqs) {
+    return (faqs || []).map(function (f) {
+      var o = { id: f.id, keys: f.questions.filter(function (q) { return q.length <= 80; }), reply: f.answer, faq: true };
+      if (f.link) o.link = f.link;
+      return o;
+    }).filter(function (o) { return o.keys.length; });
+  }
+
+  /* Bộ so khớp dự phòng của trang: HAI TẦNG. Tầng 1 = FAQ (mỗi câu hỏi mẫu là một khóa, nên chỉ khớp khi câu người dùng chứa nguyên một câu hỏi mẫu, rất cụ thể);
+     khớp được thì dùng ngay. Tầng 2 = các nhóm cũ (dẫn đường/xã giao + khóa ngắn). Nhờ vậy FAQ luôn được ưu tiên hơn nhóm cũ. API giống build(): find / reply. */
+  function buildAll(faqs, replies) {
+    var fi = build(faqEntries(faqs)), ri = build(replies || []);
+    return {
+      find: function (q, explain) { return fi.find(q, explain) || ri.find(q, explain); },
+      reply: function (q, fb) { return fi.find(q) ? fi.reply(q, fb) : ri.reply(q, fb); },
+      size: fi.size + ri.size, keys: fi.keys + ri.keys, buildMs: fi.buildMs + ri.buildMs
+    };
+  }
+
   /* Cảnh báo cho admin: mục có BỘ KHÓA giống hệt nhau (sau khi bỏ dấu) và khóa nằm ở nhiều mục. */
   function duplicates(replies) {
     var bySet = new Map(), byKey = new Map(), identical = [], shared = [];
@@ -169,5 +212,5 @@
     return { identical: identical, shared: shared };
   }
 
-  return { plain: plain, build: build, findLinear: findLinear, clean: clean, duplicates: duplicates, isPagePill: isPagePill, PILL_RE: PILL_RE };
+  return { plain: plain, build: build, findLinear: findLinear, clean: clean, cleanFaq: cleanFaq, faqEntries: faqEntries, buildAll: buildAll, duplicates: duplicates, isPagePill: isPagePill, PILL_RE: PILL_RE };
 });

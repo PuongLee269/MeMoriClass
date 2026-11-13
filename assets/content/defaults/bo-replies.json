@@ -154,7 +154,7 @@
         "vao hoc",
         "bat dau hoc"
       ],
-      "reply": "Bạn mở trang Đăng ký lớp F2, điền thông tin rồi đóng dấu xác nhận là xong. Cần hỏi thêm thì gửi mail tới hello@memori.class nhé.",
+      "reply": "Bạn có thể để lại lời nhắn cho MoriClass để người phụ trách trao đổi về lịch học, sự phù hợp và cách đăng ký của lớp sắp tới. Quy trình giữ chỗ và thanh toán sẽ được xác nhận rõ trước khi bạn quyết định nhé.",
       "link": {
         "href": "dangky.html",
         "label": "Đăng ký lớp F2"
@@ -232,7 +232,7 @@
         "chi phi hoc",
         "phi tham gia"
       ],
-      "reply": "Bọ chưa thấy học phí trên trang này. Bạn gửi mail tới hello@memori.class để được báo chính xác nhé.",
+      "reply": "Học phí gốc của khóa bốn buổi là 2.400.000đ. MoriClass cũng đã thông tin về mức ưu đãi 1.500.000đ dành cho người đăng ký sớm/giữ chỗ sớm. Điều kiện áp dụng cho đợt lớp bạn quan tâm cần được xác nhận trước khi bạn thanh toán nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -259,7 +259,7 @@
         "thoi gian hoc",
         "ngay bat dau"
       ],
-      "reply": "Trang chưa đăng lịch khai giảng cụ thể. Bạn nhắn hello@memori.class để hỏi lịch workshop mới nhất nhé.",
+      "reply": "Mình chưa có lịch khai giảng đã được xác nhận để báo bạn chính xác. Bạn có thể để lại thời gian thuận tiện hoặc thông tin liên hệ, MoriClass sẽ cập nhật lịch ngay khi chốt nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Hỏi lịch"
@@ -283,7 +283,7 @@
         "thoi gian khoa hoc",
         "khoa hoc dai bao lau"
       ],
-      "reply": "Các lớp được thiết kế ngắn gọn, mỗi buổi tập trung vào một kỹ năng rõ ràng. Số buổi cụ thể bạn hỏi qua hello@memori.class nhé.",
+      "reply": "Khóa đang được giới thiệu gồm bốn buổi, mỗi buổi khoảng ba giờ, tức khoảng mười hai giờ trải nghiệm trực tiếp.",
       "link": {
         "href": "home-backup.html#method",
         "label": "Xem phương pháp"
@@ -310,7 +310,7 @@
         "hoc truc tiep",
         "online hay offline"
       ],
-      "reply": "Bọ chưa có thông tin địa điểm hay hình thức học (online/offline) trên trang. Bạn hỏi giúp qua hello@memori.class nhé.",
+      "reply": "MoriClass được xây dựng cho hình thức học trực tiếp tại Hà Nội. Địa chỉ chính xác của đợt học đang tuyển sẽ được người phụ trách xác nhận trước khi bạn đăng ký chính thức nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -362,7 +362,7 @@
         "sau lop biet lam gi",
         "chuong trinh hoc gi"
       ],
-      "reply": "Bạn học tư duy cinematic, cách kể chuyện, quay dựng và tạo cảm xúc bằng hình ảnh, qua bài tập thật có phản hồi.",
+      "reply": "MoriClass mong bạn hiểu mình hơn, tự tin hơn và có thêm góc nhìn để đưa ra những quyết định sáng suốt. Lớp không hứa tìm sẵn câu trả lời cho cuộc đời bạn; tụi mình tạo ra một không gian để bạn tự khám phá qua trải nghiệm, quan sát và đối thoại.",
       "link": {
         "href": "home-backup.html#features",
         "label": "Xem nội dung"
@@ -420,7 +420,7 @@
         "phu hop voi ai",
         "ai nen hoc"
       ],
-      "reply": "Lớp dành cho creator muốn có tư duy cinematic. Khi đăng ký, bạn chọn chủ đề hợp với mục tiêu và kinh nghiệm hiện tại của mình.",
+      "reply": "Được nhé. MoriClass không yêu cầu bạn phải biết quay dựng chuyên nghiệp trước. Ở những phần thực hành hình ảnh, người học có thể bắt đầu từ công cụ quen thuộc như điện thoại, còn trọng tâm là cách quan sát và kể câu chuyện của mình.",
       "link": {
         "href": "home-backup.html#method",
         "label": "Xem phương pháp"
@@ -443,7 +443,7 @@
         "nhan nhan xet",
         "duoc gop y khong"
       ],
-      "reply": "Bạn làm bài tập tại lớp, quay dựng theo brief và nhận phản hồi để cải thiện từng phiên bản sản phẩm.",
+      "reply": "Cốt lõi là trải nghiệm và quan sát. Mình chơi, hành động, hợp tác, rồi thử quan sát xem trong lúc đó mình đang nghĩ gì, cảm thấy gì. Người dẫn chủ yếu đặt câu hỏi và cùng mọi người trò chuyện, thay vì giảng bài liên tục.",
       "link": {
         "href": "home-backup.html#features",
         "label": "Thực hành thật"
@@ -617,7 +617,7 @@
         "tac pham creator",
         "hoc vien lam duoc gi"
       ],
-      "reply": "Mục \"Dự án học viên\" nằm ở cộng đồng ME.MORI. Bạn cũng có thể xem video giới thiệu ở đầu trang nhé.",
+      "reply": "Đã có những tác phẩm cá nhân từ lớp F1. Vì mỗi câu chuyện gắn với trải nghiệm riêng của học viên, MoriClass sẽ chỉ giới thiệu những tác phẩm được phép chia sẻ. Bạn có thể để lại lời nhắn để được gửi các ví dụ phù hợp nhé.",
       "link": {
         "href": "home-backup.html#workshops",
         "label": "Về đầu trang"
@@ -697,7 +697,7 @@
         "mentor la ai",
         "nguoi huong dan"
       ],
-      "reply": "Bọ chưa thấy thông tin giảng viên trên trang. Bạn hỏi qua hello@memori.class để biết ai đồng hành cùng lớp nhé.",
+      "reply": "Người sáng lập và dẫn dắt MoriClass được giới thiệu là Lê Hồng Phương, làm công việc đạo diễn và kể chuyện bằng hình ảnh, có kinh nghiệm với phim ngắn và video thương hiệu. Phong cách lớp tập trung vào gợi mở bằng câu hỏi và thực hành, thay vì giảng một chiều.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -723,7 +723,7 @@
         "may quay nao",
         "thiet bi hoc"
       ],
-      "reply": "Trang chưa nêu yêu cầu thiết bị. Bạn cứ hỏi hello@memori.class xem cần chuẩn bị gì cho workshop mình chọn nhé.",
+      "reply": "Bạn không nhất thiết cần có nền tảng quay dựng trước, nhưng danh sách thiết bị cần mang sẽ phụ thuộc hoạt động của khóa cụ thể. Mình xin kiểm tra với người phụ trách trước khi hướng dẫn bạn chuẩn bị nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -770,7 +770,7 @@
         "hoan hoc phi",
         "chinh sach bao luu"
       ],
-      "reply": "Bọ chưa có chính sách hoàn tiền hay bảo lưu trên trang. Bạn hỏi trực tiếp qua hello@memori.class nhé.",
+      "reply": "Các điều kiện hủy, hoàn học phí, bảo lưu và học bù cần được xác nhận cho từng khóa trước khi thanh toán. MoriClass sẽ gửi bạn chính sách rõ ràng để bạn cân nhắc, chứ mình không tự hứa quyền hoàn/học bù khi chưa có quy định nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -796,7 +796,7 @@
         "tuoi nao hoc duoc",
         "lop toi da may nguoi"
       ],
-      "reply": "Bọ chưa có thông tin về độ tuổi hay sĩ số lớp. Bạn nhắn hello@memori.class để được giải đáp nhé.",
+      "reply": "Mỗi lớp có tối đa sáu học viên. Lớp mở cho cả người trẻ lẫn người trưởng thành; độ tuổi tối thiểu của khóa hiện tại mình chưa có xác nhận chính thức, mình sẽ nhờ người phụ trách xác nhận nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -891,7 +891,7 @@
         "khong gian me mori",
         "memori class"
       ],
-      "reply": "ME.MORI Class là không gian học dành cho creator, kết hợp điện ảnh, storytelling và kỹ năng làm nội dung.",
+      "reply": "MoriClass là một lớp học trải nghiệm nghệ thuật và kể chuyện bằng hình ảnh, nhưng điều thú vị nhất không chỉ nằm ở việc làm ra một tác phẩm. Qua trò chơi, trò chuyện và các hoạt động sáng tạo, mỗi người có dịp quan sát suy nghĩ, cảm xúc và những lựa chọn của chính mình.",
       "link": {
         "href": "home-backup.html#workshops",
         "label": "Giới thiệu"
@@ -1066,7 +1066,7 @@
         "có buổi thử",
         "co buoi thu"
       ],
-      "reply": "Bọ chưa có thông tin về buổi học thử. Bạn nhắn hello@memori.class để được báo chính xác nhé.",
+      "reply": "Trước đây MoriClass từng có hình thức trải nghiệm buổi đầu rồi mới quyết định đóng học phí nếu học tiếp. Hiện lớp đang hoàn thiện lại cách đăng ký để giữ sự ổn định cho nhóm sáu người trong trọn bốn buổi. Mình sẽ nhờ người phụ trách xác nhận quyền dừng và chi phí cụ thể của đợt này trước khi bạn đăng ký nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -1115,7 +1115,7 @@
         "đồ án cuối khóa",
         "do an cuoi khoa"
       ],
-      "reply": "Bọ chưa có thông tin về dự án cuối khóa. Bạn hỏi qua hello@memori.class, hoặc xem lộ trình lớp F2 nhé.",
+      "reply": "MoriClass có hướng thực hành kể chuyện bằng hình ảnh và video, và một tài liệu chương trình trước đây từng đặt mục tiêu video cá nhân ngắn. Tuy nhiên nội dung được điều chỉnh theo nhóm và khả năng thực hành, nên mình không muốn hứa ai cũng có một sản phẩm giống nhau. Mình có thể chuyển câu hỏi để người dẫn giải thích đầu ra cụ thể của khóa bạn định đăng ký.",
       "link": {
         "href": "roadmap.html",
         "label": "Lộ trình lớp F2"
@@ -1166,7 +1166,7 @@
         "chinh sach bao mat",
         "an toàn thông tin"
       ],
-      "reply": "Bọ chưa có chính sách bảo mật để trích dẫn. Bạn hỏi trực tiếp qua hello@memori.class để được giải đáp nhé.",
+      "reply": "Việc chia sẻ chuyện riêng trong lớp là hoàn toàn tự nguyện. Tuy nhiên quy định về quyền riêng tư và việc sử dụng hình ảnh trong nhóm đang được hoàn thiện, nên mình chưa dám hứa bảo mật tuyệt đối. Mình sẽ nhờ người phụ trách xác nhận rõ trước khi bạn quyết định nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -1251,7 +1251,7 @@
         "học phí trả góp",
         "hoc phi tra gop"
       ],
-      "reply": "Bọ chưa có thông tin về trả góp. Bạn hỏi giúp qua hello@memori.class để biết chính xác nhé.",
+      "reply": "Lịch thanh toán và khả năng chia đợt đang được thống nhất cho khóa mới. Mình không muốn báo nhầm chính sách; cho mình ghi nhận nhu cầu của bạn để người phụ trách phản hồi chính xác nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -1285,7 +1285,7 @@
         "có học bổng không",
         "co hoc bong khong"
       ],
-      "reply": "Bọ chưa có thông tin về ưu đãi nào. Bạn hỏi giúp qua hello@memori.class để biết mới nhất nhé.",
+      "reply": "Mức 1.500.000đ đang được dành cho nhóm đăng ký sớm hoặc giữ chỗ sớm. Tuy nhiên số suất, hạn áp dụng và cách xác nhận ưu đãi chưa được công bố chính thức, nên mình cần kiểm tra đúng đợt lớp của bạn trước khi xác nhận giá cuối cùng.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -1311,7 +1311,7 @@
         "nộp tiền",
         "nop tien"
       ],
-      "reply": "Bọ chưa có thông tin về cách thanh toán. Bạn hỏi giúp qua hello@memori.class nhé.",
+      "reply": "Lịch thanh toán và khả năng chia đợt đang được thống nhất cho khóa mới. Mình không muốn báo nhầm chính sách; cho mình ghi nhận nhu cầu của bạn để người phụ trách phản hồi chính xác nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"
@@ -1336,7 +1336,7 @@
         "đăng ký rồi thì sao",
         "bước tiếp theo"
       ],
-      "reply": "Bọ chưa có thông tin về các bước sau khi đăng ký. Bạn nhắn hello@memori.class để được báo nhé.",
+      "reply": "Bạn có thể để lại lời nhắn cho MoriClass để người phụ trách trao đổi về lịch học, sự phù hợp và cách đăng ký của lớp sắp tới. Quy trình giữ chỗ và thanh toán sẽ được xác nhận rõ trước khi bạn quyết định nhé.",
       "link": {
         "href": "home-backup.html#contact",
         "label": "Liên hệ"

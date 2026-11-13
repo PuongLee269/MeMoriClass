@@ -334,7 +334,7 @@ var DOCS = [
       } }
     ] },
 
-  { id: 'bo', group: 'Trang Bọ', tab: 'Bọ: lời chào & chữ', file: 'assets/content/bo.json', page: 'index.html', preview: ['bo', 'bo-replies'],
+  { id: 'bo', group: 'Trang Bọ', tab: 'Bọ: lời chào & chữ', file: 'assets/content/bo.json', page: 'index.html', preview: ['bo', 'bo-replies', 'bo-faq'],
     sections: [
       { title: 'Chữ của Bọ', fields: {
         pageTitle: T('Tiêu đề trang (tab trình duyệt)', { req: 1, max: 80 }),
@@ -357,7 +357,7 @@ var DOCS = [
         endpoint: S.url('Địa chỉ Worker (https://…)', { https: 1, help: 'Địa chỉ Worker trong thư mục worker/bo-router. Để trống thì AI không chạy dù đã tích.' }),
         maxPerDay: S.num('Số lần gọi AI tối đa mỗi ngày trên mỗi trình duyệt', { int: 1, min: 0, max: 50 }),
         maxQuestionWords: S.num('Câu hỏi dài hơn số từ này thì không gọi AI', { int: 1, min: 1, max: 49 }),
-        maxAnswerWords: S.num('Số từ tối đa của chữ do AI sinh (AI hiện chỉ chọn nhóm, không viết chữ)', { int: 1, min: 1, max: 29 }),
+        maxAnswerWords: S.num('Số từ tối đa của câu AI tự trả lời (chỉ dùng khi không có câu hỏi có sẵn nào sát)', { int: 1, min: 1, max: 60 }),
         timeoutMs: S.num('Thời gian chờ AI (mili giây)', { int: 1, min: 1000, max: 10000 })
       }) } }
     ] },
@@ -390,6 +390,41 @@ var DOCS = [
       var errs = [], seen = {};
       (d.replies || []).forEach(function (r, i) {
         if (seen[r.id]) errs.push('Mã mục trùng: “' + r.id + '”.'); seen[r.id] = 1;
+        if (r.link && (!!String(r.link.href || '').trim() !== !!String(r.link.label || '').trim())) errs.push('Mục “' + r.id + '”: nút liên kết cần điền đủ cả đường dẫn và chữ, hoặc để trống cả hai.');
+      });
+      return errs;
+    } },
+
+  { id: 'bo-faq', group: 'Trang Bọ', tab: 'Bọ: câu hỏi có sẵn (FAQ)', file: 'assets/content/bo-faq.json', page: 'index.html', preview: ['bo-faq', 'bo', 'bo-replies'],
+    note: 'AI chọn câu hỏi có sẵn SÁT NHẤT với câu người dùng hỏi (theo ý nghĩa, không theo từ khóa) và trả đúng câu trả lời ở đây; không câu nào sát thì AI mới tự trả lời. Khi AI không dùng được, Bọ so khớp từ khóa sinh từ chính các dòng “cách hỏi”. Mục gắn “cần người xác nhận” là thông tin chưa chốt: chỉ sửa câu trả lời khi chính sách đã được duyệt. Sửa xong nhớ chạy node worker/bo-router/build-groups.mjs để Worker cập nhật danh sách cho AI.',
+    sections: [
+      { title: 'Danh sách câu hỏi có sẵn', fields: {
+        faqs: S.list('Các câu hỏi có sẵn', S.grp('', {
+          id: T('Mã (faq-01, faq-02…)', { req: 1, max: 40, re: /^[a-z0-9_-]+$/, reMsg: 'Chỉ dùng chữ thường không dấu, số, gạch dưới và gạch ngang.' }),
+          status: T('Trạng thái thông tin (XAC_NHAN, CHUA_CHOT…)', { max: 40 }),
+          topic: T('Chủ đề ngắn (AI đọc để phân biệt các câu gần nghĩa)', { req: 1, max: 100 }),
+          needsConfirm: S.bool('Cần người phụ trách xác nhận (thông tin chưa chốt)'),
+          questions: S.lines('Cách hỏi (mỗi dòng một câu; ít nhất 8 cách: có dấu, không dấu, lóng, hỏi vòng. Hai dòng đầu là đại diện đưa cho AI)', { req: 1, rows: 7, max: 80 }),
+          answer: S.area('Câu trả lời của Bọ', { req: 1, max: 1200, rows: 5, wordWarn: 80, wordTitle: 'Dài từ 80 chữ trở lên' }),
+          link: S.grp('Nút liên kết kèm theo (để trống nếu không cần)', {
+            href: S.url('Đường dẫn', { hash: 1, pages: 1 }),
+            label: T('Chữ trên nút', { max: 40 })
+          })
+        }), { itemName: 'Câu hỏi', itemTitle: function (it) { return (it.id || '(chưa đặt mã)') + ' — ' + (it.topic || (it.questions || [])[0] || ''); }, add: function () { return { id: 'faq-' + Date.now().toString(36).slice(-4), status: 'CHUA_CHOT', topic: '', needsConfirm: true, questions: [], answer: '', link: { href: '', label: '' } }; }, collapse: 1, max: 500, min: 1, wordKey: 'answer', wordWarn: 80, wordTitle: 'Dài từ 80 chữ trở lên' })
+      } }
+    ],
+    prep: function (d) { (d.faqs || []).forEach(function (r) { if (!isO(r.link)) r.link = { href: '', label: '' }; }); },
+    normalize: function (d) {
+      (d.faqs || []).forEach(function (r) {
+        if (!r.needsConfirm) delete r.needsConfirm;
+        if (!r.link || !String(r.link.href || '').trim()) delete r.link;
+      });
+    },
+    validate: function (d) {
+      var errs = [], seen = {};
+      (d.faqs || []).forEach(function (r) {
+        if (seen[r.id]) errs.push('Mã trùng: “' + r.id + '”.'); seen[r.id] = 1;
+        if (!(r.questions || []).length) errs.push('Mục “' + r.id + '”: cần ít nhất một cách hỏi.');
         if (r.link && (!!String(r.link.href || '').trim() !== !!String(r.link.label || '').trim())) errs.push('Mục “' + r.id + '”: nút liên kết cần điền đủ cả đường dẫn và chữ, hoặc để trống cả hai.');
       });
       return errs;
@@ -740,8 +775,8 @@ function field(node, obj, key, doc, ctx) {
       var wcEl = el('div', { class: 'wcount', 'aria-live': 'off' });
       var updWc = function () {
         var n = wc(obj[key]), lg = n >= node.wordWarn;
-        wcEl.textContent = n + ' chữ' + (lg ? ' · ' + WARN_TITLE : '');
-        wcEl.title = lg ? WARN_TITLE : '';
+        wcEl.textContent = n + ' chữ' + (lg ? ' · ' + (node.wordTitle || WARN_TITLE) : '');
+        wcEl.title = lg ? (node.wordTitle || WARN_TITLE) : '';
         wcEl.classList.toggle('long', lg);
       };
       updWc(); inp.addEventListener('input', updWc);
@@ -911,7 +946,7 @@ function listField(node, obj, key, doc, ctx) {
       if (node.wordKey && arr[i]) {
         var n = wc(arr[i][node.wordKey]), lg = n >= node.wordWarn, chip = c.querySelector('.wc');
         c.classList.toggle('long', lg); c.dataset.words = n;
-        if (chip) { chip.hidden = !lg; chip.textContent = n + ' chữ'; chip.title = lg ? WARN_TITLE : ''; }
+        if (chip) { chip.hidden = !lg; chip.textContent = n + ' chữ'; chip.title = lg ? (node.wordTitle || WARN_TITLE) : ''; }
       }
     });
   }

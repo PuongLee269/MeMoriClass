@@ -4,14 +4,15 @@ compatibility_date = "2026-11-11"
 
 [vars]
 GEMINI_MODEL = "gemini-3.5-flash-lite"   # model Flash nhỏ; đổi ở đây, không cần sửa code
-GEMINI_THINKING_BUDGET = "0"             # tắt "suy nghĩ" để nhanh và rẻ (chỉ model 2.5 hỗ trợ; xóa dòng này nếu đổi sang model khác báo lỗi)
-GEMINI_TIMEOUT_MS = "6000"               # Worker chờ Gemini tối đa; trang chờ Worker tối đa 8000 ms (ai.timeoutMs)
+GEMINI_TIMEOUT_MS = "5000"               # mỗi bước gọi Gemini chờ tối đa (bước 1 chọn câu có sẵn, bước 2 tự trả lời)
+AI_TOTAL_TIMEOUT_MS = "7500"             # tổng hai bước; trang chờ Worker tối đa 8000 ms (ai.timeoutMs)
 LIMITER = "12"            # câu hỏi/phút/IP
 AI_DAILY_PER_IP = "50"    # lượt gọi AI/ngày UTC cho mỗi IP
 DAILY_CAP = "2000"        # tổng số lượt gọi AI/ngày cho toàn Worker
 ALLOWED_ORIGINS = "https://moriclass.com,https://www.moriclass.com"
 # DEV = "1"               # chỉ khi thử cục bộ: cho phép http://localhost
-# DEBUG_USAGE = "1"       # chỉ khi test: trả số token trong header x-bo-tokens (vào,ra,suy nghĩ)
+# DEBUG_USAGE = "1"       # chỉ khi test: trả số token trong header x-bo-tokens (bước 1) và x-bo-tokens2 (bước 2): vào,ra,suy nghĩ
+# KHÔNG đặt GEMINI_THINKING_BUDGET: gemini-3.5-flash-lite từ chối giá trị 0
 
 # KHÓA: GEMINI_API_KEY chỉ đặt bằng Worker secret, KHÔNG ghi vào file này:
 #   npx wrangler secret put GEMINI_API_KEY

@@ -21,7 +21,7 @@ export function makeRateLimitBinding() {
 // handler(body, req) -> { status?, json?, delayMs? }. Mặc định trả {id:"price"}.
 export async function startMockGemini(handler) {
   const calls = [];
-  let h = handler || (() => ({ json: geminiReply('{"id":"price"}') }));
+  let h = handler || (() => ({ json: geminiReply('{"id":"faq-23"}') }));
   const server = http.createServer((req, res) => {
     let raw = '';
     req.on('data', c => { raw += c; });

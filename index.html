@@ -363,7 +363,7 @@
   <script src="assets/paper/paper-scene.js"></script>
   <script src="assets/content-loader.js"></script>
   <script src="assets/bo-idle.js"></script>
-  <script>MemoriContent.prefetch("bo");MemoriContent.prefetch("bo-replies",8000);</script>
+  <script>MemoriContent.prefetch("bo");MemoriContent.prefetch("bo-replies",8000);MemoriContent.prefetch("bo-faq",8000);</script>
   <script src="assets/bo-matcher.js"></script>
   <script src="assets/bo-ai.js"></script>
   <script src="assets/bo-replies.js"></script>
@@ -1041,11 +1041,19 @@
       form.addEventListener('focusout', () => window.setTimeout(closeIdleChat, 150));
       field.addEventListener('keydown', event => { if (event.key === 'Escape') field.blur(); });
 
-      // Keyword answers (assets/bo-replies.js). Accents are ignored, longer matching phrases win.
-      // Matcher dùng chung: assets/bo-matcher.js (chỉ mục ngược, cùng luật điểm với bản cũ).
-      let replyIndex = BoMatcher.build(typeof BO_REPLIES !== 'undefined' ? BO_REPLIES : []);
+      // Câu có sẵn (assets/bo-replies.js): FAQ (hỏi cụ thể) + nhóm dẫn đường/xã giao. AI chọn trước; từ khóa là dự phòng.
+      // Dự phòng từ khóa hai tầng: FAQ (mỗi câu hỏi mẫu là một khóa) trước, nhóm cũ sau. Matcher dùng chung: assets/bo-matcher.js.
+      const buildIndex = () => BoMatcher.buildAll(typeof BO_FAQ !== 'undefined' ? BO_FAQ : [], typeof BO_REPLIES !== 'undefined' ? BO_REPLIES : []);
+      let replyIndex = buildIndex();
+      const isKnownId = k => (typeof BO_FAQ !== 'undefined' && BO_FAQ.some(e => e.id === k)) || BO_REPLIES.some(e => e.id === k);
+      const entryById = id => {
+        const f = typeof BO_FAQ !== 'undefined' && BO_FAQ.find(e => e.id === id);
+        if (f) return { reply: f.answer, target: f.link && f.link.href, label: f.link && f.link.label, card: false };
+        const g = BO_REPLIES.find(e => e.id === id);
+        return g ? { reply: g.reply, target: g.link && g.link.href, label: g.link && g.link.label, card: !!g.card } : null;
+      };
       document.addEventListener('bo:content', () => {
-        replyIndex = BoMatcher.build(typeof BO_REPLIES !== 'undefined' ? BO_REPLIES : []);
+        replyIndex = buildIndex();
         if (BO_TEXT.placeholder) field.placeholder = BO_TEXT.placeholder;
         if (BO_TEXT.pageTitle) document.title = BO_TEXT.pageTitle;
       });
@@ -1079,12 +1087,12 @@
           BoAI.configure(typeof BO_AI !== 'undefined' ? BO_AI : null, MemoriContent.url);
           if (BoAI.canAsk(question)) {
             wait = addWait();
-            const res = await BoAI.route(question, k => BO_REPLIES.some(e => e.id === k));
+            const res = await BoAI.route(question, isKnownId);
             wait.remove(); dialogue.setAttribute('aria-busy', 'false');
-            if (res.ok) {
-              const hit = res.id && BO_REPLIES.find(e => e.id === res.id);
-              found = hit ? { reply: hit.reply, target: hit.link && hit.link.href, label: hit.link && hit.link.label, card: !!hit.card }
-                          : { reply: (typeof BO_FALLBACK !== 'undefined' && BO_FALLBACK) || '', target: null, label: null, card: false };
+            if (res.ok) {   // thứ tự: câu có sẵn (FAQ/nhóm) -> câu AI tự trả lời -> câu dự phòng
+              found = (res.id && entryById(res.id))
+                || (res.answer ? { reply: res.answer, target: null, label: null, card: false }
+                               : { reply: (typeof BO_FALLBACK !== 'undefined' && BO_FALLBACK) || '', target: null, label: null, card: false });
             }
           }
         }
@@ -1096,6 +1104,6 @@
       }
     })();
   </script>
-<script src="assets/bo-widget.js?v=r526kp" defer data-mode="hit" data-target=".beetle-head .bo-idle" data-inset="0.1,0.12,0.1,0.03" data-activate="#question"></script>
+<script src="assets/bo-widget.js?v=r527fq" defer data-mode="hit" data-target=".beetle-head .bo-idle" data-inset="0.1,0.12,0.1,0.03" data-activate="#question"></script>
 </body>
 </html>
