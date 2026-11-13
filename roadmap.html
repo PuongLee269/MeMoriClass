@@ -78,6 +78,7 @@ body{font-family:var(--sans);color:var(--cream);-webkit-tap-highlight-color:tran
 #chapGI .ch{position:absolute;border:0;background:transparent;padding:0;color:inherit;cursor:pointer;font:inherit;outline:0;-webkit-appearance:none;appearance:none}
 #chapGI .ch .lab{position:absolute;left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap;font-family:var(--script);font-size:var(--lf,22px);line-height:1.18;color:rgba(250,238,212,.96);-webkit-text-stroke:.55px rgba(250,238,212,.6);text-shadow:0 1px 6px rgba(0,0,0,.9),0 0 2px rgba(0,0,0,.8)}
 #chapGI .ch .lab b{display:block;font-weight:400}
+.port #chapGI .ch .lab b.t{white-space:normal;width:var(--tw,auto);margin:0 auto;line-height:1.1}
 #chapGI .ch .lab.lit{color:#ffefc9;-webkit-text-stroke-color:rgba(255,239,201,.6);text-shadow:0 0 10px rgba(255,170,80,.6);opacity:0;transition:opacity .42s ease}
 #chapGI .ch.hov .lab.lit,#chapGI .ch.sel .lab.lit{opacity:1}
 #chapGI .ch:focus-visible .lab:not(.lit){outline:2px solid #ffd98f;outline-offset:6px;border-radius:12px}
@@ -285,26 +286,26 @@ input[type=range]:focus-visible{outline:2px solid #ffd98f;outline-offset:2px;bor
 const CONFIG_DEFAULT={
  hosts:{youtube:'https://www.youtube-nocookie.com',vimeo:'https://player.vimeo.com'},
  chapters:[
- {id:'c1',num:'Chapter 01',title:'Khởi hành',poster:'assets/roadmap/poster1.webp',
+ {id:'c1',num:'Buổi 01',title:'Những sợi dây vô hình',poster:'assets/roadmap/poster1.webp',
   video:{provider:'youtube',id:'qHEqQn2xOlM',title:'KMM FILM STUDIO | ĐỪNG CHỨNG KIẾN HÃY LÊN TIẾNG',aspect:16/9,ui:'custom'}, /* TẠM THỜI: video thử (ngang 16:9) từ playlist kênh KMM FILM (@kmmfilmstudio), thay bằng phim thật của dự án */
-  script:{scene:'Cảnh 1: Chú bọ rời tổ (00:00 – 00:40)',
-   vo:'Trời vừa hửng sáng, chú bọ nhỏ khoác lên mình chiếc áo đỏ và bước ra khỏi chiếc tổ quen thuộc. Phía trước là con đường mà chưa ai chỉ cho chú…',
-   cues:[{t:0,text:'Trời vừa hửng sáng, chú bọ nhỏ bước ra khỏi chiếc tổ quen thuộc.'},{t:10,text:'Phía trước là con đường mà chưa ai chỉ cho chú.'},{t:22,text:'Nhưng chú vẫn đi, từng bước thật khẽ.'}]}},
- {id:'c2',num:'Chapter 02',title:'Bên suối',poster:'assets/roadmap/poster2.webp',
+  script:{scene:'Buổi 1: Từ người xa lạ thành người đồng hành',
+   vo:'Điều gì kết nối chúng ta, ngay cả khi chưa biết tên nhau? Từ người xa lạ thành người đồng hành qua kể chuyện nhập vai.',
+   cues:[{t:0,text:'Điều gì kết nối chúng ta,'},{t:10,text:'ngay cả khi chưa biết tên nhau?'},{t:22,text:'Từ người xa lạ thành người đồng hành qua kể chuyện nhập vai.'}]}},
+ {id:'c2',num:'Buổi 02',title:'Dáng hình của câu chuyện',poster:'assets/roadmap/poster2.webp',
   video:{provider:'youtube',id:'t861TZCuC_A',title:'KMM FILM STUDIO | UCAN - Bạn có thể!',aspect:16/9,ui:'custom'}, /* TẠM THỜI: video thử (ngang 16:9) từ playlist kênh KMM FILM (@kmmfilmstudio), thay bằng phim thật của dự án */
-  script:{scene:'Cảnh 3: Con bọ bên suối (02:00 – 03:30)',
-   vo:'Giữa khu rừng tĩnh lặng, chú bọ nhỏ dừng chân bên suối. Ánh trăng soi xuống mặt nước, mang theo những câu hỏi mà chú vẫn luôn giữ trong lòng…',
-   cues:[{t:0,text:'Giữa khu rừng tĩnh lặng, chú bọ nhỏ dừng chân bên suối.'},{t:8,text:'Ánh trăng soi xuống mặt nước,'},{t:14,text:'mang theo những câu hỏi mà chú vẫn luôn giữ trong lòng…'},{t:30,text:'Dòng nước vẫn chảy, chẳng vội vàng.'}]}},
- {id:'c3',num:'Chapter 03',title:'Những dấu vết',poster:'assets/roadmap/poster3.webp',
+  script:{scene:'Buổi 2: Vẽ ra câu chuyện, kể bằng những bức ảnh',
+   vo:'Nếu câu chuyện của bạn có hình dáng, nó sẽ trông như thế nào? Biến một ý niệm trừu tượng thành hình ảnh, sinh vật hoặc đồ vật có cá tính.',
+   cues:[{t:0,text:'Nếu câu chuyện của bạn có hình dáng,'},{t:8,text:'nó sẽ trông như thế nào?'},{t:14,text:'Biến một ý niệm trừu tượng thành hình ảnh, sinh vật hoặc đồ vật có cá tính.'},{t:30,text:'Rồi tự chọn ảnh, xâu chuỗi thành chuyện.'}]}},
+ {id:'c3',num:'Buổi 03',title:'Ý tưởng hình thành dòng sông',poster:'assets/roadmap/poster3.webp',
   video:{provider:'youtube',id:'-si_3gkTv5o',title:'KMM FILM STUDIO |',aspect:16/9,ui:'custom'}, /* TẠM THỜI: video thử (ngang 16:9) từ playlist kênh KMM FILM (@kmmfilmstudio), thay bằng phim thật của dự án */
-  script:{scene:'Cảnh 5: Dấu chân trên đất ẩm (04:10 – 05:40)',
-   vo:'Bên kia bờ, những dấu chân nhỏ in trên lớp đất ẩm. Chú bọ cúi xuống lần theo, và nhận ra có ai đó đã đi qua đây từ rất lâu trước…',
-   cues:[{t:0,text:'Bên kia bờ, những dấu chân nhỏ in trên lớp đất ẩm.'},{t:12,text:'Chú bọ cúi xuống, lần theo từng dấu vết.'},{t:26,text:'Có ai đó đã đi qua đây từ rất lâu trước…'}]}},
- {id:'c4',num:'Chapter 04',title:'Lời hồi đáp',poster:'assets/roadmap/poster4.webp',
+  script:{scene:'Buổi 3: Quay phim, dựng phim, kế hoạch video',
+   vo:'Một câu chuyện sẽ trở nên sống động nhờ hình ảnh, âm thanh và nhịp điệu. Quay phim, ngôn ngữ hình ảnh, dựng phim và đăng tải.',
+   cues:[{t:0,text:'Một câu chuyện sẽ trở nên sống động'},{t:12,text:'nhờ hình ảnh, âm thanh và nhịp điệu.'},{t:26,text:'Mang về kịch bản, storyboard và kế hoạch sản xuất.'}]}},
+ {id:'c4',num:'Buổi 04',title:'Câu chuyện của riêng mình',poster:'assets/roadmap/poster4.webp',
   video:{provider:'youtube',id:'hxE_3eXLBa0',title:'Trailer phim Kẻ Mộng Mơ',aspect:16/9,ui:'custom'}, /* TẠM THỜI: video thử (ngang 16:9) từ playlist kênh KMM FILM (@kmmfilmstudio), thay bằng phim thật của dự án */
-  script:{scene:'Cảnh 8: Lời đáp của ánh sáng (07:00 – 08:24)',
-   vo:'Khi đêm sắp tàn, một ánh sáng dịu dàng trả lời những câu hỏi của chú bọ, không bằng lời, mà bằng cảm giác bình yên lan khắp khu rừng…',
-   cues:[{t:0,text:'Khi đêm sắp tàn, một ánh sáng dịu dàng lên tiếng.'},{t:7,text:'Không bằng lời, mà bằng cảm giác bình yên.'},{t:14,text:'Lan khắp khu rừng, lan vào lòng chú bọ nhỏ.'}]}}
+  script:{scene:'Buổi 4: Xem tác phẩm, trao đổi, khép lớp',
+   vo:'Không giới hạn cách kể. Mỗi người chọn hình thức sáng tạo phù hợp nhất.',
+   cues:[{t:0,text:'Không giới hạn cách kể.'},{t:7,text:'Mỗi người chọn hình thức sáng tạo phù hợp nhất.'},{t:14,text:'Khép lớp, mở cộng đồng: tổng kết hành trình và tiếp tục kết nối.'}]}}
  ]};
 const RC=await MemoriContent.load('roadmap',{pageTitle:document.title,loaderText:(document.querySelector('.loader-text')||{}).textContent||'',chapters:CONFIG_DEFAULT.chapters}),SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);
 MemoriContent.applySite(SITE,'#rmback');document.title=RC.pageTitle||document.title;MemoriContent.setText('.loader-text',RC.loaderText);
@@ -492,7 +493,7 @@ function applyUI(){fxSize();if(RM)setTimeout(fxDraw,0);
   const sk=$('sketch');
   if(!PORT){const k0=gp(Sg,975,600),k1=gp(Sg,1130,690);sk.style.cssText=`display:block;left:${k0[0]}px;top:${k0[1]}px;width:${k1[0]-k0[0]}px;height:${k1[1]-k0[1]}px`}else sk.style.display='none';
   // ---- chapters (đơn vị canvas, nhóm đồng nhất)
-  document.documentElement.style.setProperty('--lf',UI.lf+'px');
+  document.documentElement.style.setProperty('--lf',UI.lf+'px');document.documentElement.style.setProperty('--tw',(PORT?Math.min(UI.ringW,UI.hit-2)+'px':'auto'));
   chBtns.forEach((b,i)=>{const n=NODES[i],l=LABELS[i],W=UI.hit,top=n[1]-UI.hitUp;
     const lcy=labCY(i);b.style.cssText=`left:${n[0]-330-W/2}px;top:${top-700}px;width:${W}px;height:${PORT?(UI.hitUp+UI.labGap+UI.lf*2.36+12/UI.s):(l[1]+34)-top}px`;
     const lt=(PORT?(UI.hitUp+UI.labGap):(l[1]-top-UI.lf*1.18-3))+'px';b.querySelectorAll('.lab').forEach(e=>e.style.top=lt);

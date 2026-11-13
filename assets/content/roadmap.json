@@ -4,8 +4,8 @@
   "chapters": [
     {
       "id": "c1",
-      "num": "Chapter 01",
-      "title": "Khởi hành",
+      "num": "Buổi 01",
+      "title": "Những sợi dây vô hình",
       "poster": "assets/roadmap/poster1.webp",
       "video": {
         "provider": "youtube",
@@ -15,28 +15,28 @@
         "ui": "custom"
       },
       "script": {
-        "scene": "Cảnh 1: Chú bọ rời tổ (00:00 – 00:40)",
-        "vo": "Trời vừa hửng sáng, chú bọ nhỏ khoác lên mình chiếc áo đỏ và bước ra khỏi chiếc tổ quen thuộc. Phía trước là con đường mà chưa ai chỉ cho chú…",
+        "scene": "Buổi 1: Từ người xa lạ thành người đồng hành",
+        "vo": "Điều gì kết nối chúng ta, ngay cả khi chưa biết tên nhau? Từ người xa lạ thành người đồng hành qua kể chuyện nhập vai.",
         "cues": [
           {
             "t": 0,
-            "text": "Trời vừa hửng sáng, chú bọ nhỏ bước ra khỏi chiếc tổ quen thuộc."
+            "text": "Điều gì kết nối chúng ta,"
           },
           {
             "t": 10,
-            "text": "Phía trước là con đường mà chưa ai chỉ cho chú."
+            "text": "ngay cả khi chưa biết tên nhau?"
           },
           {
             "t": 22,
-            "text": "Nhưng chú vẫn đi, từng bước thật khẽ."
+            "text": "Từ người xa lạ thành người đồng hành qua kể chuyện nhập vai."
           }
         ]
       }
     },
     {
       "id": "c2",
-      "num": "Chapter 02",
-      "title": "Bên suối",
+      "num": "Buổi 02",
+      "title": "Dáng hình của câu chuyện",
       "poster": "assets/roadmap/poster2.webp",
       "video": {
         "provider": "youtube",
@@ -46,32 +46,32 @@
         "ui": "custom"
       },
       "script": {
-        "scene": "Cảnh 3: Con bọ bên suối (02:00 – 03:30)",
-        "vo": "Giữa khu rừng tĩnh lặng, chú bọ nhỏ dừng chân bên suối. Ánh trăng soi xuống mặt nước, mang theo những câu hỏi mà chú vẫn luôn giữ trong lòng…",
+        "scene": "Buổi 2: Vẽ ra câu chuyện, kể bằng những bức ảnh",
+        "vo": "Nếu câu chuyện của bạn có hình dáng, nó sẽ trông như thế nào? Biến một ý niệm trừu tượng thành hình ảnh, sinh vật hoặc đồ vật có cá tính.",
         "cues": [
           {
             "t": 0,
-            "text": "Giữa khu rừng tĩnh lặng, chú bọ nhỏ dừng chân bên suối."
+            "text": "Nếu câu chuyện của bạn có hình dáng,"
           },
           {
             "t": 8,
-            "text": "Ánh trăng soi xuống mặt nước,"
+            "text": "nó sẽ trông như thế nào?"
           },
           {
             "t": 14,
-            "text": "mang theo những câu hỏi mà chú vẫn luôn giữ trong lòng…"
+            "text": "Biến một ý niệm trừu tượng thành hình ảnh, sinh vật hoặc đồ vật có cá tính."
           },
           {
             "t": 30,
-            "text": "Dòng nước vẫn chảy, chẳng vội vàng."
+            "text": "Rồi tự chọn ảnh, xâu chuỗi thành chuyện."
           }
         ]
       }
     },
     {
       "id": "c3",
-      "num": "Chapter 03",
-      "title": "Những dấu vết",
+      "num": "Buổi 03",
+      "title": "Ý tưởng hình thành dòng sông",
       "poster": "assets/roadmap/poster3.webp",
       "video": {
         "provider": "youtube",
@@ -81,28 +81,28 @@
         "ui": "custom"
       },
       "script": {
-        "scene": "Cảnh 5: Dấu chân trên đất ẩm (04:10 – 05:40)",
-        "vo": "Bên kia bờ, những dấu chân nhỏ in trên lớp đất ẩm. Chú bọ cúi xuống lần theo, và nhận ra có ai đó đã đi qua đây từ rất lâu trước…",
+        "scene": "Buổi 3: Quay phim, dựng phim, kế hoạch video",
+        "vo": "Một câu chuyện sẽ trở nên sống động nhờ hình ảnh, âm thanh và nhịp điệu. Quay phim, ngôn ngữ hình ảnh, dựng phim và đăng tải.",
         "cues": [
           {
             "t": 0,
-            "text": "Bên kia bờ, những dấu chân nhỏ in trên lớp đất ẩm."
+            "text": "Một câu chuyện sẽ trở nên sống động"
           },
           {
             "t": 12,
-            "text": "Chú bọ cúi xuống, lần theo từng dấu vết."
+            "text": "nhờ hình ảnh, âm thanh và nhịp điệu."
           },
           {
             "t": 26,
-            "text": "Có ai đó đã đi qua đây từ rất lâu trước…"
+            "text": "Mang về kịch bản, storyboard và kế hoạch sản xuất."
           }
         ]
       }
     },
     {
       "id": "c4",
-      "num": "Chapter 04",
-      "title": "Lời hồi đáp",
+      "num": "Buổi 04",
+      "title": "Câu chuyện của riêng mình",
       "poster": "assets/roadmap/poster4.webp",
       "video": {
         "provider": "youtube",
@@ -112,20 +112,20 @@
         "ui": "custom"
       },
       "script": {
-        "scene": "Cảnh 8: Lời đáp của ánh sáng (07:00 – 08:24)",
-        "vo": "Khi đêm sắp tàn, một ánh sáng dịu dàng trả lời những câu hỏi của chú bọ, không bằng lời, mà bằng cảm giác bình yên lan khắp khu rừng…",
+        "scene": "Buổi 4: Xem tác phẩm, trao đổi, khép lớp",
+        "vo": "Không giới hạn cách kể. Mỗi người chọn hình thức sáng tạo phù hợp nhất.",
         "cues": [
           {
             "t": 0,
-            "text": "Khi đêm sắp tàn, một ánh sáng dịu dàng lên tiếng."
+            "text": "Không giới hạn cách kể."
           },
           {
             "t": 7,
-            "text": "Không bằng lời, mà bằng cảm giác bình yên."
+            "text": "Mỗi người chọn hình thức sáng tạo phù hợp nhất."
           },
           {
             "t": 14,
-            "text": "Lan khắp khu rừng, lan vào lòng chú bọ nhỏ."
+            "text": "Khép lớp, mở cộng đồng: tổng kết hành trình và tiếp tục kết nối."
           }
         ]
       }
