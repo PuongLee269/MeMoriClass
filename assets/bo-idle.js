@@ -41,14 +41,16 @@
   function create(o) {
     o = o || {};
     var every = o.every || [5, 12];
-    var lookPose = null, expr = null, cbs = [], tExpr = 0, tNext = 0, paused = false, dead = false, last = 'rest';
-    function pose() { return reduced() ? 'rest' : (expr || lookPose || 'rest'); }
+    var gentle = o.profile === 'gentle', base = gentle ? (o.base || 'turnL') : 'rest';   /* gentle: luôn 3/4 (nghỉ = turnL), biểu cảm tự phát chỉ nhẹ (liếc turnR / ngước), cười + ngạc nhiên chỉ qua react() */
+    var lookPose = null, expr = null, cbs = [], tExpr = 0, tNext = 0, paused = false, dead = false, last = base;
+    function pose() { return reduced() ? base : (expr || lookPose || base); }
     function emit() { var p = pose(); if (p === last) return; last = p; cbs.forEach(function (f) { try { f(p); } catch (e) {} }); }
     function setExpr(n, ms, then) {
       clearTimeout(tExpr); expr = n; emit();
       tExpr = setTimeout(function () { expr = null; emit(); if (then) then(); }, ms);
     }
     function pick() {
+      if (gentle) return Math.random() < 0.72 ? 'turnR' : 'lookup';
       var r = Math.random();
       if (r < 0.66) return 'blink';
       if (r < 0.80) return 'laugh';
@@ -59,7 +61,8 @@
       if (dead || paused || reduced()) return schedule();
       if (lookPose || expr || (root.document && document.hidden)) { tNext = setTimeout(fire, 1500); return; }
       var n = pick();
-      if (n === 'blink') {
+      if (gentle) setExpr(n, rnd(1800, 2800));
+      else if (n === 'blink') {
         setExpr('blink', 150, function () {
           if (Math.random() < 0.18) tExpr = setTimeout(function () { setExpr('blink', 150); }, 140);
         });
@@ -99,11 +102,11 @@
       if (!im.parentNode) box.appendChild(im); els[n] = im;
     }
     function show(p) { for (var k in els) els[k].style.opacity = k === p ? 1 : 0; box.dataset.pose = p; }
-    add('rest');
+    add(ctl ? ctl.pose : 'rest');
     var rest = function () { NAMES.forEach(add); show(ctl ? ctl.pose : 'rest'); };
     if (o.lazy === false) rest(); else (loadP || preload()).then(rest);
     if (ctl) ctl.on(show);
-    box.dataset.pose = 'rest';
+    box.dataset.pose = ctl ? ctl.pose : 'rest';
     return { show: show, els: els };
   }
 

@@ -217,11 +217,11 @@
     @keyframes msg-in { from { opacity:0; transform:translateY(8px); } }
     /* Bọ: idle sprite planted on the moss, flight sprite sheet (6 frames x 110 ms) for arrival / take-off. Feet stay on the ground: only scale from the feet, never translate. */
     .beetle-head { position:absolute; z-index:2; pointer-events:none; }
-    .bo-shadow { position:absolute; left:11%; right:11%; bottom:-1%; height:8%; border-radius:50%; background:radial-gradient(ellipse at center,#05110d99 0%,#05110d4d 48%,#05110d00 74%); transition:opacity .3s ease; }
+    .bo-shadow { position:absolute; left:15%; right:5%; top:92%; height:12%; border-radius:50%; background:radial-gradient(ellipse at center,#05110dcc 0%,#05110d8c 52%,#05110d00 100%); filter:blur(2px); transition:opacity .3s ease; }
     .beetle-head.is-flying .bo-shadow { opacity:0; }
     .bo-art { position:absolute; inset:0; transform-origin:50% 94%; }
     /* Bọ nghỉ = chính diện (assets/bo/pose-*.webp, 232x276, chân ở 96,4% chiều cao); đáy chân đặt đúng chỗ tiếp đất cũ (97,7% khung 214x213). Không dùng dáng ngang. */
-    .bo-idle { position:absolute; left:0; top:-17.3%; width:100%; aspect-ratio:232 / 276; transform-origin:50% 96%; animation:bo-breathe 4.6s ease-in-out infinite; }
+    .bo-idle { position:absolute; left:0; top:-17.3%; width:100%; aspect-ratio:232 / 276; transform-origin:50% 96%; -webkit-mask-image:linear-gradient(#000 92.5%,#0000 96.8%); mask-image:linear-gradient(#000 92.5%,#0000 96.8%); animation:bo-breathe 4.6s ease-in-out infinite; }
     .beetle-head.is-flying .bo-idle { visibility:hidden; }
     .beetle-head.is-talking .bo-idle { animation:bo-talk .44s ease-in-out infinite; }
     .bo-fly { position:absolute; left:50%; bottom:-3%; width:161%; aspect-ratio:408 / 280; overflow:hidden; translate:-50% 0; display:none; }
@@ -477,7 +477,7 @@
       // This keeps the actual controls aligned when the browser crops the artwork on narrow screens.
       const hotspots = [
         [brand, 52, 24, 205, 82],
-        [beetleHead, 1138, 454, 214, 213],
+        [beetleHead, 1165, 519, 160, 160],   // Bọ ~75% size; feet sunk ~12 art px into the moss crest
         [form, 418, 500, 625, 66],
         [dialogue, 418, 186, 660, 302]
       ];
@@ -667,7 +667,7 @@
       // ---- Bọ: idle sprite + flight sprite sheet (assets/bo). Flies in and lands on load, takes off before leaving for another page. ----
       const bo = (() => {
         const art = beetleHead.querySelector('.bo-art'), idle = beetleHead.querySelector('.bo-idle');
-        const idleCtl = BoIdle.create({ every: [5, 12] }); BoIdle.mount(idle, idleCtl); window.boIdleCtl = idleCtl;
+        const idleCtl = BoIdle.create({ every: [6, 14], profile: 'gentle' }); BoIdle.mount(idle, idleCtl); window.boIdleCtl = idleCtl;
         const fly = beetleHead.querySelector('.bo-fly'), flyImg = fly.querySelector('img');
         const decoded = img => (img.decode ? img.decode() : Promise.resolve()).catch(() => {});
         const idleReady = BoIdle.preload();   // cả bộ tư thế được tải + giải mã cùng bộ tải trang
@@ -693,7 +693,7 @@
           ], { duration: 1500, delay: 500, easing: 'cubic-bezier(.3,.5,.4,1)', fill: 'both' });
           return move.finished.then(() => {
             show(false); fly.classList.remove('flip'); move.cancel();
-            idle.animate([{ transform: 'scale(1.035,.95)' }, { transform: 'scale(1,1)' }], { duration: 300, easing: 'ease-out' });
+            idle.animate([{ transform: 'scale(1.035,.95)', opacity: .35 }, { transform: 'scale(1,1)', opacity: 1 }], { duration: 300, easing: 'ease-out' });
           }).catch(() => { reset(); });
         }
         // Short flight up and away while the paper scene lifts off.
@@ -721,6 +721,7 @@
         }, { passive: true });
         scene.addEventListener('pointerleave', () => { dir = 0; window.boIdleCtl.look(0); });
       }
+      document.addEventListener('click', event => { if (event.target.closest && event.target.closest('.bow-hit') && window.boIdleCtl) window.boIdleCtl.react('laugh', 1400); });   // clicking Bọ makes him smile
       if (paper) {
         document.addEventListener('click', event => {
           const link = event.target.closest && event.target.closest('a[href]');
@@ -984,7 +985,7 @@
           if (link) row.append(' ', link);
           dialogue.setAttribute('aria-busy', 'false');
           beetleHead.classList.remove('is-talking');
-          if (window.boIdleCtl) window.boIdleCtl.react('laugh', 1400);   // happy face when a reply is finished
+          if (userAsked && window.boIdleCtl) window.boIdleCtl.react('laugh', 1400);   // happy face only after the user's own question is answered, never for the greeting
           dialogue.scrollTop = dialogue.scrollHeight;
         };
         if (reduceMotion.matches) { done(); return; }
