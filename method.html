@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Phương pháp</title>
 <script src="assets/content-loader.js"></script>
+<script src="assets/yt-fast.js"></script>
 <script>MemoriContent.prefetch("site");MemoriContent.prefetch("method");</script>
 <style>
 /*FONTS*/
@@ -110,7 +111,15 @@ body.reading #head{opacity:0}
 .vbtn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 18px;border:0;border-radius:99px;background:#6a3f14;color:#fff1cf;font:500 15px/1 var(--body);cursor:pointer}
 .vbtn:hover{background:#7d4b19}
 .vframe{position:relative;width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#000}
-.vframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vframe iframe{position:absolute;inset:0;width:100%;height:100%;border:0;transition:opacity .35s ease}
+.vframe iframe.pend{opacity:0;pointer-events:none}
+.vframe img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.vfacade{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;border-radius:12px;overflow:hidden;background:#000;cursor:pointer}
+.vfacade .vpb{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;display:grid;place-items:center;background:rgba(18,26,48,.55);color:#fff1cf;box-shadow:0 0 0 2px #fff4d355,0 4px 18px #0008;transition:transform .2s ease,background .2s ease}
+.vfacade:hover .vpb,.vfacade:focus-visible .vpb{transform:scale(1.08);background:rgba(18,26,48,.72)}
+.vfacade:focus-visible{outline:2px solid #fff0c2;outline-offset:2px}
+.vspin{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid #fff4d344;border-top-color:#fff1cf;animation:vspin .9s linear infinite;pointer-events:none;z-index:2}
+@keyframes vspin{to{transform:rotate(360deg)}}
 
 /* loader (cùng họ với index.html) */
 #loader{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:radial-gradient(ellipse at 50% 40%,#173a30 0,#0b1918 60%,#06100e 100%);transition:opacity .9s ease,visibility .9s}
@@ -721,10 +730,30 @@ function showPanel(m){
   words.forEach(function(w){if(!w)return;if(/^\s+$/.test(w)){pt.appendChild(document.createTextNode(' '));return}var sp=document.createElement('span');sp.textContent=w;sp.style.setProperty('--i',Math.min(i,40)+'');i++;pt.appendChild(sp)});
   $('pTitle').style.setProperty('--i','0');
   var im=$('pimg');if(m.imageUrl){im.hidden=false;im.onerror=function(){im.hidden=true};im.src=m.imageUrl}else{im.hidden=true;im.removeAttribute('src')}
-  var pv=$('pvid');pv.innerHTML='';
+  var pv=$('pvid');if(pv._clean){pv._clean();pv._clean=null}pv.innerHTML='';
   var yid=ytId(m.videoUrl);
-  if(yid){pv.hidden=false;var b=document.createElement('button');b.type='button';b.className='vbtn';b.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg> '+C.page.videoLabel;
-    b.addEventListener('click',function(){pv.innerHTML='';var fr=document.createElement('div');fr.className='vframe';var f=document.createElement('iframe');f.src='https://www.youtube-nocookie.com/embed/'+yid+'?autoplay=1&rel=0&playsinline=1';f.allow='autoplay; encrypted-media; picture-in-picture';f.allowFullscreen=true;f.title=m.title;f.referrerPolicy='strict-origin-when-cross-origin';fr.appendChild(f);pv.appendChild(fr)});
+  if(yid){pv.hidden=false;
+    /* facade: ảnh bìa webp + nút phát vẽ bằng code; iframe chỉ nạp khi bấm */
+    var b=document.createElement('button');b.type='button';b.className='vfacade';b.setAttribute('aria-label',C.page.videoLabel+': '+m.title);
+    var th=window.YTFast?YTFast.thumbImg(yid,Math.round((pv.clientWidth||320)*(window.devicePixelRatio||1))):null;if(th){th.style.cssText='position:absolute;inset:0;width:100%;height:100%;object-fit:cover';b.appendChild(th)}
+    var pb=document.createElement('span');pb.className='vpb';pb.innerHTML='<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg>';b.appendChild(pb);
+    if(window.YTFast){YTFast.intent(b);YTFast.near(b,YTFast.warm,'200px')}
+    b.addEventListener('click',function(){
+      var HOST='https://www.youtube-nocookie.com',fr=document.createElement('div');fr.className='vframe';
+      var f=document.createElement('iframe'),sp=document.createElement('span');sp.className='vspin';sp.setAttribute('aria-hidden','true');f.className='pend';
+      var org=/^https?:/.test(location.origin)?'&origin='+encodeURIComponent(location.origin):'';
+      var done=false,hs=0,tmo=0;
+      function reveal(){if(done)return;done=true;clearTimeout(hs);clearTimeout(tmo);removeEventListener('message',onMsg);f.classList.remove('pend');sp.remove();var i=fr.querySelector('img');if(i)setTimeout(function(){i.remove()},400)}
+      function onMsg(e){if(e.source!==f.contentWindow||e.origin!==HOST)return;var d=e.data;if(typeof d==='string'){try{d=JSON.parse(d)}catch(_){return}}if(!d||typeof d!=='object')return;var inf=d.info;
+        if(d.event==='onError'){reveal();return}
+        if(d.event==='onStateChange'&&(inf===1||inf===3))reveal();else if((d.event==='infoDelivery'||d.event==='initialDelivery')&&inf&&typeof inf==='object'&&(inf.playerState===1||inf.playerState===3))reveal()}
+      addEventListener('message',onMsg);
+      f.addEventListener('load',function(){var n=0;(function tick(){if(done||n++>20)return;try{f.contentWindow.postMessage(JSON.stringify({event:'listening',id:1,channel:'widget'}),HOST)}catch(_){}hs=setTimeout(tick,400)})()});
+      tmo=setTimeout(reveal,8000);
+      f.src=HOST+'/embed/'+yid+'?autoplay=1&rel=0&playsinline=1&enablejsapi=1'+org;f.allow='autoplay; encrypted-media; picture-in-picture';f.allowFullscreen=true;f.title=m.title;f.referrerPolicy='strict-origin-when-cross-origin';
+      var im=b.querySelector('img');if(im)fr.appendChild(im);
+      fr.appendChild(f);fr.appendChild(sp);pv.innerHTML='';pv.appendChild(fr);
+      pv._clean=function(){done=true;clearTimeout(hs);clearTimeout(tmo);removeEventListener('message',onMsg)}});
     pv.appendChild(b)}else pv.hidden=true;
   p.classList.remove('anim','show');void p.offsetWidth;p.classList.add('anim','show');
   placePanel();$('dishHit').classList.add('on');el.dishHit.tabIndex=0;
@@ -734,7 +763,7 @@ function showPanel(m){
 }
 function closePanel(fromUser){
   if(!S.panelOpen)return;var p=$('panel');p.classList.remove('show');S.panelOpen=false;document.body.classList.remove('reading');$('dishHit').classList.remove('on');el.dishHit.tabIndex=-1;
-  $('pvid').innerHTML='';setGlowTarget();
+  if($('pvid')._clean){$('pvid')._clean();$('pvid')._clean=null}$('pvid').innerHTML='';setGlowTarget();
   if(fromUser&&S.lastFocus){try{S.lastFocus.focus()}catch(e){}}
 }
 function placeHint(){var h=$('hint');h.style.left=(L.dcx*L.s)+'px';h.style.bottom='auto';h.style.top=Math.max(70,L.dy*L.s-(L.land?44:84))+'px'}
