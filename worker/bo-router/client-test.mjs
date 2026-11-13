@@ -1,12 +1,12 @@
 // Chạy: node --test worker/bo-router/client-test.mjs
-// Kiểm logic client (assets/bo-ai.js) nối với Worker thật (index.js) và Gemini GIẢ. Không cần mạng/khóa.
+// Kiểm logic client (assets/bo-ai.js) nối với Worker thật (index.js) và OpenAI GIẢ. Không cần mạng/khóa.
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import vm from 'node:vm';
 import worker, { clearCache } from './index.js';
-import { startMockGemini, makeRateLimitBinding, geminiReply } from './testkit.mjs';
+import { startMockOpenAI, makeRateLimitBinding, openaiReply } from './testkit.mjs';
 
 const require = createRequire(import.meta.url);
 const BoMatcher = require('../../assets/bo-matcher.js');
@@ -18,10 +18,10 @@ const same = (a, b, m) => assert.deepEqual(JSON.parse(JSON.stringify(a)), b, m);
 const servers = []; after(() => Promise.all(servers.map(s => s.close())));
 
 // Dựng 1 "trình duyệt" giả: window + storage + fetch đi thẳng vào worker.fetch (có Origin hợp lệ).
-async function setup(geminiFn, envExtra = {}, aiCfg = {}) {
+async function setup(openaiFn, envExtra = {}, aiCfg = {}) {
   clearCache();
-  const mock = await startMockGemini(geminiFn); servers.push(mock);
-  const env = { RATE_LIMIT: makeRateLimitBinding(), GEMINI_API_KEY: 'k', GEMINI_BASE_URL: mock.url, LIMITER: '100000', ...envExtra };
+  const mock = await startMockOpenAI(openaiFn); servers.push(mock);
+  const env = { RATE_LIMIT: makeRateLimitBinding(), OPENAI_API_KEY: 'k', OPENAI_BASE_URL: mock.url, LIMITER: '100000', ...envExtra };
   const mem = {}, store = { getItem: k => (k in mem ? mem[k] : null), setItem: (k, v) => { mem[k] = String(v); } };
   const stats = { fetches: 0 };
   const win = { localStorage: store, sessionStorage: store, setTimeout, clearTimeout };
@@ -40,7 +40,7 @@ async function setup(geminiFn, envExtra = {}, aiCfg = {}) {
   ai.configure({ enabled: true, endpoint: 'x', ...aiCfg }, (u) => 'https://worker.test/' + u);
   return { ai, mock, stats, mem };
 }
-const ok = id => () => ({ json: geminiReply(JSON.stringify({ id })) });
+const ok = id => () => ({ json: openaiReply(JSON.stringify({ id })) });
 
 test('AI trả id hợp lệ -> {ok:true,id}; đúng ý định dù từ khóa đánh lừa', async () => {
   const { ai } = await setup(ok('faq-02'));
@@ -56,14 +56,14 @@ test('id không có trong danh sách của trang -> ok:true,id:null', async () =
   const { ai } = await setup(ok('faq-23'));
   same(await ai.route('x', k => k === 'zzz'), { ok: true, id: null });
 });
-test('lỗi Gemini 500 / 429 / rỗng -> ok:false (rơi về từ khóa), không ném lỗi', async () => {
+test('lỗi OpenAI 500 / 429 / rỗng -> ok:false (rơi về từ khóa), không ném lỗi', async () => {
   for (const fn of [() => ({ status: 500, json: {} }), () => ({ status: 429, json: {} }), () => ({ json: { candidates: [] } })]) {
     const { ai } = await setup(fn);
     same(await ai.route('học phí', isValid), { ok: false, id: null });
   }
 });
-test('timeout: Gemini chậm hơn timeoutMs -> ok:false đúng hạn', async () => {
-  const { ai } = await setup(() => ({ delayMs: 4000, json: geminiReply('{"id":"faq-23"}') }), { GEMINI_TIMEOUT_MS: '20000' }, { timeoutMs: 1000 });
+test('timeout: OpenAI chậm hơn timeoutMs -> ok:false đúng hạn', async () => {
+  const { ai } = await setup(() => ({ delayMs: 4000, json: openaiReply('{"id":"faq-23"}') }), { OPENAI_TIMEOUT_MS: '20000' }, { timeoutMs: 1000 });
   const t0 = Date.now(); const r = await ai.route('chậm', isValid);
   same(r, { ok: false, id: null }); assert.ok(Date.now() - t0 < 2500);
 });
@@ -119,7 +119,7 @@ test('FAQ ưu tiên hơn nhóm cũ ở dự phòng từ khóa; nhóm cũ không 
   assert.equal(idx.find('học phí bao nhiêu').entry.id, 'faq-23');   // câu hỏi cụ thể: FAQ thắng nhóm cũ
 });
 test('AI không có câu sẵn nhưng tự trả lời -> {ok:true,id:null,answer}; câu hợp lệ mới được nhận', async () => {
-  const fn = body => JSON.stringify(body.systemInstruction).includes('DỮ KIỆN ĐÃ XÁC NHẬN') ? { json: geminiReply('{"kind":"answer","answer":"Lớp có tối đa 6 bạn và học trực tiếp nhé."}') } : { json: geminiReply('{"id":"none"}') };
+  const fn = body => JSON.stringify(body.messages[0].content).includes('DỮ KIỆN ĐÃ XÁC NHẬN') ? { json: openaiReply('{"kind":"answer","answer":"Lớp có tối đa 6 bạn và học trực tiếp nhé."}') } : { json: openaiReply('{"id":"none"}') };
   const { ai } = await setup(fn);
   same(await ai.route('lớp có nhỏ không', isValid), { ok: true, id: null, answer: 'Lớp có tối đa 6 bạn và học trực tiếp nhé.' });
   same(await ai.route('Lớp có nhỏ không', isValid), { ok: true, id: null, answer: 'Lớp có tối đa 6 bạn và học trực tiếp nhé.' });   // cache
@@ -128,7 +128,7 @@ test('client không tin Worker mù quáng: answer sai kiểu / quá dài / quá 
   const { ai } = await setup(ok('none'));
   const realFetch = ai; void realFetch;
   for (const bad of [123, { a: 1 }, 'x'.repeat(701), Array.from({ length: 61 }, (_, i) => 'w' + i).join(' ')]) {
-    const { ai: a2 } = await setup(() => ({ json: geminiReply('{"id":"none"}') }));
+    const { ai: a2 } = await setup(() => ({ json: openaiReply('{"id":"none"}') }));
     // gọi trực tiếp BoAI với fetch giả trả answer xấu
     const sb = vm.createContext({ window: { localStorage: { getItem: () => null, setItem() {} }, sessionStorage: { getItem: () => null, setItem() {} }, setTimeout, clearTimeout }, AbortController, Date, Promise, Object, Number, Math, String, JSON, Error, RegExp,
       fetch: async () => ({ ok: true, status: 200, json: async () => ({ id: null, answer: bad }) }) });

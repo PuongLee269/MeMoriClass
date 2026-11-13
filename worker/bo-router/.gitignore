@@ -1,2 +1,14 @@
 .dev.vars
 live-test-result.json
+
+.env
+.env.*
+.dev.vars.*
+.preview-rate-state.json
+live-test-baseline.json
+
+.wrangler/
+live-*-result.json
+
+live-network-baseline.json
+live-network-round2.json

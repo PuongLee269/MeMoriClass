@@ -1,0 +1,5 @@
+/env/
+.env
+.env.*
+.dev.vars
+.dev.vars.*
