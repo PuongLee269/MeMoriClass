@@ -16,7 +16,9 @@ Form hiện có họ tên, điện thoại, email tùy chọn và lớp F2 cố 
 
 - `Code.gs`: Apps Script gắn vào Trang tính, nhận POST, ghi dòng và gửi email văn bản thuần.
 - `assets/registration.js`: kiểm tra và chuẩn hóa dữ liệu, POST `no-cors` bằng `text/plain;charset=utf-8`, không ghi dữ liệu cá nhân vào console.
-- `assets/content/registration.json`: endpoint `/exec` công khai và email liên hệ dự phòng được chủ site chấp thuận công bố. Hiện để trống, nên form từ chối gửi thay vì báo thành công giả khi chưa nối.
+- `assets/content/registration.json`: endpoint `/exec` công khai và email liên hệ dự phòng được chủ site chấp thuận công bố. Chủ site đã đồng ý dùng email Workspace đang mở làm liên hệ dự phòng; endpoint vẫn để trống khi chưa triển khai, nên form từ chối gửi thay vì báo thành công giả khi chưa nối.
+
+Đã đối chiếu README và `docs/PROMPT-CODEX.md` của repo MORI Admin do chủ site cung cấp: giữ đúng 13 cột và các trạng thái `new`, `contacted`, `confirmed`, `cancelled`. Phần nhận đăng ký chỉ khởi tạo `new`; app quản lý tự cập nhật các trạng thái còn lại. Không chỉnh giao diện hay xây backend quản lý trong phạm vi này. MORI Admin hiện là giao diện mẫu, chưa có URL app chạy thật, nên email tạm mở Trang tính cho tới khi có `APP_URL`.
 
 ## Triển khai ngắn gọn
 
