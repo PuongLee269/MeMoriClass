@@ -25,12 +25,11 @@
     },
     {
       "id": 2,
-      "name": "Thư viện Ảnh F1",
+      "name": "Workshop",
       "href": "gallery.html",
-      "tip": "Mở Gallery lớp F1",
+      "tip": "Xem hình các buổi Workshop",
       "lines": [
-        "Thư viện",
-        "Ảnh F1"
+        "Workshop"
       ],
       "portraitLines": []
     },

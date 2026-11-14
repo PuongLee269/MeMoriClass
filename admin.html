@@ -588,16 +588,24 @@ var DOCS = [
       }), { fixed: 1, itemTitle: function (it) { return it.name; }, collapse: 1 }) } }
     ] },
 
-  { id: 'gallery', group: 'Các trang', tab: 'Gallery ảnh', file: 'assets/content/gallery.json', page: 'gallery.html', preview: ['gallery', 'site'],
-    note: 'Ảnh mới nên có khung ngang khoảng 833×413. Kéo qua ba viên đá để đổi ảnh; mỗi bộ ba đá gắn với một ảnh.',
+  { id: 'gallery', group: 'Các trang', tab: 'Workshop', file: 'assets/content/gallery.json', page: 'gallery.html', preview: ['gallery', 'site'],
+    note: 'Trang Workshop (đường dẫn vẫn là gallery.html). Mỗi ảnh có ảnh chiếu (khung ngang 856×436, hiện trong máy chiếu), ảnh lớn để xem khi bấm vào (máy tính; bản điện thoại nếu có), tên workshop, mô tả ngắn và chú thích. Mỗi bộ ba viên đá gắn với một ảnh.',
     sections: [
       { title: 'Chung', fields: { pageTitle: T('Tiêu đề trang (tab)', { req: 1, max: 80 }), hint: T('Dòng chữ dưới khay đá (để trống nếu không dùng)', { max: 80 }) } },
-      { title: 'Danh sách ảnh', fields: { photos: S.list('Ảnh', S.grp('', {
+      { title: 'Danh sách ảnh Workshop', fields: { photos: S.list('Ảnh', S.grp('', {
         id: T('Mã ảnh (chữ thường, số, gạch ngang)', { req: 1, max: 32, re: /^[a-z0-9_-]+$/, reMsg: 'Chỉ dùng chữ thường không dấu, số, - và _.' }),
-        src: S.img('Ảnh (link hoặc tải lên)', { req: 1 }), alt: T('Mô tả ảnh (cho người khiếm thị)', { max: 160 })
-      }), { itemName: 'Ảnh', itemTitle: function (it) { return (it.id || '') + ' — ' + (it.alt || ''); }, add: function () { return { id: 'anh' + Date.now().toString(36).slice(-4), src: '', alt: '' }; }, min: 1, max: 12, collapse: 1 }) } },
+        title: T('Tên workshop', { max: 80 }),
+        desc: S.area('Mô tả ngắn workshop (1–3 câu)', { max: 400 }),
+        caption: T('Chú thích ảnh', { max: 120 }),
+        src: S.img('Ảnh chiếu trong máy chiếu (khung ngang 856×436)', { req: 1 }),
+        full: S.img('Ảnh lớn khi bấm vào xem (máy tính, cạnh dài tối đa 1600)'),
+        fullm: S.img('Ảnh lớn cho điện thoại (cạnh dài tối đa 1000, để trống = dùng ảnh máy tính)'),
+        fw: S.num('Rộng ảnh lớn (px, để trống nếu không rõ)', { int: 1, min: 0, max: 20000 }),
+        fh: S.num('Cao ảnh lớn (px, để trống nếu không rõ)', { int: 1, min: 0, max: 20000 }),
+        alt: T('Mô tả ảnh (cho người khiếm thị)', { max: 160 })
+      }), { itemName: 'Ảnh', itemTitle: function (it) { return (it.id || '') + ' — ' + (it.title || it.alt || ''); }, add: function () { return { id: 'anh' + Date.now().toString(36).slice(-4), src: '', full: '', fullm: '', fw: 0, fh: 0, title: '', desc: '', caption: '', alt: '', at: [405, 62] }; }, min: 1, max: 12, collapse: 1 }) } },
       { title: 'Bộ ba viên đá → ảnh', fields: { assignments: S.list('Bộ đá', S.grp('', {
-        photo: S.sel('Ảnh hiện ra', function (doc) { return (doc.data.photos || []).map(function (p) { return { v: p.id, l: p.id + (p.alt ? ' — ' + p.alt : '') }; }); }, { req: 1 })
+        photo: S.sel('Ảnh hiện ra', function (doc) { return (doc.data.photos || []).map(function (p) { return { v: p.id, l: p.id + (p.title ? ' — ' + p.title : '') + (p.caption ? ' — ' + p.caption : '') }; }); }, { req: 1 })
       }), { fixed: 1, itemTitle: function (it) { return 'Đá ' + (it.gems || []).map(function (g) { return GEM[g]; }).join(' + '); } }) } }
     ],
     validate: function (d) {

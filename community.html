@@ -94,8 +94,8 @@ POEM=CC.poem.filter(function(l){return typeof l==="string"&&l.trim()}).slice(0,8
 var MEMBERS=MEMBERS0.map(function(d){var c=CC.members.find(function(x){return x&&x.id===d.id})||d;return{id:d.id,name:c.name||d.name,place:typeof c.place==="string"?c.place:d.place,avatar:MemoriContent.url(c.avatar,d.avatar),href:MemoriContent.url(c.href,d.href),caption:typeof c.caption==="string"?c.caption:d.caption}});
 var ANCH=[[289,185],[367,478],[667,346],[1011,247],[1097,541],[1461,391]]; /* from layers.json */
 var CW=1672,CH=941,FW=418,FH=235;
-/* edge [a,b,strands] — topology copied from the concept art */
-var EDGES=[[0,2,3,-.17],[0,1,3,.16,1],[1,2,2,.05],[2,3,2,-.07],[2,4,2,.06],[1,4,3,.09],[3,4,3,.1,1],[3,5,3,.05],[4,5,2,-.05]];
+/* edge [a,b,strands,bow] — MỘT sợi dây duy nhất đi lần lượt qua 6 quả cầu (0-1-2-3-4-5), mỗi đoạn một sợi */
+var EDGES=[[0,1,1,.1],[1,2,1,-.09],[2,3,1,.08],[3,4,1,-.1],[4,5,1,.09]];
 var RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
 var cv=document.getElementById("cv"),cx=cv.getContext("2d");
 function mk(w,h){var c=document.createElement("canvas");c.width=w;c.height=h;return c}

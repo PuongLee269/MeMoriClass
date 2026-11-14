@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050816">
-<title>Gallery Me.Mori</title>
+<title>Workshop Me.Mori</title>
 <script src="assets/content-loader.js"></script>
 <script src="assets/bo-idle.js"></script>
 <script>MemoriContent.prefetch("gallery");MemoriContent.prefetch("site");</script>
@@ -38,34 +38,60 @@ body{font-family:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",Roboto,sans
 .back:focus-visible{outline:2px solid #f2c46d;outline-offset:4px;border-radius:4px}
 .hint{position:fixed;left:0;right:0;z-index:4;text-align:center;pointer-events:none;color:var(--cream);font-size:clamp(14px,1.5vw,18px);font-weight:400;letter-spacing:.02em;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.75);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));opacity:0;transition:opacity .9s ease}
 .hint.on{opacity:.92}
+.view-btn{position:absolute;margin:0;padding:0;border:0;background:transparent;border-radius:14px;cursor:pointer;z-index:2;-webkit-tap-highlight-color:transparent;transition:box-shadow .25s}
+.view-btn:hover{box-shadow:0 0 30px 2px rgba(242,196,109,.28)}
+.view-btn:focus-visible{outline:2px solid #f2c46d;outline-offset:3px}
+.lb{position:fixed;inset:0;z-index:9500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(4,6,16,.98);padding:max(64px,calc(env(safe-area-inset-top,0px) + 56px)) max(16px,env(safe-area-inset-right,0px)) max(18px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));opacity:0;transition:opacity .25s ease}
+.lb.on{opacity:1}
+.lb-fig{margin:0;flex:1 1 0;min-height:0;width:100%;display:flex;align-items:center;justify-content:center;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.lb-fig img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;border-radius:6px;box-shadow:0 10px 50px rgba(0,0,0,.65);transition:opacity .22s ease;-webkit-user-drag:none}
+.lb-cap{flex:0 0 auto;width:min(760px,100%);text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.9),0 0 14px rgba(0,0,0,.75)}
+.lb-cap h2{margin:0;font:400 clamp(28px,4.2vw,42px)/1.15 "Oooh Baby",cursive;color:#ffe9b0}
+.lb-cap p{margin:.4em 0 0;font-size:clamp(13px,1.3vw,15px);line-height:1.55;color:var(--cream)}
+.lb-cap .lb-c{opacity:.7;font-size:13px}
+.lb-b{position:absolute;display:grid;place-items:center;width:48px;height:48px;padding:0;margin:0;border-radius:50%;border:1px solid rgba(246,233,200,.3);background:rgba(7,11,26,.55);color:var(--cream);cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .2s,box-shadow .2s}
+.lb-b:hover{background:rgba(242,196,109,.18);box-shadow:0 0 16px rgba(242,196,109,.35)}
+.lb-b:focus-visible{outline:2px solid #f2c46d;outline-offset:3px}
+.lb-b svg{width:22px;height:22px;display:block;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.lb-x{top:max(12px,env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px))}
+.lb-p,.lb-n{top:calc(50% - 60px)}
+.lb-p{left:max(10px,env(safe-area-inset-left,0px))}.lb-n{right:max(10px,env(safe-area-inset-right,0px))}
+@media (max-width:700px){.lb-b{width:40px;height:40px;background:rgba(7,11,26,.5)}.lb-b svg{width:20px;height:20px}.lb-p,.lb-n{top:calc(50% - 50px)}}
+@media (prefers-reduced-motion:reduce){.lb,.lb-fig img,.view-btn{transition:none}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 </head>
 <body>
 <nav class="np np-fx" data-next-pages aria-label="Trang gợi ý" style="--np-c:var(--cream);--np-z:5;--np-t:max(8px,env(safe-area-inset-top,0px));--np-s:0 1px 3px rgba(0,0,0,.85),0 0 12px rgba(0,0,0,.7)"></nav><script src="assets/next-pages.js" defer></script>
 <div id="stage"><canvas id="cv"></canvas></div>
+<h1 class="sr">Workshop</h1>
 <div class="hint" id="hint"></div>
 <div class="sr" id="live" aria-live="polite" role="status"></div>
 <script>
 (async()=>{
 /* ===== DỮ LIỆU DỄ SỬA ===== */
-// Ảnh: id, src (đường dẫn), alt (mô tả). Ảnh mới nên là khung 833x413; at = vị trí góc trên trái trong canvas 1672x941 (mặc định [416,73]).
+// Ảnh Workshop: id; src = ảnh chiếu (khung 856x436, hiện trong khung máy chiếu); full / fullm = ảnh lớn cho máy tính / điện thoại (fw, fh = kích thước full);
+// title = tên workshop, desc = mô tả ngắn, caption = chú thích ảnh (chữ hiện ở khung xem lớn), alt = mô tả cho trình đọc màn hình. at = vị trí góc trên trái trong canvas 1672x941 (mặc định [405,62]).
 const PHOTOS0 = [
-  {id:'sample', src:'assets/gallery/photo.webp', alt:'Căn nhà nhỏ bên hồ dưới hai vầng trăng', at:[405,62]},
-  // {id:'anh2', src:'assets/gallery/anh2.webp', alt:'Mô tả ảnh 2'},
+  {"id": "kh1", "src": "assets/workshop/kh1-p.webp", "full": "assets/workshop/kh1-d.webp", "fullm": "assets/workshop/kh1-m.webp", "fw": 1600, "fh": 901, "at": [405, 62], "title": "Khối hình kể chuyện", "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.", "caption": "Cả nhóm viết thẻ bài, màn hình chiếu phần «Chuyện về Nghệ thuật kể chuyện».", "alt": "Cả nhóm ngồi quanh bàn viết thẻ bài, màn hình chiếu phần Chuyện về Nghệ thuật kể chuyện"},
+  {"id": "kh2", "src": "assets/workshop/kh2-p.webp", "full": "assets/workshop/kh2-d.webp", "fullm": "assets/workshop/kh2-m.webp", "fw": 1600, "fh": 901, "at": [405, 62], "title": "Khối hình kể chuyện", "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.", "caption": "Cả nhóm chia sẻ quanh những khối gỗ.", "alt": "Cả nhóm trò chuyện quanh bàn có những khối gỗ nhiều màu"},
+  {"id": "kh3", "src": "assets/workshop/kh3-p.webp", "full": "assets/workshop/kh3-d.webp", "fullm": "assets/workshop/kh3-m.webp", "fw": 1600, "fh": 901, "at": [405, 62], "title": "Khối hình kể chuyện", "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.", "caption": "Thẻ bài vẽ nhân vật và biểu tượng.", "alt": "Ba thẻ bài giấy kraft vẽ nhân vật, bên cạnh ly trà hoa"},
+  {"id": "kh4", "src": "assets/workshop/kh4-p.webp", "full": "assets/workshop/kh4-d.webp", "fullm": "assets/workshop/kh4-m.webp", "fw": 1280, "fh": 1280, "at": [405, 62], "title": "Khối hình kể chuyện", "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.", "caption": "Một thẻ bài vẽ nhân vật.", "alt": "Một thẻ bài giấy kraft vẽ nhân vật đeo kính, đặt trên mặt bàn gỗ"},
+  {"id": "kh5", "src": "assets/workshop/kh5-p.webp", "full": "assets/workshop/kh5-d.webp", "fullm": "assets/workshop/kh5-m.webp", "fw": 1600, "fh": 901, "at": [405, 62], "title": "Khối hình kể chuyện", "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.", "caption": "Viết nội dung lên thẻ bài.", "alt": "Một bàn tay đang viết lên thẻ bài giấy kraft"},
+  {"id": "kh6", "src": "assets/workshop/kh6-p.webp", "full": "assets/workshop/kh6-d.webp", "fullm": "assets/workshop/kh6-m.webp", "fw": 1600, "fh": 1495, "at": [405, 62], "title": "Khối hình kể chuyện", "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.", "caption": "Một học viên lắng nghe câu chuyện.", "alt": "Một học viên chống cằm lắng nghe, trước mặt là những khối gỗ nhiều màu"},
+  {"id": "ty1", "src": "assets/workshop/ty1-p.webp", "full": "assets/workshop/ty1-d.webp", "fullm": "assets/workshop/ty1-m.webp", "fw": 1600, "fh": 901, "at": [405, 62], "title": "Tình yêu - Sức mạnh từ chiều không gian thứ 5", "desc": "Workshop cùng bàn về tình yêu: kể chuyện bằng thẻ bài, xem phim theo cách tiếp cận phi tuyến, rồi chuyền tay 38 bức ảnh ngẫu nhiên để cảm nhận, ghi chú và kể lại.", "caption": "Xem phim theo cách phi tuyến.", "alt": "Ba người ngồi xem phim chiếu trên màn hình, trên bàn có những khối gỗ"},
 ];
 // Bộ 3 viên đá -> ảnh. Chỉ số viên đá 0..8 theo hàng: 0 đỏ,1 xanh dương,2 cam | 3 xanh lá,4 tím,5 vàng chanh (peridot) | 6 lam,7 hồng,8 trắng.
 // Thứ tự kéo không quan trọng. Bộ chưa khai báo sẽ chạy hiệu ứng máy chiếu hỏng.
 const ASSIGNMENTS0 = [
-  {gems:[0,1,2], photo:'sample'}, {gems:[3,4,5], photo:'sample'}, {gems:[6,7,8], photo:'sample'},
-  {gems:[0,3,6], photo:'sample'}, {gems:[1,4,7], photo:'sample'}, {gems:[2,5,8], photo:'sample'},
-  {gems:[0,4,8], photo:'sample'}, {gems:[2,4,6], photo:'sample'},
+  {gems:[0, 1, 2], photo:"kh1"}, {gems:[3, 4, 5], photo:"ty1"}, {gems:[6, 7, 8], photo:"kh2"}, {gems:[0, 3, 6], photo:"kh3"}, {gems:[1, 4, 7], photo:"kh4"}, {gems:[2, 5, 8], photo:"kh5"}, {gems:[0, 4, 8], photo:"kh6"}, {gems:[2, 4, 6], photo:"ty1"},
 ];
 /* Nội dung sửa được từ trang admin (assets/content/gallery.json + site.json): danh sách ảnh, bộ 3 đá -> ảnh, chữ gợi ý. */
 const GC=await MemoriContent.load('gallery',{pageTitle:document.title,hint:'',photos:PHOTOS0,assignments:ASSIGNMENTS0},{replace:['photos']}),SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);
 MemoriContent.applySite(SITE,'.back');document.title=GC.pageTitle||document.title;MemoriContent.setText('#hint',GC.hint);
 const PHOTOS=(()=>{const seen={},out=[];for(const p of GC.photos){if(!p||typeof p.id!=='string'||!/^[a-z0-9_-]{1,32}$/i.test(p.id)||seen[p.id])continue;const src=MemoriContent.url(p.src,'');if(!src)continue;seen[p.id]=1;
-  const at=Array.isArray(p.at)&&p.at.length===2&&p.at.every(n=>typeof n==='number'&&isFinite(n)&&Math.abs(n)<5000)?p.at:undefined;out.push({id:p.id,src,alt:typeof p.alt==='string'?p.alt:'',at})}
+  const at=Array.isArray(p.at)&&p.at.length===2&&p.at.every(n=>typeof n==='number'&&isFinite(n)&&Math.abs(n)<5000)?p.at:undefined;const tx=k=>typeof p[k]==='string'?p[k]:'',nm=k=>typeof p[k]==='number'&&isFinite(p[k])&&p[k]>0&&p[k]<20000?Math.round(p[k]):0;
+  out.push({id:p.id,src,alt:tx('alt'),title:tx('title'),desc:tx('desc'),caption:tx('caption'),full:MemoriContent.url(p.full,''),fullm:MemoriContent.url(p.fullm,''),fw:nm('fw'),fh:nm('fh'),at})}
   return out.length?out:PHOTOS0})();
 const ASSIGNMENTS=ASSIGNMENTS0.map((d,i)=>{const c=GC.assignments[i];const ok=c&&PHOTOS.some(p=>p.id===c.photo);return{gems:d.gems,photo:ok?c.photo:(PHOTOS.some(p=>p.id===d.photo)?d.photo:PHOTOS[0].id)}});
 // Bọ rùa: bộ tư thế TĨNH dùng chung (assets/bo/pose-*.webp, 232x276, chân ở (116,266); docs/BO_POSES.md). KHÔNG có dáng ngang: nghỉ = chính diện, nhìn về một phía = quay 3/4, "back" chỉ để nhìn ảnh chiếu.
@@ -117,7 +143,15 @@ const rnd=(a,b)=>a+Math.random()*(b-a);
 function loadImg(src){const o={img:new Image(),ok:false,done:false,w:0,h:0};o.img.onload=()=>{o.ok=true;o.done=true;o.w=o.img.naturalWidth;o.h=o.img.naturalHeight};o.img.onerror=()=>{o.done=true};o.img.src=src;return o}
 const IM={};for(const k in A)IM[k]=loadImg(A[k][0]);
 const GI=[...Array(9)].map((_,i)=>loadImg('assets/gallery/gem'+i+'.webp'));
-const PH={};for(const p of PHOTOS){const o=loadImg(p.src);o.def=p;PH[p.id]=o}
+/* Ảnh chiếu nạp lười: chỉ ảnh đầu nạp ngay, các ảnh còn lại nạp khi bộ ba viên đá tương ứng được chọn (ensurePhoto). */
+const PH={};for(const p of PHOTOS)PH[p.id]={img:null,ok:false,done:false,w:0,h:0,loading:false,def:p};
+function ensurePhoto(id,cb){const o=PH[id];if(!o)return;
+  if(o.done){if(cb)cb(!o.ok);return}
+  if(cb)(o.cbs=o.cbs||[]).push(cb);
+  if(o.loading)return;o.loading=true;
+  const fin=err=>{o.done=true;o.loading=false;const l=o.cbs||[];o.cbs=[];l.forEach(f=>f(err))};
+  const im=new Image();im.decoding='async';im.onload=()=>{o.img=im;o.ok=true;o.w=im.naturalWidth;o.h=im.naturalHeight;fin(false)};im.onerror=()=>fin(true);im.src=o.def.src}
+ensurePhoto(PHOTOS[0].id);
 const photoReady=id=>PH[id]&&PH[id].ok;
 
 /* ---- bọ rùa ---- */
@@ -222,6 +256,7 @@ function resize(){
   hint.style.top='';
   if(portrait){hint.style.bottom='max(16px,calc(env(safe-area-inset-bottom,0px) + 10px))';hint.style.fontSize='14px';hint.style.display=''}
   else{const tb=pt(L.tray,1090,806)[1];hint.style.bottom=Math.max(12,Math.min(60,(H-tb)*0.45))+'px';hint.style.fontSize='';hint.style.display=H<520?'none':''}
+  {const [fx,fy]=pt(L.frame,416,73);viewBtn.style.left=fx+'px';viewBtn.style.top=fy+'px';viewBtn.style.width=833*L.frame.kx+'px';viewBtn.style.height=413*L.frame.ky+'px'}
   buildBeam();staticDirty=true;
 }
 
@@ -278,17 +313,21 @@ const MAP=new Map();for(const a of ASSIGNMENTS)MAP.set(keyOf(a.gems),a.photo);
 function setSel(a){sel=a;gemBtns.forEach((b,i)=>b.setAttribute('aria-pressed',sel.includes(i)?'true':'false'))}
 function fire(){
   const set=sel.slice();const id=MAP.get(keyOf(set));
-  freezeThread();
-  if(id&&photoReady(id)){
+  freezeThread();fireTok++;
+  const noPhoto=()=>{ladyEvent('glitch');glitchT0=now;reliefDone=false;glitchFx=null;moteLife=GLDUR+2;say('Bộ ba viên đá này chưa có ảnh. Máy chiếu bị nhiễu, hãy thử bộ khác.')};
+  const show=()=>{
     if(curPhoto===id){flare=1;beamPulse=1;moteLife=3}
     else{prevPhoto=curPhoto;curPhoto=id;phT0=now;wipeFromNull=!prevPhoto;flare=1;beamPulse=1;moteLife=3}
-    firstChanged=true;hint.classList.remove('on');ladyEvent('photoChange');
+    firstChanged=true;hint.classList.remove('on');ladyEvent('photoChange');updView();
     say('Đã đổi ảnh: '+PH[id].def.alt);
-  }else{
-    ladyEvent('glitch');glitchT0=now;reliefDone=false;glitchFx=null;moteLife=GLDUR+2;say('Bộ ba viên đá này chưa có ảnh. Máy chiếu bị nhiễu, hãy thử bộ khác.');
-  }
+  };
+  if(id&&PH[id]){
+    if(photoReady(id))show();
+    else{const tk=++fireTok;ensurePhoto(id,err=>{if(tk!==fireTok)return;if(err||!photoReady(id))noPhoto();else show()})}
+  }else noPhoto();
   setSel([]);
 }
+let fireTok=0;
 function freezeThread(){thread.pts=sel.map(i=>gemPos[i].slice());thread.cols=sel.map(i=>GCOL[i]);thread.a=1;thread.fade=true}
 function addGem(i){if(sel.length>=3||sel.includes(i))return;setSel(sel.concat(i));thread.fade=false;thread.a=1;burst(i,3);if(sel.length===3){locked=true;fire()}}
 function toggleKey(i){if(!introDone)return;if(sel.includes(i))setSel(sel.filter(x=>x!==i));else addGem(i)}
@@ -309,6 +348,44 @@ stage.addEventListener('pointermove',e=>{const [x,y]=pos(e);const g=stroke?hitGe
 stage.addEventListener('pointerdown',e=>{const [x,y]=pos(e);const g=hitGem(x,y);ladyPtr(e,g>=0?gemPos[g]:null)});
 stage.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'&&!stroke)LADY.inside=false});
 stage.addEventListener('contextmenu',e=>e.preventDefault());
+
+/* ---- nút xem ảnh lớn + khung xem (lightbox) ---- */
+const viewBtn=document.createElement('button');viewBtn.type='button';viewBtn.className='view-btn';viewBtn.hidden=true;stage.appendChild(viewBtn);
+function updView(){const d=curPhoto&&PH[curPhoto]&&PH[curPhoto].def;viewBtn.hidden=!(introDone&&d);if(d)viewBtn.setAttribute('aria-label','Xem ảnh lớn: '+(d.title||d.alt))}
+const SVG='<svg viewBox="0 0 24 24" aria-hidden="true">';
+const lb=document.createElement('div');lb.className='lb';lb.hidden=true;lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');lb.setAttribute('aria-label','Ảnh Workshop');
+lb.innerHTML='<figure class="lb-fig"><img alt="" decoding="async"></figure><div class="lb-cap"><h2></h2><p class="lb-d"></p><p class="lb-c"></p></div>'+
+ '<button type="button" class="lb-b lb-x" aria-label="Đóng">'+SVG+'<path d="M6 6l12 12M18 6L6 18"/></svg></button>'+
+ '<button type="button" class="lb-b lb-p" aria-label="Ảnh trước">'+SVG+'<path d="M15 5l-7 7 7 7"/></svg></button>'+
+ '<button type="button" class="lb-b lb-n" aria-label="Ảnh kế tiếp">'+SVG+'<path d="M9 5l7 7-7 7"/></svg></button>';
+document.body.appendChild(lb);
+const lbImg=lb.querySelector('img'),lbT=lb.querySelector('h2'),lbD=lb.querySelector('.lb-d'),lbC=lb.querySelector('.lb-c'),lbX=lb.querySelector('.lb-x'),lbP=lb.querySelector('.lb-p'),lbN=lb.querySelector('.lb-n');
+let lbI=0,lbOpen=false,lbFrom=null;
+const bigSrc=p=>(p.fullm&&matchMedia('(max-width:700px)').matches)?p.fullm:(p.full||p.src);
+function lbShow(i){
+  const n=PHOTOS.length;lbI=(i%n+n)%n;const p=PHOTOS[lbI];
+  lbT.textContent=p.title;lbD.textContent=p.desc;lbC.textContent=p.caption;lbT.hidden=!p.title;lbD.hidden=!p.desc;lbC.hidden=!p.caption;
+  lbImg.style.opacity=0;lbImg.alt=p.alt||p.title||'';
+  if(p.fw&&p.fh){lbImg.width=p.fw;lbImg.height=p.fh}else{lbImg.removeAttribute('width');lbImg.removeAttribute('height')}
+  const src=bigSrc(p);const show=()=>{if(PHOTOS[lbI]===p)lbImg.style.opacity=1};
+  lbImg.onload=show;lbImg.onerror=()=>{if(PHOTOS[lbI]===p&&src!==p.src){lbImg.onerror=show;lbImg.src=p.src}else show()};
+  lbImg.src=src;if(lbImg.complete&&lbImg.naturalWidth)show();
+  lbP.hidden=lbN.hidden=n<2;
+  if(n>1)[1,n-1].forEach(d=>{new Image().src=bigSrc(PHOTOS[(lbI+d)%n])}); // nạp trước ảnh kề
+}
+function lbClose(){if(!lbOpen)return;lbOpen=false;lb.classList.remove('on');setTimeout(()=>{if(!lbOpen)lb.hidden=true},RM?0:250);{const f=lbFrom&&document.contains(lbFrom)?lbFrom:viewBtn;f.focus({preventScroll:true})}}
+function lbOpenAt(i){lbFrom=document.activeElement;lbOpen=true;lb.hidden=false;lbShow(i);requestAnimationFrame(()=>{lb.classList.add('on');lbX.focus({preventScroll:true})})}
+viewBtn.addEventListener('click',()=>{const i=PHOTOS.findIndex(p=>p.id===curPhoto);lbOpenAt(i<0?0:i)});
+lbX.addEventListener('click',lbClose);lbP.addEventListener('click',()=>lbShow(lbI-1));lbN.addEventListener('click',()=>lbShow(lbI+1));
+lb.addEventListener('click',e=>{if(e.target===lb||e.target===lb.firstChild)lbClose()});
+document.addEventListener('keydown',e=>{if(!lbOpen)return;
+  if(e.key==='Escape'){lbClose();e.stopImmediatePropagation();return}
+  if(e.key==='ArrowLeft'){lbShow(lbI-1);e.preventDefault()}else if(e.key==='ArrowRight'){lbShow(lbI+1);e.preventDefault()}
+  else if(e.key==='Tab'){const f=[lbX,lbP,lbN].filter(b=>!b.hidden),k=f.indexOf(document.activeElement);const nx=e.shiftKey?(k<=0?f.length-1:k-1):(k<0||k>=f.length-1?0:k+1);f[nx].focus();e.preventDefault()}},true);
+{let sx=null,sy=0;const fig=lb.firstChild;
+ fig.addEventListener('pointerdown',e=>{sx=e.clientX;sy=e.clientY});
+ fig.addEventListener('pointerup',e=>{if(sx===null)return;const dx=e.clientX-sx,dy=e.clientY-sy;sx=null;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.4)lbShow(lbI+(dx<0?1:-1))});
+ fig.addEventListener('pointercancel',()=>{sx=null})}
 
 /* ---- canvases auxiliares ---- */
 const PW=856,PH_=436;
@@ -341,7 +418,7 @@ function spr(key,P,alpha,ox=0,oy=0){const o=IM[key];if(!o.ok)return;const a=A[ke
 
 let photoDirty=true;
 function drawPhoto(P,alpha,jit){
-  const cur=imgOf(curPhoto);if(!cur)return;const d=PH[curPhoto].def,at=d.at||[416,73];
+  const cur=imgOf(curPhoto);if(!cur)return;const d=PH[curPhoto].def,at=d.at||[405,62];
   const gl=glitchActive();
   const prev=imgOf(prevPhoto);const p=(now-phT0)/PHDUR;
   const ox=at[0]-405,oy=at[1]-62; // đồng bộ lưới 856x436 gốc (405,62)
@@ -349,17 +426,17 @@ function drawPhoto(P,alpha,jit){
   if(gl||trans||photoDirty){ // ở trạng thái nghỉ chỉ vẽ lại khi có thay đổi
     const x=cx_;x.globalCompositeOperation='source-over';x.clearRect(0,0,PW,PH_);
     if(trans){
-      if(RM){x.globalAlpha=1;if(prev)x.drawImage(prev,ox,oy);x.globalAlpha=ease(p);x.drawImage(cur,ox,oy);x.globalAlpha=1}
+      if(RM){x.globalAlpha=1;if(prev)x.drawImage(prev,ox,oy,PW,PH_);x.globalAlpha=ease(p);x.drawImage(cur,ox,oy,PW,PH_);x.globalAlpha=1}
       else{
-        if(prev)x.drawImage(prev,ox,oy);
+        if(prev)x.drawImage(prev,ox,oy,PW,PH_);
         const edge=(1-ease(p))*(PH_+90)-70;// biên quét từ dưới (ống kính) lên
-        const n=cn_;n.globalCompositeOperation='source-over';n.clearRect(0,0,PW,PH_);n.drawImage(cur,ox,oy);n.globalCompositeOperation='destination-in';
+        const n=cn_;n.globalCompositeOperation='source-over';n.clearRect(0,0,PW,PH_);n.drawImage(cur,ox,oy,PW,PH_);n.globalCompositeOperation='destination-in';
         const g=n.createLinearGradient(0,edge,0,edge+90);g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,1)');n.fillStyle=g;n.fillRect(0,edge,PW,PH_);n.fillRect(0,edge+90,PW,PH_);n.globalCompositeOperation='source-over';
         x.drawImage(cN,0,0);
         x.globalCompositeOperation='source-atop';const b=x.createLinearGradient(0,edge-20,0,edge+95);const k=Math.sin(Math.PI*clamp(p))*0.7;
         b.addColorStop(0,'rgba(255,240,200,0)');b.addColorStop(.45,'rgba(255,236,190,'+k+')');b.addColorStop(1,'rgba(255,220,150,0)');x.fillStyle=b;x.fillRect(0,0,PW,PH_);x.globalCompositeOperation='source-over';
       }
-    }else x.drawImage(cur,ox,oy);
+    }else x.drawImage(cur,ox,oy,PW,PH_);
     if(gl)glitchImage(x,cur,ox,oy);
     photoDirty=gl||trans; // khi hết nhiễu/chuyển cảnh còn đúng một lần vẽ sạch
   }
@@ -453,8 +530,8 @@ function frame(ts){
   if(!last)last=ts;dtS=Math.min(0.05,(ts-last)/1000);last=ts;now=(ts-T0)/1000;
   if(!L)return;
   introT=RM?Math.min(now,0.4)*7:now;
-  if(!introDone&&introT>=3.0){introDone=true;if(!firstChanged&&!touched)hint.classList.add('on')}
-  if(curPhoto===null&&photoReady(PHOTOS[0].id)&&introT>=2.1){curPhoto=PHOTOS[0].id;prevPhoto=null;phT0=now;PHDUR=RM?0.5:0.85;photoDirty=true}
+  if(!introDone&&introT>=3.0){introDone=true;updView();if(!firstChanged&&!touched)hint.classList.add('on')}
+  if(curPhoto===null&&photoReady(PHOTOS[0].id)&&introT>=2.1){curPhoto=PHOTOS[0].id;prevPhoto=null;phT0=now;PHDUR=RM?0.5:0.85;photoDirty=true;updView()}
   if(curPhoto&&now-phT0>PHDUR+0.05)PHDUR=1.0;
   prepFrame();
   if(staticDirty&&(IM.bg.ok||IM.bg.done))buildStatic();

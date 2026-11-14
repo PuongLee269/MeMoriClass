@@ -1,15 +1,118 @@
 {
-  "pageTitle": "Gallery Me.Mori",
+  "pageTitle": "Workshop Me.Mori",
   "hint": "",
   "photos": [
     {
-      "id": "sample",
-      "src": "assets/gallery/photo.webp",
-      "alt": "Căn nhà nhỏ bên hồ dưới hai vầng trăng",
+      "id": "kh1",
+      "src": "assets/workshop/kh1-p.webp",
+      "full": "assets/workshop/kh1-d.webp",
+      "fullm": "assets/workshop/kh1-m.webp",
+      "fw": 1600,
+      "fh": 901,
       "at": [
         405,
         62
-      ]
+      ],
+      "title": "Khối hình kể chuyện",
+      "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.",
+      "caption": "Cả nhóm viết thẻ bài, màn hình chiếu phần «Chuyện về Nghệ thuật kể chuyện».",
+      "alt": "Cả nhóm ngồi quanh bàn viết thẻ bài, màn hình chiếu phần Chuyện về Nghệ thuật kể chuyện"
+    },
+    {
+      "id": "kh2",
+      "src": "assets/workshop/kh2-p.webp",
+      "full": "assets/workshop/kh2-d.webp",
+      "fullm": "assets/workshop/kh2-m.webp",
+      "fw": 1600,
+      "fh": 901,
+      "at": [
+        405,
+        62
+      ],
+      "title": "Khối hình kể chuyện",
+      "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.",
+      "caption": "Cả nhóm chia sẻ quanh những khối gỗ.",
+      "alt": "Cả nhóm trò chuyện quanh bàn có những khối gỗ nhiều màu"
+    },
+    {
+      "id": "kh3",
+      "src": "assets/workshop/kh3-p.webp",
+      "full": "assets/workshop/kh3-d.webp",
+      "fullm": "assets/workshop/kh3-m.webp",
+      "fw": 1600,
+      "fh": 901,
+      "at": [
+        405,
+        62
+      ],
+      "title": "Khối hình kể chuyện",
+      "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.",
+      "caption": "Thẻ bài vẽ nhân vật và biểu tượng.",
+      "alt": "Ba thẻ bài giấy kraft vẽ nhân vật, bên cạnh ly trà hoa"
+    },
+    {
+      "id": "kh4",
+      "src": "assets/workshop/kh4-p.webp",
+      "full": "assets/workshop/kh4-d.webp",
+      "fullm": "assets/workshop/kh4-m.webp",
+      "fw": 1280,
+      "fh": 1280,
+      "at": [
+        405,
+        62
+      ],
+      "title": "Khối hình kể chuyện",
+      "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.",
+      "caption": "Một thẻ bài vẽ nhân vật.",
+      "alt": "Một thẻ bài giấy kraft vẽ nhân vật đeo kính, đặt trên mặt bàn gỗ"
+    },
+    {
+      "id": "kh5",
+      "src": "assets/workshop/kh5-p.webp",
+      "full": "assets/workshop/kh5-d.webp",
+      "fullm": "assets/workshop/kh5-m.webp",
+      "fw": 1600,
+      "fh": 901,
+      "at": [
+        405,
+        62
+      ],
+      "title": "Khối hình kể chuyện",
+      "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.",
+      "caption": "Viết nội dung lên thẻ bài.",
+      "alt": "Một bàn tay đang viết lên thẻ bài giấy kraft"
+    },
+    {
+      "id": "kh6",
+      "src": "assets/workshop/kh6-p.webp",
+      "full": "assets/workshop/kh6-d.webp",
+      "fullm": "assets/workshop/kh6-m.webp",
+      "fw": 1600,
+      "fh": 1495,
+      "at": [
+        405,
+        62
+      ],
+      "title": "Khối hình kể chuyện",
+      "desc": "Workshop kể chuyện bằng thẻ bài và khối gỗ: mỗi người viết thẻ về bối cảnh, sự kiện, nhân vật, cảm xúc, đồ vật rồi cùng kể chuyện, sau đó dùng khối gỗ sắp đặt câu chuyện, chụp ảnh và bình chọn bài hay nhất.",
+      "caption": "Một học viên lắng nghe câu chuyện.",
+      "alt": "Một học viên chống cằm lắng nghe, trước mặt là những khối gỗ nhiều màu"
+    },
+    {
+      "id": "ty1",
+      "src": "assets/workshop/ty1-p.webp",
+      "full": "assets/workshop/ty1-d.webp",
+      "fullm": "assets/workshop/ty1-m.webp",
+      "fw": 1600,
+      "fh": 901,
+      "at": [
+        405,
+        62
+      ],
+      "title": "Tình yêu - Sức mạnh từ chiều không gian thứ 5",
+      "desc": "Workshop cùng bàn về tình yêu: kể chuyện bằng thẻ bài, xem phim theo cách tiếp cận phi tuyến, rồi chuyền tay 38 bức ảnh ngẫu nhiên để cảm nhận, ghi chú và kể lại.",
+      "caption": "Xem phim theo cách phi tuyến.",
+      "alt": "Ba người ngồi xem phim chiếu trên màn hình, trên bàn có những khối gỗ"
     }
   ],
   "assignments": [
@@ -19,7 +122,7 @@
         1,
         2
       ],
-      "photo": "sample"
+      "photo": "kh1"
     },
     {
       "gems": [
@@ -27,7 +130,7 @@
         4,
         5
       ],
-      "photo": "sample"
+      "photo": "ty1"
     },
     {
       "gems": [
@@ -35,7 +138,7 @@
         7,
         8
       ],
-      "photo": "sample"
+      "photo": "kh2"
     },
     {
       "gems": [
@@ -43,7 +146,7 @@
         3,
         6
       ],
-      "photo": "sample"
+      "photo": "kh3"
     },
     {
       "gems": [
@@ -51,7 +154,7 @@
         4,
         7
       ],
-      "photo": "sample"
+      "photo": "kh4"
     },
     {
       "gems": [
@@ -59,7 +162,7 @@
         5,
         8
       ],
-      "photo": "sample"
+      "photo": "kh5"
     },
     {
       "gems": [
@@ -67,7 +170,7 @@
         4,
         8
       ],
-      "photo": "sample"
+      "photo": "kh6"
     },
     {
       "gems": [
@@ -75,7 +178,7 @@
         4,
         6
       ],
-      "photo": "sample"
+      "photo": "ty1"
     }
   ]
 }

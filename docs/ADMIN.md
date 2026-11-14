@@ -14,7 +14,7 @@ Trang `admin.html` cho chủ web sửa chữ, link video và ảnh của các tr
 - Góc trên có chấm "● Chưa lưu: n file". **Lưu** lưu mọi tab đã sửa lần lượt, mỗi file một commit `admin: cập nhật <tab>` lên nhánh đã chọn. Xong hiện "Đã lưu, web cập nhật sau ~1 phút" kèm link mở trang.
 - **Xem thử (chưa lưu)** mở trang với `?mcpreview=1`, trang đọc bản đang sửa từ trình duyệt của bạn (không ghi gì lên GitHub). Không có cho `home-backup` và `Giới thiệu`.
 - **Khôi phục mặc định mục này** nạp lại mục đó từ `assets/content/defaults/<tên>.json` (bản gốc, admin không bao giờ ghi vào thư mục này). Phải bấm Lưu để áp dụng.
-- Danh sách thêm/xóa/đổi thứ tự được: trả lời từ khóa của Bọ, ảnh Gallery, dòng phụ đề kịch bản. Các danh sách còn lại có số lượng cố định vì gắn với hình trong ảnh (9 viên đá bản đồ, 4 chương, 6 quả cầu, 3 phương pháp...).
+- Danh sách thêm/xóa/đổi thứ tự được: trả lời từ khóa của Bọ, ảnh Workshop, dòng phụ đề kịch bản. Các danh sách còn lại có số lượng cố định vì gắn với hình trong ảnh (9 viên đá bản đồ, 4 chương, 6 quả cầu, 3 phương pháp...).
 - Ô video: dán link YouTube hoặc Vimeo, admin tự lấy nhà cung cấp và ID. Ô ảnh: dán link `https://...` hoặc bấm **Tải ảnh lên**: ảnh được thu nhỏ còn tối đa 1600 px, đổi sang WebP và đưa ngay lên `assets/uploads/<tên>-<mã>.webp` (commit riêng, tức thì, dù bạn chưa bấm Lưu); sau đó nhớ bấm Lưu để trang dùng ảnh.
 - Xung đột: nếu file trên GitHub đã bị sửa từ nơi khác, admin hỏi: OK = ghi đè bản của bạn, Hủy = tải lại bản mới (bỏ bản của bạn cho file đó).
 
@@ -33,7 +33,7 @@ Trang `admin.html` cho chủ web sửa chữ, link video và ảnh của các tr
 | Lớp F1 | `lopf1.json` | chữ trang, danh sách hình/video (ảnh tải lên hoặc link, video YouTube dán link/ID, chú thích, alt), bật/tắt mũi tên trái/phải, thiết lập kéo (ngưỡng, hút, vuốt nhanh, quán tính, lặp, con lăn). Chỉ YouTube, chưa hỗ trợ Vimeo. Chi tiết: `docs/lopf1/SCHEMA.md` |
 | Khám phá tác phẩm | `khampha.json` | 5 nơi (Lò gốm, Studio ảnh, Homestay, Sân khấu, Lớp học): tên, mô tả, đường dẫn, cách mở; thiết lập chung (cách mở mặc định, hiện tên nơi). Vị trí và ảnh sáng cố định. Chi tiết: `docs/khampha/SCHEMA.md` |
 | Cộng đồng | `community.json` | bài thơ, 6 thành viên (tên, nơi ở, giới thiệu, ảnh, link), chữ nút |
-| Gallery | `gallery.json` | danh sách ảnh (thêm/xóa), ảnh nào hiện ra cho từng bộ 3 viên đá, dòng gợi ý |
+| Workshop (trang `gallery.html`) | `gallery.json` | danh sách ảnh Workshop (thêm/xóa; ảnh chiếu, ảnh lớn máy tính/điện thoại, tên workshop, mô tả, chú thích), ảnh nào hiện ra cho từng bộ 3 viên đá, dòng gợi ý |
 | Trang chủ cũ | `content.json` | nội dung `home-backup.html` (trước đây sửa ở admin cũ) |
 
 ## 4. KHÔNG sửa được ở admin (vì nằm trong ảnh hoặc là hành vi cố định)
