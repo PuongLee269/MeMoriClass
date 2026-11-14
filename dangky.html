@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Đăng ký lớp F2</title>
 <script src="assets/content-loader.js"></script>
+<script src="assets/registration.js"></script>
 <script>MemoriContent.prefetch("dangky");MemoriContent.prefetch("site");</script>
 <style>
 <style>
@@ -193,16 +194,16 @@ const CONFIG_DEFAULT={
  srText:'Học phí ưu đãi 1.500.000đ, giá gốc 2.400.000đ. Số lượng có hạn.',
  enrolledLabel:'Số người đã đăng ký',seatWord:'chỗ',
  hint:'',zoneLabelDesk:'',zoneLabelTouch:'',ctaDesk:'',
- hintDone:'Đã gửi đăng ký. Cảm ơn bạn!',
+ hintDone:'Đã gửi, ME.MORI sẽ liên hệ bạn sớm',
  /* CHỮ MẪU cho form đăng ký riêng (placeholder) */
  form:{title:'Đăng ký lớp F2',lead:'Để lại thông tin, Bọ sẽ liên hệ giữ chỗ cho bạn.',
   fields:[{id:'ten',label:'Họ tên',ph:'Nguyễn Văn A',type:'text',ac:'name',req:1},
           {id:'sdt',label:'Số điện thoại',ph:'09xx xxx xxx',type:'tel',ac:'tel',req:1},
-          {id:'email',label:'Email',ph:'ban@email.com',type:'email',ac:'email',req:1},
+          {id:'email',label:'Email',ph:'ban@email.com',type:'email',ac:'email',req:0},
           {id:'lop',label:'Lớp',ph:'F2',type:'text',ac:'off',value:'F2'}],
   submit:'Gửi đăng ký',sending:'Đang gửi…',close:'Đóng',
   errReq:'Vui lòng nhập thông tin này.',errPhone:'Số điện thoại chưa đúng (ví dụ 0912 345 678).',errEmail:'Email chưa đúng (ví dụ ban@email.com).',errSend:'Chưa gửi được. Bạn thử lại sau ít phút nhé.',
-  thanksTitle:'Cảm ơn bạn!',thanksText:'Bọ đã nhận thông tin đăng ký lớp F2 của bạn và sẽ liên hệ sớm. (Bản demo, chưa gửi đi đâu.)'},
+  thanksTitle:'Cảm ơn bạn!',thanksText:'Đã gửi, ME.MORI sẽ liên hệ bạn sớm'},
  fullLabel:'Đã hết chỗ',
  seats:{enrolled:12,capacity:20}
 };
@@ -309,14 +310,14 @@ function setEnrolled(n,capacity){
   $('#enr').innerHTML=E(CONFIG.enrolledLabel)+': <b>'+n+' / '+CAP+'</b> '+E(CONFIG.seatWord)+(rem<=0?' · '+E(CONFIG.fullLabel):'')+'<br>'}
  $('#live').textContent=CONFIG.enrolledLabel+': '+n+' / '+CAP+' '+CONFIG.seatWord;
 }
-/* ===== API cho ứng dụng đăng ký sau này ===== */
+/* ===== Gửi đăng ký F2 tới Apps Script ===== */
+const registration=MemoriRegistration.create(window.fetch.bind(window));
 window.MemoriRegister={
  setEnrolled,
  getState:()=>({enrolled:EN,capacity:CAP,remaining:CAP-EN}),
- /* TODO(ứng dụng đăng ký): thay bằng lời gọi thật. Hiện CHỈ là giả lập, không gửi gì đi đâu. */
- submitRegistration(data){console.info('[DEMO] submitRegistration (chưa nối ứng dụng đăng ký)',data);return Promise.resolve({ok:true,demo:true})}
+ submitRegistration(data){return registration.submit(data)}
 };
-function submitRegistration(data){return window.MemoriRegister.submitRegistration(Object.assign({intent:'register-f2',enrolled:EN,capacity:CAP},data||{}))}
+function submitRegistration(data){return window.MemoriRegister.submitRegistration(data||{})}
 
 /* ===== bố cục ===== */
 let SS=170,zc=[0,0];
@@ -397,11 +398,14 @@ const FM=CONFIG.form;
 const mdl=document.createElement('div');mdl.className='mdl';mdl.setAttribute('role','dialog');mdl.setAttribute('aria-modal','true');mdl.setAttribute('aria-labelledby','mTitle');mdl.setAttribute('aria-hidden','true');
 mdl.innerHTML='<div class="mcard"><button type="button" class="mx" aria-label="'+E(FM.close)+'">×</button><h2 id="mTitle">'+E(FM.title)+'</h2><p class="lead">'+E(FM.lead)+'</p><form class="mf" novalidate>'+
  FM.fields.map(f=>'<div><label for="m-'+f.id+'">'+E(f.label)+(f.req?' *':'')+'</label><input id="m-'+f.id+'" name="'+f.id+'" type="'+f.type+'" placeholder="'+E(f.ph)+'" autocomplete="'+f.ac+'"'+(f.value?' value="'+E(f.value)+'"':'')+(f.req?' required aria-required="true"':'')+' aria-describedby="e-'+f.id+'"><span class="err" id="e-'+f.id+'" aria-live="polite"></span></div>').join('')+
+ '<div class="sr" aria-hidden="true"><label for="m-website">Website</label><input id="m-website" name="website" type="text" autocomplete="off" tabindex="-1"></div>'+
  '<p class="gerr" id="gerr" aria-live="polite"></p><button type="submit" class="go">'+E(FM.submit)+'</button></form>'+
  '<div class="thx" role="status"><h2>'+E(FM.thanksTitle)+'</h2><p>'+E(FM.thanksText)+'</p><button type="button" class="tclose">'+E(FM.close)+'</button></div></div>';
 $('#root').appendChild(mdl);
 let lastFocus=null;
 const mcard=mdl.querySelector('.mcard'),mform=mdl.querySelector('form');
+mform.elements.ten.maxLength=100;mform.elements.email.maxLength=254;mform.elements.lop.readOnly=true;
+let submitting=false;
 const focusables=()=>[...mdl.querySelectorAll('button,input')].filter(e=>e.offsetParent!==null&&!e.disabled);
 function openModal(){
  mopen=true;lastFocus=zone;mdl.style.setProperty('--paperbg','url('+(mode==='port'?'assets/register/p/m_paper.webp':(small?'assets/register/m/paper.webp':'assets/register/d/paper.webp'))+')');
@@ -422,27 +426,29 @@ mdl.addEventListener('keydown',e=>{
  if(e.key==='Tab'){const f=focusables();if(!f.length)return;const a=f[0],z=f[f.length-1];
   if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}
 });
-const PHONE=/^(?:0|\+?84)(?:3|5|7|8|9)\d{8}$/,MAIL=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const PHONE=/^\d{9,11}$/,MAIL=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 function validate(){
  let ok=true,first=null;const data={};
  for(const f of FM.fields){
   const i=mform.elements[f.id],v=i.value.trim();data[f.id]=v;let m='';
   if(f.req&&!v)m=FM.errReq;
-  else if(f.id==='sdt'&&v&&!PHONE.test(v.replace(/[\s.\-()]/g,'')))m=FM.errPhone;
+  else if(f.id==='ten'&&v.length>100)m='Họ tên tối đa 100 ký tự.';
+  else if(f.id==='sdt'&&v&&!PHONE.test(v.replace(/[\s()+.\-\u2010-\u2015]/g,'')))m=FM.errPhone;
   else if(f.type==='email'&&v&&!MAIL.test(v))m=FM.errEmail;
   document.getElementById('e-'+f.id).textContent=m;i.setAttribute('aria-invalid',m?'true':'false');
   if(m){ok=false;if(!first)first=i}
  }
  if(first)first.focus();
+ data.website=mform.elements.website.value.trim();
  return ok?data:null;
 }
 mform.addEventListener('input',e=>{const i=e.target;if(i.getAttribute('aria-invalid')==='true'){i.setAttribute('aria-invalid','false');document.getElementById('e-'+i.name).textContent=''}});
 mform.addEventListener('submit',async e=>{
- e.preventDefault();const data=validate();if(!data)return;
+ e.preventDefault();if(submitting)return;const data=validate();if(!data)return;submitting=true;
  const btn=mform.querySelector('.go');btn.disabled=true;btn.textContent=FM.sending;$('#gerr').textContent='';
  try{await submitRegistration(data);sent=true;$('#hint').textContent=CONFIG.hintDone;$('#live').textContent=CONFIG.hintDone;mdl.classList.add('sent');setTimeout(()=>mdl.querySelector('.tclose').focus(),30)}
- catch(err){$('#gerr').textContent=FM.errSend}
- btn.disabled=false;btn.textContent=FM.submit;
+ catch(err){$('#gerr').textContent=err.code==='not-configured'?'Form đang chờ kết nối. Vui lòng quay lại sau.':FM.errSend+(err.fallbackEmail?' Liên hệ qua '+err.fallbackEmail+'.':'')}
+ finally{submitting=false;btn.disabled=false;btn.textContent=FM.submit}
 });
 /* ===== gió: thỉnh thoảng một cơn gió nhẹ làm lá rung mạnh hơn một chút (cành gần như đứng yên) ===== */
 let raf=0;
