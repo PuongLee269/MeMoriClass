@@ -16,7 +16,7 @@ Form hiện có họ tên, điện thoại, email tùy chọn và lớp F2 cố 
 
 - `Code.gs`: Apps Script gắn vào Trang tính, nhận POST, ghi dòng và gửi email văn bản thuần.
 - `assets/registration.js`: kiểm tra và chuẩn hóa dữ liệu, POST `no-cors` bằng `text/plain;charset=utf-8`, không ghi dữ liệu cá nhân vào console.
-- `assets/content/registration.json`: endpoint `/exec` công khai và email liên hệ dự phòng được chủ site chấp thuận công bố. Chủ site đã đồng ý dùng email Workspace đang mở làm liên hệ dự phòng; endpoint vẫn để trống khi chưa triển khai, nên form từ chối gửi thay vì báo thành công giả khi chưa nối.
+- `assets/content/registration.json`: endpoint `/exec` công khai đã triển khai và email liên hệ dự phòng được chủ site chấp thuận công bố. Form từ chối gửi nếu cấu hình endpoint bị thiếu, thay vì báo thành công giả.
 
 Đã đối chiếu README và `docs/PROMPT-CODEX.md` của repo MORI Admin do chủ site cung cấp: giữ đúng 13 cột và các trạng thái `new`, `contacted`, `confirmed`, `cancelled`. Phần nhận đăng ký chỉ khởi tạo `new`; app quản lý tự cập nhật các trạng thái còn lại. Không chỉnh giao diện hay xây backend quản lý trong phạm vi này. MORI Admin hiện là giao diện mẫu, chưa có URL app chạy thật, nên email tạm mở Trang tính cho tới khi có `APP_URL`.
 
@@ -44,3 +44,16 @@ Trình duyệt không đọc được phản hồi Apps Script trong chế độ
 - Gửi lại cùng số/F2 trong 10 phút: không thêm dòng, không gửi email thứ hai.
 - Kiểm tra email thông báo trong hộp thư, đường dẫn Trang tính hoặc app quản lý, không khẳng định đã nhận email chỉ từ kết quả MailApp.
 - Không xóa dòng thử hoặc sửa dữ liệu cũ nếu chưa có yêu cầu riêng.
+
+## Kết quả triển khai thật — 14/11/2026
+
+Chủ site đã duyệt quyền Bất kỳ ai và hai quyền Google (Trang tính, gửi email). Apps Script phiên bản 1 triển khai thành công. Đã gửi từ form website chạy local tới web app thật và đọc lại Trang tính qua Google Sheets API:
+
+| ID | Giờ Việt Nam | Tên dữ liệu kiểm tra | Điện thoại (che bớt) | Lớp | Trạng thái |
+| --- | --- | --- | --- | --- | --- |
+| DK0001 | 2026-11-14T20:41:53+07:00 | [KIỂM TRA HỆ THỐNG] F2 01 | 0900***001 | F2 | new |
+| DK0002 | 2026-11-14T20:42:51+07:00 | [KIỂM TRA HỆ THỐNG] F2 02 | 0900***002 | F2 | new |
+
+Hai ô phone được API xác nhận là `stringValue`, định dạng `TEXT`, hiển thị còn số 0 đầu. J–M trống. Gửi lại cùng số/F2 trong 10 phút không thêm dòng và không gửi thêm email. Đã mở Gmail của chủ site, xác nhận đúng hai email trong Hộp thư đến, nội dung DK0002 có đầy đủ dữ liệu và link Trang tính. Hai dòng thử được giữ lại, không xóa hay sửa.
+
+Chưa gộp PR website vào main; website công khai vẫn chưa sử dụng bản nối form này. Chưa có APP_URL của MORI Admin nên email mở Trang tính. Chưa thử Safari/iPad thật và chưa giả lập lỗi mạng trên trình duyệt với endpoint thật (lỗi mạng đã được kiểm thử local bằng mock).
