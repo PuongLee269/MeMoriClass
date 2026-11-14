@@ -811,7 +811,6 @@
         }, { passive: true });
         scene.addEventListener('pointerleave', () => { dir = 0; window.boIdleCtl.look(0); });
       }
-      document.addEventListener('click', event => { if (event.target.closest && event.target.closest('.bow-hit') && window.boIdleCtl) window.boIdleCtl.react('laugh', 1400); });   // clicking Bọ makes him smile
       if (paper) {
         document.addEventListener('click', event => {
           const link = event.target.closest && event.target.closest('a[href]');
@@ -1073,7 +1072,6 @@
           if (link) row.append(' ', link);
           dialogue.setAttribute('aria-busy', 'false');
           beetleHead.classList.remove('is-talking');
-          if (userAsked && window.boIdleCtl) window.boIdleCtl.react('laugh', 1400);   // happy face only after the user's own question is answered, never for the greeting
           dialogue.scrollTop = dialogue.scrollHeight;
         };
         if (reduceMotion.matches) { done(); return; }
