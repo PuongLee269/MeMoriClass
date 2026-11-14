@@ -12,8 +12,8 @@
   "widgetSend": "Gửi",
   "widgetClose": "Đóng khung chat",
   "ai": {
-    "enabled": false,
-    "endpoint": "",
+    "enabled": true,
+    "endpoint": "https://bo-router.phuongfilmmaker.workers.dev",
     "maxPerDay": 50,
     "maxQuestionWords": 49,
     "maxAnswerWords": 60,
