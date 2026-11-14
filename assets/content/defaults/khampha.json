@@ -12,7 +12,12 @@
   "openText": "",
   "tapText": "",
   "noLinkText": "Chưa có liên kết",
-  "boLabel": "Trò chuyện với Bọ"
+  "boLabel": "Trò chuyện với Bọ",
+  "viewText": "Vào xem",
+  "closeLabel": "Đóng",
+  "notFoundText": "Chưa tìm thấy tác phẩm này.",
+  "playLabel": "Phát video",
+  "galleryLabel": "Hình ảnh thêm"
  },
  "layers": {
   "sky": "assets/khampha/sky.webp",
@@ -161,7 +166,8 @@
    "labelAnchor": [
     556,
     89
-   ]
+   ],
+   "workId": ""
   },
   {
    "id": "studio",
@@ -316,7 +322,8 @@
    "labelAnchor": [
     1352,
     111
-   ]
+   ],
+   "workId": ""
   },
   {
    "id": "house",
@@ -555,7 +562,8 @@
    "labelAnchor": [
     300,
     366
-   ]
+   ],
+   "workId": ""
   },
   {
    "id": "stage",
@@ -798,7 +806,8 @@
    "labelAnchor": [
     911,
     247
-   ]
+   ],
+   "workId": ""
   },
   {
    "id": "class",
@@ -937,7 +946,8 @@
    "labelAnchor": [
     924,
     601
-   ]
+   ],
+   "workId": "mau"
   }
  ],
  "settings": {
@@ -1020,5 +1030,39 @@
     596
    ]
   ]
- }
+ },
+ "works": [
+  {
+   "id": "mau",
+   "sample": true,
+   "title": "Tác phẩm mẫu",
+   "author": "Học viên mẫu",
+   "date": "2026",
+   "thumb": "assets/lopf1/img/demo4.webp",
+   "thumbW": 952,
+   "thumbH": 498,
+   "cardDesc": "Trang mẫu để xem luồng từ ngôi nhà đến bài giới thiệu. Chữ và hình sẽ được thay bằng tác phẩm thật.",
+   "video": "",
+   "image": "assets/lopf1/img/demo4.webp",
+   "imageW": 952,
+   "imageH": 498,
+   "imageAlt": "Một bàn học đặt giữa rừng, có đèn và sách",
+   "caption": "Hình minh hoạ cho tác phẩm mẫu",
+   "metaDescription": "Trang mẫu của mục Khám phá tác phẩm, sẽ được thay bằng tác phẩm thật.",
+   "paragraphs": [
+    "Đây là đoạn giới thiệu mẫu. Khi có tác phẩm thật, đoạn này sẽ kể về ý tưởng ban đầu và điều người làm muốn gửi gắm.",
+    "Đoạn thứ hai dành cho cách làm: những bước đã đi qua, dụng cụ đã dùng và điều bất ngờ gặp trên đường.",
+    "Đoạn cuối nói về cảm xúc khi hoàn thành, và lời mời người xem dừng lại thưởng thức tác phẩm."
+   ],
+   "gallery": [
+    {
+     "src": "assets/gallery/photo.webp",
+     "w": 856,
+     "h": 436,
+     "alt": "Ngôi nhà nhỏ sáng đèn bên hồ dưới trăng",
+     "caption": "Hình phụ mẫu"
+    }
+   ]
+  }
+ ]
 }

@@ -649,20 +649,53 @@ var DOCS = [
     } },
 
   { id: 'khampha', group: 'Các trang', tab: 'Khám phá tác phẩm', file: 'assets/content/khampha.json', page: 'khampha.html', preview: ['khampha', 'site'],
-    note: 'Thành phố trên mây có 5 nơi: Lò gốm, Studio ảnh, Homestay, Sân khấu, Lớp học. Mỗi nơi có tên, mô tả, đường dẫn và cách mở. Để trống đường dẫn thì nơi đó chưa mở được. Vị trí và ảnh sáng của từng nơi do thiết kế quyết định, không sửa ở đây.',
+    note: 'Thành phố trên mây có 5 nơi: Lò gốm, Studio ảnh, Homestay, Sân khấu, Lớp học. Mỗi nơi có tên, mô tả, đường dẫn và cách mở; hoặc chọn một “tác phẩm”: khi đó bấm vào nhà hiện thẻ (tên, ảnh đại diện, mô tả, nút “Vào xem”) dẫn tới trang tác phẩm dạng blog. Để trống đường dẫn và tác phẩm thì nơi đó hiện “Sắp có”. Vị trí và ảnh sáng của từng nơi do thiết kế quyết định, không sửa ở đây.',
     sections: [
       { title: 'Các nơi trong thành phố', fields: { items: S.list('Nơi', S.grp('', {
         title: T('Tên', { req: 1, max: 60 }), desc: T('Mô tả', { max: 200 }),
+        workId: S.sel('Tác phẩm của nơi này (bấm vào nhà sẽ hiện thẻ có nút “Vào xem”; để trống thì hiện “Sắp có”)', function (doc) { return [{ v: '', l: '(chưa có tác phẩm)' }].concat((doc.data.works || []).map(function (w) { return { v: w.id, l: w.id + (w.title ? ' — ' + w.title : '') }; })); }),
         url: S.url('Đường dẫn (trang trong web hoặc https://…)', { hash: 1, pages: 1 }),
         target: S.sel('Cách mở', [{ v: '', l: 'Theo thiết lập chung' }, { v: '_blank', l: 'Tab mới' }, { v: '_self', l: 'Cùng tab' }])
       }), { itemName: 'Nơi', itemTitle: function (it) { return it.title || ''; }, fixed: 1, collapse: 1 }) } },
+      { title: 'Tác phẩm (trang tacpham.html?id=…)', fields: { works: S.list('Tác phẩm', S.grp('', {
+        id: T('Mã tác phẩm (chữ thường không dấu, số, - _; dùng trong địa chỉ trang)', { req: 1, max: 32, re: /^[a-z0-9_-]+$/, reMsg: 'Chỉ dùng chữ thường không dấu, số, - và _.' }),
+        title: T('Tên tác phẩm', { req: 1, max: 80 }),
+        author: T('Tác giả / học viên (tuỳ chọn)', { max: 60 }),
+        date: T('Ngày / năm (tuỳ chọn)', { max: 30 }),
+        thumb: S.img('Ảnh đại diện trên thẻ (nên ngang, nhẹ)'),
+        thumbW: S.num('Rộng ảnh đại diện (px, tuỳ chọn)', { int: 1, min: 0, max: 20000 }),
+        thumbH: S.num('Cao ảnh đại diện (px, tuỳ chọn)', { int: 1, min: 0, max: 20000 }),
+        cardDesc: S.area('Mô tả ngắn trên thẻ (1–2 câu)', { max: 220 }),
+        video: S.vidurl('Video YouTube (dán link hoặc ID; để trống thì dùng ảnh)'),
+        image: S.img('Ảnh lớn đầu trang (khung 16:9; làm ảnh bìa nếu có video)'),
+        imageW: S.num('Rộng ảnh lớn (px, tuỳ chọn)', { int: 1, min: 0, max: 20000 }),
+        imageH: S.num('Cao ảnh lớn (px, tuỳ chọn)', { int: 1, min: 0, max: 20000 }),
+        imageAlt: T('Mô tả ảnh (cho người khiếm thị)', { max: 160 }),
+        caption: T('Chú thích dưới khung', { max: 160 }),
+        paragraphs: S.lines('Các đoạn chữ giới thiệu (mỗi dòng một đoạn)', { rows: 8, max: 1500, maxLines: 30 }),
+        gallery: S.list('Ảnh phụ', S.grp('', {
+          src: S.img('Ảnh', { req: 1 }), w: S.num('Rộng (px, tuỳ chọn)', { int: 1, min: 0, max: 20000 }), h: S.num('Cao (px, tuỳ chọn)', { int: 1, min: 0, max: 20000 }),
+          alt: T('Mô tả ảnh', { max: 160 }), caption: T('Chú thích', { max: 160 })
+        }), { itemName: 'Ảnh', itemTitle: function (it) { return it.caption || it.alt || it.src || ''; }, add: function () { return { src: '', w: 0, h: 0, alt: '', caption: '' }; }, max: 12, collapse: 1 }),
+        metaDescription: S.area('Mô tả cho công cụ tìm kiếm (meta, tuỳ chọn)', { max: 300 })
+      }), { itemName: 'Tác phẩm', itemTitle: function (it) { return (it.id || '') + ' — ' + (it.title || ''); }, add: function () { return { id: 'tp' + Date.now().toString(36).slice(-4), title: '', author: '', date: '', thumb: '', thumbW: 0, thumbH: 0, cardDesc: '', video: '', image: '', imageW: 0, imageH: 0, imageAlt: '', caption: '', metaDescription: '', paragraphs: [], gallery: [] }; }, max: 40, collapse: 1 }) } },
+      { title: 'Chữ trên thẻ và trang tác phẩm', fields: { page: S.grp('', {
+        viewText: T('Chữ nút trên thẻ (mặc định “Vào xem”)', { max: 30 }), closeLabel: T('Nhãn nút đóng thẻ (không hiện chữ)', { max: 30 }),
+        playLabel: T('Nhãn nút phát video (không hiện chữ)', { max: 40 }), notFoundText: T('Chữ khi không có tác phẩm', { max: 80 })
+      }) } },
       { title: 'Thiết lập chung', fields: {
         settings: S.grp('', {
           target: S.sel('Cách mở mặc định', [{ v: '_blank', l: 'Tab mới' }, { v: '_self', l: 'Cùng tab' }]),
           showLabels: S.bool('Hiện tên nơi trên bản vẽ')
         })
       } }
-    ] },
+    ],
+    validate: function (d) {
+      var errs = [], ids = {};
+      (d.works || []).forEach(function (w) { if (ids[w.id]) errs.push('Mã tác phẩm trùng: “' + w.id + '”.'); ids[w.id] = 1; });
+      (d.items || []).forEach(function (it) { if (it.workId && !ids[it.workId]) errs.push('“' + it.title + '” đang trỏ tới tác phẩm không còn tồn tại (“' + it.workId + '”). Hãy chọn lại.'); });
+      return errs;
+    } },
 
   { id: 'home-backup', group: 'Các trang', tab: 'Trang chủ cũ (lớp, workshop)', file: 'content.json', page: 'home-backup.html', defaultsName: 'home-backup',
     note: 'Nội dung trang home-backup.html (trang chủ cũ: workshop, phương pháp, liên hệ). Trước đây chỉnh bằng trang quản trị cũ; giờ gộp vào đây.',

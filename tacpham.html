@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Khám phá tác phẩm</title>
+<meta name="description" content="Tác phẩm trong thành phố trên mây của Me.Mori Class.">
+<script src="assets/content-loader.js"></script>
+<script src="assets/yt-fast.js"></script>
+<script>MemoriContent.prefetch("khampha");</script>
+<link rel="preload" href="assets/fonts/OoohBaby-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/BeVietnamPro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/khampha/bg.webp" as="image" fetchpriority="low">
+<style>
+@font-face{font-family:'Oooh Baby';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/OoohBaby-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Oooh Baby';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/OoohBaby-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/BeVietnamPro-400-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:400;font-display:swap;src:url(assets/fonts/BeVietnamPro-400-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/BeVietnamPro-500-vietnamese.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Be Vietnam Pro';font-style:normal;font-weight:500;font-display:swap;src:url(assets/fonts/BeVietnamPro-500-latin.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+/* Trang chi tiết tác phẩm (dạng blog): nền đêm của Khám phá, khung đá/gỗ cho video/ảnh, giấy da cho chữ. Nội dung lấy từ assets/content/khampha.json (works). */
+:root{
+  color-scheme:dark;
+  --script:'Oooh Baby','Segoe Script','Bradley Hand',cursive;
+  --sans:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --night:#021e5f;--cream:#fbf1d6;--glow:#ffd98a;--ink:#3a2814;--ink2:#6a3f14;
+}
+*{box-sizing:border-box}
+html{background:var(--night);-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;color:var(--cream);font:400 17px/1.7 var(--sans);overflow-x:hidden;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+#bg{position:fixed;inset:0;z-index:0;background:var(--night) url(assets/khampha/bg.webp) center/cover no-repeat}
+#bg::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,18,70,.35) 0,rgba(2,18,70,.62) 45%,rgba(2,14,52,.86) 100%)}
+#stars{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.tw{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;opacity:0;background:radial-gradient(closest-side,rgba(255,248,222,.9),rgba(255,236,180,.28) 45%,rgba(255,236,180,0));animation:tw 4.8s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:0}50%{opacity:.45}}
+main{position:relative;z-index:2;width:min(920px,100%);margin:0 auto;padding:calc(max(12px,env(safe-area-inset-top,0px)) + 64px) 16px calc(24px + env(safe-area-inset-bottom,0px))}
+/* khung đá/gỗ quanh video/ảnh */
+.frame{position:relative;padding:10px;border-radius:20px;background:linear-gradient(155deg,#7b5a36 0,#4a3220 45%,#34220f 100%);box-shadow:0 0 0 1px rgba(255,217,138,.28),inset 0 0 0 2px rgba(255,236,190,.12),0 18px 50px rgba(0,6,40,.65),0 0 60px rgba(255,200,110,.12)}
+.frame .in{position:relative;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/9}
+.frame .in>img,.frame .in>iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover;display:block}
+.frame .in>iframe.pend{opacity:0;pointer-events:none}
+.frame .in>iframe{transition:opacity .35s ease}
+.vfacade{position:absolute;inset:0;display:block;width:100%;height:100%;border:0;padding:0;background:transparent;cursor:pointer;color:inherit}
+.vfacade .vpb{position:absolute;left:50%;top:50%;width:72px;height:72px;margin:-36px 0 0 -36px;border-radius:50%;display:grid;place-items:center;background:rgba(18,26,48,.58);color:#fff1cf;box-shadow:0 0 0 2px #fff4d355,0 4px 18px #0008;transition:transform .2s ease,background .2s ease}
+.vfacade:hover .vpb,.vfacade:focus-visible .vpb{transform:scale(1.08);background:rgba(18,26,48,.75)}
+.vfacade:focus-visible{outline:2px solid #fff0c2;outline-offset:-4px}
+.vspin{position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid #fff4d344;border-top-color:#fff1cf;animation:vspin .9s linear infinite;pointer-events:none;z-index:2}
+@keyframes vspin{to{transform:rotate(360deg)}}
+figcaption{margin:10px 6px 0;font:400 14px/1.5 var(--sans);color:#e2d9bd;text-align:center;text-shadow:0 1px 6px rgba(4,10,50,.9)}
+figcaption:empty{display:none}
+figure{margin:0}
+/* tiêu đề + meta */
+.head{margin:30px auto 18px;text-align:center;max-width:760px}
+.head h1{margin:0;font:400 clamp(42px,8vw,72px)/1.05 var(--script);color:var(--cream);text-shadow:0 2px 12px rgba(4,10,50,.95),0 0 3px rgba(4,10,50,.9);overflow-wrap:anywhere}
+.meta{margin:10px 0 0;font:500 15px/1.4 var(--sans);color:var(--glow);text-shadow:0 1px 8px rgba(4,10,50,.95)}
+.meta:empty{display:none}
+/* chữ giới thiệu: giấy da, dòng ~65 ký tự */
+.story{max-width:700px;margin:0 auto;padding:30px 34px 32px;color:var(--ink);border-radius:26px 14px 24px 16px / 16px 24px 14px 26px;
+  background:radial-gradient(ellipse at 20% 12%,#fff4d2cc 0,#fff4d200 55%),radial-gradient(ellipse at 85% 90%,#d9bd8355 0,#d9bd8300 60%),linear-gradient(160deg,#f2e3bd,#e4cf9d 70%,#dcc48f);
+  box-shadow:0 0 0 3px #f2e3bd22,0 0 46px 6px #ffcf7a33,0 22px 40px #0009}
+.story p{margin:0 0 1.1em;font:400 18px/1.75 var(--sans);overflow-wrap:anywhere}
+.story p:last-child{margin-bottom:0}
+.story p:first-child{font-size:19px}
+.gal{display:grid;grid-template-columns:1fr;gap:26px;margin:44px 0 0}
+.gal.two{grid-template-columns:1fr 1fr}
+.gal .frame{padding:7px;border-radius:16px}
+.gal .frame .in{aspect-ratio:auto;border-radius:10px}
+.gal .frame .in>img{position:static;height:auto;object-fit:contain}
+.end{margin:52px 0 0;padding:0 0 18px;display:flex;justify-content:center}
+.end .np{justify-content:center;gap:6px 22px;max-width:100%}
+/* nút gợi ý và bản đồ trôi theo trang (không đè lên chữ khi cuộn) */
+body>.np-fx{position:absolute}
+body>.map-btn{position:absolute!important}
+.nf{margin:40px auto;text-align:center;font:500 18px/1.5 var(--sans)}
+body.pre main{opacity:0}
+main{transition:opacity .35s ease}
+.np{--np-c:var(--cream);--np-z:60;--np-s:0 1px 8px rgba(4,10,50,.95),0 0 3px rgba(4,10,50,.9);--np-hs:0 1px 8px rgba(4,10,50,.95),0 0 3px rgba(4,10,50,.9)}
+@media (max-width:700px){
+  body{font-size:17px}
+  main{padding-left:14px;padding-right:14px}
+  .frame{padding:7px;border-radius:16px}
+  .frame .in{border-radius:10px}
+  .head{margin-top:24px}
+  .story{padding:24px 20px 26px}
+  .story p{font-size:17.5px;line-height:1.7}
+  .story p:first-child{font-size:18px}
+  .gal.two{grid-template-columns:1fr}
+  .vfacade .vpb{width:60px;height:60px;margin:-30px 0 0 -30px}
+}
+@media (prefers-reduced-motion:reduce){.tw{animation:none;opacity:0}main{transition:none}.vspin{animation-duration:2s}}
+</style>
+</head>
+<body class="pre">
+<div id="bg" aria-hidden="true"></div>
+<div id="stars" aria-hidden="true"></div>
+<nav class="np np-fx" data-next-pages data-page="tacpham" aria-label="Trang gợi ý"></nav>
+<main id="main">
+  <figure id="media" hidden><div class="frame"><div class="in" id="mediaIn"></div></div><figcaption id="mediaCap"></figcaption></figure>
+  <header class="head"><h1 id="title"></h1><p class="meta" id="meta"></p></header>
+  <article class="story" id="story" hidden></article>
+  <section class="gal" id="gal" hidden></section>
+  <p class="nf" id="nf" hidden role="status"></p>
+  <div class="end"><nav class="np" data-next-pages data-page="tacpham" aria-label="Trang gợi ý"></nav></div>
+</main>
+<script src="assets/next-pages.js" defer></script>
+<script src="assets/map-btn.js" defer></script>
+<script>
+(async function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* ===== NỘI DUNG MẶC ĐỊNH (bản nhúng của assets/content/khampha.json: page + works; admin sửa file JSON, trang tự nạp; xem docs/khampha/SCHEMA.md) ===== */
+const DEF={"version":1,"page":{"title":"Khám phá tác phẩm","subtitle":"","subtitleTouch":"","hint":"","backLabel":"← Về trang Bọ","backHref":"index.html","loaderText":"Bọ đang thắp đèn trên mây…","soonText":"Sắp có","openText":"","tapText":"","noLinkText":"Chưa có liên kết","boLabel":"Trò chuyện với Bọ","viewText":"Vào xem","closeLabel":"Đóng","notFoundText":"Chưa tìm thấy tác phẩm này.","playLabel":"Phát video","galleryLabel":"Hình ảnh thêm"},"works":[{"id":"mau","sample":true,"title":"Tác phẩm mẫu","author":"Học viên mẫu","date":"2026","thumb":"assets/lopf1/img/demo4.webp","thumbW":952,"thumbH":498,"cardDesc":"Trang mẫu để xem luồng từ ngôi nhà đến bài giới thiệu. Chữ và hình sẽ được thay bằng tác phẩm thật.","video":"","image":"assets/lopf1/img/demo4.webp","imageW":952,"imageH":498,"imageAlt":"Một bàn học đặt giữa rừng, có đèn và sách","caption":"Hình minh hoạ cho tác phẩm mẫu","metaDescription":"Trang mẫu của mục Khám phá tác phẩm, sẽ được thay bằng tác phẩm thật.","paragraphs":["Đây là đoạn giới thiệu mẫu. Khi có tác phẩm thật, đoạn này sẽ kể về ý tưởng ban đầu và điều người làm muốn gửi gắm.","Đoạn thứ hai dành cho cách làm: những bước đã đi qua, dụng cụ đã dùng và điều bất ngờ gặp trên đường.","Đoạn cuối nói về cảm xúc khi hoàn thành, và lời mời người xem dừng lại thưởng thức tác phẩm."],"gallery":[{"src":"assets/gallery/photo.webp","w":856,"h":436,"alt":"Ngôi nhà nhỏ sáng đèn bên hồ dưới trăng","caption":"Hình phụ mẫu"}]}]};
+const C=await MemoriContent.load('khampha',DEF,{replace:['works']});
+const PG=C.page,u=(v,d)=>MemoriContent.url(v,d);
+const id=new URLSearchParams(location.search).get('id')||'';
+const W=(C.works||[]).find(w=>w&&String(w.id)===id)||null;
+const num=(v,d)=>typeof v==='number'&&isFinite(v)&&v>0?Math.round(v):d;
+const mk=(t,c)=>{const e=document.createElement(t);if(c)e.className=c;return e};
+function setMeta(t,desc){
+  document.title=t;
+  const m=document.querySelector('meta[name=description]');if(m&&desc)m.setAttribute('content',desc);
+}
+/* video: ảnh bìa + nút phát; iframe chỉ nạp khi bấm (YouTube: youtube-nocookie, có phát hiện đã chạy để ẩn ảnh bìa) */
+function videoFacade(box,vd,poster,title){
+  const yt=vd.provider==='youtube',HOST=yt?'https://www.youtube-nocookie.com':'https://player.vimeo.com';
+  const b=mk('button','vfacade');b.type='button';b.setAttribute('aria-label',(PG.playLabel||'')+(title?': '+title:''));
+  let im=null;
+  if(poster){im=new Image();im.alt='';im.decoding='async';im.src=poster;im.width=1280;im.height=720;b.appendChild(im)}
+  else if(yt&&window.YTFast){im=YTFast.thumbImg(vd.id,Math.round((box.clientWidth||640)*(devicePixelRatio||1)));im.width=1280;im.height=720;b.appendChild(im)}
+  const pb=mk('span','vpb');pb.setAttribute('aria-hidden','true');
+  pb.innerHTML='<svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z" fill="currentColor"/></svg>';b.appendChild(pb);
+  if(yt&&window.YTFast){YTFast.intent(b);YTFast.near(b,YTFast.warm,'200px')}
+  b.addEventListener('click',()=>{
+    if(yt&&window.YTFast)YTFast.cancelPrime();
+    const f=document.createElement('iframe'),sp=mk('span','vspin');sp.setAttribute('aria-hidden','true');f.className='pend';
+    const org=yt&&/^https?:/.test(location.origin)?'&origin='+encodeURIComponent(location.origin):'';
+    let done=false,hs=0,tmo=0;
+    function reveal(){if(done)return;done=true;clearTimeout(hs);clearTimeout(tmo);removeEventListener('message',onMsg);f.classList.remove('pend');sp.remove();if(im)setTimeout(()=>im.remove(),400)}
+    function onMsg(e){if(e.source!==f.contentWindow||e.origin!==HOST)return;let d=e.data;if(typeof d==='string'){try{d=JSON.parse(d)}catch(_){return}}if(!d||typeof d!=='object')return;const inf=d.info;
+      if(d.event==='onError'){reveal();return}
+      if(d.event==='onStateChange'&&(inf===1||inf===3))reveal();else if((d.event==='infoDelivery'||d.event==='initialDelivery')&&inf&&typeof inf==='object'&&(inf.playerState===1||inf.playerState===3))reveal()}
+    if(yt){
+      addEventListener('message',onMsg);
+      f.addEventListener('load',()=>{let n=0;(function tick(){if(done||n++>20)return;try{f.contentWindow.postMessage(JSON.stringify({event:'listening',id:1,channel:'widget'}),HOST)}catch(_){}hs=setTimeout(tick,400)})()});
+      tmo=setTimeout(reveal,8000);
+      f.src=HOST+'/embed/'+vd.id+'?autoplay=1&rel=0&playsinline=1&enablejsapi=1'+org;
+    }else{f.addEventListener('load',reveal);tmo=setTimeout(reveal,8000);f.src=HOST+'/video/'+vd.id+'?autoplay=1'}
+    f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';f.allowFullscreen=true;f.title=title||'';f.referrerPolicy='strict-origin-when-cross-origin';
+    box.appendChild(f);box.appendChild(sp);b.remove();if(im)box.insertBefore(im,f);
+    f.focus({preventScroll:true});
+  });
+  box.appendChild(b);
+}
+function render(){
+  if(!W){
+    setMeta(PG.title||document.title);
+    $('title').textContent=PG.title||'';
+    const nf=$('nf');nf.hidden=false;nf.textContent=PG.notFoundText||'';
+    return;
+  }
+  const title=String(W.title||''),meta=[W.author,W.date].map(s=>String(s||'').trim()).filter(Boolean).join(' · ');
+  setMeta(title+' | '+(PG.title||''),String(W.metaDescription||W.cardDesc||''));
+  $('title').textContent=title;$('meta').textContent=meta;
+  /* khung chính 16:9: video (nếu có) hoặc ảnh */
+  const vd=MemoriContent.parseVideo(String(W.video||'')),img=u(W.image,''),inn=$('mediaIn');
+  if(vd){videoFacade(inn,vd,img,title);$('media').hidden=false}
+  else if(img){
+    const im=new Image();im.alt=String(W.imageAlt||'');im.width=num(W.imageW,1600);im.height=num(W.imageH,900);im.decoding='async';im.fetchPriority='high';im.src=img;inn.appendChild(im);$('media').hidden=false;
+  }
+  $('mediaCap').textContent=String(W.caption||'');
+  /* đoạn chữ */
+  const ps=(Array.isArray(W.paragraphs)?W.paragraphs:[]).map(s=>String(s).trim()).filter(Boolean),st=$('story');
+  ps.forEach(t=>{const p=document.createElement('p');p.textContent=t;st.appendChild(p)});st.hidden=!ps.length;
+  /* ảnh phụ */
+  const gl=(Array.isArray(W.gallery)?W.gallery:[]).filter(g=>g&&u(g.src,'')).slice(0,12),gb=$('gal');
+  gl.forEach(g=>{
+    const f=mk('figure'),fr=mk('div','frame'),inx=mk('div','in'),im=new Image();
+    im.alt=String(g.alt||'');im.width=num(g.w,1200);im.height=num(g.h,800);im.loading='lazy';im.decoding='async';im.src=u(g.src,'');inx.appendChild(im);fr.appendChild(inx);f.appendChild(fr);
+    const c=document.createElement('figcaption');c.textContent=String(g.caption||'');f.appendChild(c);gb.appendChild(f);
+  });
+  gb.classList.toggle('two',gl.length>1);gb.hidden=!gl.length;
+  if(gl.length)gb.setAttribute('aria-label',PG.galleryLabel||'');
+}
+render();
+/* sao lấp lánh rất nhẹ (như trang Khám phá) */
+if(!RM){const box=$('stars');[[12,14],[78,9],[91,36],[6,58],[48,5],[66,70],[24,82],[88,88]].forEach((p,i)=>{const d=document.createElement('i');d.className='tw';d.style.left=p[0]+'%';d.style.top=p[1]+'%';d.style.animationDuration=(3.8+i*.37)+'s';d.style.animationDelay=(-i*1.3)+'s';box.appendChild(d)})}
+document.addEventListener('visibilitychange',()=>{$('stars').style.display=document.hidden?'none':''});
+document.body.classList.remove('pre');
+document.documentElement.dataset.ready='1';
+})();
+</script>
+</body>
+</html>

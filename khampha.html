@@ -76,6 +76,32 @@ body{font-family:var(--sans);color:var(--cream);-webkit-tap-highlight-color:tran
 .tip span{display:block;font:400 13px/1.5 var(--sans);color:#e2d9bd}
 .tip em{display:block;margin-top:6px;font:500 12px/1.3 var(--sans);font-style:normal;color:var(--glow);letter-spacing:.02em}
 .tip.soon em{color:#c9cfee}
+/* thẻ tác phẩm: tên, ảnh đại diện, mô tả, "Vào xem"; đặt cạnh ngôi nhà đang sáng, không che hết nó */
+.wc{position:absolute;left:0;top:0;width:300px;padding:10px 10px 14px;border-radius:16px;background:rgba(7,14,52,.93);color:var(--cream);border:1px solid rgba(255,217,138,.34);box-shadow:0 14px 40px rgba(2,8,40,.6),0 0 0 1px rgba(2,8,40,.5);opacity:0;visibility:hidden;transform:translate3d(0,8px,0);transition:opacity .28s ease,transform .28s ease,visibility 0s .28s;pointer-events:auto;will-change:opacity,transform}
+.wc.on{opacity:1;visibility:visible;transform:none;transition:opacity .28s ease,transform .28s ease}
+.wc-img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:10px;background:#0b1544}
+.wc-img[hidden]{display:none}
+.wc-t{padding:10px 4px 0}
+.wc-k{display:block;font:500 12px/1.3 var(--sans);color:var(--glow);letter-spacing:.02em}
+.wc-k:empty{display:none}
+.wc h2{margin:2px 0 4px;font:500 18px/1.3 var(--sans);color:var(--cream)}
+.wc p{margin:0;font:400 14px/1.5 var(--sans);color:#e2d9bd;display:-webkit-box;-webkit-line-clamp:4;line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.wc-go{display:inline-flex;align-items:center;gap:8px;margin-top:12px;min-height:44px;padding:0 20px;border-radius:99px;background:var(--glow);color:#2a1d08;font:500 15px/1 var(--sans);text-decoration:none;-webkit-tap-highlight-color:transparent}
+.wc-go:hover{background:#ffe6b0}
+.wc-go svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.wc-x{position:absolute;right:2px;top:2px;width:44px;height:44px;padding:0;border:0;background:transparent;color:var(--cream);cursor:pointer;display:grid;place-items:center;-webkit-tap-highlight-color:transparent}
+.wc-x i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(5,10,40,.72);box-shadow:0 0 0 1px rgba(255,244,214,.25)}
+.wc-x svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.wc-x:hover i{background:rgba(5,10,40,.92)}
+.wc-go:focus-visible,.wc-x:focus-visible{outline:2px solid var(--cream);outline-offset:2px}
+.wc.row{display:grid;grid-template-columns:116px 1fr;column-gap:12px;align-items:start;padding:10px 12px 10px 10px}
+.wc.row .wc-img{aspect-ratio:4/3}
+.wc.row .wc-t{padding:0 30px 0 0}
+.wc.row h2{font-size:16px;margin:1px 0 3px}
+.wc.row p{font-size:13px;line-height:1.45;-webkit-line-clamp:3;line-clamp:3}
+.wc.row .wc-go{margin-top:8px;min-height:44px;padding:0 18px}
+.wc.row .wc-x{right:0;top:0}
+@media (prefers-reduced-motion:reduce){.wc{transition-duration:.01s!important}}
 #back{position:fixed;z-index:60;left:max(16px,env(safe-area-inset-left,0px));top:max(12px,env(safe-area-inset-top,0px));min-height:44px;display:flex;align-items:center;padding:0 6px;color:var(--cream);font:500 16px/1 var(--sans);text-decoration:none;text-shadow:0 1px 8px rgba(4,10,50,.95),0 0 3px rgba(4,10,50,.9);pointer-events:auto}
 #back:hover,#back:focus-visible{color:#fff}
 #back:focus-visible{outline:2px solid var(--cream);outline-offset:2px;border-radius:6px}
@@ -132,6 +158,12 @@ html.still *{animation:none!important}
 <div id="hud">
   <div id="ttl"><h1></h1><p></p></div>
   <div id="tips"></div>
+  <section class="wc" id="wc" role="dialog" aria-labelledby="wcT" inert>
+    <img class="wc-img" id="wcImg" alt="" hidden decoding="async">
+    <div class="wc-t"><span class="wc-k" id="wcK"></span><h2 id="wcT"></h2><p id="wcD"></p>
+      <a class="wc-go" id="wcGo" href="tacpham.html"><span id="wcGoT"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <button class="wc-x" id="wcX" type="button"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></i></button>
+  </section>
   <div id="hint"></div>
 </div>
 <div class="sr" id="live" role="status" aria-live="polite" aria-atomic="true"></div>
@@ -146,7 +178,7 @@ const Q=new URLSearchParams(location.search);
 if(Q.get('freeze')==='1')document.documentElement.classList.add('still');
 
 /* ===== NỘI DUNG MẶC ĐỊNH (giống assets/content/khampha.json; admin sửa file JSON, trang tự nạp; xem assets/content/khampha.SCHEMA.md) ===== */
-const CONFIG_DEFAULT={"version":1,"page":{"title":"Khám phá tác phẩm","subtitle":"","subtitleTouch":"","hint":"","backLabel":"← Về trang Bọ","backHref":"index.html","loaderText":"Bọ đang thắp đèn trên mây…","soonText":"Sắp có","openText":"","tapText":"","noLinkText":"Chưa có liên kết","boLabel":"Trò chuyện với Bọ"},"layers":{"sky":"assets/khampha/sky.webp","far":"assets/khampha/far.webp","base":"assets/khampha/base.webp","off":"assets/khampha/off.webp","bg":"assets/khampha/bg.webp","bgPhone":"assets/khampha/bg_m.webp","offPhone":"assets/khampha/off_m.webp"},"items":[{"id":"kiln","title":"Lò gốm","desc":"Nơi những bàn tay nhỏ nhào đất, nặn bình và nung thành món quà của riêng mình.","url":"","target":"","hotspot":{"poly":[[460,106],[465,141],[428,180],[412,230],[413,252],[408,271],[420,284],[445,294],[478,299],[590,300],[645,290],[668,281],[681,269],[681,211],[705,182],[694,167],[679,163],[653,138],[618,147],[589,147],[565,143],[550,135],[537,136],[524,123],[529,118],[529,105],[514,92],[492,89],[475,93]]},"litCropUrl":"assets/khampha/lit_kiln.webp","litCropUrlPhone":"assets/khampha/lit_m_kiln.webp","litBox":[404,85,306,222],"labelAnchor":[556,89]},{"id":"studio","title":"Studio ảnh thời trang","desc":"Ánh đèn, khung tranh và chiếc váy hoa: góc làm ảnh và thiết kế của lớp.","url":"","target":"","hotspot":{"poly":[[1195,138],[1204,243],[1172,296],[1186,308],[1203,293],[1221,311],[1221,338],[1232,349],[1265,357],[1297,357],[1309,349],[1380,349],[1439,336],[1458,338],[1479,328],[1494,331],[1505,320],[1522,332],[1533,321],[1505,270],[1506,228],[1512,221],[1514,206],[1527,192],[1527,175],[1503,151],[1451,152],[1438,134],[1421,121],[1284,125],[1258,111],[1220,126],[1208,125]]},"litCropUrl":"assets/khampha/lit_studio.webp","litCropUrlPhone":"assets/khampha/lit_m_studio.webp","litBox":[1168,107,370,255],"labelAnchor":[1352,111]},{"id":"house","title":"Homestay / Ngôi nhà mặt trời","desc":"Căn nhà nhỏ sáng đèn dưới mặt trời, nơi cả lớp nghỉ chân sau một ngày dài.","url":"","target":"","hotspot":{"poly":[[93,581],[94,588],[115,612],[157,633],[185,629],[203,644],[242,646],[263,656],[288,653],[337,658],[369,653],[399,638],[411,639],[422,632],[474,620],[489,606],[507,580],[508,572],[502,565],[504,553],[462,512],[424,519],[368,449],[369,439],[357,427],[317,426],[294,448],[286,447],[273,434],[277,425],[263,409],[263,393],[251,381],[241,384],[223,367],[216,366],[199,382],[185,379],[171,392],[175,410],[157,428],[157,433],[177,454],[173,460],[186,473],[197,468],[217,489],[200,507],[180,498],[168,508],[161,503],[144,508],[106,552],[105,565]]},"litCropUrl":"assets/khampha/lit_house.webp","litCropUrlPhone":"assets/khampha/lit_m_house.webp","litBox":[89,362,424,301],"labelAnchor":[300,366]},{"id":"stage","title":"Sân khấu","desc":"Tấm màn đỏ đã mở, cô bé đứng giữa ánh đèn: nơi trình diễn và kể chuyện.","url":"","target":"","hotspot":{"poly":[[1173,476],[1160,445],[1166,437],[1166,426],[1140,396],[1138,381],[1121,366],[1102,365],[1086,349],[1084,329],[1090,322],[1090,304],[1075,286],[1063,287],[1048,302],[999,296],[967,284],[953,270],[952,262],[933,247],[914,262],[913,274],[900,287],[880,297],[834,310],[822,298],[812,297],[796,312],[799,323],[784,339],[773,343],[758,331],[750,332],[737,346],[738,362],[699,395],[686,399],[653,430],[649,440],[649,452],[665,472],[663,483],[668,492],[683,506],[703,509],[727,533],[836,544],[846,550],[986,550],[994,544],[1089,534],[1101,529],[1122,509],[1153,506],[1166,493]]},"litCropUrl":"assets/khampha/lit_stage.webp","litCropUrlPhone":"assets/khampha/lit_m_stage.webp","litBox":[645,243,533,312],"labelAnchor":[911,247]},{"id":"class","title":"Lớp học","desc":"Bảng xanh, chồng sách và ngọn đèn: nơi mọi buổi học bắt đầu.","url":"","target":"","hotspot":{"poly":[[713,729],[716,749],[731,766],[749,767],[763,777],[835,790],[880,790],[921,796],[1051,781],[1068,771],[1105,770],[1136,740],[1129,716],[1088,681],[1086,656],[1075,637],[1031,601],[1022,603],[1012,613],[882,613],[872,603],[862,601],[846,617],[842,664],[829,677],[793,667],[776,680],[763,680],[729,708]]},"litCropUrl":"assets/khampha/lit_class.webp","litCropUrlPhone":"assets/khampha/lit_m_class.webp","litBox":[709,597,432,204],"labelAnchor":[924,601]}],"settings":{"target":"_blank","showLabels":true,"fadeMs":450,"sparkle":true,"drift":true,"stars":[[154,14],[903,18],[1563,19],[1392,21],[707,29],[412,31],[556,40],[862,135],[1148,203],[1561,224],[65,258],[284,317],[1643,332],[501,377],[1550,402],[107,438],[1445,441],[1535,596]]}};
+const CONFIG_DEFAULT={"version":1,"page":{"title":"Khám phá tác phẩm","subtitle":"","subtitleTouch":"","hint":"","backLabel":"← Về trang Bọ","backHref":"index.html","loaderText":"Bọ đang thắp đèn trên mây…","soonText":"Sắp có","openText":"","tapText":"","noLinkText":"Chưa có liên kết","boLabel":"Trò chuyện với Bọ","viewText":"Vào xem","closeLabel":"Đóng","notFoundText":"Chưa tìm thấy tác phẩm này.","playLabel":"Phát video","galleryLabel":"Hình ảnh thêm"},"layers":{"sky":"assets/khampha/sky.webp","far":"assets/khampha/far.webp","base":"assets/khampha/base.webp","off":"assets/khampha/off.webp","bg":"assets/khampha/bg.webp","bgPhone":"assets/khampha/bg_m.webp","offPhone":"assets/khampha/off_m.webp"},"items":[{"id":"kiln","title":"Lò gốm","desc":"Nơi những bàn tay nhỏ nhào đất, nặn bình và nung thành món quà của riêng mình.","url":"","target":"","hotspot":{"poly":[[460,106],[465,141],[428,180],[412,230],[413,252],[408,271],[420,284],[445,294],[478,299],[590,300],[645,290],[668,281],[681,269],[681,211],[705,182],[694,167],[679,163],[653,138],[618,147],[589,147],[565,143],[550,135],[537,136],[524,123],[529,118],[529,105],[514,92],[492,89],[475,93]]},"litCropUrl":"assets/khampha/lit_kiln.webp","litCropUrlPhone":"assets/khampha/lit_m_kiln.webp","litBox":[404,85,306,222],"labelAnchor":[556,89],"workId":""},{"id":"studio","title":"Studio ảnh thời trang","desc":"Ánh đèn, khung tranh và chiếc váy hoa: góc làm ảnh và thiết kế của lớp.","url":"","target":"","hotspot":{"poly":[[1195,138],[1204,243],[1172,296],[1186,308],[1203,293],[1221,311],[1221,338],[1232,349],[1265,357],[1297,357],[1309,349],[1380,349],[1439,336],[1458,338],[1479,328],[1494,331],[1505,320],[1522,332],[1533,321],[1505,270],[1506,228],[1512,221],[1514,206],[1527,192],[1527,175],[1503,151],[1451,152],[1438,134],[1421,121],[1284,125],[1258,111],[1220,126],[1208,125]]},"litCropUrl":"assets/khampha/lit_studio.webp","litCropUrlPhone":"assets/khampha/lit_m_studio.webp","litBox":[1168,107,370,255],"labelAnchor":[1352,111],"workId":""},{"id":"house","title":"Homestay / Ngôi nhà mặt trời","desc":"Căn nhà nhỏ sáng đèn dưới mặt trời, nơi cả lớp nghỉ chân sau một ngày dài.","url":"","target":"","hotspot":{"poly":[[93,581],[94,588],[115,612],[157,633],[185,629],[203,644],[242,646],[263,656],[288,653],[337,658],[369,653],[399,638],[411,639],[422,632],[474,620],[489,606],[507,580],[508,572],[502,565],[504,553],[462,512],[424,519],[368,449],[369,439],[357,427],[317,426],[294,448],[286,447],[273,434],[277,425],[263,409],[263,393],[251,381],[241,384],[223,367],[216,366],[199,382],[185,379],[171,392],[175,410],[157,428],[157,433],[177,454],[173,460],[186,473],[197,468],[217,489],[200,507],[180,498],[168,508],[161,503],[144,508],[106,552],[105,565]]},"litCropUrl":"assets/khampha/lit_house.webp","litCropUrlPhone":"assets/khampha/lit_m_house.webp","litBox":[89,362,424,301],"labelAnchor":[300,366],"workId":""},{"id":"stage","title":"Sân khấu","desc":"Tấm màn đỏ đã mở, cô bé đứng giữa ánh đèn: nơi trình diễn và kể chuyện.","url":"","target":"","hotspot":{"poly":[[1173,476],[1160,445],[1166,437],[1166,426],[1140,396],[1138,381],[1121,366],[1102,365],[1086,349],[1084,329],[1090,322],[1090,304],[1075,286],[1063,287],[1048,302],[999,296],[967,284],[953,270],[952,262],[933,247],[914,262],[913,274],[900,287],[880,297],[834,310],[822,298],[812,297],[796,312],[799,323],[784,339],[773,343],[758,331],[750,332],[737,346],[738,362],[699,395],[686,399],[653,430],[649,440],[649,452],[665,472],[663,483],[668,492],[683,506],[703,509],[727,533],[836,544],[846,550],[986,550],[994,544],[1089,534],[1101,529],[1122,509],[1153,506],[1166,493]]},"litCropUrl":"assets/khampha/lit_stage.webp","litCropUrlPhone":"assets/khampha/lit_m_stage.webp","litBox":[645,243,533,312],"labelAnchor":[911,247],"workId":""},{"id":"class","title":"Lớp học","desc":"Bảng xanh, chồng sách và ngọn đèn: nơi mọi buổi học bắt đầu.","url":"","target":"","hotspot":{"poly":[[713,729],[716,749],[731,766],[749,767],[763,777],[835,790],[880,790],[921,796],[1051,781],[1068,771],[1105,770],[1136,740],[1129,716],[1088,681],[1086,656],[1075,637],[1031,601],[1022,603],[1012,613],[882,613],[872,603],[862,601],[846,617],[842,664],[829,677],[793,667],[776,680],[763,680],[729,708]]},"litCropUrl":"assets/khampha/lit_class.webp","litCropUrlPhone":"assets/khampha/lit_m_class.webp","litBox":[709,597,432,204],"labelAnchor":[924,601],"workId":"mau"}],"settings":{"target":"_blank","showLabels":true,"fadeMs":450,"sparkle":true,"drift":true,"stars":[[154,14],[903,18],[1563,19],[1392,21],[707,29],[412,31],[556,40],[862,135],[1148,203],[1561,224],[65,258],[284,317],[1643,332],[501,377],[1550,402],[107,438],[1445,441],[1535,596]]},"works":[{"id":"mau","sample":true,"title":"Tác phẩm mẫu","author":"Học viên mẫu","date":"2026","thumb":"assets/lopf1/img/demo4.webp","thumbW":952,"thumbH":498,"cardDesc":"Trang mẫu để xem luồng từ ngôi nhà đến bài giới thiệu. Chữ và hình sẽ được thay bằng tác phẩm thật.","video":"","image":"assets/lopf1/img/demo4.webp","imageW":952,"imageH":498,"imageAlt":"Một bàn học đặt giữa rừng, có đèn và sách","caption":"Hình minh hoạ cho tác phẩm mẫu","metaDescription":"Trang mẫu của mục Khám phá tác phẩm, sẽ được thay bằng tác phẩm thật.","paragraphs":["Đây là đoạn giới thiệu mẫu. Khi có tác phẩm thật, đoạn này sẽ kể về ý tưởng ban đầu và điều người làm muốn gửi gắm.","Đoạn thứ hai dành cho cách làm: những bước đã đi qua, dụng cụ đã dùng và điều bất ngờ gặp trên đường.","Đoạn cuối nói về cảm xúc khi hoàn thành, và lời mời người xem dừng lại thưởng thức tác phẩm."],"gallery":[{"src":"assets/gallery/photo.webp","w":856,"h":436,"alt":"Ngôi nhà nhỏ sáng đèn bên hồ dưới trăng","caption":"Hình phụ mẫu"}]}]};
 const C=await MemoriContent.load('khampha',CONFIG_DEFAULT);
 const SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);
 MemoriContent.applySite(SITE,'#back');
@@ -181,9 +213,12 @@ const ITEMS=(C.items||[]).map(it=>{
   const img=u(PHONE?(it.litCropUrlPhone||it.litCropUrl):it.litCropUrl,'');
   if(hp.length<3||!lb||!img)return null;
   const href=u(it.url,'');
+  const wk=(C.works||[]).find(w=>w&&w.id&&w.id===it.workId);
+  const work=wk&&it.workId?{id:String(wk.id),title:String(wk.title||''),desc:String(wk.cardDesc||''),thumb:u(wk.thumb,''),
+    tw:typeof wk.thumbW==='number'&&wk.thumbW>0?wk.thumbW:16,th:typeof wk.thumbH==='number'&&wk.thumbH>0?wk.thumbH:9}:null;
   const tg=it.target==='_self'||it.target==='_blank'?it.target:(ST.target==='_self'?'_self':'_blank');
   const xs=hp.map(p=>p[0]),ys=hp.map(p=>p[1]);
-  return{id:String(it.id||''),title:String(it.title||''),desc:String(it.desc||''),href,target:tg,poly:hp,img,box:lb,
+  return{id:String(it.id||''),title:String(it.title||''),desc:String(it.desc||''),href:work?'':href,work,live:!!(work||href),target:tg,poly:hp,img,box:lb,
     bb:[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)],
     anchor:Array.isArray(it.labelAnchor)&&it.labelAnchor.length===2&&it.labelAnchor.every(num)?it.labelAnchor:[(Math.min(...xs)+Math.max(...xs))/2,Math.min(...ys)]};
 }).filter(Boolean);
@@ -219,7 +254,7 @@ function layout(){
   stage.style.transform='translate3d('+ox+'px,'+oy+'px,0) scale('+s+')';
   const l=!portrait&&ox>.5,r=!portrait&&ox+W*s<vw-.5,t=!portrait&&oy>.5,b=!portrait&&oy+H*s<vh-.5;
   ext('L',l);ext('R',r);ext('T',t);ext('B',b);ext('TL',l&&t);ext('TR',r&&t);ext('BL',l&&b);ext('BR',r&&b);
-  placeTips();
+  placeTips();placeCard();
 }
 
 /* ===== sao lấp lánh: rất nhẹ, vị trí lấy từ các ngôi sao trong ảnh nền ===== */
@@ -242,29 +277,30 @@ ITEMS.forEach((it,idx)=>{
   lit.style.cssText='left:'+it.box[0]+'px;top:'+it.box[1]+'px;width:'+it.box[2]+'px;height:'+it.box[3]+'px';
   litsBox.appendChild(lit);
   const [x0,y0,x1,y1]=it.bb,w=x1-x0,h=y1-y0;
-  const hs=document.createElement(it.href?'a':'button');hs.className='hs'+(it.href?'':' nolink');
+  const hs=document.createElement(it.href?'a':'button');hs.className='hs'+(it.live?'':' nolink');
   if(it.href){hs.href=it.href;hs.target=it.target;if(it.target==='_blank')hs.rel='noopener noreferrer'}else hs.type='button';
   hs.style.cssText='left:'+x0+'px;top:'+y0+'px;width:'+w+'px;height:'+h+'px;clip-path:polygon('+it.poly.map(p=>(p[0]-x0)+'px '+(p[1]-y0)+'px').join(',')+')';
-  hs.setAttribute('aria-label',it.title+'. '+it.desc+(it.href?'':' '+PG.noLinkText+'.'));
+  hs.setAttribute('aria-label',it.work?(it.work.title||it.title)+'. '+(it.work.desc||it.desc):it.title+'. '+it.desc+(it.href?'':' '+PG.noLinkText+'.'));
   hs.dataset.id=it.id;hotsBox.appendChild(hs);
-  const tip=document.createElement('div');tip.className='tip'+(it.href?'':' soon');tip.setAttribute('aria-hidden','true');
+  const tip=document.createElement('div');tip.className='tip'+(it.live?'':' soon');tip.setAttribute('aria-hidden','true');
   tip.innerHTML='<b></b><span></span><em></em>';tip.firstChild.textContent=it.title;tip.children[1].textContent=it.desc;
   tipsBox.appendChild(tip);
-  const st={hover:false,focus:false,tap:false,lit,hs,tip,it,idx};state.set(it.id,st);
+  const st={hover:false,focus:false,tap:false,open:false,lit,hs,tip,it,idx};state.set(it.id,st);
   const sync=()=>{
-    const on=st.hover||st.focus||st.tap;
+    const on=st.hover||st.focus||st.tap||st.open;
     lit.classList.toggle('on',on);
-    tip.classList.toggle('on',on&&ST.showLabels);
-    tip.lastChild.textContent=it.href?(st.tap&&!HOVER?PG.tapText:PG.openText):PG.soonText;
+    tip.classList.toggle('on',on&&ST.showLabels&&!st.open);
+    tip.lastChild.textContent=it.live?(st.tap&&!HOVER?PG.tapText:PG.openText):PG.soonText;
     if(on)placeTips();
     if(boCtl){const any=[...state.values()].find(s=>s.hover||s.focus||s.tap);boCtl.look(any?(any.it.bb[0]>180?1:-1):0)}
   };
   st.sync=sync;
   hs.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){st.hover=true;sync()}});
   hs.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'){st.hover=false;sync()}});
-  hs.addEventListener('focus',()=>{if(hs.matches(':focus-visible')){st.focus=true;sync();live.textContent=it.title+'. '+it.desc+(it.href?'':' '+PG.noLinkText+'.')}});
+  hs.addEventListener('focus',()=>{if(hs.matches(':focus-visible')){st.focus=true;sync();live.textContent=it.title+'. '+it.desc+(it.live?'':' '+PG.noLinkText+'.')}});
   hs.addEventListener('blur',()=>{st.focus=false;sync()});
   hs.addEventListener('click',e=>{
+    if(it.work){e.preventDefault();if(lastPtr!=='touch'&&lastPtr!=='pen')openCard(st,lastPtr==='kbd');return}   /* nhà có tác phẩm: mở thẻ (cảm ứng xử lý ở pointerup) */
     if(st.go){st.go=false;if(!it.href)e.preventDefault();return}                   /* mở do chạm lần 2 (pointerup bên dưới) */
     if(lastPtr==='touch'||lastPtr==='pen'){e.preventDefault();return}              /* cảm ứng xử lý ở pointerup, không dựa vào click */
     if(!it.href){e.preventDefault();flashSoon(st)}                                 /* chuột/phím, chưa có link: chỉ nhắc "Sắp có" */
@@ -293,7 +329,9 @@ view.addEventListener('pointerup',e=>{
   if(!d||d.id!==e.pointerId||e.pointerType==='mouse')return;
   if(Math.hypot(e.clientX-d.x,e.clientY-d.y)>10||performance.now()-d.t>900)return;
   const st=hitTest(e.clientX,e.clientY);
-  if(!st){clearTaps('');return}
+  if(!st){clearTaps('');closeCard();return}
+  if(st.it.work){clearTaps('');openCard(st,false);return}                          /* nhà có tác phẩm: chạm một lần mở thẻ */
+  if(openSt)closeCard();
   if(!st.tap){clearTaps(st.it.id);st.tap=true;st.sync();return}                    /* chạm lần 1: bật đèn + hiện thẻ */
   if(st.it.href){st.go=true;st.hs.click()}else flashSoon(st)                       /* chạm lần 2: mở link / nhắc "Sắp có" */
 });
@@ -304,6 +342,49 @@ function flashSoon(st){
   live.textContent=st.it.title+'. '+PG.soonText;
   clearTimeout(st.t);st.t=setTimeout(()=>{if(!(st.hover||st.focus||st.tap))st.tip.classList.remove('on')},1600);
 }
+
+/* ===== thẻ tác phẩm ===== */
+const card=$('wc'),wcImg=$('wcImg');
+let openSt=null;
+function openCard(st,focusIt){
+  const w=st.it.work;if(!w)return;
+  if(openSt&&openSt!==st){openSt.open=false;openSt.sync()}
+  openSt=st;st.open=true;st.sync();
+  $('wcK').textContent=st.it.title;$('wcT').textContent=w.title||st.it.title;$('wcD').textContent=w.desc||st.it.desc;
+  $('wcGoT').textContent=PG.viewText;$('wcX').setAttribute('aria-label',PG.closeLabel);
+  $('wcGo').href='tacpham.html?id='+encodeURIComponent(w.id);
+  if(w.thumb){wcImg.hidden=false;wcImg.width=w.tw;wcImg.height=w.th;if(wcImg.getAttribute('src')!==w.thumb)wcImg.src=w.thumb}else wcImg.hidden=true;
+  card.removeAttribute('inert');card.classList.add('on');placeCard();
+  live.textContent=(w.title||st.it.title)+'. '+(w.desc||st.it.desc);
+  if(focusIt)setTimeout(()=>{try{$('wcGo').focus({preventScroll:true})}catch(e){}},30);
+}
+function closeCard(back){
+  if(!openSt)return;
+  const st=openSt;openSt=null;st.open=false;st.tap=false;st.sync();
+  card.classList.remove('on');card.setAttribute('inert','');
+  if(back){try{st.hs.focus({preventScroll:true})}catch(e){}}
+}
+function placeCard(){
+  if(!openSt)return;
+  const vw=innerWidth,vh=innerHeight,narrow=vw<=600;
+  card.classList.toggle('row',narrow);
+  card.style.width=(narrow?Math.min(vw-24,420):300)+'px';
+  const cw=card.offsetWidth,ch=card.offsetHeight,b=openSt.it.bb;
+  const hx0=OX-view.scrollLeft+b[0]*S,hx1=OX-view.scrollLeft+b[2]*S,hy0=OY+b[1]*S,hy1=OY+b[3]*S;
+  const top=$('ttl').getBoundingClientRect().bottom+6,g=12,bt=Math.max(12,0);
+  const cand=narrow?[[(vw-cw)/2,vh-ch-bt],[(vw-cw)/2,top]]
+    :[[(hx0+hx1)/2-cw/2,hy0-ch-g],[(hx0+hx1)/2-cw/2,hy1+g],[hx1+g,(hy0+hy1)/2-ch/2],[hx0-cw-g,(hy0+hy1)/2-ch/2]];
+  let best=null,bo=1e12;
+  cand.forEach(c=>{
+    const x=Math.max(8,Math.min(vw-cw-8,c[0])),y=Math.max(top,Math.min(vh-ch-8,c[1]));
+    const ov=Math.max(0,Math.min(x+cw,hx1)-Math.max(x,hx0))*Math.max(0,Math.min(y+ch,hy1)-Math.max(y,hy0));
+    if(ov<bo-1){bo=ov;best=[x,y]}
+  });
+  card.style.left=Math.round(best[0])+'px';card.style.top=Math.round(best[1])+'px';
+}
+$('wcX').addEventListener('click',()=>closeCard(true));
+addEventListener('keydown',e=>{if(e.key==='Escape'&&openSt)closeCard(card.contains(document.activeElement))});
+view.addEventListener('click',e=>{if(lastPtr==='touch'||lastPtr==='pen')return;if(!e.target.closest('.hs'))closeCard()});
 
 /* thẻ chú thích đặt theo toạ độ màn hình của công trình (trên đầu nếu đủ chỗ, không thì dưới chân) */
 function placeTips(){
@@ -319,7 +400,7 @@ function placeTips(){
     st.tip.style.left=Math.round(x)+'px';st.tip.style.top=Math.round(y)+'px';
   });
 }
-addEventListener('resize',layout);view.addEventListener('scroll',()=>placeTips(),{passive:true});layout();
+addEventListener('resize',layout);view.addEventListener('scroll',()=>{placeTips();placeCard()},{passive:true});layout();
 
 /* ===== Bọ (sprite của trang chủ) nghỉ trên đám mây dưới trái ===== */
 try{boCtl=BoIdle.create({every:[5,12]});BoIdle.mount($('bo'),boCtl,{lazy:false})}catch(e){}
@@ -336,7 +417,7 @@ function loadGate(){
   const dec=im=>new Promise(r=>{const go=()=>{(im.decode?im.decode():Promise.resolve()).then(r,r)};if(im.complete&&im.naturalWidth)go();else if(im.complete&&im.src)r();else{im.addEventListener('load',go,{once:true});im.addEventListener('error',()=>r(),{once:true})}});
   const list=[...document.images].filter(i=>i.src).map(dec);
   try{list.push(BoIdle.preload())}catch(e){}
-  const sample=PG.title+PG.subtitle+PG.subtitleTouch+PG.hint+ITEMS.map(i=>i.title+i.desc).join('')+PG.soonText+PG.openText+PG.tapText+' Về trang Bọ Bản đồ trang';
+  const sample=PG.title+PG.viewText+PG.subtitle+PG.subtitleTouch+PG.hint+ITEMS.map(i=>i.title+i.desc).join('')+PG.soonText+PG.openText+PG.tapText+' Về trang Bọ Bản đồ trang';
   ['400 40px "Oooh Baby"','400 16px "Be Vietnam Pro"','500 16px "Be Vietnam Pro"'].forEach(f=>list.push(document.fonts&&document.fonts.load?document.fonts.load(f,sample).catch(()=>{}):Promise.resolve()));
   let n=0;const tot=list.length;
   list.forEach(p=>p.then(()=>{n++;bar.style.transform='scaleX('+Math.max(.04,n/tot*.96)+')'}));
