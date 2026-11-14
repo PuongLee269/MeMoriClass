@@ -177,7 +177,7 @@
       var a = (target || card) ? makeLink(target, label, card) : null; if (a) p.append(' ', a);
       log.setAttribute('aria-busy', 'false'); scrollDown();
     };
-    if (RM && RM.matches) { done(); return; }
+    done(); return;   /* hiện cả câu ngay, không gõ từng chữ */
     finishTyping = done; log.setAttribute('aria-busy', 'true');
     var t0 = Date.now(), per = Math.min(24, 2200 / Math.max(1, text.length));   /* theo thời gian thật (trang nặng vẫn gõ kịp), tối đa ~2,2 giây */
     typeTimer = window.setInterval(function () { var i = Math.min(text.length, Math.floor((Date.now() - t0) / per) + 1); node.data = text.slice(0, i); scrollDown(); if (i >= text.length) { window.clearInterval(typeTimer); done(); } }, 24);

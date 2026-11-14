@@ -1074,7 +1074,7 @@
           beetleHead.classList.remove('is-talking');
           dialogue.scrollTop = dialogue.scrollHeight;
         };
-        if (reduceMotion.matches) { done(); return; }
+        done(); return;   // hiện cả câu ngay, không gõ từng chữ
         finishTyping = done;
         dialogue.setAttribute('aria-busy', 'true');
         beetleHead.classList.add('is-talking');
@@ -1185,6 +1185,6 @@
       }
     })();
   </script>
-<script src="assets/bo-widget.js?v=r527fq" defer data-mode="hit" data-target=".beetle-head .bo-idle" data-inset="0.1,0.12,0.1,0.03" data-activate="#question"></script>
+<script src="assets/bo-widget.js?v=r529inst" defer data-mode="hit" data-target=".beetle-head .bo-idle" data-inset="0.1,0.12,0.1,0.03" data-activate="#question"></script>
 </body>
 </html>
