@@ -9,7 +9,7 @@
   "zoneLabelDesk": "",
   "zoneLabelTouch": "",
   "ctaDesk": "",
-  "hintDone": "Đã gửi đăng ký. Cảm ơn bạn!",
+  "hintDone": "Đã gửi, ME.MORI sẽ liên hệ bạn sớm",
   "form": {
     "title": "Đăng ký lớp F2",
     "lead": "Để lại thông tin, Bọ sẽ liên hệ giữ chỗ cho bạn.",
@@ -36,7 +36,7 @@
         "ph": "ban@email.com",
         "type": "email",
         "ac": "email",
-        "req": 1
+        "req": 0
       },
       {
         "id": "lop",
@@ -55,7 +55,7 @@
     "errEmail": "Email chưa đúng (ví dụ ban@email.com).",
     "errSend": "Chưa gửi được. Bạn thử lại sau ít phút nhé.",
     "thanksTitle": "Cảm ơn bạn!",
-    "thanksText": "Bọ đã nhận thông tin đăng ký lớp F2 của bạn và sẽ liên hệ sớm. (Bản demo, chưa gửi đi đâu.)"
+    "thanksText": "Đã gửi, ME.MORI sẽ liên hệ bạn sớm"
   },
   "fullLabel": "Đã hết chỗ",
   "seats": {
