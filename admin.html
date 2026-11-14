@@ -324,7 +324,7 @@ var T = function (l, o) { return S.text(l, o); };
 
 var DOCS = [
   { id: 'site', group: 'Chung', tab: 'Cả web (dùng chung)', file: 'assets/content/site.json', page: 'index.html',
-    note: 'Cài đặt dùng chung cho nhiều trang. Nút “Về trang Bọ” áp dụng cho Lộ trình, Đăng ký, Bản đồ, Cộng đồng, Gallery.',
+    note: 'Cài đặt dùng chung cho nhiều trang. Nút quay về này nay chỉ còn dùng ở nơi cũ chưa đổi; các trang con đã dùng tab “Lộ trình gợi ý”.',
     sections: [
       { title: 'Nút quay về & âm thanh', fields: {
         backLabel: T('Chữ nút “Về trang Bọ”', { req: 1, max: 40 }),
@@ -429,6 +429,21 @@ var DOCS = [
       });
       return errs;
     } },
+
+  { id: 'journey', group: 'Chung', tab: 'Lộ trình gợi ý', file: 'assets/content/journey.json', page: null,
+    note: 'Thứ tự các trang trong hành trình của người xem, và trang nào được gợi ý ở cuối mỗi trang (thay nút “Về trang Bọ”). Mã trang phải trùng tên file (vd. lopf1 cho lopf1.html).',
+    sections: [
+      { title: 'Số gợi ý tối đa mỗi trang', fields: { max: S.num('Số nút gợi ý', { int: 1, min: 1, max: 4 }) } },
+      { title: 'Các trang theo thứ tự', fields: {
+        pages: S.list('Trang', S.grp('', {
+          id: T('Mã trang', { req: 1, max: 30 }),
+          name: T('Tên hiển thị trên nút', { req: 1, max: 40 }),
+          short: T('Tên ngắn trên điện thoại (tuỳ chọn)', { max: 20 }),
+          href: S.url('Đường dẫn', { req: 1, hash: 1, pages: 1 }),
+          next: S.lines('Gợi ý (mỗi dòng một mã trang, ưu tiên từ trên xuống)', { rows: 3, max: 30 })
+        }), { itemTitle: function (it) { return it.name; }, collapse: 1 })
+      } }
+    ] },
 
   { id: 'sitemap', group: 'Các trang', tab: 'Bản đồ trang', file: 'assets/content/sitemap.json', page: 'sitemap.html', preview: ['sitemap', 'site'],
     note: 'Chín viên đá có vị trí và hình cố định; ở đây sửa tên, gợi ý, đường dẫn và dòng chữ viết trên đá.',
