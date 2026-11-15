@@ -10,7 +10,18 @@
  function create(fetcher){
   var configPromise;
   function config(){if(!configPromise)configPromise=fetcher('assets/content/registration.json',{cache:'no-store',credentials:'omit'}).then(function(r){if(!r.ok)throw fault('not-configured');return r.json();}).then(function(c){if(!c||typeof c.endpoint!=='string'||!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(c.endpoint)||typeof c.fallbackEmail!=='string'||!MAIL.test(c.fallbackEmail))throw fault('not-configured');return c;}).catch(function(){configPromise=null;throw fault('not-configured');});return configPromise;}
-  return {submit:function(data){var payload;try{payload=validate(data);}catch(e){return Promise.reject(e);}return config().then(function(c){return fetcher(c.endpoint,{method:'POST',mode:'no-cors',credentials:'omit',redirect:'follow',referrerPolicy:'no-referrer',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).then(function(){return {ok:true,sent:true};},function(){var e=fault('network');e.fallbackEmail=c.fallbackEmail;throw e;});});}};
+  function loadConfirmed(signal) {
+   return config().then(function(c) {
+    return fetcher(c.endpoint+'?view=f2-seats',{cache:'no-store',credentials:'omit',referrerPolicy:'no-referrer',signal:signal});
+   }).then(function(r) {
+    if(!r.ok)throw fault('seats-unavailable');
+    return r.json();
+   }).then(function(data) {
+    if(!data || data.ok!==true || !Number.isSafeInteger(data.confirmed) || data.confirmed<0)throw fault('seats-unavailable');
+    return data.confirmed;
+   });
+  }
+  return {loadConfirmed:loadConfirmed,submit:function(data){var payload;try{payload=validate(data);}catch(e){return Promise.reject(e);}return config().then(function(c){return fetcher(c.endpoint,{method:'POST',mode:'no-cors',credentials:'omit',redirect:'follow',referrerPolicy:'no-referrer',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)}).then(function(){return {ok:true,sent:true};},function(){var e=fault('network');e.fallbackEmail=c.fallbackEmail;throw e;});});}};
  }
  root.MemoriRegistration={create:create,validate:validate};
 })(typeof window!=='undefined'?window:globalThis);

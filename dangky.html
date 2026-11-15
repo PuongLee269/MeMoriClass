@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Đăng ký lớp F2</title>
 <script src="assets/content-loader.js"></script>
-<script src="assets/registration.js"></script>
+<script src="assets/registration.js?v=f2-seats"></script>
 <script>MemoriContent.prefetch("dangky");MemoriContent.prefetch("site");</script>
 <style>
 <style>
@@ -187,12 +187,12 @@ body.mopen{cursor:auto}body.mopen *{cursor:auto!important}body.mopen button,body
 'use strict';
 /* ===== NỘI DUNG (CHỮ MẪU / PLACEHOLDER) =====
    Chữ nhìn thấy trên tờ giấy là ẢNH LỚP CHỮ do người dùng cung cấp. Bản chữ dưới đây chỉ cho trình đọc màn hình
-   và phần động (con số, dòng đếm, gợi ý). Số liệu chỉ là DEMO, ứng dụng đăng ký sẽ đẩy số thật qua MemoriRegister.setEnrolled. */
+   và phần động (con số, dòng đếm, gợi ý). Số chỗ đã giữ lấy từ Trang tính. */
 const CONFIG_DEFAULT={
  pageTitle:'Đăng ký lớp F2',loaderText:'Bọ đang trải tờ giấy đăng ký…',
  srTitle:'Đăng ký lớp F2',
  srText:'Học phí ưu đãi 1.500.000đ, giá gốc 2.400.000đ. Số lượng có hạn.',
- enrolledLabel:'Số người đã đăng ký',seatWord:'chỗ',
+ enrolledLabel:'Số chỗ còn lại',seatWord:'chỗ',
  hint:'',zoneLabelDesk:'',zoneLabelTouch:'',ctaDesk:'',
  hintDone:'Đã gửi, ME.MORI sẽ liên hệ bạn sớm',
  /* CHỮ MẪU cho form đăng ký riêng (placeholder) */
@@ -205,12 +205,12 @@ const CONFIG_DEFAULT={
   errReq:'Vui lòng nhập thông tin này.',errPhone:'Số điện thoại chưa đúng (ví dụ 0912 345 678).',errEmail:'Email chưa đúng (ví dụ ban@email.com).',errSend:'Chưa gửi được. Bạn thử lại sau ít phút nhé.',
   thanksTitle:'Cảm ơn bạn!',thanksText:'Đã gửi, ME.MORI sẽ liên hệ bạn sớm'},
  fullLabel:'Đã hết chỗ',
- seats:{enrolled:12,capacity:20}
+ seats:{capacity:20}
 };
 /* Nội dung sửa được từ trang admin (assets/content/dangky.json + site.json). Chữ tiêu đề/giá/ghi chú nằm trong ẢNH nên không sửa ở đây. */
 const CC=await MemoriContent.load('dangky',CONFIG_DEFAULT),SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);
 const CONFIG=CC;{const D=CONFIG_DEFAULT.form;CC.form.fields=D.fields.map(d=>{const c=CC.form.fields.find(x=>x&&x.id===d.id)||d;return Object.assign({},d,{label:c.label||d.label,ph:typeof c.ph==='string'?c.ph:d.ph})});
- CC.seats.enrolled=Math.max(0,Math.floor(CC.seats.enrolled));CC.seats.capacity=Math.max(1,Math.floor(CC.seats.capacity))}
+ CC.seats.capacity=Math.max(1,Math.floor(CC.seats.capacity))}
 const E=MemoriContent.esc;
 MemoriContent.applySite(SITE,'#back');document.title=CC.pageTitle||document.title;MemoriContent.setText('.loader-text',CC.loaderText);MemoriContent.setText('#stamp .cta',CC.ctaDesk);
 const META={"t_A":[150,42,1422,417],"t_B":[169,402,790,565],"t_D":[778,293,1512,594],"t_C":[172,555,942,712],"t_E":[218,700,886,895],"bug":[191,130,454,418],"seal":[923,415,1376,815],"flies":[43,4,1623,854],"paper":[131,54,1598,941],
@@ -238,7 +238,7 @@ $('#a11y').innerHTML='<h1>'+E(CONFIG.srTitle)+'</h1><p>'+E(CONFIG.srText)+'</p>'
 const rootEl=$('#root');const VW=()=>rootEl.clientWidth||innerWidth,VH=()=>rootEl.clientHeight||innerHeight;
 const small=Math.max(VW(),VH())<=1000;
 let mode=null,M=null,imgs=[],FOL=[],zone=null,glow=null,imp=null,K=1,TX=0,TY=0;
-let EN=0,CAP=0,sent=false;
+let EN=null,CAP=CONFIG.seats.capacity,sent=false;
 /* ===== dựng cảnh theo hướng màn hình ===== */
 function mk(tag,id,cls,box,src,parent){
  const e=document.createElement(tag);if(id)e.id=id;if(cls)e.className=cls;
@@ -294,7 +294,7 @@ function build(m){
  if(stamped){glow.classList.add('on');if(imp)imp.classList.add('on')}
  if(!(zone.matches(':hover')))document.body.classList.remove('zone-hot');
  if(sent)$('#hint').textContent=CONFIG.hintDone
- if(CAP)setEnrolled(EN,CAP);
+ renderSeats();
 }
 /* ===== số đếm (chữ thật, lăn từng chữ số) ===== */
 function roll(host,n){
@@ -304,17 +304,33 @@ function roll(host,n){
 }
 function setEnrolled(n,capacity){
  if(capacity!=null)CAP=Math.max(1,Math.floor(+capacity||CAP||1));
- n=Math.min(Math.max(0,Math.floor(+n||0)),CAP);EN=n;
- const rem=CAP-n;
- if($('#rRem')){roll($('#rRem'),rem);roll($('#rCap'),CAP);
-  $('#enr').innerHTML=E(CONFIG.enrolledLabel)+': <b>'+n+' / '+CAP+'</b> '+E(CONFIG.seatWord)+(rem<=0?' · '+E(CONFIG.fullLabel):'')+'<br>'}
- $('#live').textContent=CONFIG.enrolledLabel+': '+n+' / '+CAP+' '+CONFIG.seatWord;
+ EN=n==null?null:Math.max(0,Math.floor(+n||0));
+ renderSeats();
+}
+function renderSeats(){
+ const host=$('#rRem');
+ if(!host)return;
+ const rem=EN===null?null:Math.max(0,CAP-EN);
+ if(rem===null)host.textContent='—';
+ else{if(!host.children.length)host.textContent='';roll(host,rem)}
+ roll($('#rCap'),CAP);
+ $('#enr').textContent=rem===null?'Chưa có số chỗ còn lại':CONFIG.enrolledLabel+': '+rem+' / '+CAP+' '+CONFIG.seatWord+(rem===0?' · '+CONFIG.fullLabel:'');
 }
 /* ===== Gửi đăng ký F2 tới Apps Script ===== */
 const registration=MemoriRegistration.create(window.fetch.bind(window));
+let seatRequest;
+async function refreshSeats(){
+ if(seatRequest)return;
+ const controller=new AbortController();
+ seatRequest=controller;
+ const timeout=setTimeout(()=>controller.abort(),8000);
+ try{setEnrolled(await registration.loadConfirmed(controller.signal))}
+ catch(_){setEnrolled(null)}
+ finally{clearTimeout(timeout);seatRequest=null}
+}
 window.MemoriRegister={
  setEnrolled,
- getState:()=>({enrolled:EN,capacity:CAP,remaining:CAP-EN}),
+ getState:()=>({enrolled:EN,capacity:CAP,remaining:EN===null?null:Math.max(0,CAP-EN)}),
  submitRegistration(data){return registration.submit(data)}
 };
 function submitRegistration(data){return window.MemoriRegister.submitRegistration(data||{})}
@@ -446,7 +462,7 @@ mform.addEventListener('input',e=>{const i=e.target;if(i.getAttribute('aria-inva
 mform.addEventListener('submit',async e=>{
  e.preventDefault();if(submitting)return;const data=validate();if(!data)return;submitting=true;
  const btn=mform.querySelector('.go');btn.disabled=true;btn.textContent=FM.sending;$('#gerr').textContent='';
- try{await submitRegistration(data);sent=true;$('#hint').textContent=CONFIG.hintDone;$('#live').textContent=CONFIG.hintDone;mdl.classList.add('sent');setTimeout(()=>mdl.querySelector('.tclose').focus(),30)}
+ try{await submitRegistration(data);sent=true;$('#hint').textContent=CONFIG.hintDone;$('#live').textContent=CONFIG.hintDone;mdl.classList.add('sent');setTimeout(()=>mdl.querySelector('.tclose').focus(),30);refreshSeats()}
  catch(err){$('#gerr').textContent=err.code==='not-configured'?'Form đang chờ kết nối. Vui lòng quay lại sau.':FM.errSend+(err.fallbackEmail?' Liên hệ qua '+err.fallbackEmail+'.':'')}
  finally{submitting=false;btn.disabled=false;btn.textContent=FM.submit}
 });
@@ -457,6 +473,9 @@ function start(){}
 
 /* ===== tải xong rồi mới mở ===== */
 layout();
+refreshSeats();
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshSeats()});
+setInterval(()=>{if(!document.hidden)refreshSeats()},60000);
 const bar=$('.loader-track span');let done=0;
 const total=imgs.length+2;
 const tick=()=>{done++;bar.style.transform='scaleX('+Math.min(1,done/total).toFixed(2)+')'};
@@ -468,7 +487,6 @@ Promise.race([Promise.all([...imgs.map(dec),dec(stampImg),fonts]),wait(15000)]).
  ready=true;place();
  await wait(RM?0:550);
  document.body.classList.add('go');gustLoop();setTimeout(armIdle,RM?0:3000);
- setTimeout(()=>setEnrolled(CONFIG.seats.enrolled,CONFIG.seats.capacity),RM?0:3600);
 });
 })();
 </script>

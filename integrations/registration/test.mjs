@@ -12,6 +12,18 @@ function app({old=[],badHeader=false,mailFails=false}={}){
  return {rows,emails,logs,formats,headers,send,context,properties};
 }
 const data=(phone='0903112458')=>({name:' Người thử F2 ',phone,email:'',workshop:'F2',preferredContact:'',message:' Xin tư vấn ',website:''});
+test('public seats view returns only confirmed F2 count and excludes test rows',()=>{
+ const a=app();
+ const entries=[['Học viên A','F2','confirmed'],['Học viên B','F2','new'],['Học viên C','F2','contacted'],['Học viên D','F2','cancelled'],['[KIỂM TRA HỆ THỐNG] F2','F2','confirmed'],['Học viên E','khác','confirmed']];
+ a.rows.push(a.headers,...entries.map(([name,workshop,status],i)=>['DK000'+i,'',name,'0900000000','private@example.test',workshop,'zalo','',status]));
+ const get=()=>JSON.parse(a.context.doGet({parameter:{view:'f2-seats'}}).text);
+ assert.deepEqual(get(),{ok:true,confirmed:1});
+ a.rows[1][8]='cancelled';
+ assert.deepEqual(get(),{ok:true,confirmed:0});
+ a.rows[0]=['wrong'];
+ assert.deepEqual(get(),{ok:false});
+ assert.equal(a.emails.length,0);
+});
 test('append correct header/13 columns, sequential IDs, +07 ISO, leading-zero text phones',()=>{const a=app();assert.equal(a.send(data()).id,'DK0001');assert.equal(a.send(data('0912000001')).id,'DK0002');assert.equal(a.send(data('0912000002')).id,'DK0003');assert.deepEqual(a.rows[0],a.headers);assert.equal(a.rows[1][3],'0903112458');assert.equal(typeof a.rows[1][3],'string');assert.match(a.rows[1][1],/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+07:00$/);assert.deepEqual(a.rows[1].slice(8),['new','','','','']);assert.equal(a.rows[1][6],'zalo');assert.ok(a.formats.every(f=>f.c===4&&f.r===1&&f.f==='@'));assert.equal(a.emails.length,3);assert.match(a.emails[0].body,/https:\/\/docs.google.com\/spreadsheets/);});
 test('existing rows and management columns untouched; IDs follow existing maximum',()=>{const a=app();a.send(data());a.rows[1][0]='DK0042';a.rows[1].splice(8,5,'confirmed','ghi chú','đã gọi','ngày xác nhận','ngày sửa');const before=JSON.stringify(a.rows[1]);assert.equal(a.send(data('0912000001')).id,'DK0043');assert.equal(JSON.stringify(a.rows[1]),before);});
 test('deduplicate phone/class within ten minutes, including formatted phone',()=>{const a=app();a.send(data());const out=a.send({...data(),phone:'0903 112 458'});assert.equal(out.duplicate,true);assert.equal(a.rows.length,2);assert.equal(a.emails.length,1);a.rows[1][1]='2020-01-01T00:00:00+07:00';assert.equal(a.send(data()).id,'DK0002');});

@@ -3,7 +3,25 @@ var REG_HEADERS = ['id','createdAt','name','phone','email','workshop','preferred
 // Owner clarified that this form registers the separate F2 class, not the three workshops.
 var REG_CLASSES = {F2: 'Lớp F2'};
 
-function doGet() { return regReply_({ok:true}); }
+function doGet(e) {
+  if (!e || !e.parameter || e.parameter.view !== 'f2-seats') return regReply_({ok:true});
+  try {
+    var sheetId = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
+    var sheet = SpreadsheetApp.openById(sheetId).getSheetByName('DangKy');
+    if (!sheet) return regReply_({ok:false});
+    regCheckHeader_(sheet);
+    var count = sheet.getLastRow();
+    var rows = count > 1 ? sheet.getRange(2,3,count-1,7).getValues() : [];
+    var confirmed = rows.filter(function(row) {
+      var name = String(row[0]).trim();
+      return name && name.indexOf('[KIỂM TRA HỆ THỐNG]') !== 0 &&
+        row[3] === 'F2' && row[6] === 'confirmed';
+    }).length;
+    return regReply_({ok:true,confirmed:confirmed});
+  } catch (_) {
+    return regReply_({ok:false});
+  }
+}
 function doPost(e) {
   try {
     if (!e || !e.postData || typeof e.postData.contents !== 'string' || e.postData.contents.length > 12000) return regReply_({ok:false,error:'invalid_request'});
@@ -59,9 +77,12 @@ function regText_(value){return /^[=+\-@]/.test(value)?"'"+value:value;}
 function regSheet_(spreadsheet) {
   var sheet=spreadsheet.getSheetByName('DangKy');if(!sheet)sheet=spreadsheet.insertSheet('DangKy');
   if(sheet.getLastRow()===0)sheet.getRange(1,1,1,13).setValues([REG_HEADERS]);
+  regCheckHeader_(sheet);
+  return sheet;
+}
+function regCheckHeader_(sheet) {
   var header=sheet.getRange(1,1,1,13).getValues()[0];
   if(header.some(function(v,i){return v!==REG_HEADERS[i];}))throw new Error('Unexpected registration headers');
-  return sheet;
 }
 function regNotify_(config,record) {
   var v=record.data,label=REG_CLASSES[v.workshop];
