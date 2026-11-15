@@ -5,6 +5,8 @@ var REG_CLASSES = {F2: 'Lớp F2'};
 
 function doGet(e) {
   if (!e || !e.parameter || e.parameter.view !== 'f2-seats') return regReply_({ok:true});
+  var capacity = Number(e.parameter.capacity);
+  if (!Number.isSafeInteger(capacity) || capacity < 1 || capacity > 100000) return regReply_({ok:false});
   try {
     var sheetId = PropertiesService.getScriptProperties().getProperty('SPREADSHEET_ID');
     var sheet = SpreadsheetApp.openById(sheetId).getSheetByName('DangKy');
@@ -17,7 +19,7 @@ function doGet(e) {
       return name && name.indexOf('[KIỂM TRA HỆ THỐNG]') !== 0 &&
         row[3] === 'F2' && row[6] === 'confirmed';
     }).length;
-    return regReply_({ok:true,confirmed:confirmed});
+    return regReply_({ok:true,remaining:Math.max(0,capacity-confirmed)});
   } catch (_) {
     return regReply_({ok:false});
   }

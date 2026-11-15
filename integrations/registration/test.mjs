@@ -12,14 +12,16 @@ function app({old=[],badHeader=false,mailFails=false}={}){
  return {rows,emails,logs,formats,headers,send,context,properties};
 }
 const data=(phone='0903112458')=>({name:' Người thử F2 ',phone,email:'',workshop:'F2',preferredContact:'',message:' Xin tư vấn ',website:''});
-test('public seats view returns only confirmed F2 count and excludes test rows',()=>{
+test('public seats view returns only remaining F2 seats and excludes test rows',()=>{
  const a=app();
  const entries=[['Học viên A','F2','confirmed'],['Học viên B','F2','new'],['Học viên C','F2','contacted'],['Học viên D','F2','cancelled'],['[KIỂM TRA HỆ THỐNG] F2','F2','confirmed'],['Học viên E','khác','confirmed']];
  a.rows.push(a.headers,...entries.map(([name,workshop,status],i)=>['DK000'+i,'',name,'0900000000','private@example.test',workshop,'zalo','',status]));
- const get=()=>JSON.parse(a.context.doGet({parameter:{view:'f2-seats'}}).text);
- assert.deepEqual(get(),{ok:true,confirmed:1});
+ const get=(capacity='20')=>JSON.parse(a.context.doGet({parameter:{view:'f2-seats',capacity}}).text);
+ assert.deepEqual(get(),{ok:true,remaining:19});
+ assert.deepEqual(get('1'),{ok:true,remaining:0});
+ assert.deepEqual(get('0'),{ok:false});
  a.rows[1][8]='cancelled';
- assert.deepEqual(get(),{ok:true,confirmed:0});
+ assert.deepEqual(get(),{ok:true,remaining:20});
  a.rows[0]=['wrong'];
  assert.deepEqual(get(),{ok:false});
  assert.equal(a.emails.length,0);
