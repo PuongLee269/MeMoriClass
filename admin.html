@@ -491,8 +491,8 @@ var DOCS = [
         srText: S.area('Mô tả giá/ưu đãi cho trình đọc màn hình', { req: 1, max: 300, help: 'Người xem thường không thấy dòng này; hãy giữ khớp với chữ trong ảnh.' })
       } },
       { title: 'Số chỗ', fields: {
-        seats: S.grp('Số liệu hiển thị', { enrolled: S.num('Số người đã đăng ký', { int: 1, min: 0, max: 100000, req: 1 }), capacity: S.num('Tổng số chỗ', { int: 1, min: 1, max: 100000, req: 1 }) }),
-        enrolledLabel: T('Nhãn “Số người đã đăng ký”', { req: 1, max: 60 }), seatWord: T('Từ “chỗ”', { req: 1, max: 20 }), fullLabel: T('Chữ khi hết chỗ', { req: 1, max: 40 })
+        seats: S.grp('Số liệu hiển thị', { capacity: S.num('Tổng số chỗ', { int: 1, min: 1, max: 100000, req: 1 }) }),
+        enrolledLabel: T('Nhãn “Số chỗ đã xác nhận”', { req: 1, max: 60 }), seatWord: T('Từ “chỗ”', { req: 1, max: 20 }), fullLabel: T('Chữ khi hết chỗ', { req: 1, max: 40 })
       } },
       { title: 'Chữ gợi ý & vùng đóng dấu', fields: {
         zoneLabelDesk: T('Nhãn vùng đóng dấu (máy tính)', { max: 60 }), zoneLabelTouch: T('Nhãn vùng đóng dấu (điện thoại)', { max: 60 }),
@@ -507,8 +507,7 @@ var DOCS = [
           thanksTitle: T('Tiêu đề cảm ơn', { req: 1, max: 60 }), thanksText: S.area('Lời cảm ơn', { req: 1, rows: 3, max: 300 })
         })
       } }
-    ],
-    validate: function (d) { return d.seats && d.seats.enrolled > d.seats.capacity ? ['Số người đã đăng ký không được lớn hơn tổng số chỗ.'] : []; } },
+    ] },
 
   { id: 'method', group: 'Các trang', tab: 'Phương pháp (bàn đá)', file: 'assets/content/method.json', page: 'method.html', preview: ['method', 'site'],
     note: 'Ba khối đá cùng ký hiệu mở ra một phương pháp. Mỗi ký hiệu chỉ gắn cho một phương pháp. Video chỉ nhận YouTube.',

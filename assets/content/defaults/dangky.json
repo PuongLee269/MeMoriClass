@@ -3,7 +3,7 @@
   "loaderText": "Bọ đang trải tờ giấy đăng ký…",
   "srTitle": "Đăng ký lớp F2",
   "srText": "Học phí ưu đãi 1.500.000đ, giá gốc 2.400.000đ. Số lượng có hạn.",
-  "enrolledLabel": "Số người đã đăng ký",
+  "enrolledLabel": "Số chỗ đã xác nhận",
   "seatWord": "chỗ",
   "hint": "",
   "zoneLabelDesk": "",
@@ -59,7 +59,6 @@
   },
   "fullLabel": "Đã hết chỗ",
   "seats": {
-    "enrolled": 12,
-    "capacity": 20
+    "capacity": 6
   }
 }
