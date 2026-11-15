@@ -192,7 +192,7 @@ const CONFIG_DEFAULT={
  pageTitle:'Đăng ký lớp F2',loaderText:'Bọ đang trải tờ giấy đăng ký…',
  srTitle:'Đăng ký lớp F2',
  srText:'Học phí ưu đãi 1.500.000đ, giá gốc 2.400.000đ. Số lượng có hạn.',
- enrolledLabel:'Số chỗ còn lại',seatWord:'chỗ',
+ enrolledLabel:'Số chỗ đã xác nhận',seatWord:'chỗ',
  hint:'',zoneLabelDesk:'',zoneLabelTouch:'',ctaDesk:'',
  hintDone:'Đã gửi, ME.MORI sẽ liên hệ bạn sớm',
  /* CHỮ MẪU cho form đăng ký riêng (placeholder) */
@@ -205,7 +205,7 @@ const CONFIG_DEFAULT={
   errReq:'Vui lòng nhập thông tin này.',errPhone:'Số điện thoại chưa đúng (ví dụ 0912 345 678).',errEmail:'Email chưa đúng (ví dụ ban@email.com).',errSend:'Chưa gửi được. Bạn thử lại sau ít phút nhé.',
   thanksTitle:'Cảm ơn bạn!',thanksText:'Đã gửi, ME.MORI sẽ liên hệ bạn sớm'},
  fullLabel:'Đã hết chỗ',
- seats:{capacity:20}
+ seats:{capacity:6}
 };
 /* Nội dung sửa được từ trang admin (assets/content/dangky.json + site.json). Chữ tiêu đề/giá/ghi chú nằm trong ẢNH nên không sửa ở đây. */
 const CC=await MemoriContent.load('dangky',CONFIG_DEFAULT),SITE=await MemoriContent.load('site',MemoriContent.SITE_DEFAULT);
@@ -298,7 +298,8 @@ function build(m){
 }
 /* ===== số đếm (chữ thật, lăn từng chữ số) ===== */
 function roll(host,n){
- const w=Math.max(2,String(n).length);const s=String(n).padStart(w,'0');
+ const s=String(n).padStart(String(CAP).length,'0');
+ while(host.children.length>s.length)host.firstChild.remove();
  while(host.children.length<s.length){const col=document.createElement('span');col.className='col';const strip=document.createElement('span');strip.className='strip';strip.innerHTML=[...'0123456789'].map(d=>'<span>'+d+'</span>').join('');col.appendChild(strip);host.insertBefore(col,host.firstChild)}
  [...host.children].forEach((c,i)=>{c.firstChild.style.transform='translateY(-'+(+s.padStart(host.children.length,'0')[i]*1.05)+'em)'});
 }
@@ -310,11 +311,11 @@ function setEnrolled(n,capacity){
 function renderSeats(){
  const host=$('#rRem');
  if(!host)return;
- const rem=EN===null?null:Math.max(0,CAP-EN);
- if(rem===null)host.textContent='—';
- else{if(!host.children.length)host.textContent='';roll(host,rem)}
+ const occupied=EN===null?null:Math.min(CAP,EN);
+ if(occupied===null)host.textContent='—';
+ else{if(!host.children.length)host.textContent='';roll(host,occupied)}
  roll($('#rCap'),CAP);
- $('#enr').textContent=rem===null?'Chưa có số chỗ còn lại':CONFIG.enrolledLabel+': '+rem+' / '+CAP+' '+CONFIG.seatWord+(rem===0?' · '+CONFIG.fullLabel:'');
+ $('#enr').textContent=occupied===null?'Chưa có số chỗ đã xác nhận':CONFIG.enrolledLabel+': '+occupied+' / '+CAP+' '+CONFIG.seatWord+(occupied===CAP?' · '+CONFIG.fullLabel:'');
 }
 /* ===== Gửi đăng ký F2 tới Apps Script ===== */
 const registration=MemoriRegistration.create(window.fetch.bind(window));
