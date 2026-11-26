@@ -30,7 +30,8 @@ def run(p, name):
     pg = new(); pg.wait_for_timeout(350); shot(pg, "1-load")
     pg.wait_for_function("window.__loaderDone", timeout=20000); pg.wait_for_timeout(4200); shot(pg, "2-intro")
     print(name, "hscroll ok:", pg.evaluate("document.documentElement.scrollWidth <= innerWidth && document.body.scrollWidth <= innerWidth"))
-    click(pg, ".ch[data-i='0']"); pg.wait_for_timeout(500); shot(pg, "3-buoi1-point"); pg.wait_for_timeout(1500)
+    print(name, "initial chapter:", pg.evaluate("window.__rm.state.SELECTED"))
+    click(pg, ".ch[data-i='2']"); pg.wait_for_timeout(500); shot(pg, "3-buoi3-point"); pg.wait_for_timeout(1500)
     click(pg, ".ch[data-i='3']"); pg.wait_for_timeout(1800); shot(pg, "4-buoi4")
     pg.locator("#bigplay").click() if name == "desk" else pg.touchscreen.tap(*[v for v in (lambda b: (b["x"] + b["width"] / 2, b["y"] + b["height"] / 2))(pg.locator("#bigplay").bounding_box())])
     try:

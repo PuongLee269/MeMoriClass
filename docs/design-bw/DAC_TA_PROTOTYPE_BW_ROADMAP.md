@@ -30,3 +30,10 @@ Trang mẫu độc lập, KHÔNG sửa `roadmap.html` hay `assets/` dùng chung.
 
 ## 5. Kiểm tra bắt buộc
 Playwright (Edge): máy tính 1672×941 và điện thoại 390×844 DPR 2 touch. Ảnh: màn tải, sau intro (4s), chọn Buổi 01 và 04, bấm phát (iframe hiện), ngủ. Kiểm: không cuộn ngang, không lỗi console/404, chữ tiếng Việt đúng dấu, chữ cuộn giấy đọc rõ trên điện thoại, không chữ hướng dẫn kiểu "Chạm…", "Nhấn…".
+
+## 6. Vòng sửa 2 (đã áp dụng)
+- Nền: `bg-bw` làm mờ (blur 1.3px, giảm tương phản) + lớp giấy `--paper` phủ 40-74% (radial, đậm nhất sau video và cuộn giấy; điện thoại phủ phẳng 58%). Lá tiền cảnh giữ nguyên.
+- Mở trang vào Buổi 01.
+- Bỏ đường lượn sóng: một dây leo ngang nét mực đôi (lá nhỏ + tua cuốn, SVG đen trắng) nối 4 buổi. Điện thoại: dây đứng bên trái, 4 buổi xếp dọc.
+- Mỗi buổi là thẻ giấy treo trên dây (viền mực 2px vẽ tay, bóng cứng 3px): "Buổi 0x" Be Vietnam Pro 600, tên buổi 400; máy tính tên ≥16px, điện thoại ≥14px. Đang chọn: thẻ đảo màu (nền mực, chữ trắng). Rê chuột: nhích lên 2px. Bỏ vòng elip và vòng rê.
+- Điện thoại: khung video theo tỉ lệ clip (không chừa khoảng trống), Bọ + gò ở giữa đáy màn hình; nhãn không còn chạm lá.

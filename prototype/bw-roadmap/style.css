@@ -34,13 +34,13 @@ body{font-family:var(--sans);color:var(--ink);-webkit-tap-highlight-color:transp
 /* intro: mọi thứ ẩn, JS bật dần */
 #app.intro .gi,#app.intro .fade{opacity:0}
 #app.intro #scrollGI{transform:translateY(26px)}
-#app.intro #chapGI{clip-path:inset(-60px 100% -60px -60px)}
+#app.intro #chapGI{clip-path:inset(-1500px 100% -1500px -1500px)}
 #app.intro #leafLGI{transform:translate(-40px,30px)}
 #app.intro #leafRGI{transform:translate(40px,30px)}
 #chapGI{width:1040px;height:210px}
 #app #stext.swap{opacity:0!important}
 #app .on{opacity:1!important}
-#app .gi.on{transform:none!important;clip-path:inset(-60px -60px -60px -60px)!important}
+#app .gi.on{transform:none!important;clip-path:inset(-1500px -1500px -1500px -1500px)!important}
 .fade{transition:opacity .7s ease}
 #app.ready .gi{transition:none!important}
 
@@ -164,29 +164,33 @@ input[type=range]:focus-visible{outline:2px solid var(--ink);outline-offset:2px;
 #sketch .fr{position:absolute;inset:0;border:1.6px solid currentColor;border-radius:2px;transform:rotate(-.4deg)}
 #sketch svg{position:absolute;inset:0;width:100%;height:100%}
 
-/* ---- dòng lộ trình ---- */
-#chapGI .ch{position:absolute;border:0;background:transparent;padding:0;color:inherit;cursor:pointer;font:inherit;outline:0;-webkit-appearance:none;appearance:none}
-#chapGI .ch .lab{position:absolute;left:50%;transform:translateX(-50%);text-align:center;white-space:nowrap;font-family:var(--sans);font-weight:500;font-size:var(--lf,22px);line-height:1.3;color:var(--ink);-webkit-text-stroke:3px var(--paper);paint-order:stroke fill;text-shadow:0 0 4px var(--paper)}
-#chapGI .ch .lab b{display:block;font-weight:500}
-#chapGI .ch .lab b.n{font-size:1.05em}
-#chapGI .ch .lab b.t{font-size:.82em;font-weight:400}
-.port #chapGI .ch .lab b.t{white-space:normal;width:var(--tw,auto);margin:0 auto;line-height:1.15;font-size:.92em}
-#chapGI .ch.sel .lab b.t{font-weight:500}
-#chapGI .ch:focus-visible .lab{outline:2px solid var(--ink);outline-offset:6px;border-radius:12px}
+/* ---- nền: giảm chi tiết để phần chính nổi ---- */
+#bgImg{filter:blur(1.3px) contrast(.82) brightness(1.04)}
+#bgveil{position:absolute;left:0;top:0;width:1670px;height:942px;pointer-events:none;background:radial-gradient(ellipse 48% 56% at 50% 56%,rgba(251,251,250,.74) 0,rgba(251,251,250,.62) 55%,rgba(251,251,250,.40) 100%)}
+#app.port #bgveil{background:rgba(251,251,250,.58)}
+
+/* ---- dòng lộ trình: dây leo + thẻ giấy ---- */
 #wave{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
-#dimwave{filter:url(#hand)}
-#app.port #dimwave{stroke-width:calc(2.6px / var(--kc,1))}
-.nd{position:absolute;width:0;height:0;pointer-events:none;transform:scale(var(--ns,1))}
+#chapGI .ch{position:absolute;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0 10px;border:0;background:transparent;color:var(--ink);cursor:pointer;font:inherit;outline:0;-webkit-appearance:none;appearance:none;text-align:center;transition:transform .15s ease,color .2s}
+#chapGI .ch::before{content:"";position:absolute;inset:0;background:var(--paper);border:2px solid var(--ink);border-radius:10px;box-shadow:3px 3px 0 var(--ink);filter:url(#hand);transition:background .2s;z-index:0}
+#chapGI .ch::after{content:"";position:absolute;left:50%;top:-20px;width:2.5px;height:20px;margin-left:-1px;background:var(--ink);z-index:-1}
+.port #chapGI .ch{align-items:flex-start;text-align:left;padding:0 14px}
+.port #chapGI .ch::after{left:-26px;top:50%;width:26px;height:2.5px;margin:-1px 0 0}
+#chapGI .ch.hov,#chapGI .ch:hover{transform:translateY(-2px)}
+#chapGI .ch.sel{color:var(--paper)}
+#chapGI .ch.sel::before{background:var(--ink)}
+#chapGI .ch:focus-visible::before{outline:2px solid var(--ink);outline-offset:4px}
+#chapGI .ch .lab{position:relative;z-index:1;display:block;max-width:100%}
+#chapGI .ch .lab b{display:block;line-height:1.22}
+#chapGI .ch .lab b.n{font:600 var(--nf,17px)/1.22 var(--sans)}
+#chapGI .ch .lab b.t{font:400 var(--tf,16.5px)/1.22 var(--sans);white-space:normal}
+.nd{position:absolute;width:0;height:0;pointer-events:none}
 .nd i{position:absolute;display:block;border-radius:50%;pointer-events:none}
-.nd .bead{left:-16px;top:-16px;width:32px;height:32px;border:2.5px solid var(--ink);background:var(--paper);box-shadow:2px 2px 0 var(--ink);transition:background .25s;filter:url(#hand)}
+.nd .bead{left:-14px;top:-14px;width:28px;height:28px;border:2.5px solid var(--ink);background:var(--paper);transition:background .25s;filter:url(#hand)}
 .nd.on2 .bead{background:var(--ink)}
 .nd .burst{left:-60px;top:-60px;width:120px;height:120px;opacity:0;transform:scale(.7);transition:opacity .15s,transform .3s}
 .nd .burst svg{width:100%;height:100%;display:block;overflow:visible;fill:none;stroke:var(--ink);stroke-linecap:round}
 .nd .burst.go{opacity:1;transform:scale(1)}
-#chapGI .hr{position:absolute;border-radius:50%;border:1.5px solid rgba(17,17,17,.4);opacity:0;transition:opacity .25s;pointer-events:none;filter:url(#hand)}
-#chapGI .hr.on2{opacity:1}
-.selr{position:absolute;border-radius:50%;border:2.2px solid var(--ink);opacity:0;transition:opacity .42s ease;pointer-events:none;filter:url(#hand);transform:rotate(-2deg)}
-.selr.act{opacity:1}
 
 /* ---- Bọ ---- */
 #bo{position:absolute;transform-origin:50% 100%}
@@ -208,6 +212,6 @@ input[type=range]:focus-visible{outline:2px solid var(--ink);outline-offset:2px;
 .loader-track span{display:block;height:100%;width:100%;transform-origin:0 50%;transform:scaleX(.04);background:var(--ink);transition:transform .4s ease}
 @media (prefers-reduced-motion:reduce){
   .loader,.loader-track span{transition-duration:.01s!important}
-  .gi,.fade,.selr,#stext,#vwrap .emb,#vwrap .pst,#pw,#bo img,.nd .burst{transition:none!important}
+  .gi,.fade,#stext,#vwrap .emb,#vwrap .pst,#pw,#bo img,.nd .burst,#chapGI .ch{transition:none!important}
   #spin{animation-duration:3s}
 }

@@ -38,13 +38,12 @@ const fixChapter=(d)=>{const c=RC.chapters.find(x=>x&&x.id===d.id)||d,v=c.video|
   script:{scene:(c.script||{}).scene||d.script.scene,vo:(c.script||{}).vo||d.script.vo,cues}}};
 const CONFIG={hosts:CONFIG_DEFAULT.hosts,chapters:CONFIG_DEFAULT.chapters.map(fixChapter)};
 const CHAPTERS=CONFIG.chapters;
-let SELECTED=1; // chương 02 được chọn ban đầu (chỉ số 0..3)
+let SELECTED=0; // mở trang vào Buổi 01
 
 /* ================= HÌNH (toạ độ canvas 1670x942) ================= */
 const CW=1670,CH=942;
 const LAYERS={scroll:['img/scroll-bw.webp',443,547,767,208],moundL:['img/mound-bw.webp',146,759,306,92],moundR:['img/mound-bw.webp',1250,788,215,64],leafL:['img/leafL-bw.webp',-40,672,440,290],leafR:['img/leafR-bw.webp',1272,672,440,290],bg:['img/bg-bw.webp',0,0,1670,942]};
-const NODES=[[442,796],[711,789],[973,796],[1248,796]], LABELS=[[441,841],[712,845],[985,841],[1255,841]];
-const WAVE=[[442,796],[500,809],[535,815],[590,806],[650,792],[711,789],[778,803],[838,817],[898,813],[960,797],[973,796],[1006,790],[1050,785],[1096,788],[1156,806],[1200,807],[1248,796]];
+const NODES=[[430,788],[700,788],[970,788],[1240,788]];
 const BOXC=[835,300],BOXW=640,BOXH=380; // hộp tối đa của khung video (toạ độ canvas)
 const BO_FEET=[340,802],BO_SIZE=184,BO_IMG='../bw-bo/img/bo/',BO_POSES=['idle','wave','point','listen','happy','sleep'];
 
@@ -75,28 +74,33 @@ mkImg('moundL',165,640,$('moundLGI'));mkImg('moundR',165,640,$('moundLGI')).styl
 const leafL=mkImg('leafL',0,645,$('leafLGI'),'sway');leafL.style.transformOrigin='10% 100%';
 const leafR=mkImg('leafR',1334,688,$('leafRGI'),'sway');leafR.style.transformOrigin='90% 100%';
 
-/* ---- dòng lộ trình ---- */
+/* ---- dòng lộ trình: một dây leo ngang (điện thoại: dây đứng bên trái), mỗi buổi là một thẻ giấy treo trên dây ---- */
 const chapGI=$('chapGI');
-chapGI.innerHTML=`<svg id="wave" width="1" height="1"><path id="dimwave" fill="none" stroke="#111" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-const wave=$('wave'),dim=$('dimwave');
-const hrEls=[],chBtns=[],ndEls=[],burstEls=[];
-function catmull(pts){let d=`M${pts[0][0]-330} ${pts[0][1]-700}`;for(let i=0;i<pts.length-1;i++){const p0=pts[i-1]||pts[i],p1=pts[i],p2=pts[i+1],p3=pts[i+2]||p2;
-  const c1=[p1[0]+(p2[0]-p0[0])/6,p1[1]+(p2[1]-p0[1])/6],c2=[p2[0]-(p3[0]-p1[0])/6,p2[1]-(p3[1]-p1[1])/6];
-  d+=`C${c1[0]-330} ${c1[1]-700} ${c2[0]-330} ${c2[1]-700} ${p2[0]-330} ${p2[1]-700}`}return d}
-dim.setAttribute('d',catmull(WAVE));
-/* vài nét tốc độ manga quanh nút vừa chọn */
+chapGI.innerHTML=`<svg id="wave" width="1" height="1"><g id="vine" filter="url(#hand)"></g></svg>`;
+const vine=$('vine');
+const chBtns=[],ndEls=[],burstEls=[];
+let NP=NODES.map(n=>[n[0],788]);   // vị trí nút trên dây (toạ độ nhóm chapG: canvas khi máy tính, px màn hình khi điện thoại)
 const BURST_SVG='<svg viewBox="-60 -60 120 120" aria-hidden="true">'+[[0,27,46,2.6],[36,25,40,2],[72,28,50,2.6],[108,25,38,2],[144,27,47,2.6],[180,25,41,2],[216,28,50,2.6],[252,25,39,2],[288,27,46,2.6],[324,25,41,2]].map(([a,r1,r2,w])=>{const t=a*Math.PI/180;return `<path d="M${(Math.cos(t)*r1).toFixed(1)} ${(Math.sin(t)*r1).toFixed(1)}L${(Math.cos(t)*r2).toFixed(1)} ${(Math.sin(t)*r2).toFixed(1)}" stroke-width="${w}"/>`}).join('')+'</svg>';
-NODES.forEach((n,i)=>{const d=document.createElement('div');d.className='nd';d.style.cssText=`left:${n[0]-330}px;top:${n[1]-700}px`;d.innerHTML='<i class="burst">'+BURST_SVG+'</i><i class="bead"></i>';chapGI.appendChild(d);ndEls.push(d);burstEls.push(d.querySelector('.burst'))});
-const ringEls=[];
+NODES.forEach((n,i)=>{const d=document.createElement('div');d.className='nd';d.innerHTML='<i class="burst">'+BURST_SVG+'</i><i class="bead"></i>';chapGI.appendChild(d);ndEls.push(d);burstEls.push(d.querySelector('.burst'))});
 CHAPTERS.forEach((c,i)=>{
-  const sr2=document.createElement('div');sr2.className='selr';chapGI.appendChild(sr2);ringEls.push(sr2);
-  const hr=document.createElement('div');hr.className='hr';chapGI.appendChild(hr);hrEls.push(hr);
   const b=document.createElement('button');b.type='button';b.className='ch';b.dataset.i=i;b.setAttribute('aria-label',`${c.num}: ${c.title}`);
   b.innerHTML=`<span class="lab"><b class="n"></b><b class="t"></b></span>`;
   chapGI.appendChild(b);chBtns.push(b);
 });
 function renderLabels(){chBtns.forEach((b,i)=>{b.querySelectorAll('.n').forEach(e=>e.textContent=CHAPTERS[i].num);b.querySelectorAll('.t').forEach(e=>e.textContent=CHAPTERS[i].title);b.setAttribute('aria-label',`${CHAPTERS[i].num}: ${CHAPTERS[i].title}`)})}
 renderLabels();
+/* dây leo: thân đôi nét mực + lá nhỏ + tua cuốn (SVG đen trắng), vẽ trong hệ toạ độ dọc dây (u dọc dây, v vuông góc) */
+function vineSvg(ox,oy,rot,L,skipU,step,u0,sc,rad){
+  let leaves='',k=0;
+  for(let u=u0;u<L-14;u+=step,k++){
+    if(skipU.some(n=>Math.abs(u-n)<rad))continue;
+    const d=k%2?1:-1,kind=k%3,f=n=>(n*sc).toFixed(1);
+    if(kind===2)leaves+=`<path d="M${u} 0c${f(3)} ${f(-d*9)} ${f(13)} ${f(-d*12)} ${f(15)} ${f(-d*5)}c${f(1.5)} ${f(d*6)} ${f(-7)} ${f(d*8)} ${f(-8.5)} ${f(d*2)}c${f(-1)} ${f(-d*3)} ${f(3)} ${f(-d*4)} ${f(4)} ${f(-d*2)}" fill="none"/>`;
+    else leaves+=`<path d="M${u} 0q${f(3)} ${f(-d*15)} ${f(19)} ${f(-d*14)}q${f(-5)} ${f(d*13)} ${f(-19)} ${f(d*14)}z" fill="#fbfbfa"/><path d="M${u+1} ${f(-d*1)}L${(u+13*sc).toFixed(1)} ${f(-d*9)}" fill="none" stroke-width="1.2"/>`;
+  }
+  const body=`M0 0C${L*.25} -3 ${L*.4} 3 ${L*.55} 0S${L*.85} -3 ${L} 0`;
+  return `<g transform="translate(${ox-330} ${oy-700}) rotate(${rot})" stroke-linecap="round" stroke-linejoin="round"><path d="${body}" fill="none" stroke="#111" stroke-width="7.5"/><path d="${body}" fill="none" stroke="#fbfbfa" stroke-width="2.8"/><g stroke="#111" stroke-width="1.7">${leaves}</g></g>`;
+}
 
 /* ================= BỌ (sprite đen trắng) ================= */
 const BO={cur:null,flip:false,mood:'idle',tt:0,st:0,asleep:false,frozen:!!FORCED,front:0};
@@ -120,7 +124,7 @@ if(FORCED&&BO_POSES.includes(FORCED))boShow(FORCED);else boShow('idle');
 if(!FORCED)boArmSleep();
 
 /* ================= BỐ CỤC ================= */
-let VW=0,VH=0,PORT=false,UI={},BOX={cx:835,cy:300,w:640,h:380,k:1,M:48};
+let VW=0,VH=0,PORT=false,UI={},CARD=[],BOX={cx:835,cy:300,w:640,h:380,k:1,M:48};
 function setG(g,tx,ty,kx,ky){g.tx=tx;g.ty=ty;g.kx=kx;g.ky=ky}
 const gp=(g,x,y)=>[g.tx+(x-g.gx)*g.kx,g.ty+(y-g.gy)*g.ky]; // canvas -> màn hình (chưa parallax)
 function layout(){
@@ -132,27 +136,30 @@ function layout(){
     setG(G.leafLG,0,VH-(942-645)*s,s,s);setG(G.leafRG,VW-(1672-1334)*s,VH-(942-688)*s,s,s);   // lá tiền cảnh bám mép màn hình
     bg(1.03);
     BOX={cx:ox+BOXC[0]*s,cy:oy+BOXC[1]*s,w:BOXW*s,h:BOXH*s,k:s,M:Math.round(clamp(48*s,30,56))};
-    UI={gs:s,s,u:s,lf:20,ringW:182,ringH:76,hit:170,hitUp:42,sk:true};
+    UI={gs:s,s,u:s,nf:17,tf:16};
+    NP=NODES.map(n=>[n[0],788]);CARD=NP.map(n=>[n[0]-129,810,258,70]);
   }else{
-    const m=Math.max(14,sl*.8),mp=Math.max(14,sl*.8);
-    const sks=(VW-2*m)/767, sky=sks*1.8;           // cuộn giấy vừa chiều ngang (có lề), kéo cao hơn để chữ đủ lớn
-    const boxW=VW-2*mp,boxH=Math.round(clamp(VH*.42,150,460)),scrH=208*sky,TL=104;
-    const spare=Math.max(0,VH-30-44-(boxH+scrH+TL+40));
-    const topPad=30+spare*.2,gapBox=22+spare*.12,gap2=36+spare*.5;
-    const sTop=topPad+boxH+gapBox;
-    const nodeY=Math.min(VH-TL+8,sTop+scrH+gap2);
+    const m=Math.max(14,sl*.8),mp=m,CHH=54,GAP=8,listH=4*CHH+3*GAP,top0=70;
+    const minAR=Math.min(...CHAPTERS.map((c,i)=>vcfg(i).aspect));
+    const boxW=VW-2*mp,boxH=Math.round(clamp(boxW/minAR,150,VH*.42));
+    let sks=(VW-2*m)/767,sky=sks*1.8,foot=112,need=()=>boxH+16+208*sky+14+listH+foot;
+    if(top0+need()>VH){sky=sks*1.5;foot=90}
+    const spare=Math.max(0,VH-top0-need());
+    const topPad=top0+spare*.2,gapBox=16+spare*.25,gapList=14+spare*.25;
+    const sTop=topPad+boxH+gapBox,listTop=sTop+208*sky+gapList;
     BOX={cx:VW/2,cy:topPad+boxH/2,w:boxW,h:boxH,k:boxW/BOXW,M:Math.round(clamp(boxW/BOXW*48,24,36))};
     setG(G.scrollG,m-(443-440)*sks,sTop-(547-545)*sky,sks,sky);
-    const nx1=Math.max(96,VW*.25),nx4=VW-44,kc=(nx4-nx1)/(NODES[3][0]-NODES[0][0]);
-    setG(G.chapG,nx1-(NODES[0][0]-330)*kc,nodeY-(NODES[0][1]-700)*kc,kc,kc);
-    const gk=clamp(VW/390*.42,.34,.55);setG(G.moundLG,nx1-(442-165)*gk,nodeY-(796-640)*gk,gk,gk);
-    const kl=clamp(VW/390*.36,.28,.5);
+    setG(G.chapG,330,700,1,1);   // nhóm chapG: toạ độ = px màn hình
+    const cx=m+40,cw=VW-cx-m;
+    CARD=[0,1,2,3].map(i=>[cx,listTop+i*(CHH+GAP),cw,CHH]);NP=CARD.map(c=>[m+10,c[1]+c[3]/2]);
+    const gk=clamp(VW/390*.42,.34,.5);setG(G.moundLG,VW/2-(BO_FEET[0]-165)*gk,VH-30-(BO_FEET[1]-640)*gk,gk,gk);
+    const kl=clamp(VW/390*.3,.24,.42);
     setG(G.leafLG,0,VH-(942-645)*kl,kl,kl);
     setG(G.leafRG,VW-336*kl,VH-(942-688)*kl,kl,kl);
     bg(1.04);
-    const sp=(nx4-nx1)/3,lfp=clamp(sp/6.6,12,15);UI={gs:BOX.k,s:kc,u:kc,lf:lfp/kc,ringW:(sp+4)/kc,tw:(sp-8)/kc,ringH:(lfp*4.9)/kc,hit:Math.max(60,sp)/kc,hitUp:26/kc,labGap:30/kc,ns:clamp(24/(32*kc),1.5,3),sk:false,sks};
+    UI={gs:BOX.k,s:1,u:1,nf:13.5,tf:14,sks,vx:m+10,vy:listTop,vl:listH};
   }
-  document.documentElement.style.setProperty('--kc',(PORT?G.chapG.kx:1).toFixed(4));document.documentElement.style.setProperty('--ns',PORT?UI.ns:1);
+  
   applyUI();
 }
 function bg(extra){const s=Math.max(VW/CW,VH/CH)*(extra||1);setG(G.bgG,(VW-CW*s)/2,(VH-CH*s)/2,s,s)}
@@ -170,17 +177,15 @@ function applyUI(){
   if(!PORT){const k0=gp(Sg,975,600),k1=gp(Sg,1130,690);sk.style.cssText=`display:block;left:${k0[0]}px;top:${k0[1]}px;width:${k1[0]-k0[0]}px;height:${k1[1]-k0[1]}px`}else sk.style.display='none';
   const sl=$('seal'),sc=gp(Sg,443+767*(PORT?.905:.925),547+208*.74),ss=PORT?40:Math.max(34,64*UI.s);
   sl.style.cssText=`left:${sc[0]-ss/2}px;top:${sc[1]-ss/2}px;width:${ss}px;height:${ss}px`;
-  document.documentElement.style.setProperty('--lf',UI.lf+'px');document.documentElement.style.setProperty('--tw',(PORT?UI.tw+'px':'auto'));
-  chBtns.forEach((b,i)=>{const n=NODES[i],l=LABELS[i],W=UI.hit,top=n[1]-UI.hitUp;
-    const lcy=labCY(i);b.style.cssText=`left:${n[0]-330-W/2}px;top:${top-700}px;width:${W}px;height:${PORT?(UI.hitUp+UI.labGap+UI.lf*2.36+12/UI.s):(l[1]+34)-top}px`;
-    const lt=(PORT?(UI.hitUp+UI.labGap):(l[1]-top-UI.lf*1.18-3))+'px';b.querySelectorAll('.lab').forEach(e=>e.style.top=lt);
-    const hr=hrEls[i],rw=UI.ringW,rh=UI.ringH;hr.style.cssText=`left:${l[0]-330-rw/2}px;top:${lcy-700-rh/2}px;width:${rw}px;height:${rh}px`});
-  placeRings();moveRing();
+  const rs=document.documentElement.style;rs.setProperty('--nf',UI.nf+'px');rs.setProperty('--tf',UI.tf+'px');
+  chBtns.forEach((b,i)=>{const c=CARD[i];b.style.cssText=`left:${c[0]-330}px;top:${c[1]-700}px;width:${c[2]}px;height:${c[3]}px`;
+    ndEls[i].style.cssText=`left:${NP[i][0]-330}px;top:${NP[i][1]-700}px`});
+  if(!PORT)vine.innerHTML=vineSvg(NP[0][0]-34,788,0,NP[3][0]-NP[0][0]+68,NP.map(n=>n[0]-NP[0][0]+34),38,22,1.45,32);
+  else vine.innerHTML=vineSvg(NP[0][0],NP[0][1]-22,90,NP[3][1]-NP[0][1]+44,NP.map(n=>n[1]-NP[0][1]+22),20,10,1.1,19);
+  moveRing();
   fitText();
 }
-function labCY(i){return PORT?NODES[i][1]+UI.labGap+UI.lf*2.3:LABELS[i][1]-(UI.lf*.45)}
-function placeRings(){const rw=UI.ringW,rh=UI.ringH;ringEls.forEach((el,i)=>{const l=LABELS[i];el.style.cssText=`left:${l[0]-330-rw/2}px;top:${labCY(i)-700-rh/2}px;width:${rw}px;height:${rh}px`})}
-function moveRing(){ringEls.forEach((el,i)=>el.classList.toggle("act",i===SELECTED))}
+function moveRing(){}
 
 /* ================= KHUNG VIDEO THEO TỈ LỆ CLIP ================= */
 const curIdx=()=>chapIdx<0?SELECTED:chapIdx;
@@ -409,7 +414,7 @@ document.addEventListener('keydown',e=>{
 
 /* ================= CHỌN CHƯƠNG ================= */
 function setSel(i){chBtns.forEach((b,k)=>{b.classList.toggle('sel',k===i);b.setAttribute('aria-current',k===i?'true':'false')});}
-function paintChapters(){chBtns.forEach((b,i)=>{const sel=b.classList.contains('sel');ndEls[i].classList.toggle('on2',sel);hrEls[i].classList.toggle('on2',b.classList.contains('hov')&&!sel)})}
+function paintChapters(){chBtns.forEach((b,i)=>{ndEls[i].classList.toggle('on2',b.classList.contains('sel'))})}
 function burst(i){const e=burstEls[i];if(!e||RM)return;e.classList.add('go');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('go'),300)}
 function select(i,opt){opt=opt||{};const first=chapIdx<0;if(i===chapIdx&&!opt.force)return;
   const wasPlaying=(!first&&!PL.paused&&!PL.ended)||!!opt.play;
@@ -425,7 +430,7 @@ function select(i,opt){opt=opt||{};const first=chapIdx<0;if(i===chapIdx&&!opt.fo
   applyVol();setAriaPlay();upd();refreshCCBtn();
   if(first)renderScript(i);else{stext.classList.add('swap');$('sketch').style.opacity=.2;setTimeout(()=>{renderScript(i);stext.classList.remove('swap');$('sketch').style.opacity=''},230)}
   setWrapTarget(first);moveRing();
-  if(!first){burst(i);boFlash('point',1200,NODES[i][0]>BO_FEET[0])}
+  if(!first){burst(i);boFlash('point',1200,!PORT&&NP[i][0]>BO_FEET[0])}
   $('live').textContent=`Đã chọn ${c.num}: ${c.title}`;
 }
 chBtns.forEach((b,i)=>{
