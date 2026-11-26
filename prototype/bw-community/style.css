@@ -1,0 +1,112 @@
+/* Trang Bọ đen trắng (prototype). Chỉ đen / trắng / xám. */
+@font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:400; font-display:swap; src:url("../../assets/fonts/BeVietnamPro-400-vietnamese.woff2") format("woff2"); unicode-range:U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+@font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:400; font-display:swap; src:url("../../assets/fonts/BeVietnamPro-400-latin-ext.woff2") format("woff2"); unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:400; font-display:swap; src:url("../../assets/fonts/BeVietnamPro-400-latin.woff2") format("woff2"); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:500; font-display:swap; src:url("../../assets/fonts/BeVietnamPro-500-vietnamese.woff2") format("woff2"); unicode-range:U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+@font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:500; font-display:swap; src:url("../../assets/fonts/BeVietnamPro-500-latin-ext.woff2") format("woff2"); unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family:"Be Vietnam Pro"; font-style:normal; font-weight:500; font-display:swap; src:url("../../assets/fonts/BeVietnamPro-500-latin.woff2") format("woff2"); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family:"Oooh Baby"; font-style:normal; font-weight:400; font-display:swap; src:url("../../assets/fonts/OoohBaby-vietnamese.woff2") format("woff2"); unicode-range:U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB; }
+@font-face { font-family:"Oooh Baby"; font-style:normal; font-weight:400; font-display:swap; src:url("../../assets/fonts/OoohBaby-latin-ext.woff2") format("woff2"); unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family:"Oooh Baby"; font-style:normal; font-weight:400; font-display:swap; src:url("../../assets/fonts/OoohBaby-latin.woff2") format("woff2"); unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* Trang Cộng đồng đen trắng (prototype). Chỉ đen / trắng / xám; ảnh hồ sơ đang mở giữ màu. */
+:root{
+  --ink:#111111;--paper:#fbfbfa;--tone:#d8d8d8;
+  --script:'Oooh Baby','Mali','Segoe Script',cursive;
+  --sans:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;background:var(--paper);overflow:hidden;overscroll-behavior:none}
+body{font-family:var(--sans);color:var(--ink);-webkit-tap-highlight-color:transparent}
+.sr{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+button{font:inherit;color:inherit}
+#view{position:fixed;inset:0;overflow:hidden;background:var(--paper);opacity:0;transition:opacity .8s ease}
+#view.in{opacity:1}
+/* nền: mờ nhẹ + giấy phủ để quả cầu và sợi dây nổi */
+.scenery{position:absolute;inset:0;overflow:hidden}
+.scenery img{position:absolute;max-width:none;filter:blur(1.2px) contrast(.9);-webkit-user-drag:none;user-select:none}
+.veil{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 62% 66% at 50% 48%,rgba(251,251,250,.78),rgba(251,251,250,.4) 100%)}
+.veil.m{background:rgba(251,251,250,.5)}
+/* sợi dây */
+#rope{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+#rope .hand{filter:url(#hand)}
+#rope path{fill:none;stroke:var(--ink);stroke-linecap:round}
+#rope .main{stroke-width:3.4}
+#rope .thin{stroke-width:1.5;opacity:.85}
+#rope .seg{stroke-dasharray:1;stroke-dashoffset:1}
+#view.go #rope .seg{animation:draw .75s cubic-bezier(.4,.1,.3,1) forwards;animation-delay:var(--d,0s)}
+@keyframes draw{to{stroke-dashoffset:0}}
+#rope .link{stroke-width:2.6;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .3s ease}
+#rope .link.on{stroke-dashoffset:0}
+#rope .dot{fill:var(--paper);stroke:var(--ink);stroke-width:2.5}
+/* quả cầu */
+#orbs{position:absolute;inset:0;pointer-events:none}
+.orb{position:absolute;left:0;top:0;padding:0;margin:0;border:0;background:none;cursor:pointer;pointer-events:auto;border-radius:50%;-webkit-tap-highlight-color:transparent;will-change:transform;opacity:0;transform:translate3d(var(--x),var(--y),0) scale(0)}
+#view.go .orb{animation:pop .6s cubic-bezier(.2,.9,.3,1.25) forwards;animation-delay:var(--d,0s)}
+@keyframes pop{0%{opacity:0;transform:translate3d(var(--x),var(--y),0) scale(0)}60%{opacity:1}100%{opacity:1;transform:translate3d(var(--x),var(--y),0) scale(1)}}
+.orb .bob{display:block;width:100%;height:100%;animation:bob 6s ease-in-out infinite;animation-delay:var(--b,0s);transition:opacity .25s ease}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.orb img{display:block;width:100%;height:100%;-webkit-user-drag:none;user-select:none;pointer-events:none;filter:drop-shadow(3px 4px 0 rgba(17,17,17,.9));transition:filter .15s ease}
+.orb:hover img,.orb:focus-visible img,.orb.prs img{filter:drop-shadow(5px 6px 0 var(--ink))}
+.orb:focus-visible{outline:none}
+.orb::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:2.5px dashed var(--ink);opacity:0;transform:scale(.92);transition:opacity .2s ease,transform .2s ease;pointer-events:none}
+.orb:focus-visible::after,.orb.sel::after{opacity:1;transform:scale(1)}
+#orbs.dim .orb:not(.sel) img{filter:drop-shadow(1px 2px 0 rgba(17,17,17,.45))}
+/* thẻ hồ sơ (ảnh màu) */
+.avatar{position:absolute;left:0;top:0;z-index:5;display:flex;flex-direction:column;align-items:stretch;text-decoration:none;color:var(--ink);background:var(--paper);border:2.5px solid var(--ink);border-radius:14px;box-shadow:4px 4px 0 var(--ink);padding:8px 8px 10px;opacity:0;pointer-events:none;transform-origin:center}
+.avatar.on{pointer-events:auto}
+.avatar:hover,.avatar:focus-visible{box-shadow:6px 6px 0 var(--ink)}
+.avatar .pic{display:block;position:relative;width:100%;aspect-ratio:225/195;overflow:hidden;border-radius:8px;border:2px solid var(--ink);background:var(--tone)}
+.avatar .pic img{position:absolute;left:-12%;top:-12%;width:124%;height:124%;object-fit:cover;-webkit-user-drag:none}
+.avatar .cap{display:block;padding:8px 4px 0;text-align:center;font:400 16px/1.4 var(--sans);overflow-wrap:anywhere}
+.avatar .cap b{display:block;font-weight:600;font-size:18px;line-height:1.3}
+.avatar .cap span{display:block}
+/* thơ */
+#poemBox{position:absolute;z-index:3;left:50%;bottom:max(24px,calc(env(safe-area-inset-bottom,0px) + 18px));transform:translateX(-50%);max-width:calc(100vw - 32px);width:max-content;padding:10px 26px 12px;background:var(--paper);border:2.5px solid var(--ink);border-radius:16px;box-shadow:4px 4px 0 var(--ink);text-align:center;opacity:0;pointer-events:none}
+#view.go #poemBox{animation:fadeup .7s ease forwards;animation-delay:var(--pd,2.4s)}
+@keyframes fadeup{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%)}}
+#poemBox div{font:400 clamp(20px,5.3vw,32px)/1.5 var(--script);color:var(--ink);text-wrap:balance}
+@media(max-width:600px){#poemBox{padding:8px 14px 10px;border-radius:14px}}
+/* Bọ */
+#bo{position:absolute;z-index:4;left:max(18px,env(safe-area-inset-left,0px));bottom:max(22px,env(safe-area-inset-bottom,0px));width:92px;height:92px;pointer-events:none;transform-origin:50% 100%}
+#bo .flip{position:absolute;inset:0;transform-origin:50% 100%}
+#bo img{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;transition:opacity .16s linear;-webkit-user-drag:none;user-select:none;pointer-events:none}
+#bo img.vis{opacity:1}
+/* thanh gợi ý + nút bản đồ + phát lại */
+.np{position:fixed;z-index:60;left:max(16px,env(safe-area-inset-left,0px));top:max(12px,env(safe-area-inset-top,0px));display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap;max-width:calc(100vw - 104px)}
+.np a{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 13px;border-radius:22px;text-decoration:none;color:var(--ink);font:500 14px/1 var(--sans);background:var(--paper);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.np a.np-home{width:44px;padding:0;justify-content:center}
+.np svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.np a:hover,.np a:focus-visible{background:#fff}
+.np-s{display:none}
+@media(max-width:480px){.np-n.has-s{display:none}.np-s{display:inline}}
+.map-btn{position:fixed;z-index:60;right:max(14px,env(safe-area-inset-right,0px));top:max(12px,env(safe-area-inset-top,0px));width:68px;height:46px;display:grid;place-items:center;border-radius:10px;background:var(--paper);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);padding:3px}
+.map-btn img{display:block;width:100%;height:100%;object-fit:cover;border-radius:6px;border:1.5px solid var(--ink);filter:grayscale(1) contrast(1.05) brightness(1.18)}
+.map-btn:active{transform:translate(1px,1px)}
+#replay{position:fixed;z-index:60;right:max(14px,env(safe-area-inset-right,0px));top:calc(max(12px,env(safe-area-inset-top,0px)) + 56px);min-height:44px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border-radius:22px;cursor:pointer;color:var(--ink);font:500 14px/1 var(--sans);background:var(--paper);border:2px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+#replay:hover,#replay:focus-visible{background:#fff}
+@media(max-width:600px){.avatar .cap{font-size:14px}.avatar .cap b{font-size:17px}}
+#replay:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+@media (min-width:900px){
+  .map-btn{right:32px;top:24px;width:76px;height:50px}
+  .np{top:24px;left:max(24px,env(safe-area-inset-left,0px))}.np a{font-size:16px;padding:0 16px}
+  #replay{right:32px;top:84px;font-size:16px;padding:0 16px}
+}
+/* màn tải */
+.loader{position:fixed;inset:0;z-index:2147483100;display:grid;place-items:center;background:var(--paper);transition:opacity .9s ease,visibility .9s}
+.loader.is-done{opacity:0;visibility:hidden;pointer-events:none}
+.loader-inner{display:grid;justify-items:center;gap:12px;padding:0 24px;text-align:center}
+.loader-bo{width:112px;height:112px;display:block}
+.loader-logo{display:flex;flex-direction:column;align-items:center;font:400 clamp(44px,8vw,60px)/.8 "Oooh Baby","Be Vietnam Pro",cursive;color:var(--ink)}
+.loader-logo small{margin-top:10px;font:400 10px/1 Georgia,serif;letter-spacing:.5em}
+.loader-text{margin:4px 0 0;font:400 14px/1.4 var(--sans);color:var(--ink)}
+.loader-track{width:min(220px,60vw);height:3px;border-radius:2px;background:var(--tone);overflow:hidden}
+.loader-track span{display:block;height:100%;width:100%;transform-origin:0 50%;transform:scaleX(.04);background:var(--ink);transition:transform .4s ease}
+html.still *,html.still *::before,html.still *::after{animation-duration:.001s!important;animation-delay:0s!important;transition-duration:.001s!important}
+html.still .orb .bob{animation:none!important}
+@media (prefers-reduced-motion:reduce){
+  #rope .seg,.orb,#poemBox,.orb .bob{animation:none!important}
+  #rope .seg{stroke-dashoffset:0}.orb{opacity:1;transform:translate3d(var(--x),var(--y),0)}#poemBox{opacity:1}
+  .loader,.loader-track span,#view{transition-duration:.01s!important}
+}

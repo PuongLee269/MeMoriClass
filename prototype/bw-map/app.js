@@ -22,7 +22,8 @@
   document.title = SC.pageTitle || document.title;
   MemoriContent.setText('#srt', SC.srTitle);
   /* đường dẫn của trang thật -> từ trang mẫu; riêng "index.html" (trang Bọ) -> trang mẫu Bọ */
-  const fixHref = h => (h === 'index.html' || h === 'index.html#') ? BO_PAGE : h === 'roadmap.html' ? '../bw-roadmap/' : h === 'lopf1.html' ? '../bw-lopf1/' : (/^(https?:|mailto:|#|\.\.\/)/i.test(h) ? h : REL + h);
+  const BW_PAGES = {'index.html':'../bw-bo/','sitemap.html':'../bw-map/','gioithieu.html':'../bw-gioithieu/','method.html':'../bw-method/','roadmap.html':'../bw-roadmap/','lopf1.html':'../bw-lopf1/','khampha.html':'../bw-khampha/','gallery.html':'../bw-gallery/','community.html':'../bw-community/','dangky.html':'../bw-dangky/'};
+  const fixHref = h=>{h=String(h==null?'':h);if(!h||/^(https?:|mailto:|#|\.\.\/)/i.test(h))return h;const m=/^([^#?]*)([?#].*)?$/.exec(h);return BW_PAGES[m[1]]?BW_PAGES[m[1]]+(m[2]||''):REL+h};
   const D = D0.map(d => {
     const c = SC.stones.find(x => x && x.id === d.id) || {};
     const ln = a => Array.isArray(a) ? a.filter(t => typeof t === 'string' && t.trim()).slice(0, 6).map(t => t.slice(0, 40)) : [];

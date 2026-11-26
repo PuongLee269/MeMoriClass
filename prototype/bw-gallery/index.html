@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fbfbfa">
+<title>Workshop Me.Mori (bản mẫu đen trắng)</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+<script src="../../assets/content-loader.js"></script>
+<script>
+  /* content-loader tải 'assets/content/…' theo đường dẫn tương đối của trang; trang mẫu nằm sâu hơn nên đổi gốc ở đây (không sửa tệp dùng chung). */
+  (function () {
+    var f = window.fetch;
+    if (typeof f !== 'function') return;
+    window.fetch = function (input, init) {
+      if (typeof input === 'string' && input.indexOf('assets/content/') === 0) input = '../../' + input;
+      return f.call(this, input, init);
+    };
+  })();
+  MemoriContent.prefetch("gallery"); MemoriContent.prefetch("site"); MemoriContent.prefetch("journey");
+</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="hand" x="-4%" y="-6%" width="108%" height="112%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="hand2" filterUnits="userSpaceOnUse" x="0" y="0" width="1700" height="1900" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="noise" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="1" seed="3"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 9 -4.2"/>
+    </filter>
+    <!-- 9 viên đá: 9 mẫu tram khác nhau (không dùng màu) -->
+    <pattern id="gp0" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#111"/></pattern>
+    <pattern id="gp1" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#fbfbfa"/></pattern>
+    <pattern id="gp2" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#d8d8d8"/></pattern>
+    <pattern id="gp3" width="5" height="5" patternUnits="userSpaceOnUse"><rect width="5" height="5" fill="#fbfbfa"/><circle cx="2.5" cy="2.5" r="1.25" fill="#111"/></pattern>
+    <pattern id="gp4" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" fill="#fbfbfa"/><rect width="6" height="2" fill="#111"/></pattern>
+    <pattern id="gp5" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#fbfbfa"/><rect width="6" height="1.6" fill="#111"/><rect width="1.6" height="6" fill="#111"/></pattern>
+    <pattern id="gp6" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#fbfbfa"/><rect width="6" height="2.4" fill="#111"/></pattern>
+    <pattern id="gp7" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><rect width="6" height="6" fill="#d8d8d8"/><rect width="6" height="1.8" fill="#111"/></pattern>
+    <pattern id="gp8" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#d8d8d8"/><circle cx="2" cy="2" r="1.4" fill="#111"/></pattern>
+  </defs>
+</svg>
+
+<div class="loader" role="status" aria-live="polite">
+  <div class="loader-inner">
+    <img class="loader-bo" src="../bw-bo/img/bo/idle.webp" alt="" width="112" height="112" draggable="false">
+    <div class="loader-logo">Me.Mori<small>CLASS</small></div>
+    <div class="loader-track" aria-hidden="true"><span></span></div>
+  </div>
+</div>
+
+<nav class="np" id="np" aria-label="Trang gợi ý"></nav>
+<a class="map-btn" id="mapBtn" href="../bw-map/" aria-label="Bản đồ trang">
+  <img src="../../assets/sitemap/map-card.webp" alt="" width="320" height="196">
+</a>
+
+<main id="view" aria-label="Workshop">
+  <h1 class="sr">Workshop</h1>
+  <div id="stage"></div>
+  <div id="mstage"></div>
+</main>
+<div class="hint" id="hint"></div>
+<div class="sr" id="live" role="status" aria-live="polite" aria-atomic="true"></div>
+<script src="app.js"></script>
+</body>
+</html>

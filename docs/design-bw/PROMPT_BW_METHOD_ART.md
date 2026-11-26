@@ -1,0 +1,32 @@
+# Codex: vẽ ảnh đen trắng cho trang mẫu Phương pháp
+
+Làm trong `D:\MeMoriClass\_bw_images`. Chỉ ghi vào `prototype/bw-method/img/src/` (đã có). Không sửa file khác, không commit.
+Ảnh tham chiếu phong cách: `docs/design-bw/phuong-an/pa-15b.jpg` (trang đã duyệt), `prototype/bw-roadmap/img/bg-bw.webp` (nền rừng đen trắng đã làm).
+Nguyên tắc chung: giấy trắng trung tính (không ngả vàng), nét mực vẽ tay tự tin, tram chấm và gạch chéo nhẹ; NỀN giảm chi tiết, ít đường để phần chính nổi bật; ưu tiên đường thẳng gọn thay vì trang trí cong rối. Không màu, không chữ, không giao diện, không nhân vật, không bọ rùa, không ánh sáng phát sáng.
+
+## Ảnh 1: `bg-bw.png` (1672×941, ngang)
+Ảnh bố cục: `assets/method/bg.webp` (rừng đêm có thác nước và dòng sông ở bên phải, thân cây lớn phía trên giữa-trái).
+```
+Redraw the first image (a fantasy forest with a river and a small waterfall at the right, big tree trunks and canopy at the top, 1672x941) in the exact style of the reference images: black-and-white Japanese manga ink on neutral white paper (no yellow), loose confident hand-drawn lines, light screentone and hatching, 3 layers of depth with atmospheric perspective (far layers paler). Keep the composition: tree trunks and hanging canopy along the top and the upper-left, a calm river with a small waterfall on the right at mid height, soft bushes and ferns along the bottom edge, and the whole centre (the middle 60 percent of the width, from 30 to 80 percent of the height) kept calm, pale and almost empty because a big stone table will sit there. Few lines, medium-low contrast, no fireflies, no glow. Daytime look, plain white sky gaps. No foreground rocks, table, lantern, characters, text or colour.
+```
+
+## Ảnh 2: `parts-bw.png` (bảng chi tiết, nền trắng tinh, các vật tách rời nhau, nằm ngang khoảng 2400×1500)
+Ảnh bố cục: `prototype/bw-method/_ref/layout-parts.png` (bàn đá lớn dưới, đĩa phải trên, cành cây trái trên, đèn lồng giữa trên).
+```
+On a plain pure white background, draw four separate isolated objects in the same black-and-white manga ink style (confident hand-drawn contour lines, light screentone and hatching, neutral white paper, no colour), spaced far apart, nothing touching, no shadow on the background, no text, no characters, no glow: (1) a huge round flat stone table slab seen from a high 3/4 angle (aspect 1400:705, an ellipse top surface about 1300 wide by 475 tall, and a thick side wall of cut stone blocks below it). The TOP SURFACE must be a clean, flat, very light surface with only a few faint stone cracks and sparse screentone, because wooden-looking game pieces sit on it; moss tufts at the left and right edges; on the front side wall a carved row: a crescent moon, a full moon, a crescent moon, with a small leaf sprig on each side; (2) a round carved stone dish seen from the same angle, as it would sit on the table (aspect 3:2, about 900x600): an elliptical top surface about 80 percent of the width, engraved with a thin double ring and four small diamond marks at the top, bottom, left and right, a visible rim thickness below; top surface light and calm; (3) a tree branch coming from the upper-left corner, with a bundle of large simple leaves (clean contour lines, few veins), aspect 760:685, with a short rope tied around the branch near its lower middle where a lantern hangs; (4) a small hanging hexagonal lantern with a ring on top and a simple cage, unlit (no flame glow; interior filled with light screentone), aspect 178:247. Every object fully visible with a clear margin of white around it.
+```
+
+## Ảnh 3: `cubes-bw.png` (bảng 3×3, nền trắng tinh, khoảng 1800×1800)
+Ảnh bố cục: `prototype/bw-method/_ref/layout-cubes.png` (hàng 1: xoắn ốc; hàng 2: con mắt; hàng 3: ngọn núi; ba cột là ba biến thể A, B, C).
+```
+On a plain pure white background draw a 3 by 3 grid of nine separate rough-cut stone cubes, same layout as the reference (row 1: a spiral symbol, row 2: an eye symbol with small rays, row 3: a mountain symbol with two peaks; three slightly different cubes per row with different chips, cracks and slightly different symbol details, but the symbol must stay instantly recognisable). Style: black-and-white Japanese manga ink on neutral white paper, bold confident hand-drawn contour lines, the stone drawn with mid-grey screentone dots and hatching on the side faces, the lit top face lighter. The symbol is engraved on the front face and must be BOLD and clean: thick white (paper-colour) lines with a thin black outline, high contrast against a dark screentone stone face so it reads at only 100 px width. Each cube seen from a slightly high 3/4 angle with the front face and top face visible (like the reference), about square, fully visible with a clear white margin, nothing touching, no cast shadow on the background, no text, no glow, no colour.
+```
+
+Sau khi có ảnh: lưu đúng tên trên vào `prototype/bw-method/img/src/`, báo cáo ≤6 dòng (đường dẫn, kích thước, lỗi nếu có).
+
+## Ảnh 4 (vẽ lại bàn, sửa tỉ lệ): `table-bw.png`
+Lần đầu bàn trong `parts-bw.png` quá dẹt (tỉ lệ 3.1:1, mặt bàn cao chỉ ~4:1). Vẽ lại riêng bàn cho đúng tỉ lệ bàn cũ. Ảnh bố cục: `prototype/bw-method/_ref/layout-table.png`; ảnh phong cách: bàn trong `prototype/bw-method/img/src/parts-bw.png` (giữ nét vẽ, tram, rêu, dải trăng-lá ở mặt trước).
+```
+On a plain pure white background draw ONE huge round flat stone table slab in the same black-and-white manga ink style as the second reference (confident hand-drawn contour lines, light screentone and hatching, neutral white paper, no colour, no glow, no text, no characters, no shadow on the background), but with the SAME PROPORTIONS as the first reference image: the whole object is about 2 times wider than tall (aspect 1400:705). The TOP SURFACE is a big, fairly tall ellipse (about 1300 wide and 475 tall, so width to height about 2.7 to 1, not flatter) occupying the upper 70 percent of the object, and the thick side wall of cut stone blocks (about 30 percent of the height at the front) hangs below it. The top surface must be clean, flat, very light, with only a few faint cracks and sparse screentone, because stone cube game pieces will sit on it. Moss tufts on the left and right edges, and on the front side wall a carved row: a leaf sprig, a crescent moon, a full moon, a crescent moon, a leaf sprig. Fully visible with a clear white margin all around.
+```
+Ghi `prototype/bw-method/img/src/table-bw.png`.

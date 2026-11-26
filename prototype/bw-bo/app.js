@@ -100,10 +100,12 @@
   }
 
   /* ---------- Đường dẫn: nội dung dùng chung viết cho trang gốc, đổi sang đường dẫn của trang mẫu ---------- */
+  var BW_PAGES = {'index.html':'../bw-bo/','sitemap.html':'../bw-map/','gioithieu.html':'../bw-gioithieu/','method.html':'../bw-method/','roadmap.html':'../bw-roadmap/','lopf1.html':'../bw-lopf1/','khampha.html':'../bw-khampha/','gallery.html':'../bw-gallery/','community.html':'../bw-community/','dangky.html':'../bw-dangky/'};
   function fixHref(h) {
-    if (!h) return h;
-    if (/^(https?:|mailto:|#|\.\.\/)/i.test(h)) return h;
-    return '../../' + h;
+    h = String(h == null ? '' : h);
+    if (!h || /^(https?:|mailto:|#|\.\.\/)/i.test(h)) return h;
+    var m = /^([^#?]*)([?#].*)?$/.exec(h);
+    return BW_PAGES[m[1]] ? BW_PAGES[m[1]] + (m[2] || '') : '../../' + h;
   }
   function makeMapCard() {
     var a = document.createElement('a');

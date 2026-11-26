@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fbfbfa">
+<title>Khám phá tác phẩm (bản mẫu đen trắng)</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+<script src="../../assets/content-loader.js"></script>
+<script>
+  /* content-loader tải 'assets/content/…' theo đường dẫn tương đối của trang; trang mẫu nằm sâu hơn nên đổi gốc ở đây (không sửa tệp dùng chung). */
+  (function () {
+    var f = window.fetch;
+    if (typeof f !== 'function') return;
+    window.fetch = function (input, init) {
+      if (typeof input === 'string' && input.indexOf('assets/content/') === 0) input = '../../' + input;
+      return f.call(this, input, init);
+    };
+  })();
+  MemoriContent.prefetch("khampha"); MemoriContent.prefetch("site"); MemoriContent.prefetch("journey");
+</script>
+</head>
+<body>
+<div class="loader" role="status" aria-live="polite">
+  <div class="loader-inner">
+    <img class="loader-bo" src="../bw-bo/img/bo/idle.webp" alt="" width="112" height="112" draggable="false">
+    <div class="loader-logo">Me.Mori<small>CLASS</small></div>
+    <p class="loader-text">Bọ đang thắp đèn trên mây…</p>
+    <div class="loader-track" aria-hidden="true"><span></span></div>
+  </div>
+</div>
+
+<nav class="np" id="np" aria-label="Trang gợi ý"></nav>
+<a class="map-btn" id="mapBtn" href="../bw-map/" aria-label="Bản đồ trang">
+  <img src="../../assets/sitemap/map-card.webp" alt="" width="320" height="196">
+</a>
+
+<main id="view" aria-label="Khám phá tác phẩm">
+  <div id="spacer"></div>
+  <div id="stage">
+    <div class="scenery"><img class="L" id="bg" alt="" src="img/bg-bw.webp"><div class="veil"></div></div>
+    <div id="blds"></div>
+    <div id="lits"></div>
+    <a id="bo" href="../bw-bo/" aria-label="Trò chuyện với Bọ"><span class="hit"></span><div class="flip"><img alt="" draggable="false"><img alt="" draggable="false"></div></a>
+    <div id="hots"></div>
+  </div>
+</main>
+<div id="hud">
+  <div id="ttl"><h1></h1><p></p></div>
+  <div id="tips"></div>
+  <section class="wc" id="wc" role="dialog" aria-labelledby="wcT" inert>
+    <img class="wc-img" id="wcImg" alt="" hidden decoding="async">
+    <div class="wc-t"><span class="wc-k" id="wcK"></span><h2 id="wcT"></h2><p id="wcD"></p>
+      <a class="wc-go" id="wcGo" href="../../tacpham.html"><span id="wcGoT"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+    <button class="wc-x" id="wcX" type="button"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></i></button>
+  </section>
+</div>
+<div class="sr" id="live" role="status" aria-live="polite" aria-atomic="true"></div>
+<script src="app.js"></script>
+</body>
+</html>

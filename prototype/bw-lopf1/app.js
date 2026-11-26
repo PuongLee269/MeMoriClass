@@ -355,7 +355,9 @@ let boReady=false;
 
 /* ===== thanh gợi ý: về trang Bọ + trang kế tiếp ===== */
 (async()=>{
-  const nav=$('np'),fixHref=h=>(h==='index.html'||h==='index.html#')?BO_PAGE:h==='roadmap.html'?'../bw-roadmap/':h==='lopf1.html'?'../bw-lopf1/':(/^(https?:|mailto:|#|\.\.\/)/i.test(h)?h:REL+h);
+const BW_PAGES={'index.html':'../bw-bo/','sitemap.html':'../bw-map/','gioithieu.html':'../bw-gioithieu/','method.html':'../bw-method/','roadmap.html':'../bw-roadmap/','lopf1.html':'../bw-lopf1/','khampha.html':'../bw-khampha/','gallery.html':'../bw-gallery/','community.html':'../bw-community/','dangky.html':'../bw-dangky/'};
+const BWFIX=h=>{h=String(h==null?'':h);if(!h||/^(https?:|mailto:|#|\.\.\/)/i.test(h))return h;const m=/^([^#?]*)([?#].*)?$/.exec(h);return BW_PAGES[m[1]]?BW_PAGES[m[1]]+(m[2]||''):REL+h};
+  const nav=$('np'),fixHref=h=>BWFIX(h);
   const home=el('a','np-home');home.href=BO_PAGE;home.setAttribute('aria-label',SITE.backLabel||'Về trang Bọ');
   home.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';nav.appendChild(home);
   const DEF={max:2,pages:[

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fbfbfa">
+<title>Giới thiệu Me.Mori (bản mẫu đen trắng)</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+<script src="../../assets/content-loader.js"></script>
+<script>
+  /* content-loader tải 'assets/content/…' theo đường dẫn tương đối của trang; trang mẫu nằm sâu hơn nên đổi gốc ở đây (không sửa tệp dùng chung). */
+  (function () {
+    var f = window.fetch;
+    if (typeof f !== 'function') return;
+    window.fetch = function (input, init) {
+      if (typeof input === 'string' && input.indexOf('assets/content/') === 0) input = '../../' + input;
+      return f.call(this, input, init);
+    };
+  })();
+  MemoriContent.prefetch("gioithieu"); MemoriContent.prefetch("site"); MemoriContent.prefetch("journey");
+</script>
+<script src="../../assets/yt-fast.js"></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="hand" x="-5%" y="-8%" width="110%" height="116%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="loader" role="status" aria-live="polite">
+  <div class="loader-inner">
+    <img class="loader-bo" src="../bw-bo/img/bo/idle.webp" alt="" width="112" height="112" draggable="false">
+    <div class="loader-logo">Me.Mori<small>CLASS</small></div>
+    <p class="loader-text">Bọ đang trải tấm nền rừng…</p>
+    <div class="loader-track" aria-hidden="true"><span></span></div>
+  </div>
+</div>
+<div id="exitv"></div>
+
+<nav class="np" id="np" aria-label="Trang gợi ý"></nav>
+<a class="map-btn" id="mapBtn" href="../bw-map/" aria-label="Bản đồ trang">
+  <img src="../../assets/sitemap/map-card.webp" alt="" width="320" height="196">
+</a>
+
+<main id="view" aria-label="Giới thiệu">
+  <div class="scenery" aria-hidden="true"><img id="bgd" class="bgd" src="img/bg-desk-bw.webp" alt=""><img id="bgm" class="bgm" src="img/bg-phone-bw.webp" alt=""><div class="veil"></div></div>
+  <img class="fg fgL" src="img/fgL.webp" alt="" aria-hidden="true">
+  <img class="fg fgR" src="img/fgR.webp" alt="" aria-hidden="true">
+  <div class="perch" id="perch" aria-hidden="true"><img class="leaf leaf-d" src="img/leaf-d.webp" alt=""><img class="leaf leaf-m" src="img/leaf-m.webp" alt=""><div id="bo"><div class="flip"><img alt=""><img alt=""></div></div></div>
+
+  <div id="stack">
+    <div id="slotw">
+      <div class="sdeco" aria-hidden="true"></div>
+      <div id="slot" class="paused" role="region" aria-label="Trình phát video giới thiệu">
+        <div class="vid" id="vid">
+          <div id="poster"><img id="pImg" alt="" decoding="async"></div>
+          <button id="vclick" type="button" tabindex="-1" aria-label="Phát hoặc tạm dừng"></button>
+          <div id="spin" aria-hidden="true"></div>
+          <button id="bigplay" type="button" aria-label="Phát video"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+          <div id="msg" aria-live="polite"></div>
+          <div id="fb" role="alert"><span>Không phát được video trong khung này (trình duyệt hoặc trang chặn nhúng).</span><a id="fbA" target="_blank" rel="noopener" href="#">Mở trên YouTube</a></div>
+          <div id="next" role="status" aria-live="polite"><span id="nextT"></span><button id="nextX" type="button">Hủy</button></div>
+        </div>
+        <div id="bar">
+          <button class="cb" id="bPlay" type="button" aria-label="Phát"></button>
+          <span id="time">--:--</span>
+          <div class="rng"><div class="trk"><i id="played"></i></div><input id="seek" type="range" min="0" max="1000" value="0" step="1" aria-label="Tiến độ video"></div>
+          <button class="cb" id="bMute" type="button" aria-label="Tắt tiếng"></button>
+          <div class="rng" id="volw"><div class="trk"><i id="volFill"></i></div><input id="vol" type="range" min="0" max="100" value="100" aria-label="Âm lượng"></div>
+          <button class="cb" id="bFs" type="button" aria-label="Toàn màn hình"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="fsIn" class="st" d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div id="cap"><h1 id="capT"></h1><p id="capP"></p></div>
+  </div>
+</main>
+<div id="toast" role="status"></div>
+<script src="app.js"></script>
+</body>
+</html>

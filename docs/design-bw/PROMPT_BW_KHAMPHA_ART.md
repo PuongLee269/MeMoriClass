@@ -1,0 +1,18 @@
+# Codex: vẽ ảnh đen trắng cho trang mẫu Khám phá tác phẩm
+
+Làm trong `D:\MeMoriClass\_bw_images`. Chỉ ghi vào `prototype/bw-khampha/img/src/`. Không sửa file khác, không commit.
+Ảnh tham chiếu phong cách: `docs/design-bw/phuong-an/pa-15b.jpg` (trang đã duyệt), `prototype/bw-roadmap/img/bg-bw.webp` (nền lộ trình đã làm).
+Nguyên tắc chung: manga Nhật đen trắng, giấy trắng trung tính (không ngả vàng), nét mực vẽ tay tự tin, tram chấm và gạch chéo nhẹ. Không màu, không chữ, không nhân vật người/bọ rùa (trừ cô bé trong sân khấu, xem ảnh 2).
+Ghi chú: ảnh bố cục là bản màu gốc, chỉ để lấy bố cục, KHÔNG sao chép màu.
+
+## Ảnh 1: `bg-bw.png` (1672×941, ngang). Ảnh bố cục: `prototype/bw-khampha/_ref/layout-bg.jpg`
+```
+Redraw the first image (a night sky of big painterly clouds joined by winding cloud-ribbon paths, a website background, 1672x941) as black-and-white Japanese manga ink on neutral white paper (no yellow, no colour), loose confident hand-drawn contour lines, light screentone dots and hatching only on a few cloud undersides, atmospheric perspective. Keep the composition and the position of every large cloud island, because five small buildings will be placed on them later (do NOT draw any building, house, kiln, stage, easel, chalkboard, sun, character, text or UI): a cloud island at upper left-centre (around x 330-750, y 200-330), one at upper right (x 1150-1580, y 280-420), one at left (x 50-560, y 420-690), one at the centre (x 620-1200, y 480-600), one at the bottom centre (x 680-1280, y 700-840); each island has a fairly flat, calm top edge. Keep the winding ribbon paths that link the islands as simple pairs of parallel contour lines with very light tone. REDUCE detail: the background must stay pale, low contrast, with thin lines and almost no solid black, so the buildings read clearly on top. Replace the stars by a few tiny simple sparkles (four-point stars drawn with 2 crossed strokes), very few. Bottom edge: a faint pale band of distant mountains.
+```
+
+## Ảnh 2: `buildings-bw.png` (1672×941). Ảnh bố cục: `prototype/bw-khampha/_ref/layout-buildings.jpg`
+```
+Redraw the first image (five small illustrated buildings on a plain white background, 1672x941) in the same black-and-white manga ink style as the references: confident hand-drawn contour lines, light screentone and hatching, clean white highlights, bold black fills only in small deep shadows, neutral white paper, no colour. Keep EXACTLY the same positions, sizes and silhouettes of the five buildings and keep them clearly separated by plain pure white background with a clear white margin, nothing touching: (1) a round brick kiln with a chimney and a wooden pottery stall holding clay pots, a big vase in front (upper left-centre); (2) a photo studio: a tall framed picture showing a flower-patterned dress on a hanger, two tripod studio lights, a camera and a small crate (upper right); (3) a small cottage with tiled roof, round-arched door, two arched windows, chimney, flowering bushes around it, stone steps, and a spoked sun with rays above its left (left); (4) a theatre stage: a wooden round stage with steps, a striped canopy with bunting, curtains drawn open, two hanging lanterns, flowering bushes at both sides, a small girl in a plain dress standing in the middle (centre); (5) a classroom corner: a wooden-framed chalkboard on an easel with a few chalk lines and a small cloud doodle, a stack of two books, a pot of chalk, a lantern, small bushes (bottom centre). No ground, no clouds, no shadows on the background, no text.
+```
+
+Sau khi có ảnh: lưu đúng tên trên vào `prototype/bw-khampha/img/src/`, báo cáo ≤6 dòng (đường dẫn, kích thước, lỗi nếu có).

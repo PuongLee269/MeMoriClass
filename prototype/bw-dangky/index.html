@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fbfbfa">
+<title>Đăng ký lớp F2 (bản mẫu đen trắng)</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+<script src="../../assets/content-loader.js"></script>
+<script>
+  /* content-loader và registration.js tải 'assets/content/…' theo đường dẫn tương đối của trang; trang mẫu nằm sâu hơn nên đổi gốc ở đây (không sửa tệp dùng chung). */
+  (function () {
+    var f = window.fetch;
+    if (typeof f !== 'function') return;
+    window.fetch = function (input, init) {
+      if (typeof input === 'string' && input.indexOf('assets/content/') === 0) input = '../../' + input;
+      return f.call(this, input, init);
+    };
+  })();
+  MemoriContent.prefetch("dangky"); MemoriContent.prefetch("site"); MemoriContent.prefetch("journey");
+</script>
+<script src="../../assets/registration.js?v=f2-seats"></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="hand" x="-4%" y="-6%" width="108%" height="112%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2.2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<div class="loader" role="status" aria-live="polite">
+  <div class="loader-inner">
+    <img class="loader-bo" src="../bw-bo/img/bo/idle.webp" alt="" width="112" height="112" draggable="false">
+    <div class="loader-logo">Me.Mori<small>CLASS</small></div>
+    <p class="loader-text">Bọ đang trải tờ giấy đăng ký…</p>
+    <div class="loader-track" aria-hidden="true"><span></span></div>
+  </div>
+</div>
+
+<nav class="np" id="np" aria-label="Trang gợi ý"></nav>
+<a class="map-btn" id="mapBtn" href="../bw-map/" aria-label="Bản đồ trang">
+  <img src="../../assets/sitemap/map-card.webp" alt="" width="320" height="196">
+</a>
+
+<div id="app">
+  <div id="bgwrap" aria-hidden="true"><img id="bg" alt="" src="img/bg-desk-bw.webp"><div id="bgveil"></div></div>
+  <main id="sheet">
+    <div id="bo"><div class="flip"><img alt="" draggable="false"><img alt="" draggable="false"></div><button type="button" id="boHit" aria-label="Bọ"></button></div>
+    <h1 class="ttl" id="ttl"></h1>
+    <p class="price" id="price" aria-hidden="true"><span class="was" id="was"></span><svg viewBox="0 0 60 24" aria-hidden="true"><path d="M3 12h50M42 3l11 9-11 9"/></svg><span class="now" id="now"></span></p>
+    <p class="limited" id="limited"></p>
+    <p class="count" id="cnt" aria-hidden="true"><span class="lbl">Còn:</span><span class="num"><span class="roll" id="rRem"></span><span class="sl"></span><span class="roll cap" id="rCap"></span></span></p>
+    <p class="hint" id="hint"></p>
+    <button type="button" id="zone" aria-label="Đóng dấu để gửi đăng ký">
+      <span class="ring"></span><span id="ripple"></span>
+      <svg class="sealsvg" viewBox="0 0 200 200" fill="none" stroke="#111" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <g class="ghost"><circle cx="100" cy="100" r="92" stroke-width="3" stroke-dasharray="3 6"/><circle cx="100" cy="100" r="70" stroke-width="2" stroke-dasharray="2 5"/></g>
+        <g class="imp" id="imprint">
+          <circle cx="100" cy="100" r="92" stroke-width="6"/><circle cx="100" cy="100" r="82" stroke-width="2.5" stroke-dasharray="3 5"/><circle cx="100" cy="100" r="68" stroke-width="3"/>
+          <path d="M100 102C86 70 54 66 40 90 56 112 84 114 100 102ZM100 102C114 70 146 66 160 90 144 112 116 114 100 102Z" stroke-width="3.5" fill="#fbfbfa"/>
+          <path d="M100 100C84 82 64 80 52 92M100 100C116 82 136 80 148 92" stroke-width="2"/>
+          <ellipse cx="100" cy="112" rx="15" ry="22" fill="#111"/><path d="M100 94v36" stroke="#fbfbfa" stroke-width="2.2"/>
+          <circle cx="100" cy="86" r="9" fill="#111"/><path d="M96 79c-3-7-7-9-11-9M104 79c3-7 7-9 11-9" stroke-width="3"/>
+          <path d="M44 138C56 158 78 166 100 166s44-8 56-28" stroke-width="3"/>
+          <g fill="#111" stroke="none"><ellipse cx="52" cy="146" rx="8" ry="4" transform="rotate(50 52 146)"/><ellipse cx="66" cy="158" rx="8" ry="4" transform="rotate(30 66 158)"/><ellipse cx="84" cy="164" rx="8" ry="4" transform="rotate(10 84 164)"/><ellipse cx="148" cy="146" rx="8" ry="4" transform="rotate(-50 148 146)"/><ellipse cx="134" cy="158" rx="8" ry="4" transform="rotate(-30 134 158)"/><ellipse cx="116" cy="164" rx="8" ry="4" transform="rotate(-10 116 164)"/></g>
+        </g>
+      </svg>
+    </button>
+  </main>
+</div>
+
+<div id="stamp" aria-hidden="true">
+  <svg viewBox="0 0 120 150" fill="none" stroke="#111" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 6c-12 0-20 8-19 20 1 8 6 12 10 16h18c4-4 9-8 10-16 1-12-7-20-19-20Z" fill="#fbfbfa"/>
+    <path d="M48 20c3-6 8-8 12-8" stroke-width="2.2"/>
+    <path d="M52 42l-4 44h24l-4-44Z" fill="#fbfbfa"/><path d="M54 52l-2 26M62 52l-1 28" stroke-width="2" opacity=".5"/>
+    <path d="M30 86h60l3 12H27Z" fill="#111"/>
+    <rect x="24" y="98" width="72" height="30" rx="4" fill="#fbfbfa"/><path d="M32 106h56M32 114h40" stroke-width="2" opacity=".45"/>
+    <path d="M24 128h72" stroke-width="5"/>
+  </svg>
+</div>
+
+<div class="sr" id="live" aria-live="polite"></div>
+<div class="sr" id="a11y"></div>
+<script src="app.js"></script>
+</body>
+</html>
