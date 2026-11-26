@@ -1,0 +1,26 @@
+# Codex: vẽ ảnh đen trắng cho trang mẫu Lớp F1
+
+Làm trong `D:\MeMoriClass\_bw_images`. Chỉ ghi vào `prototype/bw-lopf1/img/src/` (tạo thư mục). Không sửa file khác, không commit.
+Ảnh tham chiếu phong cách: `docs/design-bw/phuong-an/pa-15b.jpg` (trang đã duyệt), `prototype/bw-map/img/scene-bw-nomound.webp` (cảnh bản đồ đã làm), `prototype/bw-roadmap/img/src/bg-bw.png` (nền lộ trình, nếu đã có).
+Nguyên tắc chung: giấy trắng trung tính (không ngả vàng), nét mực vẽ tay tự tin, tram chấm và gạch chéo nhẹ; NỀN phải giảm chi tiết, ít đường, tương phản vừa để phần chính (ba ô tranh, sách) nổi bật; ưu tiên đường thẳng gọn thay vì trang trí cong rối. Không màu, không chữ, không giao diện, không nhân vật, không bọ rùa.
+Không vẽ lại: `s_clouds|s_moon|s_sunset|demo1..4.webp`, `assets/gallery/photo.webp` (ảnh nội dung các mục, dùng CSS grayscale), 12 khung lật sách `assets/lopf1/bookfx/*.webp` (grayscale CSS), mặt nạ ô tranh. Khung, chùm sáng, xoắn ốc, nút: làm bằng CSS/SVG.
+
+## Ảnh 1: `bg-desk-bw.png` (1672×941, ngang)
+Ảnh bố cục: `assets/lopf1/img/bg.webp`.
+```
+Redraw the first image (a fantasy mountain-meadow sky background for a website, 1672x941) in the exact style of the reference images: black-and-white Japanese manga ink on neutral white paper (no yellow), loose confident hand-drawn lines, light screentone and hatching, 3-layer depth with atmospheric perspective (far layers paler). Keep the composition: tall rocky cliffs and spires at the far left and far right edges, a few pale distant hills in the middle, big soft cumulus clouds drawn with simple contour lines and light screentone shading across the upper two thirds, and a flat grassy meadow horizon in the lower fifth with a few tiny grass strokes and flowers. Keep the whole centre band (the middle 60 percent of the width, from 25 to 75 percent of the height) calm, light and almost empty, with only a few faint distant hill lines, because a picture frame will sit there. Keep the very bottom 12 percent a light plain meadow because a stone pedestal will be added later. Do NOT draw any foreground rocks, pedestal, mound, book, characters, text or colour.
+```
+
+## Ảnh 2: `bg-phone-bw.png` (852×1846, dọc; nếu tool chỉ ra tỉ lệ khác thì giữ tỉ lệ 0.4615 rồi chúng tôi sẽ cắt/co)
+Ảnh bố cục: `assets/lopf1/m/bg.webp`.
+```
+Redraw the first image (a portrait fantasy mountain-meadow sky background for a phone website, 852x1846) in the exact style of the reference images: black-and-white Japanese manga ink on neutral white paper (no yellow), loose confident hand-drawn lines, light screentone and hatching, atmospheric perspective. Keep the composition: top 30 percent light sky with a few simple cumulus clouds and very few lines (a title sits there), distant jagged cliffs and pale hills at the left and right edges around 25 to 40 percent height, a low grassy hill rising to the centre at about 38 to 45 percent height (a small stone mound will be added there later, leave it empty), then the central band from 33 to 60 percent height calm, pale and almost empty because a picture frame sits there, and a soft meadow in the lower 40 percent with only sparse short grass strokes and a few tiny flowers, kept light because a stone pedestal and book sit there. No foreground rocks, pedestal, book, characters, text or colour.
+```
+
+## Ảnh 3: `parts-bw.png` (bảng chi tiết, nền trắng tinh, các vật tách rời nhau, cách nhau rộng, nằm ngang khoảng 2400×1400)
+Ảnh bố cục: `assets/lopf1/img/platform.webp` (bệ đá + sách), `assets/lopf1/img/rune.webp` (gò), `assets/lopf1/img/fg.webp` (cỏ và đá tiền cảnh); phiên bản điện thoại: `assets/lopf1/m/ped.webp`, `assets/lopf1/m/rune.webp`, `assets/lopf1/m/fg.webp`.
+```
+On a plain pure white background, draw six separate isolated objects in the same black-and-white manga ink style (confident hand-drawn contour lines, light screentone and hatching, neutral white paper, no colour), spaced far apart, nothing touching, no shadow on the background, no text, no characters: (1) a wide low round stone pedestal seen from slightly above, like a flat circular stage of cut stone slabs with a few moss tufts at the edge, aspect about 4:1, with a large OPEN BOOK lying in the exact centre of its top (book spans about 30 percent of the pedestal width, blank pages with only a few faint text-like ink lines, the book's bottom edge sits about 55 percent down from the pedestal top); (2) the same pedestal and book from a higher angle, taller and rounder, aspect about 2.6:1; (3) a small rocky mound like a little hill with a flat smooth patch on the front where a spiral symbol will be added later (leave that patch empty), a few moss tufts on top, flat top for a tiny character to stand on, aspect about 2.2:1; (4) a second smaller mound, aspect about 1.4:1; (5) a foreground cluster for the left edge: two or three big rocks with grass blades and wildflowers growing around them, leaning right, bold black fills in the shadows and clean white highlights, aspect about 2:1; (6) a similar foreground cluster for the right edge, different arrangement, leaning left. Every object fully visible with a clear margin of white around it.
+```
+
+Sau khi có ảnh: lưu đúng tên trên vào `prototype/bw-lopf1/img/src/`, báo cáo ≤6 dòng (đường dẫn, kích thước, lỗi nếu có).

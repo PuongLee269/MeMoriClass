@@ -469,7 +469,7 @@ document.addEventListener('visibilitychange',()=>{vis=!document.hidden;app.class
 
 /* ================= THANH GỢI Ý: về trang Bọ + trang kế tiếp ================= */
 (async()=>{
-  const nav=$('np'),fixHref=h=>(h==='index.html'||h==='index.html#')?BO_PAGE:(/^(https?:|mailto:|#|\.\.\/)/i.test(h)?h:REL+h);
+  const nav=$('np'),fixHref=h=>(h==='index.html'||h==='index.html#')?BO_PAGE:h==='lopf1.html'?'../bw-lopf1/':(/^(https?:|mailto:|#|\.\.\/)/i.test(h)?h:REL+h);
   const home=document.createElement('a');home.className='np-home';home.href=BO_PAGE;home.setAttribute('aria-label',SITE.backLabel||'Về trang Bọ');
   home.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';nav.appendChild(home);
   const DEF={max:2,pages:[
