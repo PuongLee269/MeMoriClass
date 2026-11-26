@@ -314,7 +314,7 @@ var S = {
   grp: function (label, fields, o) { return Object.assign({ k: 'grp', label: label, fields: fields }, o); },
   list: function (label, item, o) { return Object.assign({ k: 'list', label: label, item: item }, o); }
 };
-var PAGES = ['index.html', 'gioithieu.html', 'sitemap.html', 'roadmap.html', 'dangky.html', 'method.html', 'community.html', 'gallery.html', 'lopf1.html', 'khampha.html', 'home-backup.html', 'home-backup.html#courses', 'home-backup.html#workshops', 'home-backup.html#method', 'home-backup.html#contact'];
+var PAGES = ['index.html', 'gioithieu.html', 'sitemap.html', 'roadmap.html', 'dangky.html', 'method.html', 'community.html', 'workshop.html', 'gallery.html', 'lopf1.html', 'khampha.html', 'home-backup.html', 'home-backup.html#courses', 'home-backup.html#workshops', 'home-backup.html#method', 'home-backup.html#contact'];
 var ASPECTS = [{ v: 16 / 9, l: 'Ngang 16:9' }, { v: 4 / 3, l: 'Ngang 4:3' }, { v: 1, l: 'Vuông 1:1' }, { v: 9 / 16, l: 'Dọc 9:16' }];
 var GEM = ['đỏ', 'xanh dương', 'cam', 'xanh lá', 'tím', 'vàng chanh', 'lam', 'hồng', 'trắng'];
 var SYM = [{ v: 'spiral', l: 'Xoắn ốc' }, { v: 'eye', l: 'Con mắt' }, { v: 'mountain', l: 'Ngọn núi' }];
@@ -587,8 +587,8 @@ var DOCS = [
       }), { fixed: 1, itemTitle: function (it) { return it.name; }, collapse: 1 }) } }
     ] },
 
-  { id: 'gallery', group: 'Các trang', tab: 'Workshop', file: 'assets/content/gallery.json', page: 'gallery.html', preview: ['gallery', 'site'],
-    note: 'Trang Workshop (đường dẫn vẫn là gallery.html). Mỗi ảnh có ảnh chiếu (khung ngang 856×436, hiện trong máy chiếu), ảnh lớn để xem khi bấm vào (máy tính; bản điện thoại nếu có), tên workshop, mô tả ngắn và chú thích. Mỗi bộ ba viên đá gắn với một ảnh.',
+  { id: 'gallery', group: 'Các trang', tab: 'Workshop (bản cũ)', file: 'assets/content/gallery.json', page: 'backup/gallery-before-workshop-mori-2026-11-26.html', preview: ['gallery', 'site'],
+    note: 'Thiết kế máy chiếu được lưu trong bản sao của trang Workshop. Mỗi bộ ba viên đá gắn với một ảnh.',
     sections: [
       { title: 'Chung', fields: { pageTitle: T('Tiêu đề trang (tab)', { req: 1, max: 80 }), hint: T('Dòng chữ dưới khay đá (để trống nếu không dùng)', { max: 80 }) } },
       { title: 'Danh sách ảnh Workshop', fields: { photos: S.list('Ảnh', S.grp('', {

@@ -12,7 +12,7 @@
     { id: 'lopf1', name: 'Lớp F1', href: 'lopf1.html', next: ['khampha', 'dangky'] },
     { id: 'khampha', name: 'Khám phá tác phẩm', short: 'Khám phá', href: 'khampha.html', next: ['gallery', 'dangky'] },
     { id: 'tacpham', name: 'Khám phá tác phẩm', short: 'Khám phá', href: 'khampha.html', next: ['khampha', 'gallery'] },
-    { id: 'gallery', name: 'Workshop', short: 'Workshop', href: 'gallery.html', next: ['community', 'dangky'] },
+    { id: 'gallery', name: 'Workshop', short: 'Workshop', href: 'workshop.html', next: ['community', 'dangky'] },
     { id: 'community', name: 'Cộng đồng', href: 'community.html', next: ['dangky'] },
     { id: 'dangky', name: 'Đăng ký', href: 'dangky.html', next: ['community', 'gioithieu'] },
     { id: 'sitemap', name: 'Bản đồ trang', href: 'sitemap.html', next: ['gioithieu'] }

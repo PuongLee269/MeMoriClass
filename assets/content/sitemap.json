@@ -26,8 +26,8 @@
     {
       "id": 2,
       "name": "Workshop",
-      "href": "gallery.html",
-      "tip": "Xem hình các buổi Workshop",
+      "href": "workshop.html",
+      "tip": "Xem chương trình workshop điện ảnh",
       "lines": [
         "Workshop"
       ],
