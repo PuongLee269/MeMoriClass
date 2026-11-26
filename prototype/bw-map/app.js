@@ -22,7 +22,7 @@
   document.title = SC.pageTitle || document.title;
   MemoriContent.setText('#srt', SC.srTitle);
   /* đường dẫn của trang thật -> từ trang mẫu; riêng "index.html" (trang Bọ) -> trang mẫu Bọ */
-  const fixHref = h => (h === 'index.html' || h === 'index.html#') ? BO_PAGE : (/^(https?:|mailto:|#|\.\.\/)/i.test(h) ? h : REL + h);
+  const fixHref = h => (h === 'index.html' || h === 'index.html#') ? BO_PAGE : h === 'roadmap.html' ? '../bw-roadmap/' : (/^(https?:|mailto:|#|\.\.\/)/i.test(h) ? h : REL + h);
   const D = D0.map(d => {
     const c = SC.stones.find(x => x && x.id === d.id) || {};
     const ln = a => Array.isArray(a) ? a.filter(t => typeof t === 'string' && t.trim()).slice(0, 6).map(t => t.slice(0, 40)) : [];
