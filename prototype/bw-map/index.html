@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#fbfbfa">
+<title>Bản đồ Me.Mori Class (bản mẫu đen trắng)</title>
+<link rel="preload" as="image" href="img/scene-bw-nomound.webp">
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+<script src="../../assets/content-loader.js"></script>
+<script>
+  /* content-loader tải 'assets/content/…' theo đường dẫn tương đối của trang; trang mẫu nằm sâu hơn nên đổi gốc ở đây (không sửa tệp dùng chung). */
+  (function () {
+    var f = window.fetch;
+    if (typeof f !== 'function') return;
+    window.fetch = function (input, init) {
+      if (typeof input === 'string' && input.indexOf('assets/content/') === 0) input = '../../' + input;
+      return f.call(this, input, init);
+    };
+  })();
+  MemoriContent.prefetch("sitemap"); MemoriContent.prefetch("site"); MemoriContent.prefetch("journey");
+</script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="hand" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="5" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="2" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+<div id="root">
+  <img id="bg" class="cover" src="img/scene-bw-nomound.webp" alt="" draggable="false">
+  <h1 class="sr" id="srt">Bản đồ trang web Me.Mori Class</h1>
+  <nav class="np" id="np" aria-label="Trang gợi ý"></nav>
+  <div id="stage"></div>
+</div>
+<div class="veil" id="veil" aria-hidden="true"></div>
+<script src="app.js"></script>
+</body>
+</html>

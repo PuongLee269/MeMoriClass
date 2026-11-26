@@ -3,7 +3,7 @@
   'use strict';
 
   var POSES = ['idle', 'wave', 'talk', 'listen', 'think', 'point', 'happy', 'surprised', 'confused', 'sleep', 'takeoff', 'fly'];
-  var NEXT_PAGE = '../../sitemap.html';
+  var NEXT_PAGE = '../bw-map/';
   var IDLE_TO_SLEEP = 25000;
   var params = new URLSearchParams(location.search);
   var DEBUG = params.get('debug') === '1';
